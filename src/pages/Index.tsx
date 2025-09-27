@@ -45,7 +45,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="fixed bottom-6 right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer">
+        <div className="fixed bottom-24 right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer">
           <img
             src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
             alt="Help or Support"
