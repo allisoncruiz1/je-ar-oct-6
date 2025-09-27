@@ -36,7 +36,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
   };
 
   return (
-    <main className="justify-center items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col grow shrink w-[1056px] bg-white p-6 rounded-lg max-md:max-w-full max-md:px-5">
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-6 rounded-lg max-md:max-w-full max-md:px-5">
       <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
         <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
           <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full text-[#0C0F24]">
