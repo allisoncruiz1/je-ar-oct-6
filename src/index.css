@@ -102,4 +102,33 @@ All colors MUST be HSL.
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Mobile-first improvements */
+  @media (max-width: 768px) {
+    /* Ensure proper touch targets */
+    button:not(.small-button) {
+      min-height: 48px;
+    }
+    
+    /* Better spacing for form elements */
+    form {
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+    
+    /* Improve text sizing for better readability */
+    input, textarea, select {
+      min-height: 48px;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    /* Better contrast for interactive elements */
+    [role="combobox"], [role="button"] {
+      transition: all 0.2s ease;
+    }
+  }
+
+  /* Safe area support for mobile devices */
+  .safe-area-pb {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
 }

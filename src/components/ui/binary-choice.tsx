@@ -44,7 +44,7 @@ export const BinaryChoice = React.forwardRef<
       <div ref={ref} className={cn("space-y-3", className)} {...props}>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
+            <Label htmlFor={`${id}-switch`} className="text-base font-medium text-foreground">
               {label} {required && <span className="text-destructive">*</span>}
             </Label>
             {tooltip && (
@@ -63,21 +63,23 @@ export const BinaryChoice = React.forwardRef<
           )}
         </div>
         
-        <div className="flex items-center justify-between py-2">
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-foreground">
-              {value === "yes" ? yesLabel : noLabel}
+        <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg min-h-[64px]">
+          <div className="flex flex-col gap-1">
+            <span className="text-base font-medium text-foreground">
+              {value === "yes" ? yesLabel : value === "no" ? noLabel : "Select an option"}
             </span>
-            <span className="text-xs text-muted-foreground">
-              {value === "yes" ? `Switch to ${noLabel}` : `Switch to ${yesLabel}`}
-            </span>
+            {value && (
+              <span className="text-sm text-muted-foreground">
+                Tap to change to {value === "yes" ? noLabel.toLowerCase() : yesLabel.toLowerCase()}
+              </span>
+            )}
           </div>
           <Switch
             id={`${id}-switch`}
             checked={value === "yes"}
             onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
             disabled={disabled}
-            className="data-[state=checked]:bg-primary"
+            className="data-[state=checked]:bg-primary scale-125"
             aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
           />
         </div>
@@ -115,13 +117,13 @@ export const BinaryChoice = React.forwardRef<
         className="flex gap-6"
       >
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="yes" id={`${id}-yes`} />
+          <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
           <Label htmlFor={`${id}-yes`} className="text-sm text-foreground cursor-pointer">
             {yesLabel}
           </Label>
         </div>
         <div className="flex items-center space-x-2">
-          <RadioGroupItem value="no" id={`${id}-no`} />
+          <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
           <Label htmlFor={`${id}-no`} className="text-sm text-foreground cursor-pointer">
             {noLabel}
           </Label>
