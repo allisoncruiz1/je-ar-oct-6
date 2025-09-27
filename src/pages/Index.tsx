@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
+import { MobileProgressStepper } from '@/components/MobileProgressStepper';
 
 const Index = () => {
   const handleSaveResume = () => {
@@ -21,38 +22,13 @@ const Index = () => {
       <Header onSaveResume={handleSaveResume} />
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-4">
-        <div className="flex w-full flex-col items-stretch">
-          {/* Mobile sidebar toggle */}
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="md:hidden flex items-center gap-2 mt-4 p-2 bg-white rounded-lg shadow-sm"
-          >
-            <div className="w-5 h-5 flex flex-col justify-center">
-              <div className="w-full h-0.5 bg-[#0C0F24] mb-1"></div>
-              <div className="w-full h-0.5 bg-[#0C0F24] mb-1"></div>
-              <div className="w-full h-0.5 bg-[#0C0F24]"></div>
-            </div>
-            <span className="text-sm font-medium text-[#0C0F24]">Menu</span>
-          </button>
+      <div className="flex w-full flex-col items-stretch">
+        {/* Mobile progress stepper */}
+        <div className="md:hidden mt-4">
+          <MobileProgressStepper currentStep={0} progress={0} />
+        </div>
 
-          {/* Mobile sidebar overlay */}
-          {isSidebarOpen && (
-            <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-50" onClick={() => setIsSidebarOpen(false)}>
-              <div className="absolute left-0 top-0 h-full w-[280px] bg-white" onClick={(e) => e.stopPropagation()}>
-                <div className="p-4 border-b">
-                  <button
-                    onClick={() => setIsSidebarOpen(false)}
-                    className="float-right text-gray-500 hover:text-gray-700"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <SideNavigation currentStep={0} progress={0} />
-              </div>
-            </div>
-          )}
-
-          <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
+        <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
             {/* Desktop sidebar */}
             <div className="max-md:hidden">
               <SideNavigation currentStep={0} progress={0} />
