@@ -6,9 +6,10 @@ interface MainContentProps {
   onFormSubmit?: (data: any) => void;
   onCanContinueChange?: (canContinue: boolean) => void;
   onContinueHandlerChange?: (handler: (() => void) | null) => void;
+  onSaveResume?: () => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange }) => {
+export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange, onSaveResume }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
@@ -77,7 +78,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
             onSubmit={handleFormSubmit}
             onContinue={handleContinue}
             onFormValidChange={setFormComplete}
-            onSaveResume={() => console.log('Save & Resume Later clicked')}
+            onSaveResume={onSaveResume}
           />
         )}
         {currentSection === 1 && (

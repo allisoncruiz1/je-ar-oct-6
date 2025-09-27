@@ -44,6 +44,7 @@ const Index = () => {
               onFormSubmit={handleFormSubmit} 
               onCanContinueChange={setCanContinue}
               onContinueHandlerChange={setContinueHandler}
+              onSaveResume={handleSaveResume}
             />
           </div>
         </div>
