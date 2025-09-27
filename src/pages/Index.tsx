@@ -20,18 +20,21 @@ const Index = () => {
 
   return (
     <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
-      <Header />
+      {/* Sticky Header */}
+      <div className="sticky top-0 z-50">
+        <Header />
+      </div>
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-4">
-      <div className="flex w-full flex-col items-stretch">
-        {/* Mobile progress stepper */}
-        <div className="md:hidden mt-4">
-          <MobileProgressStepper currentStep={0} progress={0} />
-        </div>
+        <div className="flex w-full flex-col items-stretch">
+          {/* Mobile progress stepper */}
+          <div className="md:hidden mt-4">
+            <MobileProgressStepper currentStep={0} progress={0} />
+          </div>
 
-        <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
-            {/* Desktop sidebar */}
-            <div className="max-md:hidden">
+          <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
+            {/* Desktop sticky sidebar */}
+            <div className="max-md:hidden sticky top-20 self-start">
               <SideNavigation currentStep={0} progress={0} />
             </div>
             <MainContent 
