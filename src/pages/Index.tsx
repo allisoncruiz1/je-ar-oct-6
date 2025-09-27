@@ -46,7 +46,7 @@ const Index = () => {
         </div>
         
         {/* Help button - responsive positioning */}
-        <div className="fixed bottom-24 right-4 md:right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer max-md:bottom-20 max-md:w-10 max-md:h-10 max-md:p-2">
+        <div className="fixed top-20 right-4 md:right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer max-md:w-10 max-md:h-10 max-md:p-2">
           <img
             src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
             alt="Help or Support"
