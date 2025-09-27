@@ -448,21 +448,23 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
-        <div className="flex items-center justify-between">
+      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
+        <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
           <Button
             variant="ghost"
             onClick={onBack}
             disabled={!showBack}
             aria-label="Go back to previous step"
+            className="max-md:order-3 max-md:w-full"
           >
             Back
           </Button>
-          <div className="flex gap-3">
+          <div className="flex gap-3 max-md:w-full max-md:order-1">
             <Button
               variant="outline"
               onClick={onSaveResume}
               aria-label="Save and resume application later"
+              className="max-md:flex-1 max-md:text-sm"
             >
               Save & Resume Later
             </Button>
@@ -471,6 +473,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               onClick={onContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
+              className="max-md:flex-1 max-md:text-sm"
             >
               Continue
             </Button>

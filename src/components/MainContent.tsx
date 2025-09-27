@@ -148,16 +148,16 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   }, [currentSection, completedSections.length]);
 
   return (
-    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0">
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
       {/* Sticky header section with smooth transition */}
-      <div className="sticky top-16 bg-white z-40 transition-all duration-200">
-        <div className="p-4 max-md:p-3">
+      <div className="sticky top-16 bg-white z-40 transition-all duration-200 max-md:top-[58px]">
+        <div className="p-4 max-md:p-3 max-md:pb-2">
           <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
-            <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
-              <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full text-[#0C0F24]">
+            <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full max-md:min-w-0">
+              <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full max-md:text-xl text-[#0C0F24]">
                 Your Information
               </h1>
-              <p className="text-[#0C0F24] text-sm font-normal leading-none max-md:max-w-full mt-1">
+              <p className="text-[#0C0F24] text-sm font-normal leading-none max-md:max-w-full mt-1 max-md:text-xs">
                 License Business Information
               </p>
             </div>
@@ -214,23 +214,25 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
         )}
         {currentSection === 3 && (
           <div className="relative">
-            <div className="text-center py-8 text-[#858791] pb-24">
+            <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
               Business Disclosure form will be implemented here.
             </div>
-            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
-              <div className="flex items-center justify-between">
+            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
+              <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
                 <Button
                   variant="ghost"
                   onClick={handleBack}
                   aria-label="Go back to previous step"
+                  className="max-md:order-3 max-md:w-full"
                 >
                   Back
                 </Button>
-                <div className="flex gap-3">
+                <div className="flex gap-3 max-md:w-full max-md:order-1">
                   <Button
                     variant="outline"
                     onClick={onSaveResume}
                     aria-label="Save and resume application later"
+                    className="max-md:flex-1 max-md:text-sm"
                   >
                     Save & Resume Later
                   </Button>
@@ -238,6 +240,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
                     type="button"
                     onClick={triggerUserContinue}
                     aria-label="Continue to next step"
+                    className="max-md:flex-1 max-md:text-sm"
                   >
                     Continue
                   </Button>
@@ -248,23 +251,25 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
         )}
         {currentSection === 4 && (
           <div className="relative">
-            <div className="text-center py-8 text-[#858791] pb-24">
+            <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
               Team Function form will be implemented here.
             </div>
-            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
-              <div className="flex items-center justify-between">
+            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
+              <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
                 <Button
                   variant="ghost"
                   onClick={handleBack}
                   aria-label="Go back to previous step"
+                  className="max-md:order-3 max-md:w-full"
                 >
                   Back
                 </Button>
-                <div className="flex gap-3">
+                <div className="flex gap-3 max-md:w-full max-md:order-1">
                   <Button
                     variant="outline"
                     onClick={onSaveResume}
                     aria-label="Save and resume application later"
+                    className="max-md:flex-1 max-md:text-sm"
                   >
                     Save & Resume Later
                   </Button>
@@ -273,6 +278,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
                     onClick={triggerUserContinue}
                     disabled={currentSection >= sections.length - 1}
                     aria-label="Continue to next step"
+                    className="max-md:flex-1 max-md:text-sm"
                   >
                     Continue
                   </Button>
