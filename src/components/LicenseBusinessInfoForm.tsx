@@ -114,22 +114,11 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           </h3>
           
           <div className="w-full">
-            <div className="flex items-center gap-2 mb-3 md:hidden">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-[#858791] cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Select whether you currently hold a real estate license</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            
             <BinaryChoice
               value={formData.isLicensed}
               onValueChange={value => updateFormData({ isLicensed: value })}
               label="Are you currently licensed?"
-              description="Select whether you currently hold a real estate license"
+              tooltip="Select whether you currently hold a real estate license"
               required
             />
             
@@ -205,22 +194,11 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           </h3>
           
           <div className="w-full">
-            <div className="flex items-center gap-2 mb-3 md:hidden">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <HelpCircle className="h-4 w-4 text-[#858791] cursor-help" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Select whether you conduct any business activities outside the United States</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            
             <BinaryChoice
               value={formData.conductBusinessOutsideUS}
               onValueChange={value => updateFormData({ conductBusinessOutsideUS: value })}
               label="Do you conduct business outside US?"
-              description="Select whether you conduct any business activities outside the United States"
+              tooltip="Select whether you conduct any business activities outside the United States"
               required
             />
             

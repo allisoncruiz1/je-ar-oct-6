@@ -2,6 +2,8 @@ import * as React from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +12,7 @@ interface BinaryChoiceProps {
   onValueChange: (value: string) => void;
   label: string;
   description?: string;
+  tooltip?: string;
   required?: boolean;
   yesLabel?: string;
   noLabel?: string;
@@ -24,7 +27,8 @@ export const BinaryChoice = React.forwardRef<
   value, 
   onValueChange, 
   label, 
-  description, 
+  description,
+  tooltip, 
   required = false,
   yesLabel = "Yes",
   noLabel = "No",
@@ -39,9 +43,21 @@ export const BinaryChoice = React.forwardRef<
     return (
       <div ref={ref} className={cn("space-y-3", className)} {...props}>
         <div className="space-y-2">
-          <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
-            {label} {required && <span className="text-destructive">*</span>}
-          </Label>
+          <div className="flex items-center gap-2">
+            <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
+              {label} {required && <span className="text-destructive">*</span>}
+            </Label>
+            {tooltip && (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{tooltip}</p>
+                </TooltipContent>
+              </Tooltip>
+            )}
+          </div>
           {description && (
             <p className="text-sm text-muted-foreground">{description}</p>
           )}
@@ -72,9 +88,21 @@ export const BinaryChoice = React.forwardRef<
   return (
     <div ref={ref} className={cn("space-y-3", className)} {...props}>
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-foreground">
-          {label} {required && <span className="text-destructive">*</span>}
-        </Label>
+        <div className="flex items-center gap-2">
+          <Label className="text-sm font-medium text-foreground">
+            {label} {required && <span className="text-destructive">*</span>}
+          </Label>
+          {tooltip && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
         {description && (
           <p className="text-sm text-muted-foreground">{description}</p>
         )}
