@@ -45,11 +45,11 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="items-center flex w-10 gap-2.5 h-10 bg-[#1B489B] mt-6 p-2 rounded-full ml-auto max-md:fixed max-md:bottom-32 max-md:right-4 max-md:shadow-lg">
+        <div className="fixed bottom-6 right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer">
           <img
             src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
             alt="Help or Support"
-            className="aspect-[1] object-contain w-8 self-stretch my-auto"
+            className="aspect-[1] object-contain w-6 self-stretch my-auto"
           />
         </div>
       </div>
