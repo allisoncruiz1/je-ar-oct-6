@@ -11,33 +11,27 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   currentSection = 0,
   sectionTitle = "Your Information"
 }) => {
-  const steps = [
-    {
-      title: "Your Information",
-      description: "Personal and Business Details"
-    },
-    {
-      title: "Sponsor",
-      description: "Select Sponsor"
-    },
-    {
-      title: "Financial Info",
-      description: "Payment and Direct Deposit"
-    },
-    {
-      title: "Review",
-      description: "Review Application"
-    },
-    {
-      title: "Documents",
-      description: "W9 and Document Signing"
-    }
-  ];
+  const steps = [{
+    title: "Your Information",
+    description: "Personal and Business Details"
+  }, {
+    title: "Sponsor",
+    description: "Select Sponsor"
+  }, {
+    title: "Financial Info",
+    description: "Payment and Direct Deposit"
+  }, {
+    title: "Review",
+    description: "Review Application"
+  }, {
+    title: "Documents",
+    description: "W9 and Document Signing"
+  }];
   return <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
       {/* Current step indicator */}
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-xs text-[#0C0F24]">
+          <p className="text-[#0C0F24] text-base font-semibold">
             {currentSection <= 2 ? `Your Information - ${sectionTitle}` : sectionTitle}
           </p>
         </div>
