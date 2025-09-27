@@ -31,14 +31,12 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
       {/* Current step indicator */}
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-[#0C0F24] text-base font-semibold">
+          <p className="text-[#0C0F24] font-semibold text-lg">
             {currentSection <= 2 ? 'Your Information' : sectionTitle}
           </p>
-          {currentSection <= 2 && (
-          <p className="text-[#858791] text-sm">
+          {currentSection <= 2 && <p className="text-[#858791] text-sm">
             Personal and Business Details
-          </p>
-          )}
+          </p>}
         </div>
         <div className="text-xs font-semibold text-[#0C0F24]">
           {progress}%
