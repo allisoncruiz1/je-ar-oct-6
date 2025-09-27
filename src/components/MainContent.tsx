@@ -148,7 +148,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   }, [currentSection, completedSections.length]);
 
   return (
-    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0">
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0 pb-20 md:pb-24">
       <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
         <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
           <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full text-[#0C0F24]">
@@ -207,8 +207,9 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
         )}
       </section>
 
-      <div className="hidden md:block border-t border-border mt-4 pt-4">
-        <div className="flex items-center justify-between">
+      {/* Desktop sticky action buttons */}
+      <div className="hidden md:block fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-40">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Button
             variant="ghost"
             onClick={handleBack}
@@ -237,6 +238,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
         </div>
       </div>
 
+      {/* Mobile action bar (already sticky) */}
       <div className="md:hidden">
         <MobileActionBar 
           onSaveResume={onSaveResume}
