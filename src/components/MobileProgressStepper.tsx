@@ -33,7 +33,7 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
       {/* Current step indicator */}
       <div className="flex items-center justify-between mb-3">
         <div>
-          <p className="text-xs text-[#858791]">Your Information - Personal and Business Details</p>
+          <p className="text-xs text-[#0C0F24]">Your Information - Personal and Business Details</p>
         </div>
         <div className="text-xs font-semibold text-[#0C0F24]">
           {progress}%
