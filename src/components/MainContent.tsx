@@ -19,7 +19,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     'Mailing Address',
     'License Business Info',
     'License Details',
-    'Business Disclosure',
+    'Business Disclosures',
     'Team Function'
   ];
 
