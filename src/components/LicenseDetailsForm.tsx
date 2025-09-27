@@ -201,7 +201,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       {/* Pending Transactions */}
       <div className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
-          Pending Transactions <span className="text-destructive">*</span>
+          Do you have any pending transactions or active listings in {currentState} that you plan to bring with you to eXp Realty? <span className="text-destructive">*</span>
         </Label>
         <RadioGroup
           value={currentData.pendingTransactions}
