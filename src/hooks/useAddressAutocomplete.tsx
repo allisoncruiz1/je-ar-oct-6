@@ -61,9 +61,17 @@ export const useAddressAutocomplete = (
           if (!place.address_components) return;
 
           const components: AddressComponents = {};
+          
+          // Parse all address components properly
           place.address_components.forEach((component) => {
-            const type = component.types[0];
-            (components as any)[type] = component.short_name;
+            component.types.forEach((type) => {
+              if (type === 'street_number') components.street_number = component.short_name;
+              if (type === 'route') components.route = component.short_name;
+              if (type === 'locality') components.locality = component.short_name;
+              if (type === 'administrative_area_level_1') components.administrative_area_level_1 = component.short_name;
+              if (type === 'postal_code') components.postal_code = component.short_name;
+              if (type === 'subpremise') components.subpremise = component.short_name;
+            });
           });
 
           const result: PlaceResult = {
@@ -73,6 +81,8 @@ export const useAddressAutocomplete = (
             state: components.administrative_area_level_1 || '',
             zipCode: components.postal_code || '',
           };
+          
+          console.log('Google Places result:', result);
           onPlaceSelected(result);
         });
 

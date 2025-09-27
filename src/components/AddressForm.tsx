@@ -37,17 +37,33 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const fetchTimeoutRef = useRef<number | null>(null);
 
   const parseNominatimAddress = (addr: any) => {
+    // More comprehensive parsing for OpenStreetMap data
     const house = addr.house_number || '';
-    const road = addr.road || addr.pedestrian || addr.cycleway || addr.footway || '';
+    const road = addr.road || addr.pedestrian || addr.cycleway || addr.footway || addr.highway || '';
     const line1 = `${house} ${road}`.trim();
-    const line2 = addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet || '';
-    return {
+    
+    // Try multiple fields for address line 2
+    const line2 = addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet || addr.quarter || '';
+    
+    // Try multiple fields for city
+    const city = addr.city || addr.town || addr.village || addr.hamlet || addr.municipality || addr.county || '';
+    
+    // Try multiple fields for state - prioritize state_code
+    const state = addr['ISO3166-2-lvl4']?.split('-')[1] || addr.state_code || addr.state || '';
+    
+    // Parse postal code
+    const zipCode = addr.postcode || addr.postal_code || '';
+    
+    const result = {
       addressLine1: line1,
       addressLine2: line2,
-      city: addr.city || addr.town || addr.village || addr.hamlet || '',
-      state: addr.state_code || addr.state || '',
-      zipCode: addr.postcode || '',
+      city: city,
+      state: state,
+      zipCode: zipCode,
     };
+    
+    console.log('OpenStreetMap parsed result:', result);
+    return result;
   };
 
   // Handle autocomplete selection (Google or fallback)
