@@ -36,33 +36,49 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const fetchTimeoutRef = useRef<number | null>(null);
 
+  const US_STATE_ABBR: Record<string, string> = {
+    Alabama: 'AL', Alaska: 'AK', Arizona: 'AZ', Arkansas: 'AR', California: 'CA', Colorado: 'CO',
+    Connecticut: 'CT', Delaware: 'DE', Florida: 'FL', Georgia: 'GA', Hawaii: 'HI', Idaho: 'ID',
+    Illinois: 'IL', Indiana: 'IN', Iowa: 'IA', Kansas: 'KS', Kentucky: 'KY', Louisiana: 'LA',
+    Maine: 'ME', Maryland: 'MD', Massachusetts: 'MA', Michigan: 'MI', Minnesota: 'MN',
+    Mississippi: 'MS', Missouri: 'MO', Montana: 'MT', Nebraska: 'NE', Nevada: 'NV',
+    'New Hampshire': 'NH', 'New Jersey': 'NJ', 'New Mexico': 'NM', 'New York': 'NY',
+    'North Carolina': 'NC', 'North Dakota': 'ND', Ohio: 'OH', Oklahoma: 'OK', Oregon: 'OR',
+    Pennsylvania: 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC', 'South Dakota': 'SD',
+    Tennessee: 'TN', Texas: 'TX', Utah: 'UT', Vermont: 'VT', Virginia: 'VA', Washington: 'WA',
+    'West Virginia': 'WV', Wisconsin: 'WI', Wyoming: 'WY', 'District of Columbia': 'DC'
+  };
+
   const parseNominatimAddress = (addr: any) => {
-    // More comprehensive parsing for OpenStreetMap data
+    // Robust parsing for OpenStreetMap data (US only)
     const house = addr.house_number || '';
-    const road = addr.road || addr.pedestrian || addr.cycleway || addr.footway || addr.highway || '';
-    const line1 = `${house} ${road}`.trim();
-    
-    // Try multiple fields for address line 2
-    const line2 = addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet || addr.quarter || '';
-    
-    // Try multiple fields for city
-    const city = addr.city || addr.town || addr.village || addr.hamlet || addr.municipality || addr.county || '';
-    
-    // Try multiple fields for state - prioritize state_code
-    const state = addr['ISO3166-2-lvl4']?.split('-')[1] || addr.state_code || addr.state || '';
-    
-    // Parse postal code
+    const street = addr.road || addr.street || addr.residential || addr.pedestrian || addr.cycleway || addr.footway || addr.highway || '';
+    const line1 = `${house} ${street}`.trim();
+
+    // Use unit/building info as line 2
+    const line2 = addr.subpremise || addr.unit || addr.building || addr.suburb || addr.neighbourhood || addr.quarter || '';
+
+    // Prefer city; include township/borough/district fallbacks
+    const city = addr.city || addr.town || addr.township || addr.village || addr.hamlet || addr.municipality || addr.city_district || addr.borough || addr.county || '';
+
+    // Get state abbreviation when possible
+    const stateName = addr.state || '';
+    const iso = addr['ISO3166-2-lvl4'] || addr['ISO3166-2-lvl3'] || '';
+    let state = (iso ? iso.split('-')[1] : '') || addr.state_code || US_STATE_ABBR[stateName] || stateName || '';
+    state = state.toUpperCase();
+
+    // Postal code
     const zipCode = addr.postcode || addr.postal_code || '';
-    
+
     const result = {
       addressLine1: line1,
       addressLine2: line2,
-      city: city,
-      state: state,
-      zipCode: zipCode,
+      city,
+      state,
+      zipCode,
     };
-    
-    console.log('OpenStreetMap parsed result:', result);
+
+    console.log('OpenStreetMap parsed result:', result, 'from addr:', addr);
     return result;
   };
 
@@ -103,10 +119,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=us&q=${encodeURIComponent(query)}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
-      // Filter to only US addresses as an extra safeguard
-      const usAddresses = Array.isArray(data) ? data.filter(item => 
-        item.address?.country_code === 'us' || item.address?.country === 'United States'
-      ) : [];
+      // Filter to only US addresses and real street addresses with zip
+      const usAddresses = Array.isArray(data) ? data.filter((item: any) => {
+        const a = item.address || {};
+        const inUS = a.country_code === 'us' || a.country === 'United States';
+        const hasStreet = !!(a.house_number && (a.road || a.street || a.residential || a.pedestrian || a.footway || a.highway));
+        const hasZip = !!a.postcode;
+        return inUS && hasStreet && hasZip;
+      }) : [];
       setSuggestions(usAddresses);
       setShowSuggestions(true);
     } catch (e) {
@@ -251,14 +271,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           City
           <span className="text-[#A91616]">*</span>
         </label>
-        <input
-          type="text"
-          value={formData.city}
-          onChange={(e) => handleInputChange('city', e.target.value)}
-          placeholder="Your City"
-          required
-          className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
-        />
+          <input
+            type="text"
+            value={formData.city}
+            onChange={(e) => handleInputChange('city', e.target.value)}
+            placeholder="City"
+            required
+            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+          />
       </div>
 
       <div className="flex w-full gap-3 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
@@ -285,6 +305,47 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               <option value="DE">Delaware</option>
               <option value="FL">Florida</option>
               <option value="GA">Georgia</option>
+              <option value="HI">Hawaii</option>
+              <option value="ID">Idaho</option>
+              <option value="IL">Illinois</option>
+              <option value="IN">Indiana</option>
+              <option value="IA">Iowa</option>
+              <option value="KS">Kansas</option>
+              <option value="KY">Kentucky</option>
+              <option value="LA">Louisiana</option>
+              <option value="ME">Maine</option>
+              <option value="MD">Maryland</option>
+              <option value="MA">Massachusetts</option>
+              <option value="MI">Michigan</option>
+              <option value="MN">Minnesota</option>
+              <option value="MS">Mississippi</option>
+              <option value="MO">Missouri</option>
+              <option value="MT">Montana</option>
+              <option value="NE">Nebraska</option>
+              <option value="NV">Nevada</option>
+              <option value="NH">New Hampshire</option>
+              <option value="NJ">New Jersey</option>
+              <option value="NM">New Mexico</option>
+              <option value="NY">New York</option>
+              <option value="NC">North Carolina</option>
+              <option value="ND">North Dakota</option>
+              <option value="OH">Ohio</option>
+              <option value="OK">Oklahoma</option>
+              <option value="OR">Oregon</option>
+              <option value="PA">Pennsylvania</option>
+              <option value="RI">Rhode Island</option>
+              <option value="SC">South Carolina</option>
+              <option value="SD">South Dakota</option>
+              <option value="TN">Tennessee</option>
+              <option value="TX">Texas</option>
+              <option value="UT">Utah</option>
+              <option value="VT">Vermont</option>
+              <option value="VA">Virginia</option>
+              <option value="WA">Washington</option>
+              <option value="WV">West Virginia</option>
+              <option value="WI">Wisconsin</option>
+              <option value="WY">Wyoming</option>
+              <option value="DC">District of Columbia</option>
             </select>
             <img
               src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/1cd02bce6337600c23f86f2c759cc0582eb832cd?placeholderIfAbsent=true"
