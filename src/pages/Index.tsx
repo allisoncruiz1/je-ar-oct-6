@@ -19,7 +19,7 @@ const Index = () => {
   };
 
   return (
-    <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
+    <div className="bg-[rgba(239,241,247,1)] min-h-screen">
       {/* Sticky Header */}
       <div className="sticky top-0 z-50">
         <Header />
