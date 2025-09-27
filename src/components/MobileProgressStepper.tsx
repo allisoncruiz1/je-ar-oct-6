@@ -7,22 +7,28 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   currentStep = 0,
   progress = 0
 }) => {
-  const steps = [{
-    title: "Get Started",
-    description: "Welcome"
-  }, {
-    title: "Address",
-    description: "Your location"
-  }, {
-    title: "Property Details",
-    description: "Home info"
-  }, {
-    title: "Documents",
-    description: "Upload files"
-  }, {
-    title: "Review",
-    description: "Final check"
-  }];
+  const steps = [
+    {
+      title: "Your Information",
+      description: "Personal and Business Details"
+    },
+    {
+      title: "Sponsor",
+      description: "Select Sponsor"
+    },
+    {
+      title: "Financial Info",
+      description: "Payment and Direct Deposit"
+    },
+    {
+      title: "Review",
+      description: "Review Application"
+    },
+    {
+      title: "Documents",
+      description: "W9 and Document Signing"
+    }
+  ];
   return <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
       {/* Current step indicator */}
       <div className="flex items-center justify-between mb-3">
