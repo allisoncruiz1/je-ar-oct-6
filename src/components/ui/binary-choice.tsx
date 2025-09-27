@@ -74,15 +74,15 @@ export const BinaryChoice = React.forwardRef<
               </span>
             )}
           </div>
-          <Switch
-            id={`${id}-switch`}
-            checked={value === "yes"}
-            onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
-            disabled={disabled}
-            className="data-[state=checked]:bg-primary"
-            aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
-          />
         </div>
+        
+        <Switch
+          id={`${id}-switch`}
+          checked={value === "yes"}
+          onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
+          disabled={disabled}
+          aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
+        />
       </div>
     );
   }
