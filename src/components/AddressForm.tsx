@@ -147,28 +147,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         </div>
       </div>
 
-      <div className="h-px w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
-      
-      <div className="flex w-full justify-between items-center text-base font-normal mt-4">
-        <button
-          type="button"
-          onClick={onSaveResume}
-          className="items-center flex gap-2 px-6 py-3 rounded-lg border border-[#CECFD3] bg-white text-[#0C0F24] hover:bg-gray-50 transition-colors"
-        >
-          Save & Resume Later
-        </button>
-        <button
-          type="button"
-          onClick={handleContinue}
-          className={`items-center flex gap-2 px-6 py-3 rounded-lg transition-colors ${
-            isFormComplete 
-              ? 'bg-[#0C0F24] hover:bg-[#0C0F24]/90 text-white' 
-              : 'bg-[#E2E3E4] hover:bg-[#D1D2D3] text-[#0C0F24]'
-          }`}
-        >
-          Continue
-        </button>
-      </div>
     </form>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
+import { Button } from '@/components/ui/button';
 
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
@@ -47,11 +48,19 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     }
   };
 
+  const handleBack = () => {
+    console.log('Back clicked');
+    if (currentSection > 0) {
+      setCurrentSection(currentSection - 1);
+    }
+  };
+
   // Effect to update the continue handler and state
+  const canProceed = currentSection === 0 ? formComplete : true;
   useEffect(() => {
     onContinueHandlerChange?.(handleContinue);
-    onCanContinueChange?.(formComplete);
-  }, [handleContinue, formComplete, onContinueHandlerChange, onCanContinueChange]);
+    onCanContinueChange?.(canProceed);
+  }, [handleContinue, canProceed, onContinueHandlerChange, onCanContinueChange]);
 
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0">
@@ -102,6 +111,35 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
           </div>
         )}
       </section>
+
+      <div className="hidden md:block border-t border-border mt-4 pt-4">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            onClick={handleBack}
+            disabled={currentSection === 0}
+            aria-label="Go back to previous step"
+          >
+            Back
+          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={onSaveResume}
+              aria-label="Save and resume application later"
+            >
+              Save & Resume Later
+            </Button>
+            <Button
+              onClick={handleContinue}
+              disabled={!canProceed}
+              aria-label="Continue to next step"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 };
