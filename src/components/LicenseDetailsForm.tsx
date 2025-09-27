@@ -251,7 +251,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       {/* Associations */}
       <div className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
-          Associations
+          Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}:
         </Label>
         <Popover open={associationsOpen} onOpenChange={setAssociationsOpen}>
           <PopoverTrigger asChild>
