@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { BinaryChoice } from '@/components/ui/binary-choice';
 import { HelpCircle, Check, ChevronsUpDown, X } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -114,10 +114,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           </h3>
           
           <div className="w-full">
-            <div className="flex items-center gap-2 mb-3">
-              <Label className="text-sm font-medium text-[#0C0F24] leading-none">
-                Are you currently licensed? <span className="text-[#A91616]">*</span>
-              </Label>
+            <div className="flex items-center gap-2 mb-3 md:hidden">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <HelpCircle className="h-4 w-4 text-[#858791] cursor-help" />
@@ -128,22 +125,13 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               </Tooltip>
             </div>
             
-            <RadioGroup value={formData.isLicensed} onValueChange={value => updateFormData({
-            isLicensed: value
-          })} className="flex gap-6">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="licensed-yes" />
-                <Label htmlFor="licensed-yes" className="text-sm text-[#0C0F24] cursor-pointer">
-                  Yes
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="licensed-no" />
-                <Label htmlFor="licensed-no" className="text-sm text-[#0C0F24] cursor-pointer">
-                  No
-                </Label>
-              </div>
-            </RadioGroup>
+            <BinaryChoice
+              value={formData.isLicensed}
+              onValueChange={value => updateFormData({ isLicensed: value })}
+              label="Are you currently licensed?"
+              description="Select whether you currently hold a real estate license"
+              required
+            />
             
             {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
           </div>
@@ -217,10 +205,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           </h3>
           
           <div className="w-full">
-            <div className="flex items-center gap-2 mb-3">
-              <Label className="text-sm font-medium text-[#0C0F24] leading-none">
-                Do you conduct business outside US? <span className="text-[#A91616]">*</span>
-              </Label>
+            <div className="flex items-center gap-2 mb-3 md:hidden">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <HelpCircle className="h-4 w-4 text-[#858791] cursor-help" />
@@ -231,22 +216,13 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               </Tooltip>
             </div>
             
-            <RadioGroup value={formData.conductBusinessOutsideUS} onValueChange={value => updateFormData({
-            conductBusinessOutsideUS: value
-          })} className="flex gap-6">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="yes" id="international-yes" />
-                <Label htmlFor="international-yes" className="text-sm text-[#0C0F24] cursor-pointer">
-                  Yes
-                </Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="international-no" />
-                <Label htmlFor="international-no" className="text-sm text-[#0C0F24] cursor-pointer">
-                  No
-                </Label>
-              </div>
-            </RadioGroup>
+            <BinaryChoice
+              value={formData.conductBusinessOutsideUS}
+              onValueChange={value => updateFormData({ conductBusinessOutsideUS: value })}
+              label="Do you conduct business outside US?"
+              description="Select whether you conduct any business activities outside the United States"
+              required
+            />
             
             {errors.conductBusinessOutsideUS && <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>}
           </div>

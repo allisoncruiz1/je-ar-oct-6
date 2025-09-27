@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { BinaryChoice } from "@/components/ui/binary-choice";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -405,22 +406,12 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
 
       {/* Certified Mentor Program */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium text-foreground">
-          You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
-        </Label>
-        <RadioGroup
+        <BinaryChoice
           value={currentData.certifiedMentor}
           onValueChange={(value) => updateCurrentStateData('certifiedMentor', value)}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="mentor-yes" />
-            <Label htmlFor="mentor-yes" className="text-sm">Yes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="mentor-no" />
-            <Label htmlFor="mentor-no" className="text-sm">No</Label>
-          </div>
-        </RadioGroup>
+          label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?"
+          required
+        />
 
         {/* Conditional field for selecting a specific mentor */}
         {currentData.certifiedMentor === 'yes' && (

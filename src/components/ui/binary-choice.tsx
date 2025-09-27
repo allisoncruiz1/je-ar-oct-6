@@ -1,0 +1,106 @@
+import * as React from "react";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { cn } from "@/lib/utils";
+
+interface BinaryChoiceProps {
+  value: string;
+  onValueChange: (value: string) => void;
+  label: string;
+  description?: string;
+  required?: boolean;
+  yesLabel?: string;
+  noLabel?: string;
+  className?: string;
+  disabled?: boolean;
+}
+
+export const BinaryChoice = React.forwardRef<
+  HTMLDivElement,
+  BinaryChoiceProps
+>(({ 
+  value, 
+  onValueChange, 
+  label, 
+  description, 
+  required = false,
+  yesLabel = "Yes",
+  noLabel = "No",
+  className,
+  disabled = false,
+  ...props 
+}, ref) => {
+  const isMobile = useIsMobile();
+  const id = React.useId();
+
+  if (isMobile) {
+    return (
+      <div ref={ref} className={cn("space-y-3", className)} {...props}>
+        <div className="space-y-2">
+          <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
+            {label} {required && <span className="text-destructive">*</span>}
+          </Label>
+          {description && (
+            <p className="text-sm text-muted-foreground">{description}</p>
+          )}
+        </div>
+        
+        <div className="flex items-center justify-between py-2">
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-foreground">
+              {value === "yes" ? yesLabel : noLabel}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {value === "yes" ? `Switch to ${noLabel}` : `Switch to ${yesLabel}`}
+            </span>
+          </div>
+          <Switch
+            id={`${id}-switch`}
+            checked={value === "yes"}
+            onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
+            disabled={disabled}
+            className="data-[state=checked]:bg-primary"
+            aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div ref={ref} className={cn("space-y-3", className)} {...props}>
+      <div className="space-y-2">
+        <Label className="text-sm font-medium text-foreground">
+          {label} {required && <span className="text-destructive">*</span>}
+        </Label>
+        {description && (
+          <p className="text-sm text-muted-foreground">{description}</p>
+        )}
+      </div>
+      
+      <RadioGroup
+        value={value}
+        onValueChange={onValueChange}
+        disabled={disabled}
+        className="flex gap-6"
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="yes" id={`${id}-yes`} />
+          <Label htmlFor={`${id}-yes`} className="text-sm text-foreground cursor-pointer">
+            {yesLabel}
+          </Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="no" id={`${id}-no`} />
+          <Label htmlFor={`${id}-no`} className="text-sm text-foreground cursor-pointer">
+            {noLabel}
+          </Label>
+        </div>
+      </RadioGroup>
+    </div>
+  );
+});
+
+BinaryChoice.displayName = "BinaryChoice";
