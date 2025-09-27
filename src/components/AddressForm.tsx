@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 
 interface AddressFormData {
@@ -41,6 +42,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     setFormData(newData);
     onFormDataChange?.(newData);
   }, [onFormDataChange]);
+
+  useAddressAutocomplete(addressInputRef, handlePlaceSelected);
 
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
     const newData = { ...formData, [field]: value };
