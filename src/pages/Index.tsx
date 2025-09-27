@@ -20,13 +20,13 @@ const Index = () => {
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:max-w-full max-md:px-5">
         <div className="flex w-full flex-col items-stretch max-md:max-w-full">
-          <div className="flex w-full gap-[196px_24px] flex-wrap mt-6 max-md:max-w-full">
+          <div className="flex w-full gap-6 flex-wrap mt-4 max-md:max-w-full">
             <SideNavigation currentStep={0} progress={0} />
             <MainContent onFormSubmit={handleFormSubmit} />
           </div>
         </div>
         
-        <div className="items-center flex w-[52px] gap-2.5 h-[52px] bg-[#1B489B] mt-[193px] p-2.5 rounded-[464px] max-md:mt-10 ml-auto">
+        <div className="items-center flex w-[52px] gap-2.5 h-[52px] bg-[#1B489B] mt-6 p-2.5 rounded-[464px] max-md:mt-6 ml-auto">
           <img
             src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
             alt="Help or Support"

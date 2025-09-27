@@ -36,7 +36,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full text-base mt-6 max-md:max-w-full">
+    <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-[#0c0f24] font-semibold leading-6 max-md:max-w-full">
           Address Line 1
@@ -53,7 +53,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         />
       </div>
 
-      <div className="w-full mt-6 max-md:max-w-full">
+      <div className="w-full mt-4 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold max-md:max-w-full">
           Address Line 2 (Optional)
         </label>
@@ -66,7 +66,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         />
       </div>
 
-      <div className="w-full mt-6 max-md:max-w-full">
+      <div className="w-full mt-4 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
           City
           <span className="text-[#A91616]">*</span>
@@ -81,7 +81,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         />
       </div>
 
-      <div className="flex w-full gap-3 flex-wrap mt-6 max-md:max-w-full">
+      <div className="flex w-full gap-3 flex-wrap mt-4 max-md:max-w-full">
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:max-w-full">
           <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
             State
@@ -131,9 +131,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         </div>
       </div>
 
-      <div className="border min-h-px w-full bg-[#CECFD3] mt-6 border-[rgba(206,207,211,1)] border-solid max-md:max-w-full" />
+      <div className="border min-h-px w-full bg-[#CECFD3] mt-4 border-[rgba(206,207,211,1)] border-solid max-md:max-w-full" />
       
-      <div className="flex w-full justify-end text-base text-white font-normal mt-6 max-md:max-w-full">
+      <div className="flex w-full justify-end text-base text-white font-normal mt-4 max-md:max-w-full">
         <button
           type="button"
           onClick={handleContinue}
