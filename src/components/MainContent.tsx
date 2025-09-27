@@ -156,6 +156,8 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             currentSection={currentSection}
             totalSections={sections.length}
             sectionTitle={sections[currentSection]}
+            onBack={handleBack}
+            showBack={currentSection > 0}
           />
         </div>
       </div>
@@ -168,9 +170,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             onContinue={triggerUserContinue}
             onFormValidChange={setFormComplete}
             onSaveResume={onSaveResume}
-            onBack={handleBack}
             canContinue={formComplete}
-            showBack={currentSection > 0}
             initialData={addressData || undefined}
             onFormDataChange={setAddressData}
           />
@@ -181,9 +181,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             onContinue={triggerUserContinue}
             onFormValidChange={setLicenseBusinessFormComplete}
             onSaveResume={onSaveResume}
-            onBack={handleBack}
             canContinue={licenseBusinessFormComplete}
-            showBack={currentSection > 0}
             initialData={licenseBusinessData || undefined}
             onFormDataChange={setLicenseBusinessData}
           />
@@ -196,9 +194,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             onFormValidChange={setLicenseDetailsFormComplete}
             onContinue={triggerUserContinue}
             onSaveResume={onSaveResume}
-            onBack={handleBack}
             canContinue={licenseDetailsFormComplete}
-            showBack={currentSection > 0}
           />
         )}
         {currentSection === 3 && (
