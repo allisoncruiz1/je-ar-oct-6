@@ -149,7 +149,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
       <div className="h-px w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
       
-      <div className="hidden md:flex w-full justify-between items-center text-base font-normal mt-4">
+      <div className="flex w-full justify-between items-center text-base font-normal mt-4">
         <button
           type="button"
           onClick={onSaveResume}
