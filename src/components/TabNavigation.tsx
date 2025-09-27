@@ -19,7 +19,7 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
 }) => {
   return (
     <div className="relative flex items-center gap-8 text-base text-[#858791] font-normal text-center mt-6 max-md:max-w-full">
-      <div className="border absolute z-0 min-w-60 w-[1060px] shrink-0 h-0 right-[-301px] bg-[#CECFD3] border-[rgba(206,207,211,1)] border-solid bottom-0 max-md:max-w-full" />
+      <div className="border absolute z-0 w-full h-0 left-0 bg-[#CECFD3] border-[rgba(206,207,211,1)] border-solid bottom-0 max-md:max-w-full" />
       {tabs.map((tab) => (
         <button
           key={tab.id}
