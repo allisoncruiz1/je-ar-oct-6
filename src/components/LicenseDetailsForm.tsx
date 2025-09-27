@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 export interface LicenseDetailsData {
   [state: string]: {
     licenseNumber: string;
@@ -19,14 +20,42 @@ export interface LicenseDetailsData {
     mls: string[];
   };
 }
+
 interface LicenseDetailsFormProps {
   licensedStates: string[];
   data: LicenseDetailsData;
   onDataChange: (data: LicenseDetailsData) => void;
   onFormValidChange: (isValid: boolean) => void;
 }
-const ASSOCIATIONS = ["National Association of REALTORS® (NAR)", "Real Estate Buyer's Agent Council (REBAC)", "CCIM Institute", "Institute of Real Estate Management (IREM)", "Women's Council of REALTORS® (WCR)", "Commercial Real Estate Development Association (NAIOP)", "Counselors of Real Estate (CRE)", "Society of Industrial and Office REALTORS® (SIOR)", "Real Estate Securities and Syndication Institute (RESSI)", "Certified Commercial Investment Member (CCIM)", "Other"];
-const MLS_OPTIONS = ["Multiple Listing Service (MLS)", "Bright MLS", "California Regional MLS (CRMLS)", "Houston Association of REALTORS® (HAR)", "Miami Association of REALTORS® (MIAMI)", "TREND MLS", "Northeast Florida Association of REALTORS® (NEFAR)", "Triangle MLS", "Denver Metro Association of REALTORS® (DMAR)", "Greater Las Vegas Association of REALTORS® (GLVAR)", "Other"];
+
+const ASSOCIATIONS = [
+  "National Association of REALTORS® (NAR)",
+  "Real Estate Buyer's Agent Council (REBAC)",
+  "CCIM Institute",
+  "Institute of Real Estate Management (IREM)",
+  "Women's Council of REALTORS® (WCR)",
+  "Commercial Real Estate Development Association (NAIOP)",
+  "Counselors of Real Estate (CRE)",
+  "Society of Industrial and Office REALTORS® (SIOR)",
+  "Real Estate Securities and Syndication Institute (RESSI)",
+  "Certified Commercial Investment Member (CCIM)",
+  "Other"
+];
+
+const MLS_OPTIONS = [
+  "Multiple Listing Service (MLS)",
+  "Bright MLS",
+  "California Regional MLS (CRMLS)",
+  "Houston Association of REALTORS® (HAR)",
+  "Miami Association of REALTORS® (MIAMI)",
+  "TREND MLS",
+  "Northeast Florida Association of REALTORS® (NEFAR)",
+  "Triangle MLS",
+  "Denver Metro Association of REALTORS® (DMAR)",
+  "Greater Las Vegas Association of REALTORS® (GLVAR)",
+  "Other"
+];
+
 export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   licensedStates,
   data,
@@ -36,6 +65,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
   const [associationsOpen, setAssociationsOpen] = useState(false);
   const [mlsOpen, setMlsOpen] = useState(false);
+
   const currentState = licensedStates[currentStateIndex];
   const currentData = data[currentState] || {
     licenseNumber: '',
@@ -45,6 +75,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     associations: [],
     mls: []
   };
+
   const updateCurrentStateData = (field: string, value: any) => {
     const newData = {
       ...data,
@@ -54,53 +85,85 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       }
     };
     onDataChange(newData);
-
+    
     // Check if all states are valid
     const isValid = licensedStates.every(state => {
       const stateData = newData[state];
-      const baseValid = stateData?.licenseNumber?.trim() && stateData?.salesTransactions?.trim() && stateData?.pendingTransactions?.trim() && stateData?.mls?.length > 0;
-
+      const baseValid = stateData?.licenseNumber?.trim() &&
+                       stateData?.salesTransactions?.trim() &&
+                       stateData?.pendingTransactions?.trim() &&
+                       stateData?.mls?.length > 0;
+      
       // If pending transactions is "yes", also require existing transactions count
-      const pendingValid = stateData?.pendingTransactions !== 'yes' || stateData?.existingTransactionsCount?.trim();
+      const pendingValid = stateData?.pendingTransactions !== 'yes' || 
+                          (stateData?.existingTransactionsCount?.trim());
+      
       return baseValid && pendingValid;
     });
     onFormValidChange(isValid);
   };
+
   const toggleAssociation = (association: string) => {
-    const newAssociations = currentData.associations.includes(association) ? currentData.associations.filter(a => a !== association) : [...currentData.associations, association];
+    const newAssociations = currentData.associations.includes(association)
+      ? currentData.associations.filter(a => a !== association)
+      : [...currentData.associations, association];
     updateCurrentStateData('associations', newAssociations);
   };
+
   const toggleMLS = (mls: string) => {
-    const newMLS = currentData.mls.includes(mls) ? currentData.mls.filter(m => m !== mls) : [...currentData.mls, mls];
+    const newMLS = currentData.mls.includes(mls)
+      ? currentData.mls.filter(m => m !== mls)
+      : [...currentData.mls, mls];
     updateCurrentStateData('mls', newMLS);
   };
+
   const removeAssociation = (association: string) => {
     const newAssociations = currentData.associations.filter(a => a !== association);
     updateCurrentStateData('associations', newAssociations);
   };
+
   const removeMLS = (mls: string) => {
     const newMLS = currentData.mls.filter(m => m !== mls);
     updateCurrentStateData('mls', newMLS);
   };
+
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
-  return <div className="space-y-6">
+
+  return (
+    <div className="space-y-6">
       {/* State Navigation Header */}
-      {licensedStates.length > 1 && <div className="flex items-center justify-between mb-6">
+      {licensedStates.length > 1 && (
+        <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <Button type="button" variant="outline" size="sm" onClick={() => setCurrentStateIndex(currentStateIndex - 1)} disabled={!canGoPrevious()} className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentStateIndex(currentStateIndex - 1)}
+              disabled={!canGoPrevious()}
+              className="flex items-center gap-2"
+            >
               <ChevronLeft className="h-4 w-4" />
               Previous State
             </Button>
             <span className="text-sm font-medium text-muted-foreground">
               {currentStateIndex + 1} of {licensedStates.length} Licensed States
             </span>
-            <Button type="button" variant="outline" size="sm" onClick={() => setCurrentStateIndex(currentStateIndex + 1)} disabled={!canGoNext()} className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentStateIndex(currentStateIndex + 1)}
+              disabled={!canGoNext()}
+              className="flex items-center gap-2"
+            >
               Next State
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
-        </div>}
+        </div>
+      )}
 
       {/* Current State Header */}
       <div className="mb-6">
@@ -117,7 +180,14 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label htmlFor="licenseNumber" className="text-sm font-medium text-foreground">
           License Number <span className="text-destructive">*</span>
         </Label>
-        <Input id="licenseNumber" type="text" value={currentData.licenseNumber} onChange={e => updateCurrentStateData('licenseNumber', e.target.value)} placeholder="Enter your license number" className="w-full" />
+        <Input
+          id="licenseNumber"
+          type="text"
+          value={currentData.licenseNumber}
+          onChange={(e) => updateCurrentStateData('licenseNumber', e.target.value)}
+          placeholder="Enter your license number"
+          className="w-full"
+        />
       </div>
 
       {/* Sales Transactions */}
@@ -125,7 +195,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label htmlFor="salesTransactions" className="text-sm font-medium text-foreground">
           Sales Transactions (Past 12 Months) <span className="text-destructive">*</span>
         </Label>
-        <Input id="salesTransactions" type="number" value={currentData.salesTransactions} onChange={e => updateCurrentStateData('salesTransactions', e.target.value)} placeholder="Number of transactions" className="w-full" min="0" />
+        <Input
+          id="salesTransactions"
+          type="number"
+          value={currentData.salesTransactions}
+          onChange={(e) => updateCurrentStateData('salesTransactions', e.target.value)}
+          placeholder="Number of transactions"
+          className="w-full"
+          min="0"
+        />
       </div>
 
       {/* Pending Transactions */}
@@ -133,7 +211,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Do you have any pending transactions or active listings in {currentState} that you plan to bring with you to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        <RadioGroup value={currentData.pendingTransactions} onValueChange={value => updateCurrentStateData('pendingTransactions', value)}>
+        <RadioGroup
+          value={currentData.pendingTransactions}
+          onValueChange={(value) => updateCurrentStateData('pendingTransactions', value)}
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="yes" id="pending-yes" />
             <Label htmlFor="pending-yes" className="text-sm">Yes</Label>
@@ -149,21 +230,40 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </RadioGroup>
 
         {/* Conditional field for existing transactions count */}
-        {currentData.pendingTransactions === 'yes' && <div className="space-y-2 mt-4">
+        {currentData.pendingTransactions === 'yes' && (
+          <div className="space-y-2 mt-4">
             <Label htmlFor="existingTransactionsCount" className="text-sm font-medium text-foreground">
               How many existing transactions or listings do you have? <span className="text-destructive">*</span>
             </Label>
-            <Input id="existingTransactionsCount" type="number" value={currentData.existingTransactionsCount || ''} onChange={e => updateCurrentStateData('existingTransactionsCount', e.target.value)} placeholder="Enter the number of transactions/listings" className="w-full" min="0" />
-          </div>}
+            <Input
+              id="existingTransactionsCount"
+              type="number"
+              value={currentData.existingTransactionsCount || ''}
+              onChange={(e) => updateCurrentStateData('existingTransactionsCount', e.target.value)}
+              placeholder="Enter the number of transactions/listings"
+              className="w-full"
+              min="0"
+            />
+          </div>
+        )}
       </div>
 
       {/* Associations */}
       <div className="space-y-2">
-        <Label className="text-sm font-medium text-foreground"></Label>
+        <Label className="text-sm font-medium text-foreground">
+          Associations
+        </Label>
         <Popover open={associationsOpen} onOpenChange={setAssociationsOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" role="combobox" aria-expanded={associationsOpen} className="w-full justify-between text-left font-normal">
-              {currentData.associations.length > 0 ? `${currentData.associations.length} association(s) selected` : "Select associations"}
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={associationsOpen}
+              className="w-full justify-between text-left font-normal"
+            >
+              {currentData.associations.length > 0
+                ? `${currentData.associations.length} association(s) selected`
+                : "Select associations"}
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -173,10 +273,19 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               <CommandList>
                 <CommandEmpty>No associations found.</CommandEmpty>
                 <CommandGroup>
-                  {ASSOCIATIONS.map(association => <CommandItem key={association} onSelect={() => toggleAssociation(association)} className="flex items-center space-x-2 cursor-pointer">
-                      <Checkbox checked={currentData.associations.includes(association)} onChange={() => toggleAssociation(association)} />
+                  {ASSOCIATIONS.map((association) => (
+                    <CommandItem
+                      key={association}
+                      onSelect={() => toggleAssociation(association)}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={currentData.associations.includes(association)}
+                        onChange={() => toggleAssociation(association)}
+                      />
                       <span className="flex-1">{association}</span>
-                    </CommandItem>)}
+                    </CommandItem>
+                  ))}
                 </CommandGroup>
               </CommandList>
             </Command>
@@ -184,14 +293,22 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </Popover>
 
         {/* Selected Associations */}
-        {currentData.associations.length > 0 && <div className="flex flex-wrap gap-2 mt-2">
-            {currentData.associations.map(association => <Badge key={association} variant="secondary" className="flex items-center gap-1">
+        {currentData.associations.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {currentData.associations.map((association) => (
+              <Badge key={association} variant="secondary" className="flex items-center gap-1">
                 {association}
-                <button type="button" onClick={() => removeAssociation(association)} className="ml-1 hover:bg-destructive/20 rounded-full p-0.5">
+                <button
+                  type="button"
+                  onClick={() => removeAssociation(association)}
+                  className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                >
                   <X className="h-3 w-3" />
                 </button>
-              </Badge>)}
-          </div>}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* MLS */}
@@ -201,8 +318,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </Label>
         <Popover open={mlsOpen} onOpenChange={setMlsOpen}>
           <PopoverTrigger asChild>
-            <Button variant="outline" role="combobox" aria-expanded={mlsOpen} className="w-full justify-between text-left font-normal">
-              {currentData.mls.length > 0 ? `${currentData.mls.length} MLS selected` : "Select MLS"}
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={mlsOpen}
+              className="w-full justify-between text-left font-normal"
+            >
+              {currentData.mls.length > 0
+                ? `${currentData.mls.length} MLS selected`
+                : "Select MLS"}
               <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -212,10 +336,19 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               <CommandList>
                 <CommandEmpty>No MLS found.</CommandEmpty>
                 <CommandGroup>
-                  {MLS_OPTIONS.map(mls => <CommandItem key={mls} onSelect={() => toggleMLS(mls)} className="flex items-center space-x-2 cursor-pointer">
-                      <Checkbox checked={currentData.mls.includes(mls)} onChange={() => toggleMLS(mls)} />
+                  {MLS_OPTIONS.map((mls) => (
+                    <CommandItem
+                      key={mls}
+                      onSelect={() => toggleMLS(mls)}
+                      className="flex items-center space-x-2 cursor-pointer"
+                    >
+                      <Checkbox
+                        checked={currentData.mls.includes(mls)}
+                        onChange={() => toggleMLS(mls)}
+                      />
                       <span className="flex-1">{mls}</span>
-                    </CommandItem>)}
+                    </CommandItem>
+                  ))}
                 </CommandGroup>
               </CommandList>
             </Command>
@@ -223,14 +356,23 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </Popover>
 
         {/* Selected MLS */}
-        {currentData.mls.length > 0 && <div className="flex flex-wrap gap-2 mt-2">
-            {currentData.mls.map(mls => <Badge key={mls} variant="secondary" className="flex items-center gap-1">
+        {currentData.mls.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {currentData.mls.map((mls) => (
+              <Badge key={mls} variant="secondary" className="flex items-center gap-1">
                 {mls}
-                <button type="button" onClick={() => removeMLS(mls)} className="ml-1 hover:bg-destructive/20 rounded-full p-0.5">
+                <button
+                  type="button"
+                  onClick={() => removeMLS(mls)}
+                  className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
+                >
                   <X className="h-3 w-3" />
                 </button>
-              </Badge>)}
-          </div>}
+              </Badge>
+            ))}
+          </div>
+        )}
       </div>
-    </div>;
+    </div>
+  );
 };
