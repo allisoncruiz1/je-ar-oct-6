@@ -83,8 +83,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         />
       </div>
 
-      <div className="flex w-full gap-3 flex-wrap mt-4 max-md:max-w-full">
-        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:max-w-full">
+      <div className="flex w-full gap-3 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
+        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
           <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
             State
             <span className="text-[#A91616]">*</span>
@@ -116,7 +116,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
           </div>
         </div>
 
-        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:max-w-full">
+        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
           <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
             Zip code
             <span className="text-[#A91616]">*</span>

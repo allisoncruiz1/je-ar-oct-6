@@ -18,13 +18,13 @@ export const TabNavigation: React.FC<TabNavigationProps> = ({
   onTabChange
 }) => {
   return (
-    <div className="relative flex items-center gap-8 text-base text-[#858791] font-normal text-center mt-6 max-md:max-w-full">
+    <div className="relative flex items-center gap-8 text-base text-[#858791] font-normal text-center mt-6 max-md:gap-4 max-md:text-sm max-md:overflow-x-auto max-md:scrollbar-hide max-md:flex-nowrap">
       <div className="border absolute z-0 w-full h-0 left-0 bg-[#CECFD3] border-[rgba(206,207,211,1)] border-solid bottom-0 max-md:max-w-full" />
       {tabs.map((tab) => (
         <button
           key={tab.id}
           onClick={() => onTabChange(tab.id)}
-          className={`justify-center items-center self-stretch z-0 flex min-h-11 flex-col my-auto ${
+          className={`justify-center items-center self-stretch z-0 flex min-h-11 flex-col my-auto whitespace-nowrap max-md:min-w-max max-md:px-2 ${
             tab.id === activeTab
               ? 'text-[#1B489B] font-semibold border-b-2 border-b-[#1B489B] border-solid'
               : 'text-[#858791] hover:text-[#1B489B] transition-colors'
