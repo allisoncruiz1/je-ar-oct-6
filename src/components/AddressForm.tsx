@@ -117,7 +117,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       return;
     }
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&q=${encodeURIComponent(query)}`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&q=${encodeURIComponent(query)}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
       const items = Array.isArray(data) ? data : [];
@@ -125,24 +125,18 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       const isResidentialBuilding = (item: any) => {
         const cls = item.class;
         const typ = item.type || '';
-        return cls === 'building' && ['house','residential','apartments','detached','semidetached_house','terrace','yes'].includes(typ);
+        // Strictly residential building types or place=house
+        const residentialTypes = ['house','residential','apartments','detached','semidetached_house','terrace'];
+        return (cls === 'building' && residentialTypes.includes(typ)) || (cls === 'place' && typ === 'house');
       };
       const hasAddressBits = (a: any) => !!(a.house_number && (a.road || a.street) && a.postcode);
       const inUS = (a: any) => a?.country_code === 'us' || a?.country === 'United States';
 
-      // Strict first pass: residential buildings only
-      let filtered = items.filter((item: any) => {
+      // Only keep US residential addresses with full components
+      const filtered = items.filter((item: any) => {
         const a = item.address || {};
         return inUS(a) && isResidentialBuilding(item) && hasAddressBits(a);
       });
-
-      // Fallback: allow any US item with full address bits
-      if (filtered.length === 0) {
-        filtered = items.filter((item: any) => {
-          const a = item.address || {};
-          return inUS(a) && hasAddressBits(a);
-        });
-      }
 
       setSuggestions(filtered.slice(0, 5));
       setShowSuggestions(true);
