@@ -24,6 +24,12 @@ const Index = () => {
       <div className="sticky top-0 z-50">
         <Header />
       </div>
+
+      {/* Fixed white background behind the sticky section header to prevent background movement */}
+      <div
+        className="fixed top-16 left-0 right-0 h-28 md:h-32 bg-white z-30 pointer-events-none"
+        aria-hidden="true"
+      />
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-4">
         <div className="flex w-full flex-col items-stretch">
