@@ -49,26 +49,22 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col grow shrink w-52 bg-white pt-4 pb-3 rounded-lg"
       aria-label="Application progress navigation"
     >
-      <div className="flex w-full">
-        <div className="flex flex-col items-center px-2">
-          <div className="bg-[rgba(239,241,247,1)] flex min-h-px w-full mb-3" />
-          <ProgressIndicator percentage={progress} />
-        </div>
-        <div className="flex-1 px-4">
-          {steps.map((step, index) => (
-            <React.Fragment key={step.title}>
-              <NavigationStep {...step} />
-              {index < steps.length - 1 && (
-                <div className="flex w-full items-center gap-2.5">
-                  <div className={`self-stretch flex min-h-[29px] w-0.5 my-auto ${
-                    step.isActive ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'
-                  }`} />
-                </div>
-              )}
-            </React.Fragment>
-          ))}
-        </div>
+      <div className="w-full px-4">
+        {steps.map((step, index) => (
+          <React.Fragment key={step.title}>
+            <NavigationStep {...step} />
+            {index < steps.length - 1 && (
+              <div className="flex w-full items-center gap-2.5">
+                <div className={`self-stretch flex min-h-[29px] w-0.5 my-auto ${
+                  step.isActive ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'
+                }`} />
+              </div>
+            )}
+          </React.Fragment>
+        ))}
       </div>
+      <div className="bg-[rgba(239,241,247,1)] flex min-h-px w-full mt-3" />
+      <ProgressIndicator percentage={progress} />
     </nav>
   );
 };
