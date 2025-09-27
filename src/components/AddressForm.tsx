@@ -142,7 +142,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
           className={`items-center flex gap-2 px-6 py-3 rounded-lg transition-colors ${
             isFormComplete 
               ? 'bg-[#0C0F24] hover:bg-[#0C0F24]/90' 
-              : 'bg-[#6B7280] hover:bg-[#4B5563]'
+              : 'bg-[#E2E3E4] hover:bg-[#D1D2D3]'
           }`}
         >
           Continue
