@@ -44,17 +44,22 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   };
 
   const handleContinue = useCallback(() => {
-    console.log('Continue clicked');
+    console.log('🎯 Continue clicked. Current section:', currentSection, 'Form complete:', formComplete);
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
-      console.info('Continue blocked: Mailing Address incomplete');
+      console.info('🚫 Continue blocked: Mailing Address incomplete');
       return;
     }
 
+    console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
     // Navigate to next section safely with functional update
-    setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
+    setCurrentSection((prev) => {
+      const newSection = Math.min(prev + 1, sections.length - 1);
+      console.log('📍 Moving from section', prev, 'to section', newSection);
+      return newSection;
+    });
   }, [currentSection, formComplete]);
 
   const handleBack = () => {
