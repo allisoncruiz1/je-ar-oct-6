@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
@@ -19,6 +20,7 @@ export interface LicenseDetailsData {
     associations: string[];
     mls: string[];
     certifiedMentor: string;
+    selectedMentor?: string;
   };
 }
 
@@ -57,6 +59,15 @@ const MLS_OPTIONS = [
   "Other"
 ];
 
+const MENTOR_OPTIONS = [
+  "John Smith - Residential Specialist",
+  "Sarah Johnson - Commercial Expert", 
+  "Mike Davis - New Agent Mentor",
+  "Lisa Brown - Luxury Market Specialist",
+  "David Wilson - Investment Property Expert",
+  "No preference - Assign me a mentor"
+];
+
 export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   licensedStates,
   data,
@@ -75,7 +86,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     existingTransactionsCount: '',
     associations: [],
     mls: [],
-    certifiedMentor: ''
+    certifiedMentor: '',
+    selectedMentor: ''
   };
 
   const updateCurrentStateData = (field: string, value: any) => {
@@ -101,7 +113,11 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       const pendingValid = stateData?.pendingTransactions !== 'yes' || 
                           (stateData?.existingTransactionsCount?.trim());
       
-      return baseValid && pendingValid;
+      // If certified mentor is "yes", also require selected mentor
+      const mentorValid = stateData?.certifiedMentor !== 'yes' || 
+                         (stateData?.selectedMentor?.trim());
+      
+      return baseValid && pendingValid && mentorValid;
     });
     onFormValidChange(isValid);
   };
@@ -395,6 +411,30 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             <Label htmlFor="mentor-no" className="text-sm">No</Label>
           </div>
         </RadioGroup>
+
+        {/* Conditional field for selecting a specific mentor */}
+        {currentData.certifiedMentor === 'yes' && (
+          <div className="space-y-2 mt-4">
+            <Label htmlFor="selectedMentor" className="text-sm font-medium text-foreground">
+              Select a certified mentor from <span className="text-destructive">*</span>
+            </Label>
+            <Select
+              value={currentData.selectedMentor || ''}
+              onValueChange={(value) => updateCurrentStateData('selectedMentor', value)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a mentor" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border border-border shadow-lg z-50">
+                {MENTOR_OPTIONS.map((mentor) => (
+                  <SelectItem key={mentor} value={mentor} className="cursor-pointer">
+                    {mentor}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </div>
     </div>
   );
