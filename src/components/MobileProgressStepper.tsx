@@ -11,63 +11,55 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   currentSection = 0,
   sectionTitle = "Your Information"
 }) => {
-  const steps = ['Your Information', 'Sponsor', 'Financial Info', 'Review', 'Documents'];
-  
-  // Calculate which main step we're on
-  const mainStep = currentSection <= 2 ? 0 : Math.min(currentSection - 1, steps.length - 1);
-  const currentStepTitle = currentSection <= 2 ? 'Your Information' : sectionTitle;
-  
-  // Calculate sub-step indicator
-  const getStepIndicator = () => {
-    if (currentSection <= 2) {
-      return `Step 1.${currentSection + 1} of 1.3`;
-    } else {
-      return `Step ${currentSection - 1} of ${steps.length - 2}`;
-    }
-  };
-
-  return (
-    <div className="bg-white px-4 py-2 rounded-lg shadow-sm mb-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-4">
-          {/* Primary: Main step title */}
-          <h3 className="text-[#0C0F24] font-bold text-base">
-            {currentStepTitle}
-          </h3>
-          
-          {/* Tertiary: Small progress dots */}
-          <div className="flex items-center gap-0.5">
-            {steps.map((_, index) => (
-              <div
-                key={index}
-                className={`w-1 h-1 rounded-full ${
-                  index <= mainStep ? 'bg-[#1B489B]' : 'bg-[#E5E5E5]'
-                }`}
-              />
-            ))}
-          </div>
+  const steps = [{
+    title: "Your Information",
+    description: "Personal and Business Details"
+  }, {
+    title: "Sponsor",
+    description: "Select Sponsor"
+  }, {
+    title: "Financial Info",
+    description: "Payment and Direct Deposit"
+  }, {
+    title: "Review",
+    description: "Review Application"
+  }, {
+    title: "Documents",
+    description: "W9 and Document Signing"
+  }];
+  return <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
+      {/* Current step indicator */}
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-[#0C0F24] font-semibold text-lg">
+            {currentSection <= 2 ? 'Your Information' : sectionTitle}
+          </p>
+          {currentSection <= 2 && <p className="text-[#858791] text-sm">
+            Personal and Business Details
+          </p>}
         </div>
-        
-        {/* Tertiary: Progress percentage */}
-        <span className="text-xs text-[#858791]">
+        <div className="text-xs font-semibold text-[#0C0F24]">
           {progress}%
-        </span>
+        </div>
       </div>
-      
-      {/* Secondary: Sub-step indicator */}
-      <div className="mb-2">
-        <span className="text-xs font-medium text-[#858791]">
-          {getStepIndicator()}
-        </span>
+
+      {/* Progress bar */}
+      <div className="bg-[rgba(0,0,0,0.1)] h-2 rounded-full mb-3">
+        <div className="bg-[#1B489B] h-full rounded-full transition-all duration-300" style={{
+        width: `${progress}%`
+      }} />
       </div>
-      
-      {/* Thin progress bar */}
-      <div className="bg-[rgba(0,0,0,0.1)] h-0.5 rounded-full">
-        <div 
-          className="bg-[#1B489B] h-full rounded-full transition-all duration-300" 
-          style={{ width: `${progress}%` }}
-        />
+
+      {/* Step indicators */}
+      <div className="flex items-center justify-between">
+        {steps.map((step, index) => <div key={index} className="flex flex-col items-center flex-1">
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-1 ${index <= currentStep ? 'bg-[#1B489B] text-white' : 'bg-[#E5E5E5] text-[#858791]'}`}>
+              {index + 1}
+            </div>
+            {index < steps.length - 1 && <div className={`hidden sm:block absolute w-full h-0.5 top-3 left-1/2 transform -translate-y-1/2 ${index < currentStep ? 'bg-[#1B489B]' : 'bg-[#E5E5E5]'}`} style={{
+          zIndex: -1
+        }} />}
+          </div>)}
       </div>
-    </div>
-  );
+    </div>;
 };
