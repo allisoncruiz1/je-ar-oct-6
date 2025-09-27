@@ -16,6 +16,7 @@ interface AddressData {
 interface LicenseBusinessData {
   preferredName: string;
   isLicensed: string;
+  licensedStates: string[];
   conductBusinessOutsideUS: string;
 }
 
