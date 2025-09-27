@@ -48,11 +48,13 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
         </div>
       </header>
 
-      <TabNavigation
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-      />
+      <div className="max-md:hidden">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      </div>
 
       <section className="mt-4">
         {activeTab === 'mailing-address' && (
