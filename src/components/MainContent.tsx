@@ -2,8 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
-import { AddressValidationDialog, type AddressData, type ValidationResult } from './AddressValidationDialog';
-import { validateAddress } from '@/utils/addressValidation';
+
+interface AddressData {
+  addressLine1: string;
+  addressLine2: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
 
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
@@ -17,9 +23,6 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
-  const [isValidationDialogOpen, setIsValidationDialogOpen] = useState(false);
-  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
-  const [isValidating, setIsValidating] = useState(false);
 
   const sections = [
     'Mailing Address',
@@ -40,7 +43,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     onFormSubmit?.(data);
   };
 
-  const handleContinue = useCallback(async () => {
+  const handleContinue = useCallback(() => {
     console.log('Continue clicked');
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -48,65 +51,20 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
       return;
     }
 
-    // Special handling for address validation on step 0
-    if (currentSection === 0 && addressData) {
-      setIsValidating(true);
-      try {
-        const validation = await validateAddress(addressData);
-        if (validation) {
-          setValidationResult(validation);
-          setIsValidationDialogOpen(true);
-          setIsValidating(false);
-          return; // Don't proceed until user makes a choice
-        } else {
-          // Always show interstitial even if there are no suggested changes
-          setValidationResult({ suggested: addressData, original: addressData });
-          setIsValidationDialogOpen(true);
-          setIsValidating(false);
-          return;
-        }
-      } catch (error) {
-        console.error('Address validation failed:', error);
-        setIsValidating(false);
-      }
-    }
-
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
     // Navigate to next section safely with functional update
     setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
-  }, [currentSection, formComplete, addressData]);
+  }, [currentSection, formComplete]);
 
   const handleBack = () => {
     console.log('Back clicked');
     setCurrentSection((prev) => Math.max(prev - 1, 0));
   };
 
-  // Address validation dialog handlers
-  const handleUseSuggested = () => {
-    if (validationResult) {
-      setAddressData(validationResult.suggested);
-      setIsValidationDialogOpen(false);
-      // Mark current section as completed and proceed
-      setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
-      setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
-    }
-  };
-
-  const handleReenterAddress = () => {
-    setIsValidationDialogOpen(false);
-    // Stay on current step, let user edit
-  };
-
-  const handleUseOriginal = () => {
-    setIsValidationDialogOpen(false);
-    // Mark current section as completed and proceed with original address
-    setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
-    setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
-  };
 
   // Effect to update the continue handler and state
-  const canProceed = currentSection === 0 ? formComplete && !isValidating : true;
+  const canProceed = currentSection === 0 ? formComplete : true;
   useEffect(() => {
     onContinueHandlerChange?.(handleContinue);
     onCanContinueChange?.(canProceed);
@@ -197,20 +155,12 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
               disabled={!canProceed}
               aria-label="Continue to next step"
             >
-              {isValidating ? 'Validating...' : 'Continue'}
+              Continue
             </Button>
           </div>
         </div>
       </div>
 
-      <AddressValidationDialog
-        isOpen={isValidationDialogOpen}
-        onClose={() => setIsValidationDialogOpen(false)}
-        validationResult={validationResult}
-        onUseSuggested={handleUseSuggested}
-        onReenterAddress={handleReenterAddress}
-        onUseOriginal={handleUseOriginal}
-      />
     </main>
   );
 };

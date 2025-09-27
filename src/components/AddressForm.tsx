@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
+import { getCityStateFromZip } from '@/utils/zipCodeData';
 
 interface AddressFormData {
   addressLine1: string;
@@ -26,8 +28,35 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     zipCode: ''
   });
 
+  const addressInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle autocomplete selection
+  const handlePlaceSelected = (result: any) => {
+    const newData = {
+      addressLine1: result.addressLine1,
+      addressLine2: result.addressLine2,
+      city: result.city,
+      state: result.state,
+      zipCode: result.zipCode,
+    };
+    setFormData(newData);
+    onFormDataChange?.(newData);
+  };
+
+  useAddressAutocomplete(addressInputRef, handlePlaceSelected);
+
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
     const newData = { ...formData, [field]: value };
+    
+    // Handle ZIP code autofill
+    if (field === 'zipCode' && value.length >= 5) {
+      const cityState = getCityStateFromZip(value);
+      if (cityState && !formData.city && !formData.state) {
+        newData.city = cityState.city;
+        newData.state = cityState.state;
+      }
+    }
+    
     setFormData(newData);
     onFormDataChange?.(newData);
   };
@@ -70,13 +99,15 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           <span className="text-[#A91616]">*</span>
         </label>
         <input
+          ref={addressInputRef}
           type="text"
           value={formData.addressLine1}
           onChange={(e) => handleInputChange('addressLine1', e.target.value)}
-          placeholder="Street Address"
+          placeholder="Start typing your address..."
           required
           className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
           aria-describedby="address1-help"
+          autoComplete="off"
         />
       </div>
 
