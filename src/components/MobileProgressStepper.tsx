@@ -17,15 +17,26 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   const mainStep = currentSection <= 2 ? 0 : Math.min(currentSection - 1, steps.length - 1);
   const currentStepTitle = currentSection <= 2 ? 'Your Information' : sectionTitle;
   
+  // Calculate sub-step indicator
+  const getStepIndicator = () => {
+    if (currentSection <= 2) {
+      return `Step 1.${currentSection + 1} of 1.3`;
+    } else {
+      return `Step ${currentSection - 1} of ${steps.length - 2}`;
+    }
+  };
+
   return (
     <div className="bg-white px-4 py-2 rounded-lg shadow-sm mb-4">
       <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-3">
-          <h3 className="text-[#0C0F24] font-semibold text-sm">
+        <div className="flex items-center gap-4">
+          {/* Primary: Main step title */}
+          <h3 className="text-[#0C0F24] font-bold text-base">
             {currentStepTitle}
           </h3>
-          {/* Step dots */}
-          <div className="flex items-center gap-1">
+          
+          {/* Tertiary: Small progress dots */}
+          <div className="flex items-center gap-0.5">
             {steps.map((_, index) => (
               <div
                 key={index}
@@ -36,8 +47,17 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
             ))}
           </div>
         </div>
-        <span className="text-xs font-semibold text-[#0C0F24]">
+        
+        {/* Tertiary: Progress percentage */}
+        <span className="text-xs text-[#858791]">
           {progress}%
+        </span>
+      </div>
+      
+      {/* Secondary: Sub-step indicator */}
+      <div className="mb-2">
+        <span className="text-xs font-medium text-[#858791]">
+          {getStepIndicator()}
         </span>
       </div>
       
