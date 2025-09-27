@@ -150,7 +150,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
       {/* Sticky header section with smooth transition */}
-      <div className="sticky top-16 bg-white z-40 transition-all duration-200 max-md:top-[58px]">
+      <div className="sticky top-16 md:top-16 max-md:top-[140px] bg-white z-40 transition-all duration-200">
         <div className="p-4 max-md:p-3 max-md:pb-2">
           <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
             <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full max-md:min-w-0">
