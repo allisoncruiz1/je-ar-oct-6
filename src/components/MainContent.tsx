@@ -36,6 +36,11 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
 
   const handleContinue = () => {
     console.log('Continue clicked');
+    // Guard: do not advance from step 1 unless the form is complete
+    if (currentSection === 0 && !formComplete) {
+      console.info('Continue blocked: Mailing Address incomplete');
+      return;
+    }
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
     // Navigate to next section safely with functional update
