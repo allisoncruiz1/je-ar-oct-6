@@ -74,7 +74,11 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
     advancingRef.current = true;
     lastContinueRef.current = now;
 
-    console.log('🎯 Continue clicked. Current section:', currentSection, 'Form complete:', formComplete);
+    console.log('🎯 Continue clicked. Current section:', currentSection, {
+      mailingAddressComplete: formComplete,
+      licenseBusinessFormComplete,
+      licenseDetailsFormComplete,
+    });
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
       console.info('🚫 Continue blocked: Mailing Address incomplete');
@@ -110,7 +114,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete]);
 
   const handleBack = () => {
     console.log('Back clicked');
