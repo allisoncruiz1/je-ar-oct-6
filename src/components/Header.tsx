@@ -1,5 +1,5 @@
 import React from 'react';
-import { HelpCircle } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 interface HeaderProps {
   onSaveResume?: () => void;
@@ -20,7 +20,7 @@ export const Header: React.FC<HeaderProps> = ({ onSaveResume, onHelpClick }) => 
         className="flex items-center justify-center w-10 h-10 bg-white/10 hover:bg-white/20 transition-all duration-200 rounded-full group"
         aria-label="Help and Support"
       >
-        <HelpCircle 
+        <MessageCircle 
           size={20} 
           className="text-white group-hover:text-white transition-colors duration-200" 
         />
