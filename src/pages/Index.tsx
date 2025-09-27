@@ -1,14 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
 import { MobileProgressStepper } from '@/components/MobileProgressStepper';
-import { MobileActionBar } from '@/components/MobileActionBar';
 
 const Index = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [canContinue, setCanContinue] = useState(false);
-  const [continueHandler, setContinueHandler] = useState<(() => void) | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
 
   const handleSaveResume = () => {
     console.log('Save & Resume Later clicked');
@@ -18,10 +15,6 @@ const Index = () => {
   const handleFormSubmit = (data: any) => {
     console.log('Form data submitted:', data);
     // Handle form submission
-  };
-
-  const handleContinue = () => {
-    continueHandler?.();
   };
 
   return (
@@ -43,8 +36,6 @@ const Index = () => {
             <MainContent 
               key="wizard-v1"
               onFormSubmit={handleFormSubmit} 
-              onCanContinueChange={setCanContinue}
-              onContinueHandlerChange={setContinueHandler}
               onSaveResume={handleSaveResume}
             />
           </div>
@@ -59,11 +50,6 @@ const Index = () => {
         </div>
       </div>
       
-      <MobileActionBar 
-        onSaveResume={handleSaveResume} 
-        onContinue={handleContinue}
-        canContinue={canContinue}
-      />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
+import { MobileActionBar } from '@/components/MobileActionBar';
 
 interface AddressData {
   addressLine1: string;
@@ -13,12 +14,10 @@ interface AddressData {
 
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
-  onCanContinueChange?: (canContinue: boolean) => void;
-  onContinueHandlerChange?: (handler: (() => void) | null) => void;
   onSaveResume?: () => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange, onSaveResume }) => {
+export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveResume }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
@@ -106,10 +105,6 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     }
   }, [handleContinue]);
 
-  useEffect(() => {
-    onContinueHandlerChange?.(triggerUserContinue);
-    onCanContinueChange?.(canProceed);
-  }, [triggerUserContinue, canProceed, onContinueHandlerChange, onCanContinueChange]);
   // Ensure the wizard always starts at step 0 on first load
   useEffect(() => {
     setCurrentSection(0);
@@ -201,6 +196,14 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
             </Button>
           </div>
         </div>
+      </div>
+
+      <div className="md:hidden">
+        <MobileActionBar 
+          onSaveResume={onSaveResume}
+          onContinue={triggerUserContinue}
+          canContinue={canProceed}
+        />
       </div>
 
     </main>
