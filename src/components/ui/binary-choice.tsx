@@ -74,15 +74,18 @@ export const BinaryChoice = React.forwardRef<
               </span>
             )}
           </div>
+          <div className="flex items-center gap-2 select-none">
+            <span className="text-xs text-muted-foreground">{noLabel}</span>
+            <Switch
+              id={`${id}-switch`}
+              checked={value === "yes"}
+              onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
+              disabled={disabled}
+              aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
+            />
+            <span className="text-xs text-muted-foreground">{yesLabel}</span>
+          </div>
         </div>
-        
-        <Switch
-          id={`${id}-switch`}
-          checked={value === "yes"}
-          onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
-          disabled={disabled}
-          aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
-        />
       </div>
     );
   }
