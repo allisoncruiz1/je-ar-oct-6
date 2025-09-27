@@ -11,7 +11,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   totalSections,
   sectionTitle
 }) => {
-  const progress = ((currentSection + 1) / totalSections) * 100;
+  // Calculate progress within "Your Information" (sections 0-2) or overall progress
+  const isInYourInformation = currentSection <= 2;
+  const progress = isInYourInformation 
+    ? ((currentSection + 1) / 3) * 100  // Progress within "Your Information" 
+    : ((currentSection + 1) / totalSections) * 100;
 
   return (
     <div className="mt-6 mb-4">
@@ -20,7 +24,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {sectionTitle}
         </h2>
         <span className="text-sm text-[#858791]">
-          Step {currentSection + 1} of {totalSections}
+          {isInYourInformation 
+            ? `Step 1.${currentSection + 1} of 1.3`
+            : `Step ${currentSection - 1} of ${totalSections - 2}`}
         </span>
       </div>
       
