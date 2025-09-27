@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AddressForm } from './AddressForm';
+import { LicenseBusinessInfoForm } from './LicenseBusinessInfoForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
@@ -12,6 +13,12 @@ interface AddressData {
   zipCode: string;
 }
 
+interface LicenseBusinessData {
+  preferredName: string;
+  isLicensed: string;
+  conductBusinessOutsideUS: string;
+}
+
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
   onSaveResume?: () => void;
@@ -22,6 +29,8 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
+  const [licenseBusinessData, setLicenseBusinessData] = useState<LicenseBusinessData | null>(null);
+  const [licenseBusinessFormComplete, setLicenseBusinessFormComplete] = useState(false);
 
   const sections = [
     'Mailing Address',
@@ -67,6 +76,13 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
       advancingRef.current = false;
       return;
     }
+    
+    // Guard: do not advance from step 2 unless the license business form is complete
+    if (currentSection === 1 && !licenseBusinessFormComplete) {
+      console.info('🚫 Continue blocked: License Business Info incomplete');
+      advancingRef.current = false;
+      return;
+    }
 
     console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
@@ -91,7 +107,8 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
 
 
   // Effect to update the continue handler and state
-  const canProceed = currentSection === 0 ? formComplete : true;
+  const canProceed = currentSection === 0 ? formComplete : 
+                     currentSection === 1 ? licenseBusinessFormComplete : true;
   
   const triggerUserContinue = useCallback(() => {
     userInitiatedRef.current = true;
@@ -147,9 +164,14 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
           />
         )}
         {currentSection === 1 && (
-          <div className="text-center py-8 text-[#858791]">
-            License Business Information form will be implemented here.
-          </div>
+          <LicenseBusinessInfoForm
+            onSubmit={handleFormSubmit}
+            onContinue={triggerUserContinue}
+            onFormValidChange={setLicenseBusinessFormComplete}
+            onSaveResume={onSaveResume}
+            initialData={licenseBusinessData || undefined}
+            onFormDataChange={setLicenseBusinessData}
+          />
         )}
         {currentSection === 2 && (
           <div className="text-center py-8 text-[#858791]">
