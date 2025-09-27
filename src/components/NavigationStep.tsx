@@ -21,7 +21,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
     <div className={`flex w-full items-center gap-3 ${textColor}`}>
       <div className="self-stretch w-6 my-auto">
         {isActive ? (
-          <div className="z-10 flex flex-col items-stretch justify-center px-0.5 py-[3px] rounded-[50%] border-[rgba(27,72,155,0.4)] border-solid border-4 max-md:mr-[-3px]">
+          <div className="z-10 flex flex-col items-stretch justify-center aspect-square w-6 h-6 rounded-full border-[rgba(27,72,155,0.4)] border-solid border-4 max-md:mr-[-3px]">
             <div className="stroke-[1px] border flex flex-col items-stretch justify-center stroke-[#1B489B] px-0.5 py-2 rounded-[50%] border-[rgba(27,72,155,1)] border-solid">
               <div className="bg-[#1B489B] flex w-2 shrink-0 h-2 fill-[#1B489B] rounded-[50%]" />
             </div>
