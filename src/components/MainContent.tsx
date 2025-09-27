@@ -123,9 +123,6 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
 
 
   // Effect to update the continue handler and state
-  const canProceed = currentSection === 0 ? formComplete : 
-                     currentSection === 1 ? licenseBusinessFormComplete : 
-                     currentSection === 2 ? licenseDetailsFormComplete : true;
   
   const triggerUserContinue = useCallback(() => {
     userInitiatedRef.current = true;
@@ -231,7 +228,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             <Button
               type="button"
               onClick={triggerUserContinue}
-              disabled={!canProceed}
+              disabled={!(currentSection === 0 ? formComplete : currentSection === 1 ? licenseBusinessFormComplete : currentSection === 2 ? licenseDetailsFormComplete : true)}
               aria-label="Continue to next step"
             >
               Continue
@@ -244,7 +241,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
         <MobileActionBar 
           onSaveResume={onSaveResume}
           onContinue={triggerUserContinue}
-          canContinue={canProceed}
+          canContinue={currentSection === 0 ? formComplete : currentSection === 1 ? licenseBusinessFormComplete : currentSection === 2 ? licenseDetailsFormComplete : true}
         />
       </div>
 
