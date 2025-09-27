@@ -5,42 +5,40 @@ import { ProgressIndicator } from './ProgressIndicator';
 interface SideNavigationProps {
   currentStep?: number;
   progress?: number;
-  onSectionChange?: (section: number) => void;
 }
 
 export const SideNavigation: React.FC<SideNavigationProps> = ({ 
   currentStep = 0, 
-  progress = 0,
-  onSectionChange
+  progress = 0 
 }) => {
   const steps = [
     {
-      title: "Mailing Address",
+      title: "Your Information",
       description: "Personal and Business Details",
       isActive: currentStep === 0,
       isCompleted: currentStep > 0
     },
     {
-      title: "License Business Info",
-      description: "Business Information",
+      title: "Sponsor",
+      description: "Select Sponsor",
       isActive: currentStep === 1,
       isCompleted: currentStep > 1
     },
     {
-      title: "License Details",
-      description: "License Information",
+      title: "Financial Info",
+      description: "Payment and Direct Deposit",
       isActive: currentStep === 2,
       isCompleted: currentStep > 2
     },
     {
-      title: "Business Disclosure",
-      description: "Business Disclosures",
+      title: "Review",
+      description: "Review Application",
       isActive: currentStep === 3,
       isCompleted: currentStep > 3
     },
     {
-      title: "Team Function",
-      description: "Team Information",
+      title: "Documents",
+      description: "W9 and Document Signing",
       isActive: currentStep === 4,
       isCompleted: currentStep > 4
     }
@@ -54,14 +52,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       <div className="w-full px-4">
         {steps.map((step, index) => (
           <React.Fragment key={step.title}>
-            <div 
-              className={`cursor-pointer hover:bg-gray-50 rounded p-1 -m-1 transition-colors ${
-                onSectionChange ? '' : 'cursor-default'
-              }`}
-              onClick={() => onSectionChange?.(index)}
-            >
-              <NavigationStep {...step} />
-            </div>
+            <NavigationStep {...step} />
             {index < steps.length - 1 && (
               <div className="flex w-full items-center gap-2.5">
                 <div className={`ml-3 flex min-h-[29px] w-0.5 my-auto ${

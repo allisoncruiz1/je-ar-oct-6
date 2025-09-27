@@ -9,7 +9,6 @@ const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [canContinue, setCanContinue] = useState(false);
   const [continueHandler, setContinueHandler] = useState<(() => void) | null>(null);
-  const [currentSection, setCurrentSection] = useState(0);
 
   const handleSaveResume = () => {
     console.log('Save & Resume Later clicked');
@@ -25,13 +24,6 @@ const Index = () => {
     continueHandler?.();
   };
 
-  const handleSectionChange = (next: number | ((prev: number) => number)) => {
-    setCurrentSection(typeof next === 'function' ? next(currentSection) : next);
-  };
-
-  const totalSections = 5;
-  const progress = Math.round(((currentSection + 1) / totalSections) * 100);
-
   return (
     <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
       <Header />
@@ -40,21 +32,15 @@ const Index = () => {
       <div className="flex w-full flex-col items-stretch">
         {/* Mobile progress stepper */}
         <div className="md:hidden mt-4">
-          <MobileProgressStepper currentStep={currentSection} progress={progress} />
+          <MobileProgressStepper currentStep={0} progress={0} />
         </div>
 
         <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
             {/* Desktop sidebar */}
             <div className="max-md:hidden">
-              <SideNavigation 
-                currentStep={currentSection} 
-                progress={progress} 
-                onSectionChange={handleSectionChange}
-              />
+              <SideNavigation currentStep={0} progress={0} />
             </div>
             <MainContent 
-              currentSection={currentSection}
-              onSectionChange={handleSectionChange}
               onFormSubmit={handleFormSubmit} 
               onCanContinueChange={setCanContinue}
               onContinueHandlerChange={setContinueHandler}
