@@ -141,8 +141,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
           onClick={handleContinue}
           className={`items-center flex gap-2 px-6 py-3 rounded-lg transition-colors ${
             isFormComplete 
-              ? 'bg-[#0C0F24] hover:bg-[#0C0F24]/90' 
-              : 'bg-[#E2E3E4] hover:bg-[#D1D2D3]'
+              ? 'bg-[#0C0F24] hover:bg-[#0C0F24]/90 text-white' 
+              : 'bg-[#E2E3E4] hover:bg-[#D1D2D3] text-[#0C0F24]'
           }`}
         >
           Continue
