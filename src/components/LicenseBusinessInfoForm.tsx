@@ -45,6 +45,9 @@ interface LicenseBusinessInfoFormProps {
   onContinue?: () => void;
   onFormValidChange?: (isValid: boolean) => void;
   onSaveResume?: () => void;
+  onBack?: () => void;
+  canContinue?: boolean;
+  showBack?: boolean;
   initialData?: LicenseBusinessData;
   onFormDataChange?: (data: LicenseBusinessData) => void;
 }
@@ -54,6 +57,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   onContinue,
   onFormValidChange,
   onSaveResume,
+  onBack,
+  canContinue,
+  showBack,
   initialData,
   onFormDataChange
 }) => {
@@ -417,15 +423,34 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           )}
         </div>
 
-        {/* Mobile Submit Button */}
-        <div className="md:hidden pt-4">
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={!isFormValid()}
-          >
-            Continue
-          </Button>
+        {/* Sticky Action Bar */}
+        <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              onClick={onBack}
+              disabled={!showBack}
+              aria-label="Go back to previous step"
+            >
+              Back
+            </Button>
+            <div className="flex gap-3">
+              <Button
+                variant="outline"
+                onClick={onSaveResume}
+                aria-label="Save and resume application later"
+              >
+                Save & Resume Later
+              </Button>
+              <Button
+                type="submit"
+                disabled={!canContinue}
+                aria-label="Continue to next step"
+              >
+                Continue
+              </Button>
+            </div>
+          </div>
         </div>
       </form>
     </TooltipProvider>

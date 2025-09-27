@@ -3,6 +3,7 @@ import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 import { Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 interface AddressFormData {
   addressLine1: string;
@@ -17,11 +18,14 @@ interface AddressFormProps {
   onContinue?: () => void;
   onFormValidChange?: (isValid: boolean) => void;
   onSaveResume?: () => void;
+  onBack?: () => void;
+  canContinue?: boolean;
+  showBack?: boolean;
   initialData?: AddressFormData;
   onFormDataChange?: (data: AddressFormData) => void;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange, onSaveResume, initialData, onFormDataChange }) => {
+export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange, onSaveResume, onBack, canContinue, showBack, initialData, onFormDataChange }) => {
   const [formData, setFormData] = useState<AddressFormData>(initialData || {
     addressLine1: '',
     addressLine2: '',
@@ -400,6 +404,36 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         </div>
       </div>
 
+      {/* Sticky Action Bar */}
+      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            disabled={!showBack}
+            aria-label="Go back to previous step"
+          >
+            Back
+          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={onSaveResume}
+              aria-label="Save and resume application later"
+            >
+              Save & Resume Later
+            </Button>
+            <Button
+              type="button"
+              onClick={handleContinue}
+              disabled={!canContinue}
+              aria-label="Continue to next step"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      </div>
     </form>
   );
 };

@@ -148,7 +148,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   }, [currentSection, completedSections.length]);
 
   return (
-    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 pb-20 md:pb-24">
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0">
       {/* Sticky header section with smooth transition */}
       <div className="sticky top-16 bg-white z-40 transition-all duration-200">
         <div className="p-4 max-md:p-3">
@@ -179,6 +179,9 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             onContinue={triggerUserContinue}
             onFormValidChange={setFormComplete}
             onSaveResume={onSaveResume}
+            onBack={handleBack}
+            canContinue={formComplete}
+            showBack={currentSection > 0}
             initialData={addressData || undefined}
             onFormDataChange={setAddressData}
           />
@@ -189,6 +192,9 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             onContinue={triggerUserContinue}
             onFormValidChange={setLicenseBusinessFormComplete}
             onSaveResume={onSaveResume}
+            onBack={handleBack}
+            canContinue={licenseBusinessFormComplete}
+            showBack={currentSection > 0}
             initialData={licenseBusinessData || undefined}
             onFormDataChange={setLicenseBusinessData}
           />
@@ -199,59 +205,84 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
             data={licenseDetailsData}
             onDataChange={setLicenseDetailsData}
             onFormValidChange={setLicenseDetailsFormComplete}
+            onContinue={triggerUserContinue}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            canContinue={licenseDetailsFormComplete}
+            showBack={currentSection > 0}
           />
         )}
         {currentSection === 3 && (
-          <div className="text-center py-8 text-[#858791]">
-            Business Disclosure form will be implemented here.
+          <div className="relative">
+            <div className="text-center py-8 text-[#858791] pb-24">
+              Business Disclosure form will be implemented here.
+            </div>
+            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  aria-label="Go back to previous step"
+                >
+                  Back
+                </Button>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={onSaveResume}
+                    aria-label="Save and resume application later"
+                  >
+                    Save & Resume Later
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={triggerUserContinue}
+                    aria-label="Continue to next step"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
         {currentSection === 4 && (
-          <div className="text-center py-8 text-[#858791]">
-            Team Function form will be implemented here.
+          <div className="relative">
+            <div className="text-center py-8 text-[#858791] pb-24">
+              Team Function form will be implemented here.
+            </div>
+            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
+              <div className="flex items-center justify-between">
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  aria-label="Go back to previous step"
+                >
+                  Back
+                </Button>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={onSaveResume}
+                    aria-label="Save and resume application later"
+                  >
+                    Save & Resume Later
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={triggerUserContinue}
+                    disabled={currentSection >= sections.length - 1}
+                    aria-label="Continue to next step"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </section>
 
-      {/* Desktop sticky action buttons */}
-      <div className="hidden md:block fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Button
-            variant="ghost"
-            onClick={handleBack}
-            disabled={currentSection === 0}
-            aria-label="Go back to previous step"
-          >
-            Back
-          </Button>
-          <div className="flex gap-3">
-            <Button
-              variant="outline"
-              onClick={onSaveResume}
-              aria-label="Save and resume application later"
-            >
-              Save & Resume Later
-            </Button>
-            <Button
-              type="button"
-              onClick={triggerUserContinue}
-              disabled={!(currentSection === 0 ? formComplete : currentSection === 1 ? licenseBusinessFormComplete : currentSection === 2 ? licenseDetailsFormComplete : true)}
-              aria-label="Continue to next step"
-            >
-              Continue
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile action bar (already sticky) */}
-      <div className="md:hidden">
-        <MobileActionBar 
-          onSaveResume={onSaveResume}
-          onContinue={triggerUserContinue}
-          canContinue={currentSection === 0 ? formComplete : currentSection === 1 ? licenseBusinessFormComplete : currentSection === 2 ? licenseDetailsFormComplete : true}
-        />
-      </div>
 
     </main>
   );

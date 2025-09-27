@@ -29,6 +29,11 @@ interface LicenseDetailsFormProps {
   data: LicenseDetailsData;
   onDataChange: (data: LicenseDetailsData) => void;
   onFormValidChange: (isValid: boolean) => void;
+  onContinue?: () => void;
+  onSaveResume?: () => void;
+  onBack?: () => void;
+  canContinue?: boolean;
+  showBack?: boolean;
 }
 
 const ASSOCIATIONS = [
@@ -72,7 +77,12 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   licensedStates,
   data,
   onDataChange,
-  onFormValidChange
+  onFormValidChange,
+  onContinue,
+  onSaveResume,
+  onBack,
+  canContinue,
+  showBack
 }) => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
   const [associationsOpen, setAssociationsOpen] = useState(false);
@@ -435,6 +445,37 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             </Select>
           </div>
         )}
+      </div>
+
+      {/* Sticky Action Bar */}
+      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6">
+        <div className="flex items-center justify-between">
+          <Button
+            variant="ghost"
+            onClick={onBack}
+            disabled={!showBack}
+            aria-label="Go back to previous step"
+          >
+            Back
+          </Button>
+          <div className="flex gap-3">
+            <Button
+              variant="outline"
+              onClick={onSaveResume}
+              aria-label="Save and resume application later"
+            >
+              Save & Resume Later
+            </Button>
+            <Button
+              type="button"
+              onClick={onContinue}
+              disabled={!canContinue}
+              aria-label="Continue to next step"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
