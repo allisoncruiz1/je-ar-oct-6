@@ -35,6 +35,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
     onContinue?.();
   };
 
+  const isFormComplete = formData.addressLine1 && formData.city && formData.state && formData.zipCode;
+
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
@@ -137,7 +139,11 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         <button
           type="button"
           onClick={handleContinue}
-          className="items-center flex gap-2 bg-[#6B7280] px-6 py-3 rounded-lg hover:bg-[#4B5563] transition-colors"
+          className={`items-center flex gap-2 px-6 py-3 rounded-lg transition-colors ${
+            isFormComplete 
+              ? 'bg-[#0C0F24] hover:bg-[#0C0F24]/90' 
+              : 'bg-[#6B7280] hover:bg-[#4B5563]'
+          }`}
         >
           Continue
         </button>
