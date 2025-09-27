@@ -79,7 +79,7 @@ export const BinaryChoice = React.forwardRef<
             checked={value === "yes"}
             onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
             disabled={disabled}
-            className="data-[state=checked]:bg-primary scale-125"
+            className="data-[state=checked]:bg-primary"
             aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
           />
         </div>
