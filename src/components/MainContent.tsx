@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TabNavigation } from './TabNavigation';
+import { MobileTabSelector } from './MobileTabSelector';
 import { AddressForm } from './AddressForm';
 
 interface MainContentProps {
@@ -8,6 +9,7 @@ interface MainContentProps {
 
 export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
   const [activeTab, setActiveTab] = useState('mailing-address');
+  const [completedTabs, setCompletedTabs] = useState<string[]>([]);
 
   const tabs = [
     { id: 'mailing-address', label: 'Mailing Address' },
@@ -23,11 +25,23 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
 
   const handleFormSubmit = (data: any) => {
     console.log('Form submitted:', data);
+    
+    // Mark current tab as completed
+    if (!completedTabs.includes(activeTab)) {
+      setCompletedTabs(prev => [...prev, activeTab]);
+    }
+    
     onFormSubmit?.(data);
   };
 
   const handleContinue = () => {
     console.log('Continue clicked');
+    
+    // Mark current tab as completed
+    if (!completedTabs.includes(activeTab)) {
+      setCompletedTabs(prev => [...prev, activeTab]);
+    }
+    
     // Navigate to next tab or step
     const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
     if (currentIndex < tabs.length - 1) {
@@ -48,11 +62,24 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
         </div>
       </header>
 
-      <TabNavigation
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-      />
+      {/* Desktop tab navigation */}
+      <div className="hidden md:block">
+        <TabNavigation
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
+      </div>
+
+      {/* Mobile tab selector */}
+      <div className="md:hidden">
+        <MobileTabSelector
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          completedTabs={completedTabs}
+        />
+      </div>
 
       <section className="mt-4">
         {activeTab === 'mailing-address' && (
