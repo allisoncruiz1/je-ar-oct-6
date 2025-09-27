@@ -14,7 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ onSaveResume }) => {
       />
       <button
         onClick={onSaveResume}
-        className="items-center self-stretch flex gap-1.5 bg-white my-auto px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors"
+        className="items-center self-stretch flex gap-1.5 bg-white my-auto px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors max-md:hidden"
         aria-label="Save and resume application later"
       >
         <span className="text-[#0C0F24] self-stretch my-auto">

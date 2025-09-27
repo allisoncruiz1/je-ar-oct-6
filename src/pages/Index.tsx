@@ -3,6 +3,7 @@ import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
 import { MobileProgressStepper } from '@/components/MobileProgressStepper';
+import { MobileActionBar } from '@/components/MobileActionBar';
 
 const Index = () => {
   const handleSaveResume = () => {
@@ -37,7 +38,7 @@ const Index = () => {
           </div>
         </div>
         
-        <div className="items-center flex w-[52px] gap-2.5 h-[52px] bg-[#1B489B] mt-6 p-2.5 rounded-[464px] max-md:mt-6 ml-auto max-md:fixed max-md:bottom-6 max-md:right-6 max-md:shadow-lg">
+        <div className="items-center flex w-[52px] gap-2.5 h-[52px] bg-[#1B489B] mt-6 p-2.5 rounded-[464px] max-md:mt-6 ml-auto max-md:fixed max-md:bottom-24 max-md:right-6 max-md:shadow-lg">
           <img
             src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
             alt="Help or Support"
@@ -45,6 +46,8 @@ const Index = () => {
           />
         </div>
       </div>
+      
+      <MobileActionBar onSaveResume={handleSaveResume} />
     </div>
   );
 };
