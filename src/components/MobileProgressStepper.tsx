@@ -35,9 +35,9 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
             {currentSection <= 2 ? 'Your Information' : sectionTitle}
           </p>
           {currentSection <= 2 && (
-            <p className="text-[#858791] text-sm">
-              {sectionTitle}
-            </p>
+          <p className="text-[#858791] text-sm">
+            Personal and Business Details
+          </p>
           )}
         </div>
         <div className="text-xs font-semibold text-[#0C0F24]">
