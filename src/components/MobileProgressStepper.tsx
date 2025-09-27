@@ -26,7 +26,7 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
             Step {currentStep + 1} of {steps.length}
           </h3>
           <p className="text-xs text-[#858791]">
-            {steps[currentStep]?.title}
+            Your Information
           </p>
         </div>
         <div className="text-xs font-semibold text-[#0C0F24]">
