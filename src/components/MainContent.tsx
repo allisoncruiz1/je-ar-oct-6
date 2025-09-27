@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
@@ -32,6 +32,9 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     'Team Function'
   ];
 
+  const advancingRef = useRef(false);
+  const lastContinueRef = useRef(0);
+
   const handleFormSubmit = (data: any) => {
     console.log('Form submitted:', data);
     
@@ -44,10 +47,19 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   };
 
   const handleContinue = useCallback(() => {
+    const now = Date.now();
+    if (advancingRef.current || now - lastContinueRef.current < 600) {
+      console.log('⏳ Continue throttled');
+      return;
+    }
+    advancingRef.current = true;
+    lastContinueRef.current = now;
+
     console.log('🎯 Continue clicked. Current section:', currentSection, 'Form complete:', formComplete);
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
       console.info('🚫 Continue blocked: Mailing Address incomplete');
+      advancingRef.current = false;
       return;
     }
 
@@ -60,6 +72,11 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
       console.log('📍 Moving from section', prev, 'to section', newSection);
       return newSection;
     });
+
+    // Release the lock after a short delay
+    setTimeout(() => {
+      advancingRef.current = false;
+    }, 600);
   }, [currentSection, formComplete]);
 
   const handleBack = () => {
@@ -156,6 +173,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
               Save & Resume Later
             </Button>
             <Button
+              type="button"
               onClick={handleContinue}
               disabled={!canProceed}
               aria-label="Continue to next step"

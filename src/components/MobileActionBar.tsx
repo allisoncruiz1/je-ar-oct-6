@@ -20,6 +20,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({ onSaveResume, 
           Save & Resume Later
         </Button>
         <Button
+          type="button"
           onClick={onContinue}
           disabled={!canContinue}
           className="flex-1"
