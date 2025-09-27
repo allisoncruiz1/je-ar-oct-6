@@ -111,34 +111,47 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   useAddressAutocomplete(addressInputRef, handlePlaceSelected);
 
   const searchFallbackSuggestions = async (query: string) => {
-    if (!query || query.trim().length < 3) {
+    const q = (query || '').trim();
+    if (q.length < 3) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
     }
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&q=${encodeURIComponent(query)}`;
+      const startsWithNumber = /^\d+\s+/.test(q);
+      let url: string;
+      if (startsWithNumber) {
+        // Structured search biases to street-level, improves residential hits
+        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&street=${encodeURIComponent(q)}`;
+      } else {
+        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&q=${encodeURIComponent(q)}`;
+      }
+
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
       const items = Array.isArray(data) ? data : [];
 
       const isResidentialBuilding = (item: any) => {
         const cls = item.class;
-        const typ = item.type || '';
-        // Strictly residential building types or place=house
-        const residentialTypes = ['house','residential','apartments','detached','semidetached_house','terrace'];
-        return (cls === 'building' && residentialTypes.includes(typ)) || (cls === 'place' && typ === 'house');
+        const typ = (item.type || '').toLowerCase();
+        const residentialTypes = ['house','residential','apartments','detached','semidetached_house','terrace','yes'];
+        const nonResidentialTypes = ['retail','commercial','industrial','warehouse','public','school','hospital','hotel','manufacture'];
+        if (cls !== 'building' && !(cls === 'place' && typ === 'house')) return false;
+        if (nonResidentialTypes.includes(typ)) return false;
+        return residentialTypes.includes(typ) || cls === 'place';
       };
+
       const hasAddressBits = (a: any) => !!(a.house_number && (a.road || a.street) && a.postcode);
       const inUS = (a: any) => a?.country_code === 'us' || a?.country === 'United States';
 
-      // Only keep US residential addresses with full components
       const filtered = items.filter((item: any) => {
         const a = item.address || {};
-        return inUS(a) && isResidentialBuilding(item) && hasAddressBits(a);
-      });
+        return inUS(a) && hasAddressBits(a) && isResidentialBuilding(item);
+      }).slice(0, 5);
 
-      setSuggestions(filtered.slice(0, 5));
+      console.log('[Nominatim] q=', q, 'items=', items.length, 'filtered=', filtered.length, filtered.map((i: any) => ({cls: i.class, type: i.type, addr: i.address})));
+
+      setSuggestions(filtered);
       setShowSuggestions(true);
     } catch (e) {
       console.error('Fallback address search failed', e);
