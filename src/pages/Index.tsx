@@ -13,6 +13,11 @@ const Index = () => {
     // Implement save functionality
   };
 
+  const handleHelpClick = () => {
+    console.log('Help clicked');
+    // Implement help functionality
+  };
+
   const handleFormSubmit = (data: any) => {
     console.log('Form data submitted:', data);
     // Handle form submission
@@ -22,7 +27,7 @@ const Index = () => {
     <div className="bg-[rgba(239,241,247,1)] min-h-screen">
       {/* Sticky Header */}
       <div className="sticky top-0 z-50">
-        <Header />
+        <Header onHelpClick={handleHelpClick} />
       </div>
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-3 pb-6 max-md:pb-4">
@@ -45,14 +50,6 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Help button - responsive positioning */}
-        <div className="fixed top-20 right-4 md:right-6 z-50 items-center flex w-12 gap-2.5 h-12 bg-[#1B489B] hover:bg-[#1B489B]/90 transition-all duration-200 p-3 rounded-full shadow-lg hover:shadow-xl cursor-pointer max-md:w-10 max-md:h-10 max-md:p-2">
-          <img
-            src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/242fb18f3dcdc98a5033003d6aff07157272cfbf?placeholderIfAbsent=true"
-            alt="Help or Support"
-            className="aspect-[1] object-contain w-6 self-stretch my-auto max-md:w-5"
-          />
-        </div>
       </div>
       
     </div>
