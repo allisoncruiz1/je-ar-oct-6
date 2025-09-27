@@ -77,6 +77,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
             onSubmit={handleFormSubmit}
             onContinue={handleContinue}
             onFormValidChange={setFormComplete}
+            onSaveResume={() => console.log('Save & Resume Later clicked')}
           />
         )}
         {currentSection === 1 && (

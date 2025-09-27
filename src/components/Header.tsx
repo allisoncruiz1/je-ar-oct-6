@@ -12,15 +12,6 @@ export const Header: React.FC<HeaderProps> = ({ onSaveResume }) => {
         alt="Company Logo"
         className="aspect-[1.97] object-contain w-[63px] self-stretch shrink-0 my-auto"
       />
-      <button
-        onClick={onSaveResume}
-        className="items-center self-stretch flex gap-1.5 bg-white my-auto px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors max-md:hidden"
-        aria-label="Save and resume application later"
-      >
-        <span className="text-[#0C0F24] self-stretch my-auto">
-          Save & Resume Later
-        </span>
-      </button>
     </header>
   );
 };

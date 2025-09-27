@@ -26,7 +26,7 @@ const Index = () => {
 
   return (
     <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
-      <Header onSaveResume={handleSaveResume} />
+      <Header />
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-4">
       <div className="flex w-full flex-col items-stretch">

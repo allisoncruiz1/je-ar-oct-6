@@ -12,9 +12,10 @@ interface AddressFormProps {
   onSubmit?: (data: AddressFormData) => void;
   onContinue?: () => void;
   onFormValidChange?: (isValid: boolean) => void;
+  onSaveResume?: () => void;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange }) => {
+export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange, onSaveResume }) => {
   const [formData, setFormData] = useState<AddressFormData>({
     addressLine1: '',
     addressLine2: '',
@@ -141,7 +142,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
       <div className="h-px w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
       
-      <div className="flex w-full justify-end text-base text-white font-normal mt-4 max-md:max-w-full max-md:hidden">
+      <div className="flex w-full justify-between items-center text-base font-normal mt-4 max-md:max-w-full max-md:hidden">
+        <button
+          type="button"
+          onClick={onSaveResume}
+          className="items-center flex gap-2 px-6 py-3 rounded-lg border border-[#CECFD3] bg-white text-[#0C0F24] hover:bg-gray-50 transition-colors"
+        >
+          Save & Resume Later
+        </button>
         <button
           type="button"
           onClick={handleContinue}
