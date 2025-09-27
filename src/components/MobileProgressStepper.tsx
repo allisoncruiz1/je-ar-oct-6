@@ -18,7 +18,7 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   ];
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
+    <div className="sticky top-[58px] z-30 bg-white p-4 rounded-lg shadow-sm mb-6">
       {/* Current step indicator */}
       <div className="flex items-center justify-between mb-3">
         <div>
