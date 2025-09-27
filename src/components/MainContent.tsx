@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
 
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
+  onCanContinueChange?: (canContinue: boolean) => void;
+  onContinueHandlerChange?: (handler: (() => void) | null) => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
+export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange }) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
+  const [formComplete, setFormComplete] = useState(false);
 
   const sections = [
     'Mailing Address',
@@ -43,6 +46,12 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
     }
   };
 
+  // Effect to update the continue handler and state
+  useEffect(() => {
+    onContinueHandlerChange?.(handleContinue);
+    onCanContinueChange?.(formComplete);
+  }, [handleContinue, formComplete, onContinueHandlerChange, onCanContinueChange]);
+
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0">
       <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
@@ -67,6 +76,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
           <AddressForm
             onSubmit={handleFormSubmit}
             onContinue={handleContinue}
+            onFormValidChange={setFormComplete}
           />
         )}
         {currentSection === 1 && (

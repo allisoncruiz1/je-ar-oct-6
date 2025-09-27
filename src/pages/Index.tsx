@@ -6,6 +6,10 @@ import { MobileProgressStepper } from '@/components/MobileProgressStepper';
 import { MobileActionBar } from '@/components/MobileActionBar';
 
 const Index = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [canContinue, setCanContinue] = useState(false);
+  const [continueHandler, setContinueHandler] = useState<(() => void) | null>(null);
+
   const handleSaveResume = () => {
     console.log('Save & Resume Later clicked');
     // Implement save functionality
@@ -16,7 +20,9 @@ const Index = () => {
     // Handle form submission
   };
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const handleContinue = () => {
+    continueHandler?.();
+  };
 
   return (
     <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
@@ -34,7 +40,11 @@ const Index = () => {
             <div className="max-md:hidden">
               <SideNavigation currentStep={0} progress={0} />
             </div>
-            <MainContent onFormSubmit={handleFormSubmit} />
+            <MainContent 
+              onFormSubmit={handleFormSubmit} 
+              onCanContinueChange={setCanContinue}
+              onContinueHandlerChange={setContinueHandler}
+            />
           </div>
         </div>
         
@@ -47,7 +57,11 @@ const Index = () => {
         </div>
       </div>
       
-      <MobileActionBar onSaveResume={handleSaveResume} />
+      <MobileActionBar 
+        onSaveResume={handleSaveResume} 
+        onContinue={handleContinue}
+        canContinue={canContinue}
+      />
     </div>
   );
 };

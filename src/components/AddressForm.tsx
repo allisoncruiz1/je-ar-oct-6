@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface AddressFormData {
   addressLine1: string;
@@ -11,9 +11,10 @@ interface AddressFormData {
 interface AddressFormProps {
   onSubmit?: (data: AddressFormData) => void;
   onContinue?: () => void;
+  onFormValidChange?: (isValid: boolean) => void;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }) => {
+export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange }) => {
   const [formData, setFormData] = useState<AddressFormData>({
     addressLine1: '',
     addressLine2: '',
@@ -35,7 +36,12 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
     onContinue?.();
   };
 
-  const isFormComplete = formData.addressLine1 && formData.city && formData.state && formData.zipCode;
+  const isFormComplete = !!(formData.addressLine1 && formData.city && formData.state && formData.zipCode);
+
+  // Notify parent of form validity changes
+  useEffect(() => {
+    onFormValidChange?.(isFormComplete);
+  }, [isFormComplete, onFormValidChange]);
 
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
@@ -135,7 +141,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
 
       <div className="h-px w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
       
-      <div className="flex w-full justify-end text-base text-white font-normal mt-4 max-md:max-w-full">
+      <div className="flex w-full justify-end text-base text-white font-normal mt-4 max-md:max-w-full max-md:hidden">
         <button
           type="button"
           onClick={handleContinue}
