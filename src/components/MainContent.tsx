@@ -152,18 +152,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
       {/* Header section */}
       <div>
         <div className="p-4 max-md:p-3 max-md:pb-2">
-          <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
-            <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full max-md:min-w-0">
-              <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full max-md:text-xl text-[#0C0F24]">
-                Your Information
-              </h1>
-              <p className="text-[#0C0F24] text-sm font-normal leading-none max-md:max-w-full mt-1 max-md:text-xs">
-                License Business Information
-              </p>
-            </div>
-          </header>
-
-          <SectionHeader 
+          <SectionHeader
             currentSection={currentSection}
             totalSections={sections.length}
             sectionTitle={sections[currentSection]}
