@@ -5,13 +5,11 @@ import { ProgressIndicator } from './ProgressIndicator';
 interface SideNavigationProps {
   currentStep?: number;
   progress?: number;
-  onSectionChange?: (section: number) => void;
 }
 
 export const SideNavigation: React.FC<SideNavigationProps> = ({ 
   currentStep = 0, 
-  progress = 0,
-  onSectionChange
+  progress = 0 
 }) => {
   const steps = [
     {
@@ -54,12 +52,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       <div className="w-full px-4">
         {steps.map((step, index) => (
           <React.Fragment key={step.title}>
-            <div
-              onClick={() => onSectionChange?.(index)}
-              className={onSectionChange ? "cursor-pointer hover:bg-gray-50 p-2 -m-2 rounded-md transition-colors" : ""}
-            >
-              <NavigationStep {...step} />
-            </div>
+            <NavigationStep {...step} />
             {index < steps.length - 1 && (
               <div className="flex w-full items-center gap-2.5">
                 <div className={`ml-3 flex min-h-[29px] w-0.5 my-auto ${
