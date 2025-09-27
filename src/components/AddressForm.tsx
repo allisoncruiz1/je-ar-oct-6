@@ -116,18 +116,33 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       return;
     }
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=us&q=${encodeURIComponent(query)}`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&q=${encodeURIComponent(query)}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
-      // Filter to only US addresses and real street addresses with zip
-      const usAddresses = Array.isArray(data) ? data.filter((item: any) => {
+      // Filter to only US residential addresses
+      const residentialAddresses = Array.isArray(data) ? data.filter((item: any) => {
         const a = item.address || {};
         const inUS = a.country_code === 'us' || a.country === 'United States';
-        const hasStreet = !!(a.house_number && (a.road || a.street || a.residential || a.pedestrian || a.footway || a.highway));
+        const hasStreet = !!(a.house_number && (a.road || a.street));
         const hasZip = !!a.postcode;
-        return inUS && hasStreet && hasZip;
-      }) : [];
-      setSuggestions(usAddresses);
+        
+        // Only residential addresses - exclude commercial, amenities, etc.
+        const isResidential = item.type === 'house' || 
+                             item.class === 'place' && item.type === 'house' ||
+                             item.class === 'building' && item.type === 'house' ||
+                             (item.class === 'building' && !item.type) ||
+                             a.residential;
+        
+        // Exclude commercial/business locations
+        const notCommercial = !item.type?.includes('business') && 
+                             !item.class?.includes('amenity') &&
+                             !item.class?.includes('shop') &&
+                             !item.class?.includes('office') &&
+                             !a.amenity;
+        
+        return inUS && hasStreet && hasZip && isResidential && notCommercial;
+      }).slice(0, 5) : [];
+      setSuggestions(residentialAddresses);
       setShowSuggestions(true);
     } catch (e) {
       console.error('Fallback address search failed', e);
