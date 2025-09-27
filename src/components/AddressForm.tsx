@@ -133,11 +133,11 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
 
       <div className="border min-h-px w-full bg-[#CECFD3] mt-6 border-[rgba(206,207,211,1)] border-solid max-md:max-w-full" />
       
-      <div className="flex w-full gap-2.5 text-base text-[#3D3F50] font-normal mt-6 max-md:max-w-full">
+      <div className="flex w-full justify-end text-base text-white font-normal mt-6 max-md:max-w-full">
         <button
           type="button"
           onClick={handleContinue}
-          className="items-center flex gap-2 bg-[#E2E3E4] px-4 py-2 rounded-lg hover:bg-[#D1D2D4] transition-colors"
+          className="items-center flex gap-2 bg-[#6B7280] px-6 py-3 rounded-lg hover:bg-[#4B5563] transition-colors"
         >
           Continue
         </button>
