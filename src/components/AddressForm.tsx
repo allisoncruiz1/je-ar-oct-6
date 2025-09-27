@@ -131,7 +131,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue }
         </div>
       </div>
 
-      <div className="border min-h-px w-full bg-[#CECFD3] mt-4 border-[rgba(206,207,211,1)] border-solid max-md:max-w-full" />
+      <div className="h-0.5 w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
       
       <div className="flex w-full justify-end text-base text-white font-normal mt-4 max-md:max-w-full">
         <button
