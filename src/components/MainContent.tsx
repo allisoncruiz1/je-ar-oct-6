@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AddressForm } from './AddressForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
@@ -40,7 +40,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     onFormSubmit?.(data);
   };
 
-  const handleContinue = async () => {
+  const handleContinue = useCallback(async () => {
     console.log('Continue clicked');
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -58,6 +58,12 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
           setIsValidationDialogOpen(true);
           setIsValidating(false);
           return; // Don't proceed until user makes a choice
+        } else {
+          // Always show interstitial even if there are no suggested changes
+          setValidationResult({ suggested: addressData, original: addressData });
+          setIsValidationDialogOpen(true);
+          setIsValidating(false);
+          return;
         }
       } catch (error) {
         console.error('Address validation failed:', error);
@@ -69,7 +75,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
     // Navigate to next section safely with functional update
     setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
-  };
+  }, [currentSection, formComplete, addressData]);
 
   const handleBack = () => {
     console.log('Back clicked');
