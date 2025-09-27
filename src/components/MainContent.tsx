@@ -4,14 +4,22 @@ import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 
 interface MainContentProps {
+  currentSection: number;
+  onSectionChange: (next: number | ((prev: number) => number)) => void;
   onFormSubmit?: (data: any) => void;
   onCanContinueChange?: (canContinue: boolean) => void;
   onContinueHandlerChange?: (handler: (() => void) | null) => void;
   onSaveResume?: () => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange, onSaveResume }) => {
-  const [currentSection, setCurrentSection] = useState(0);
+export const MainContent: React.FC<MainContentProps> = ({ 
+  currentSection, 
+  onSectionChange, 
+  onFormSubmit, 
+  onCanContinueChange, 
+  onContinueHandlerChange, 
+  onSaveResume 
+}) => {
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
 
@@ -35,7 +43,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   };
 
   const handleContinue = () => {
-    console.log('Continue clicked');
+    console.info(`Continue: Section ${currentSection} -> ${Math.min(currentSection + 1, sections.length - 1)}`);
     
     // Mark current section as completed
     if (!completedSections.includes(currentSection)) {
@@ -43,16 +51,18 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     }
     
     // Navigate to next section
-    if (currentSection < sections.length - 1) {
-      setCurrentSection(currentSection + 1);
-    }
+    onSectionChange(prev => Math.min(prev + 1, sections.length - 1));
   };
 
   const handleBack = () => {
-    console.log('Back clicked');
-    if (currentSection > 0) {
-      setCurrentSection(currentSection - 1);
-    }
+    const nextSection = Math.max(currentSection - 1, 0);
+    console.info(`Back: Section ${currentSection} -> ${nextSection}`);
+    onSectionChange(prev => Math.max(prev - 1, 0));
+  };
+
+  const handleStartOver = () => {
+    console.info(`Start over: Section ${currentSection} -> 0`);
+    onSectionChange(0);
   };
 
   // Effect to update the continue handler and state
@@ -80,6 +90,28 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
         totalSections={sections.length}
         sectionTitle={sections[currentSection]}
       />
+
+      {/* Mobile navigation controls */}
+      <div className="md:hidden flex items-center justify-between mb-4 pb-3 border-b border-border">
+        <Button
+          variant="ghost"
+          onClick={handleBack}
+          disabled={currentSection === 0}
+          size="sm"
+          aria-label="Go back to previous step"
+        >
+          ← Back
+        </Button>
+        <Button
+          variant="ghost"
+          onClick={handleStartOver}
+          disabled={currentSection === 0}
+          size="sm"
+          aria-label="Start over from first step"
+        >
+          Start over
+        </Button>
+      </div>
 
       <section className="mt-4">
         {currentSection === 0 && (
