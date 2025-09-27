@@ -34,6 +34,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
+  const userInitiatedRef = useRef(false);
 
   const handleFormSubmit = (data: any) => {
     console.log('Form submitted:', data);
@@ -47,6 +48,11 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   };
 
   const handleContinue = useCallback(() => {
+    if (!userInitiatedRef.current) {
+      console.log('🔒 Ignored continue: not user-initiated');
+      return;
+    }
+
     const now = Date.now();
     if (advancingRef.current || now - lastContinueRef.current < 600) {
       console.log('⏳ Continue throttled');
@@ -87,10 +93,23 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
 
   // Effect to update the continue handler and state
   const canProceed = currentSection === 0 ? formComplete : true;
+  
+  const triggerUserContinue = useCallback(() => {
+    userInitiatedRef.current = true;
+    try {
+      handleContinue();
+    } finally {
+      // Reset immediately after the call stack to ensure only explicit clicks pass
+      setTimeout(() => {
+        userInitiatedRef.current = false;
+      }, 0);
+    }
+  }, [handleContinue]);
+
   useEffect(() => {
-    onContinueHandlerChange?.(handleContinue);
+    onContinueHandlerChange?.(triggerUserContinue);
     onCanContinueChange?.(canProceed);
-  }, [handleContinue, canProceed, onContinueHandlerChange, onCanContinueChange]);
+  }, [triggerUserContinue, canProceed, onContinueHandlerChange, onCanContinueChange]);
   // Ensure the wizard always starts at step 0 on first load
   useEffect(() => {
     setCurrentSection(0);
@@ -125,7 +144,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
         {currentSection === 0 && (
           <AddressForm
             onSubmit={handleFormSubmit}
-            onContinue={handleContinue}
+            onContinue={triggerUserContinue}
             onFormValidChange={setFormComplete}
             onSaveResume={onSaveResume}
             initialData={addressData || undefined}
@@ -174,7 +193,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
             </Button>
             <Button
               type="button"
-              onClick={handleContinue}
+              onClick={triggerUserContinue}
               disabled={!canProceed}
               aria-label="Continue to next step"
             >
