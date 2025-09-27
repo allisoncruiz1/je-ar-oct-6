@@ -1,4 +1,5 @@
 import React from 'react';
+// Force rebuild
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
