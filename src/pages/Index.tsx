@@ -9,6 +9,7 @@ const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [canContinue, setCanContinue] = useState(false);
   const [continueHandler, setContinueHandler] = useState<(() => void) | null>(null);
+  const [currentSection, setCurrentSection] = useState(0);
 
   const handleSaveResume = () => {
     console.log('Save & Resume Later clicked');
@@ -32,15 +33,17 @@ const Index = () => {
       <div className="flex w-full flex-col items-stretch">
         {/* Mobile progress stepper */}
         <div className="md:hidden mt-4">
-          <MobileProgressStepper currentStep={0} progress={0} />
+          <MobileProgressStepper currentStep={currentSection} progress={((currentSection + 1) / 5) * 100} />
         </div>
 
         <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
             {/* Desktop sidebar */}
             <div className="max-md:hidden">
-              <SideNavigation currentStep={0} progress={0} />
+              <SideNavigation currentStep={currentSection} progress={((currentSection + 1) / 5) * 100} onSectionChange={setCurrentSection} />
             </div>
             <MainContent 
+              currentSection={currentSection}
+              onSectionChange={setCurrentSection}
               onFormSubmit={handleFormSubmit} 
               onCanContinueChange={setCanContinue}
               onContinueHandlerChange={setContinueHandler}

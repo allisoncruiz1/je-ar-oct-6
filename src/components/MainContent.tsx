@@ -4,16 +4,28 @@ import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 
 interface MainContentProps {
+  currentSection?: number;
+  onSectionChange?: (section: number) => void;
   onFormSubmit?: (data: any) => void;
   onCanContinueChange?: (canContinue: boolean) => void;
   onContinueHandlerChange?: (handler: (() => void) | null) => void;
   onSaveResume?: () => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanContinueChange, onContinueHandlerChange, onSaveResume }) => {
-  const [currentSection, setCurrentSection] = useState(0);
+export const MainContent: React.FC<MainContentProps> = ({ 
+  currentSection: propCurrentSection,
+  onSectionChange,
+  onFormSubmit, 
+  onCanContinueChange, 
+  onContinueHandlerChange, 
+  onSaveResume 
+}) => {
+  const [internalCurrentSection, setInternalCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [formComplete, setFormComplete] = useState(false);
+  
+  // Use prop currentSection if provided, otherwise use internal state
+  const currentSection = propCurrentSection !== undefined ? propCurrentSection : internalCurrentSection;
 
   const sections = [
     'Mailing Address',
@@ -35,7 +47,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   };
 
   const handleContinue = () => {
-    console.log('Continue clicked');
+    console.log('Continue clicked, current section:', currentSection);
     
     // Mark current section as completed
     if (!completedSections.includes(currentSection)) {
@@ -44,14 +56,35 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     
     // Navigate to next section
     if (currentSection < sections.length - 1) {
-      setCurrentSection(currentSection + 1);
+      const nextSection = currentSection + 1;
+      console.log('Moving to section:', nextSection);
+      if (onSectionChange) {
+        onSectionChange(nextSection);
+      } else {
+        setInternalCurrentSection(nextSection);
+      }
     }
   };
 
   const handleBack = () => {
-    console.log('Back clicked');
+    console.log('Back clicked, current section:', currentSection);
     if (currentSection > 0) {
-      setCurrentSection(currentSection - 1);
+      const prevSection = currentSection - 1;
+      console.log('Moving back to section:', prevSection);
+      if (onSectionChange) {
+        onSectionChange(prevSection);
+      } else {
+        setInternalCurrentSection(prevSection);
+      }
+    }
+  };
+
+  const handleStartOver = () => {
+    console.log('Start over clicked');
+    if (onSectionChange) {
+      onSectionChange(0);
+    } else {
+      setInternalCurrentSection(0);
     }
   };
 
@@ -80,6 +113,17 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
         totalSections={sections.length}
         sectionTitle={sections[currentSection]}
       />
+      
+      {currentSection > 0 && (
+        <div className="mt-2 mb-4">
+          <button
+            onClick={handleStartOver}
+            className="text-sm text-[#1B489B] hover:underline"
+          >
+            ← Start over
+          </button>
+        </div>
+      )}
 
       <section className="mt-4">
         {currentSection === 0 && (
@@ -112,7 +156,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
         )}
       </section>
 
-      <div className="hidden md:block border-t border-border mt-4 pt-4">
+      <div className="md:block md:sticky md:bottom-0 md:bg-white md:z-30 border-t border-border mt-4 pt-4 shadow-lg">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
