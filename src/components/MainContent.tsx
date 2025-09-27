@@ -57,6 +57,12 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
   useEffect(() => {
     setCurrentSection(0);
   }, []);
+  // Safety guard: if somehow mounted at a later step with no progress, snap back to step 0
+  useEffect(() => {
+    if (currentSection !== 0 && completedSections.length === 0) {
+      setCurrentSection(0);
+    }
+  }, [currentSection, completedSections.length]);
 
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0">
