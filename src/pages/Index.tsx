@@ -16,12 +16,10 @@ const Index = () => {
 
   return (
     <div className="bg-[rgba(239,241,247,1)] overflow-hidden min-h-screen">
+      <Header onSaveResume={handleSaveResume} />
+      
       <div className="flex w-full flex-col items-stretch px-6 max-md:max-w-full max-md:px-5">
         <div className="flex w-full flex-col items-stretch max-md:max-w-full">
-          <div className="self-center w-full text-sm text-[#0C0F24] font-normal leading-none max-md:max-w-full">
-            <Header onSaveResume={handleSaveResume} />
-          </div>
-          
           <div className="flex w-full gap-[196px_24px] flex-wrap mt-6 max-md:max-w-full">
             <SideNavigation currentStep={0} progress={0} />
             <MainContent onFormSubmit={handleFormSubmit} />
