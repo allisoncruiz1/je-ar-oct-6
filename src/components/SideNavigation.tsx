@@ -46,7 +46,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
 
   return (
     <nav 
-      className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col grow shrink w-52 bg-white pt-4 pb-3 rounded-lg"
+      className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex flex-col w-[260px] min-w-[260px] shrink-0 self-start bg-white pt-4 pb-3 rounded-lg"
       aria-label="Application progress navigation"
     >
       <div className="w-full px-4">
