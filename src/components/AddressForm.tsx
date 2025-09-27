@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
+import { Check } from 'lucide-react';
 
 interface AddressFormData {
   addressLine1: string;
@@ -29,8 +30,26 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   });
 
   const addressInputRef = useRef<HTMLInputElement>(null);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [verified, setVerified] = useState(false);
+  const fetchTimeoutRef = useRef<number | null>(null);
 
-  // Handle autocomplete selection
+  const parseNominatimAddress = (addr: any) => {
+    const house = addr.house_number || '';
+    const road = addr.road || addr.pedestrian || addr.cycleway || addr.footway || '';
+    const line1 = `${house} ${road}`.trim();
+    const line2 = addr.suburb || addr.neighbourhood || addr.residential || addr.hamlet || '';
+    return {
+      addressLine1: line1,
+      addressLine2: line2,
+      city: addr.city || addr.town || addr.village || addr.hamlet || '',
+      state: addr.state_code || addr.state || '',
+      zipCode: addr.postcode || '',
+    };
+  };
+
+  // Handle autocomplete selection (Google or fallback)
   const handlePlaceSelected = useCallback((result: any) => {
     const newData = {
       addressLine1: result.addressLine1,
@@ -41,12 +60,48 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     };
     setFormData(newData);
     onFormDataChange?.(newData);
+    setVerified(true);
+    setShowSuggestions(false);
   }, [onFormDataChange]);
 
   useAddressAutocomplete(addressInputRef, handlePlaceSelected);
 
+  const searchFallbackSuggestions = async (query: string) => {
+    if (!query || query.length < 3) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(query)}`;
+      const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      const data = await res.json();
+      setSuggestions(Array.isArray(data) ? data : []);
+      setShowSuggestions(true);
+    } catch (e) {
+      console.error('Fallback address search failed', e);
+    }
+  };
+
+  const handleFallbackSelect = (item: any) => {
+    const parsed = parseNominatimAddress(item.address);
+    handlePlaceSelected(parsed);
+  };
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
     const newData = { ...formData, [field]: value };
+
+    if (field === 'addressLine1') {
+      setVerified(false);
+      const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
+      if (!hasGoogle) {
+        if (fetchTimeoutRef.current) window.clearTimeout(fetchTimeoutRef.current);
+        fetchTimeoutRef.current = window.setTimeout(() => {
+          searchFallbackSuggestions(value);
+        }, 250);
+      } else {
+        setShowSuggestions(false);
+      }
+    }
     
     // Handle ZIP code autofill
     if (field === 'zipCode' && value.length >= 5) {
@@ -91,6 +146,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     return () => window.removeEventListener("resize", logWidth);
   }, []);
 
+  const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
+
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
@@ -98,17 +155,44 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           Address Line 1
           <span className="text-[#A91616]">*</span>
         </label>
-        <input
-          ref={addressInputRef}
-          type="text"
-          value={formData.addressLine1}
-          onChange={(e) => handleInputChange('addressLine1', e.target.value)}
-          placeholder="Start typing your address..."
-          required
-          className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
-          aria-describedby="address1-help"
-          autoComplete="off"
-        />
+        <div className="relative">
+          <input
+            ref={addressInputRef}
+            type="text"
+            value={formData.addressLine1}
+            onChange={(e) => handleInputChange('addressLine1', e.target.value)}
+            placeholder="Start typing your address..."
+            required
+            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+            aria-describedby="address1-help"
+            autoComplete="off"
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            onFocus={() => { if (!hasGoogle && suggestions.length > 0) setShowSuggestions(true); }}
+          />
+
+          {verified && (
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 text-sm inline-flex items-center gap-1">
+              <Check className="w-4 h-4" /> Verified
+            </span>
+          )}
+
+          {!hasGoogle && showSuggestions && suggestions.length > 0 && (
+            <ul className="absolute left-0 right-0 mt-2 bg-white border border-[#CECFD3] rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+              {suggestions.map((item, idx) => (
+                <li key={item.place_id || item.osm_id || idx}>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => handleFallbackSelect(item)}
+                    className="w-full text-left px-3 py-2 hover:bg-[#F5F6F7] text-sm text-[#0C0F24]"
+                  >
+                    {item.display_name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
 
       <div className="w-full mt-4 max-md:max-w-full">
