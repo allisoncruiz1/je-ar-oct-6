@@ -41,6 +41,7 @@ const Index = () => {
               <SideNavigation currentStep={0} progress={0} />
             </div>
             <MainContent 
+              key="wizard-v1"
               onFormSubmit={handleFormSubmit} 
               onCanContinueChange={setCanContinue}
               onContinueHandlerChange={setContinueHandler}
