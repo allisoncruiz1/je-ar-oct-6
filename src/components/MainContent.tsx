@@ -148,25 +148,27 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
   }, [currentSection, completedSections.length]);
 
   return (
-    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:p-3 max-md:mx-0 pb-20 md:pb-24">
-      {/* Sticky header section */}
-      <div className="sticky top-16 bg-white z-40 p-4 max-md:p-3 border-b border-border/50">
-        <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
-          <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
-            <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full text-[#0C0F24]">
-              Your Information
-            </h1>
-            <p className="text-[#0C0F24] text-sm font-normal leading-none max-md:max-w-full">
-              License Business Information
-            </p>
-          </div>
-        </header>
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 pb-20 md:pb-24">
+      {/* Sticky header section with consistent height */}
+      <div className="sticky top-16 bg-white z-40 border-b border-border/50 shadow-sm">
+        <div className="p-4 max-md:p-3">
+          <header className="flex w-full items-center gap-[31px] text-[#0C0F24] justify-center max-md:max-w-full">
+            <div className="self-stretch min-w-60 w-full flex-1 shrink basis-[0%] my-auto max-md:max-w-full">
+              <h1 className="min-h-[30px] w-full text-2xl font-semibold leading-none max-md:max-w-full text-[#0C0F24]">
+                Your Information
+              </h1>
+              <p className="text-[#0C0F24] text-sm font-normal leading-none max-md:max-w-full mt-1">
+                License Business Information
+              </p>
+            </div>
+          </header>
 
-        <SectionHeader 
-          currentSection={currentSection}
-          totalSections={sections.length}
-          sectionTitle={sections[currentSection]}
-        />
+          <SectionHeader 
+            currentSection={currentSection}
+            totalSections={sections.length}
+            sectionTitle={sections[currentSection]}
+          />
+        </div>
       </div>
 
       {/* Form content with padding */}
