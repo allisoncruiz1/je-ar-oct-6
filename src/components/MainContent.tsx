@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
-import { TabNavigation } from './TabNavigation';
-import { MobileTabSelector } from './MobileTabSelector';
 import { AddressForm } from './AddressForm';
+import { SectionHeader } from './SectionHeader';
 
 interface MainContentProps {
   onFormSubmit?: (data: any) => void;
 }
 
 export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
-  const [activeTab, setActiveTab] = useState('mailing-address');
-  const [completedTabs, setCompletedTabs] = useState<string[]>([]);
+  const [currentSection, setCurrentSection] = useState(0);
+  const [completedSections, setCompletedSections] = useState<number[]>([]);
 
-  const tabs = [
-    { id: 'mailing-address', label: 'Mailing Address' },
-    { id: 'license-business', label: 'License Business info' },
-    { id: 'license-details', label: 'License Details' },
-    { id: 'business-disclosure', label: 'Business Disclosure' },
-    { id: 'team-function', label: 'Team Function' }
+  const sections = [
+    'Mailing Address',
+    'License Business Info',
+    'License Details',
+    'Business Disclosure',
+    'Team Function'
   ];
-
-  const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
-  };
 
   const handleFormSubmit = (data: any) => {
     console.log('Form submitted:', data);
     
-    // Mark current tab as completed
-    if (!completedTabs.includes(activeTab)) {
-      setCompletedTabs(prev => [...prev, activeTab]);
+    // Mark current section as completed
+    if (!completedSections.includes(currentSection)) {
+      setCompletedSections(prev => [...prev, currentSection]);
     }
     
     onFormSubmit?.(data);
@@ -37,15 +32,14 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
   const handleContinue = () => {
     console.log('Continue clicked');
     
-    // Mark current tab as completed
-    if (!completedTabs.includes(activeTab)) {
-      setCompletedTabs(prev => [...prev, activeTab]);
+    // Mark current section as completed
+    if (!completedSections.includes(currentSection)) {
+      setCompletedSections(prev => [...prev, currentSection]);
     }
     
-    // Navigate to next tab or step
-    const currentIndex = tabs.findIndex(tab => tab.id === activeTab);
-    if (currentIndex < tabs.length - 1) {
-      setActiveTab(tabs[currentIndex + 1].id);
+    // Navigate to next section
+    if (currentSection < sections.length - 1) {
+      setCurrentSection(currentSection + 1);
     }
   };
 
@@ -62,48 +56,35 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit }) => {
         </div>
       </header>
 
-      {/* Desktop tab navigation */}
-      <div className="hidden md:block">
-        <TabNavigation
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-        />
-      </div>
-
-      {/* Mobile tab selector */}
-      <div className="md:hidden">
-        <MobileTabSelector
-          tabs={tabs}
-          activeTab={activeTab}
-          onTabChange={handleTabChange}
-          completedTabs={completedTabs}
-        />
-      </div>
+      <SectionHeader 
+        currentSection={currentSection}
+        totalSections={sections.length}
+        sectionTitle={sections[currentSection]}
+      />
 
       <section className="mt-4">
-        {activeTab === 'mailing-address' && (
+        {currentSection === 0 && (
           <AddressForm
             onSubmit={handleFormSubmit}
             onContinue={handleContinue}
           />
         )}
-        {activeTab === 'license-business' && (
+        {currentSection === 1 && (
           <div className="text-center py-8 text-[#858791]">
             License Business Information form will be implemented here.
           </div>
         )}
-        {activeTab === 'license-details' && (
+        {currentSection === 2 && (
           <div className="text-center py-8 text-[#858791]">
             License Details form will be implemented here.
           </div>
         )}
-        {activeTab === 'business-disclosure' && (
+        {currentSection === 3 && (
           <div className="text-center py-8 text-[#858791]">
             Business Disclosure form will be implemented here.
           </div>
         )}
-        {activeTab === 'team-function' && (
+        {currentSection === 4 && (
           <div className="text-center py-8 text-[#858791]">
             Team Function form will be implemented here.
           </div>
