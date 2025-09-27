@@ -100,10 +100,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       return;
     }
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&q=${encodeURIComponent(query)}`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=5&countrycodes=us&q=${encodeURIComponent(query)}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
-      setSuggestions(Array.isArray(data) ? data : []);
+      // Filter to only US addresses as an extra safeguard
+      const usAddresses = Array.isArray(data) ? data.filter(item => 
+        item.address?.country_code === 'us' || item.address?.country === 'United States'
+      ) : [];
+      setSuggestions(usAddresses);
       setShowSuggestions(true);
     } catch (e) {
       console.error('Fallback address search failed', e);
