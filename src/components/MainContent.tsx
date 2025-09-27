@@ -151,7 +151,7 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
       {/* Header section */}
       <div>
-        <div className="p-4 max-md:p-3 max-md:pb-2">
+        <div className="p-2 max-md:p-2 max-md:pb-1">
           <SectionHeader
             currentSection={currentSection}
             totalSections={sections.length}
