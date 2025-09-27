@@ -405,10 +405,11 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
-        <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
+      <div className="sticky bottom-0 bg-white border-t border-border py-3 px-4 mt-4 max-md:p-2 max-md:mt-2">
+        <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
           <Button
             variant="ghost"
+            size="sm"
             onClick={onBack}
             disabled={!showBack}
             aria-label="Go back to previous step"
@@ -416,9 +417,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           >
             Back
           </Button>
-          <div className="flex gap-3 max-md:w-full max-md:order-1">
+          <div className="flex gap-3 max-md:w-full max-md:order-1 max-md:gap-2">
             <Button
               variant="outline"
+              size="sm"
               onClick={onSaveResume}
               aria-label="Save and resume application later"
               className="max-md:flex-1 max-md:text-sm"
@@ -427,6 +429,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             </Button>
             <Button
               type="button"
+              size="sm"
               onClick={handleContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
