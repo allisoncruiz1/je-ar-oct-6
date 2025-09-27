@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 import { Check } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface AddressFormData {
   addressLine1: string;
@@ -110,7 +111,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   useAddressAutocomplete(addressInputRef, handlePlaceSelected);
 
   const searchFallbackSuggestions = async (query: string) => {
-    if (!query || query.length < 3) {
+    if (!query || query.trim().length < 3) {
       setSuggestions([]);
       setShowSuggestions(false);
       return;
@@ -119,30 +120,31 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&q=${encodeURIComponent(query)}`;
       const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
       const data = await res.json();
-      // Filter to only US residential addresses
-      const residentialAddresses = Array.isArray(data) ? data.filter((item: any) => {
+      const items = Array.isArray(data) ? data : [];
+
+      const isResidentialBuilding = (item: any) => {
+        const cls = item.class;
+        const typ = item.type || '';
+        return cls === 'building' && ['house','residential','apartments','detached','semidetached_house','terrace','yes'].includes(typ);
+      };
+      const hasAddressBits = (a: any) => !!(a.house_number && (a.road || a.street) && a.postcode);
+      const inUS = (a: any) => a?.country_code === 'us' || a?.country === 'United States';
+
+      // Strict first pass: residential buildings only
+      let filtered = items.filter((item: any) => {
         const a = item.address || {};
-        const inUS = a.country_code === 'us' || a.country === 'United States';
-        const hasStreet = !!(a.house_number && (a.road || a.street));
-        const hasZip = !!a.postcode;
-        
-        // Only residential addresses - exclude commercial, amenities, etc.
-        const isResidential = item.type === 'house' || 
-                             item.class === 'place' && item.type === 'house' ||
-                             item.class === 'building' && item.type === 'house' ||
-                             (item.class === 'building' && !item.type) ||
-                             a.residential;
-        
-        // Exclude commercial/business locations
-        const notCommercial = !item.type?.includes('business') && 
-                             !item.class?.includes('amenity') &&
-                             !item.class?.includes('shop') &&
-                             !item.class?.includes('office') &&
-                             !a.amenity;
-        
-        return inUS && hasStreet && hasZip && isResidential && notCommercial;
-      }).slice(0, 5) : [];
-      setSuggestions(residentialAddresses);
+        return inUS(a) && isResidentialBuilding(item) && hasAddressBits(a);
+      });
+
+      // Fallback: allow any US item with full address bits
+      if (filtered.length === 0) {
+        filtered = items.filter((item: any) => {
+          const a = item.address || {};
+          return inUS(a) && hasAddressBits(a);
+        });
+      }
+
+      setSuggestions(filtered.slice(0, 5));
       setShowSuggestions(true);
     } catch (e) {
       console.error('Fallback address search failed', e);
@@ -151,6 +153,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
   const handleFallbackSelect = (item: any) => {
     const parsed = parseNominatimAddress(item.address);
+    if (!parsed.addressLine1 || !parsed.city || !parsed.state || !parsed.zipCode) {
+      toast.error('Please select a full residential street address (with number, city, state, ZIP).');
+      return;
+    }
     handlePlaceSelected(parsed);
   };
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
