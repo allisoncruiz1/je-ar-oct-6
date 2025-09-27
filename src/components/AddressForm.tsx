@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 
 interface AddressFormData {
@@ -31,7 +30,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const addressInputRef = useRef<HTMLInputElement>(null);
 
   // Handle autocomplete selection
-  const handlePlaceSelected = (result: any) => {
+  const handlePlaceSelected = useCallback((result: any) => {
     const newData = {
       addressLine1: result.addressLine1,
       addressLine2: result.addressLine2,
@@ -41,9 +40,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     };
     setFormData(newData);
     onFormDataChange?.(newData);
-  };
-
-  useAddressAutocomplete(addressInputRef, handlePlaceSelected);
+  }, [onFormDataChange]);
 
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
     const newData = { ...formData, [field]: value };
@@ -82,7 +79,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   // Notify parent of form validity changes
   useEffect(() => {
     onFormValidChange?.(isFormComplete);
-  }, [isFormComplete, onFormValidChange]);
+  }, [isFormComplete]); // Removed onFormValidChange from dependencies to prevent infinite loops
 
   useEffect(() => {
     const logWidth = () => console.log("AddressForm mounted/rendered. viewport:", window.innerWidth);
