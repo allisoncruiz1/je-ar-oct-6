@@ -13,10 +13,12 @@ interface AddressFormProps {
   onContinue?: () => void;
   onFormValidChange?: (isValid: boolean) => void;
   onSaveResume?: () => void;
+  initialData?: AddressFormData;
+  onFormDataChange?: (data: AddressFormData) => void;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange, onSaveResume }) => {
-  const [formData, setFormData] = useState<AddressFormData>({
+export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, onFormValidChange, onSaveResume, initialData, onFormDataChange }) => {
+  const [formData, setFormData] = useState<AddressFormData>(initialData || {
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -25,7 +27,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   });
 
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    const newData = { ...formData, [field]: value };
+    setFormData(newData);
+    onFormDataChange?.(newData);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,6 +42,13 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   };
 
   const isFormComplete = !!(formData.addressLine1 && formData.city && formData.state && formData.zipCode);
+
+  // Update form data when initialData changes
+  useEffect(() => {
+    if (initialData) {
+      setFormData(initialData);
+    }
+  }, [initialData]);
 
   // Notify parent of form validity changes
   useEffect(() => {
