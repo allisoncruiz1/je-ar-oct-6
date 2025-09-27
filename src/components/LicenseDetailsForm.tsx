@@ -18,6 +18,7 @@ export interface LicenseDetailsData {
     existingTransactionsCount?: string;
     associations: string[];
     mls: string[];
+    certifiedMentor: string;
   };
 }
 
@@ -73,7 +74,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     pendingTransactions: '',
     existingTransactionsCount: '',
     associations: [],
-    mls: []
+    mls: [],
+    certifiedMentor: ''
   };
 
   const updateCurrentStateData = (field: string, value: any) => {
@@ -92,7 +94,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       const baseValid = stateData?.licenseNumber?.trim() &&
                        stateData?.salesTransactions?.trim() &&
                        stateData?.pendingTransactions?.trim() &&
-                       stateData?.mls?.length > 0;
+                       stateData?.mls?.length > 0 &&
+                       stateData?.certifiedMentor?.trim();
       
       // If pending transactions is "yes", also require existing transactions count
       const pendingValid = stateData?.pendingTransactions !== 'yes' || 
@@ -372,6 +375,26 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             ))}
           </div>
         )}
+      </div>
+
+      {/* Certified Mentor Program */}
+      <div className="space-y-3">
+        <Label className="text-sm font-medium text-foreground">
+          You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
+        </Label>
+        <RadioGroup
+          value={currentData.certifiedMentor}
+          onValueChange={(value) => updateCurrentStateData('certifiedMentor', value)}
+        >
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="yes" id="mentor-yes" />
+            <Label htmlFor="mentor-yes" className="text-sm">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem value="no" id="mentor-no" />
+            <Label htmlFor="mentor-no" className="text-sm">No</Label>
+          </div>
+        </RadioGroup>
       </div>
     </div>
   );
