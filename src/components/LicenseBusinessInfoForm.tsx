@@ -20,11 +20,24 @@ const US_STATES = [
   'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming', 'District of Columbia'
 ];
 
+const COUNTRIES = [
+  'Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium',
+  'Brazil', 'Bulgaria', 'Canada', 'Chile', 'China', 'Colombia', 'Croatia', 'Czech Republic',
+  'Denmark', 'Egypt', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland',
+  'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan',
+  'Kazakhstan', 'Kenya', 'South Korea', 'Latvia', 'Lebanon', 'Lithuania', 'Luxembourg', 'Malaysia',
+  'Mexico', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway', 'Pakistan', 'Philippines', 'Poland',
+  'Portugal', 'Romania', 'Russia', 'Saudi Arabia', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa',
+  'Spain', 'Sweden', 'Switzerland', 'Thailand', 'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom',
+  'Vietnam', 'Other'
+];
+
 interface LicenseBusinessData {
   preferredName: string;
   isLicensed: string;
   licensedStates: string[];
   conductBusinessOutsideUS: string;
+  internationalCountries: string[];
 }
 
 interface LicenseBusinessInfoFormProps {
@@ -48,7 +61,8 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     preferredName: initialData?.preferredName || '',
     isLicensed: initialData?.isLicensed || '',
     licensedStates: initialData?.licensedStates || [],
-    conductBusinessOutsideUS: initialData?.conductBusinessOutsideUS || ''
+    conductBusinessOutsideUS: initialData?.conductBusinessOutsideUS || '',
+    internationalCountries: initialData?.internationalCountries || []
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -68,16 +82,27 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
       newErrors.conductBusinessOutsideUS = 'Please select whether you conduct business outside the US';
     }
 
+    if (formData.conductBusinessOutsideUS === 'yes' && formData.internationalCountries.length === 0) {
+      newErrors.internationalCountries = 'Please select at least one country where you conduct business';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const isFormValid = () => {
     const baseValid = !!(formData.isLicensed && formData.conductBusinessOutsideUS);
+    let additionalValid = true;
+    
     if (formData.isLicensed === 'yes') {
-      return baseValid && formData.licensedStates.length > 0;
+      additionalValid = additionalValid && formData.licensedStates.length > 0;
     }
-    return baseValid;
+    
+    if (formData.conductBusinessOutsideUS === 'yes') {
+      additionalValid = additionalValid && formData.internationalCountries.length > 0;
+    }
+    
+    return baseValid && additionalValid;
   };
 
   useEffect(() => {
@@ -299,6 +324,97 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>
             )}
           </div>
+
+          {/* International Countries Selection - Conditional */}
+          {formData.conductBusinessOutsideUS === 'yes' && (
+            <div className="w-full">
+              <div className="flex items-center gap-2 mb-3">
+                <Label className="text-sm font-medium text-[#0C0F24] leading-none">
+                  Where? <span className="text-[#A91616]">*</span>
+                </Label>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 text-[#858791] cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Select all countries where you conduct business activities</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+              
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className={`w-full h-10 justify-between text-left font-normal ${
+                      formData.internationalCountries.length === 0 ? 'text-[#858791]' : 'text-[#0C0F24]'
+                    }`}
+                  >
+                    {formData.internationalCountries.length === 0
+                      ? 'Select country(ies)...'
+                      : `${formData.internationalCountries.length} country(ies) selected`}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-full p-0" align="start">
+                  <Command>
+                    <CommandInput placeholder="Search countries..." />
+                    <CommandEmpty>No country found.</CommandEmpty>
+                    <CommandList className="max-h-60">
+                      <CommandGroup>
+                        {COUNTRIES.map((country) => (
+                          <CommandItem
+                            key={country}
+                            onSelect={() => {
+                              const isSelected = formData.internationalCountries.includes(country);
+                              const newCountries = isSelected
+                                ? formData.internationalCountries.filter(c => c !== country)
+                                : [...formData.internationalCountries, country];
+                              updateFormData({ internationalCountries: newCountries });
+                            }}
+                            className="flex items-center gap-2"
+                          >
+                            <Checkbox
+                              checked={formData.internationalCountries.includes(country)}
+                              className="h-4 w-4"
+                            />
+                            <span>{country}</span>
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+
+              {/* Selected Countries Display */}
+              {formData.internationalCountries.length > 0 && (
+                <div className="mt-2 flex flex-wrap gap-1">
+                  {formData.internationalCountries.map((country) => (
+                    <Badge
+                      key={country}
+                      variant="secondary"
+                      className="text-xs px-2 py-1 flex items-center gap-1"
+                    >
+                      {country}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-[#A91616]"
+                        onClick={() => {
+                          const newCountries = formData.internationalCountries.filter(c => c !== country);
+                          updateFormData({ internationalCountries: newCountries });
+                        }}
+                      />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              
+              {errors.internationalCountries && (
+                <p className="text-sm text-[#A91616] mt-1">{errors.internationalCountries}</p>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Mobile Submit Button */}

@@ -18,6 +18,7 @@ interface LicenseBusinessData {
   isLicensed: string;
   licensedStates: string[];
   conductBusinessOutsideUS: string;
+  internationalCountries: string[];
 }
 
 interface MainContentProps {
