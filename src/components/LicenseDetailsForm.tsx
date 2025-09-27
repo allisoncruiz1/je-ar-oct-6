@@ -314,7 +314,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       {/* MLS */}
       <div className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
-          MLS <span className="text-destructive">*</span>
+          Please select your MLS(s) you plan to be affiliated with as a real estate agent in {currentState}: <span className="text-destructive">*</span>
         </Label>
         <Popover open={mlsOpen} onOpenChange={setMlsOpen}>
           <PopoverTrigger asChild>
