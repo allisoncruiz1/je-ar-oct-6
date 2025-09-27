@@ -33,6 +33,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [verified, setVerified] = useState(false);
+  const [isAutocompleting, setIsAutocompleting] = useState(false);
   const fetchTimeoutRef = useRef<number | null>(null);
 
   const parseNominatimAddress = (addr: any) => {
@@ -51,6 +52,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
   // Handle autocomplete selection (Google or fallback)
   const handlePlaceSelected = useCallback((result: any) => {
+    setIsAutocompleting(true);
     const newData = {
       addressLine1: result.addressLine1,
       addressLine2: result.addressLine2,
@@ -62,6 +64,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     onFormDataChange?.(newData);
     setVerified(true);
     setShowSuggestions(false);
+    
+    // Reset autocompleting flag after a brief delay to prevent cascade
+    setTimeout(() => setIsAutocompleting(false), 100);
   }, [onFormDataChange]);
 
   useAddressAutocomplete(addressInputRef, handlePlaceSelected);
@@ -136,8 +141,11 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
   // Notify parent of form validity changes
   useEffect(() => {
-    onFormValidChange?.(isFormComplete);
-  }, [isFormComplete]); // Removed onFormValidChange from dependencies to prevent infinite loops
+    // Don't notify during autocomplete to prevent cascade progression
+    if (!isAutocompleting) {
+      onFormValidChange?.(isFormComplete);
+    }
+  }, [isFormComplete, isAutocompleting]); // Removed onFormValidChange from dependencies to prevent infinite loops
 
   useEffect(() => {
     const logWidth = () => console.log("AddressForm mounted/rendered. viewport:", window.innerWidth);
