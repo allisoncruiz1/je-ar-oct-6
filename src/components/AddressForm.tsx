@@ -44,6 +44,13 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     onFormValidChange?.(isFormComplete);
   }, [isFormComplete, onFormValidChange]);
 
+  useEffect(() => {
+    const logWidth = () => console.log("AddressForm mounted/rendered. viewport:", window.innerWidth);
+    logWidth();
+    window.addEventListener("resize", logWidth);
+    return () => window.removeEventListener("resize", logWidth);
+  }, []);
+
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
@@ -142,7 +149,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
       <div className="h-px w-full bg-[#CECFD3] mt-4 max-md:max-w-full" />
       
-      <div className="flex w-full justify-between items-center text-base font-normal mt-4 max-md:max-w-full max-md:hidden">
+      <div className="hidden md:flex w-full justify-between items-center text-base font-normal mt-4">
         <button
           type="button"
           onClick={onSaveResume}
