@@ -15,6 +15,7 @@ export interface LicenseDetailsData {
     licenseNumber: string;
     salesTransactions: string;
     pendingTransactions: string;
+    existingTransactionsCount?: string;
     associations: string[];
     mls: string[];
   };
@@ -70,6 +71,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     licenseNumber: '',
     salesTransactions: '',
     pendingTransactions: '',
+    existingTransactionsCount: '',
     associations: [],
     mls: []
   };
@@ -87,10 +89,16 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // Check if all states are valid
     const isValid = licensedStates.every(state => {
       const stateData = newData[state];
-      return stateData?.licenseNumber?.trim() &&
-             stateData?.salesTransactions?.trim() &&
-             stateData?.pendingTransactions?.trim() &&
-             stateData?.mls?.length > 0;
+      const baseValid = stateData?.licenseNumber?.trim() &&
+                       stateData?.salesTransactions?.trim() &&
+                       stateData?.pendingTransactions?.trim() &&
+                       stateData?.mls?.length > 0;
+      
+      // If pending transactions is "yes", also require existing transactions count
+      const pendingValid = stateData?.pendingTransactions !== 'yes' || 
+                          (stateData?.existingTransactionsCount?.trim());
+      
+      return baseValid && pendingValid;
     });
     onFormValidChange(isValid);
   };
@@ -220,6 +228,24 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             <Label htmlFor="pending-not-sure" className="text-sm">Not Sure Yet</Label>
           </div>
         </RadioGroup>
+
+        {/* Conditional field for existing transactions count */}
+        {currentData.pendingTransactions === 'yes' && (
+          <div className="space-y-2 mt-4">
+            <Label htmlFor="existingTransactionsCount" className="text-sm font-medium text-foreground">
+              How many existing transactions or listings do you have? <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="existingTransactionsCount"
+              type="number"
+              value={currentData.existingTransactionsCount || ''}
+              onChange={(e) => updateCurrentStateData('existingTransactionsCount', e.target.value)}
+              placeholder="Enter the number of transactions/listings"
+              className="w-full"
+              min="0"
+            />
+          </div>
+        )}
       </div>
 
       {/* Associations */}
