@@ -36,23 +36,15 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
 
   const handleContinue = () => {
     console.log('Continue clicked');
-    
-    // Mark current section as completed
-    if (!completedSections.includes(currentSection)) {
-      setCompletedSections(prev => [...prev, currentSection]);
-    }
-    
-    // Navigate to next section
-    if (currentSection < sections.length - 1) {
-      setCurrentSection(currentSection + 1);
-    }
+    // Mark current section as completed using latest value
+    setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
+    // Navigate to next section safely with functional update
+    setCurrentSection((prev) => Math.min(prev + 1, sections.length - 1));
   };
 
   const handleBack = () => {
     console.log('Back clicked');
-    if (currentSection > 0) {
-      setCurrentSection(currentSection - 1);
-    }
+    setCurrentSection((prev) => Math.max(prev - 1, 0));
   };
 
   // Effect to update the continue handler and state
@@ -61,6 +53,10 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onCanCon
     onContinueHandlerChange?.(handleContinue);
     onCanContinueChange?.(canProceed);
   }, [handleContinue, canProceed, onContinueHandlerChange, onCanContinueChange]);
+  // Ensure the wizard always starts at step 0 on first load
+  useEffect(() => {
+    setCurrentSection(0);
+  }, []);
 
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white p-4 rounded-lg max-md:p-3 max-md:mx-0">
