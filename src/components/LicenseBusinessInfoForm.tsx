@@ -70,10 +70,6 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!formData.preferredName.trim()) {
-      newErrors.preferredName = 'Preferred business name is required';
-    }
-
     if (!formData.isLicensed) {
       newErrors.isLicensed = 'Please select whether you are currently licensed';
     }
@@ -95,7 +91,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   };
 
   const isFormValid = () => {
-    const baseValid = !!(formData.preferredName.trim() && formData.isLicensed && formData.conductBusinessOutsideUS);
+    const baseValid = !!(formData.isLicensed && formData.conductBusinessOutsideUS);
     let additionalValid = true;
     
     if (formData.isLicensed === 'yes') {
