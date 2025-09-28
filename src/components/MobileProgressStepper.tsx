@@ -20,14 +20,14 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
       {/* Primary Level: Main step title */}
       <div className="mb-2">
         <h1 className="text-[#0C0F24] font-bold text-xl">
-          {mainStepInfo.title}
+          Your Information
         </h1>
       </div>
 
       {/* Secondary Level: Step context with description */}
       <div className="mb-3">
         <p className="text-[#858791] text-sm">
-          Step {mainStepInfo.stepNumber} of 3 • {mainStepInfo.description}
+          Step 1 of 5 • Personal & Business Details
         </p>
       </div>
 

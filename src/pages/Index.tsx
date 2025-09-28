@@ -35,17 +35,8 @@ const Index = () => {
   };
 
   const getOverallProgress = (section: number) => {
-    const step = getMainStep(section);
-    const baseProgress = step * (100 / 3);
-    
-    if (step === 0) {
-      // Within "Your Information", distribute progress across 3 sections
-      const subProgress = (section + 1) / 3 * (100 / 3);
-      return Math.min(baseProgress + subProgress, 100 / 3);
-    }
-    
-    // For other steps, show progress to next major milestone
-    return Math.min(baseProgress + (100 / 3), 100);
+    // Progress within "Your Information" step: 20% per section completed
+    return (section + 1) * 20;
   };
 
   const handleSaveResume = () => {
