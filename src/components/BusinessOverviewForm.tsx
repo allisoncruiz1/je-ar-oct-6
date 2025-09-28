@@ -49,8 +49,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   onFormDataChange
 }) => {
   const [formData, setFormData] = useState<BusinessOverviewData>({
-    ownsBrokerage: initialData?.ownsBrokerage || '',
-    spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || '',
+    ownsBrokerage: initialData?.ownsBrokerage || 'no',
+    spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || 'no',
     ownsRealEstateOffice: initialData?.ownsRealEstateOffice || '',
     preExistingMatters: initialData?.preExistingMatters || [],
     licenseTransferDate: initialData?.licenseTransferDate || undefined
