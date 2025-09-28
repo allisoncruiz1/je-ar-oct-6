@@ -182,7 +182,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
 
         {/* International Business Section */}
         <div className="w-full space-y-6">
-          <h3 className="text-xl md:text-lg font-semibold text-foreground leading-none">
+          <h3 className="text-base font-semibold text-foreground leading-none">
             International Business
           </h3>
           
