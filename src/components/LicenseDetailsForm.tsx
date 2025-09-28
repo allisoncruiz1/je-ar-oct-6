@@ -106,26 +106,24 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     };
     onDataChange(newData);
     
-    // Check if all states are valid
-    const isValid = licensedStates.every(state => {
-      const stateData = newData[state];
-      const baseValid = stateData?.licenseNumber?.trim() &&
-                       stateData?.salesTransactions?.trim() &&
-                       stateData?.pendingTransactions?.trim() &&
-                       stateData?.mls?.length > 0 &&
-                       (stateData?.certifiedMentor === 'yes' || stateData?.certifiedMentor === 'no');
-      
-      // If pending transactions is "yes", also require existing transactions count
-      const pendingValid = stateData?.pendingTransactions !== 'yes' || 
-                          (stateData?.existingTransactionsCount?.trim());
-      
-      // If certified mentor is "yes", also require selected mentor
-      const mentorValid = stateData?.certifiedMentor !== 'yes' || 
-                         (stateData?.selectedMentor?.trim());
-      
-      return baseValid && pendingValid && mentorValid;
-    });
-    onFormValidChange(isValid);
+    // Check if current state is valid (allow continuing with partial data)
+    const currentStateData = newData[currentState];
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() &&
+                     currentStateData?.salesTransactions?.trim() &&
+                     currentStateData?.pendingTransactions?.trim() &&
+                     currentStateData?.mls?.length > 0 &&
+                     (currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no'));
+    
+    // If pending transactions is "yes", also require existing transactions count
+    const pendingValid = currentStateData?.pendingTransactions !== 'yes' || 
+                        !!(currentStateData?.existingTransactionsCount?.trim());
+    
+    // If certified mentor is "yes", also require selected mentor
+    const mentorValid = currentStateData?.certifiedMentor !== 'yes' || 
+                       !!(currentStateData?.selectedMentor?.trim());
+    
+    const isCurrentStateValid = baseValid && pendingValid && mentorValid;
+    onFormValidChange(isCurrentStateValid);
   };
 
 
