@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useIsTouchDevice } from "@/hooks/use-touch";
 
 
 export interface BusinessOverviewData {
@@ -50,6 +51,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   initialData,
   onFormDataChange
 }) => {
+  const isTouch = useIsTouchDevice();
   
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || 'no',
@@ -58,6 +60,12 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     preExistingMatters: initialData?.preExistingMatters || [],
     licenseTransferDate: initialData?.licenseTransferDate || undefined
   });
+
+  // Helper to parse date string to local Date (avoids timezone issues)
+  const toLocalDate = (yyyyMmDd: string) => {
+    const [year, month, day] = yyyyMmDd.split("-").map(Number);
+    return new Date(year, month - 1, day, 12, 0, 0);
+  };
 
   const updateFormData = (field: keyof BusinessOverviewData, value: any) => {
     const newData = { ...formData, [field]: value };
@@ -192,22 +200,21 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        {/* Mobile: native date input */}
-        <div className="block md:hidden">
+        {isTouch ? (
           <Input
             type="date"
             value={formData.licenseTransferDate ? format(formData.licenseTransferDate, "yyyy-MM-dd") : ""}
             onChange={(e) => {
-              const dateValue = e.target.value ? new Date(e.target.value) : undefined;
+              const dateValue = e.target.value ? toLocalDate(e.target.value) : undefined;
               updateFormData('licenseTransferDate', dateValue);
             }}
             min={format(new Date(), "yyyy-MM-dd")}
             className="w-full"
             aria-label="License transfer date"
+            inputMode="numeric"
+            pattern="\d{4}-\d{2}-\d{2}"
           />
-        </div>
-        {/* Desktop: popover calendar */}
-        <div className="hidden md:block">
+        ) : (
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -233,7 +240,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               />
             </PopoverContent>
           </Popover>
-        </div>
+        )}
       </div>
 
       {/* Sticky Action Bar */}
