@@ -11,6 +11,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useIsTouchDevice } from "@/hooks/use-touch";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 
 export interface BusinessOverviewData {
@@ -52,6 +53,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   onFormDataChange
 }) => {
   const isTouch = useIsTouchDevice();
+  const isMobile = useIsMobile();
+  const isIOSLike = typeof navigator !== "undefined" && ((/iPad|iPhone|iPod/.test(navigator.userAgent)) || (navigator.platform === "MacIntel" && (navigator as any).maxTouchPoints > 1));
+  const useNativeDate = isTouch || isMobile || isIOSLike;
   
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || 'no',
@@ -117,6 +121,17 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       onSubmit?.(formData);
     }
   };
+
+  // Dev-only debug log for date picker detection
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      console.debug("Date picker flags", { isTouch, isMobile, isIOSLike, useNativeDate });
+    }
+  }, [isTouch, isMobile, isIOSLike, useNativeDate]);
+
+  // Normalize today at midnight for calendar disabling
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -200,7 +215,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        {isTouch ? (
+        {useNativeDate ? (
           <Input
             type="date"
             value={formData.licenseTransferDate ? format(formData.licenseTransferDate, "yyyy-MM-dd") : ""}
@@ -236,7 +251,11 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
                 onSelect={(date) => updateFormData('licenseTransferDate', date)}
                 initialFocus
                 className={cn("p-3 pointer-events-auto")}
-                disabled={(date) => date < new Date()}
+                disabled={(date) => {
+                  const d = new Date(date);
+                  d.setHours(0, 0, 0, 0);
+                  return d < startOfToday;
+                }}
               />
             </PopoverContent>
           </Popover>
