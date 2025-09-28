@@ -35,8 +35,8 @@ const Index = () => {
   };
 
   const getOverallProgress = (section: number) => {
-    // Progress within "Your Information" step: 20% per section completed
-    return (section + 1) * 20;
+    // Progress stays at 20% for step 1 (section 0), then increases
+    return section === 0 ? 20 : (section + 1) * 20;
   };
 
   const handleSaveResume = () => {
