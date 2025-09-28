@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { BinaryChoice } from "@/components/ui/binary-choice";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -119,42 +120,22 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
 
       {/* Own Brokerage */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium text-foreground">
-          Do you currently own a real estate brokerage or share interest in another real estate brokerage? <span className="text-destructive">*</span>
-        </Label>
-        <RadioGroup
+        <BinaryChoice
           value={formData.ownsBrokerage}
           onValueChange={(value) => updateFormData('ownsBrokerage', value)}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="owns-brokerage-yes" />
-            <Label htmlFor="owns-brokerage-yes" className="text-sm">Yes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="owns-brokerage-no" />
-            <Label htmlFor="owns-brokerage-no" className="text-sm">No</Label>
-          </div>
-        </RadioGroup>
+          label="Do you currently own a real estate brokerage or share interest in another real estate brokerage?"
+          required
+        />
       </div>
 
       {/* Spouse at Different Brokerage */}
       <div className="space-y-3">
-        <Label className="text-sm font-medium text-foreground">
-          Do you have a spouse or domestic partner that is affiliated with a different brokerage? <span className="text-destructive">*</span>
-        </Label>
-        <RadioGroup
+        <BinaryChoice
           value={formData.spouseAtDifferentBrokerage}
           onValueChange={(value) => updateFormData('spouseAtDifferentBrokerage', value)}
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="spouse-different-yes" />
-            <Label htmlFor="spouse-different-yes" className="text-sm">Yes</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="spouse-different-no" />
-            <Label htmlFor="spouse-different-no" className="text-sm">No</Label>
-          </div>
-        </RadioGroup>
+          label="Do you have a spouse or domestic partner that is affiliated with a different brokerage?"
+          required
+        />
       </div>
 
       {/* Owns Real Estate Office */}
