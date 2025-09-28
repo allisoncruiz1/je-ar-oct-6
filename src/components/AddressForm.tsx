@@ -239,7 +239,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
 
   return (
-    <form onSubmit={handleSubmit} className="w-full text-base mt-3 max-md:max-w-full">
+    <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-[#0c0f24] font-semibold leading-6 max-md:max-w-full">
           Address Line 1

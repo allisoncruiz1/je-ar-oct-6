@@ -20,8 +20,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   const isInYourInformation = currentSection <= 4;
   const progress = isInYourInformation ? (currentSection + 1) * 20 
   : (currentSection + 1) / totalSections * 100;
-  return <div className="mt-6 mb-4">
-      <div className="flex items-center justify-between mb-3">
+  return <div className="mt-6 mb-2">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
           {showBack && (
             <Button
@@ -34,7 +34,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
               <ChevronLeft size={16} />
             </Button>
           )}
-          <h2 className="font-semibold text-[#0C0F24] text-base">
+          <h2 className="font-semibold text-[#0C0F24] text-lg">
             {sectionTitle}
           </h2>
         </div>
