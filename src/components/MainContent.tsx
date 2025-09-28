@@ -23,27 +23,30 @@ interface LicenseBusinessData {
 }
 
 interface MainContentProps {
+  currentSection: number;
+  setCurrentSection: (section: number | ((prev: number) => number)) => void;
+  completedSections: number[];
+  setCompletedSections: (sections: number[] | ((prev: number[]) => number[])) => void;
+  sections: string[];
   onFormSubmit?: (data: any) => void;
   onSaveResume?: () => void;
 }
 
-export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveResume }) => {
-  const [currentSection, setCurrentSection] = useState(0);
-  const [completedSections, setCompletedSections] = useState<number[]>([]);
+export const MainContent: React.FC<MainContentProps> = ({ 
+  currentSection, 
+  setCurrentSection, 
+  completedSections, 
+  setCompletedSections, 
+  sections,
+  onFormSubmit, 
+  onSaveResume 
+}) => {
   const [formComplete, setFormComplete] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
   const [licenseBusinessData, setLicenseBusinessData] = useState<LicenseBusinessData | null>(null);
   const [licenseDetailsData, setLicenseDetailsData] = useState<LicenseDetailsData>({});
   const [licenseBusinessFormComplete, setLicenseBusinessFormComplete] = useState(false);
   const [licenseDetailsFormComplete, setLicenseDetailsFormComplete] = useState(false);
-
-  const sections = [
-    'Mailing Address',
-    'License Business Info',
-    'License Details',
-    'Business Disclosures',
-    'Team Function'
-  ];
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
@@ -136,16 +139,6 @@ export const MainContent: React.FC<MainContentProps> = ({ onFormSubmit, onSaveRe
     }
   }, [handleContinue]);
 
-  // Ensure the wizard always starts at step 0 on first load
-  useEffect(() => {
-    setCurrentSection(0);
-  }, []);
-  // Safety guard: if somehow mounted at a later step with no progress, snap back to step 0
-  useEffect(() => {
-    if (currentSection !== 0 && completedSections.length === 0) {
-      setCurrentSection(0);
-    }
-  }, [currentSection, completedSections.length]);
 
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
