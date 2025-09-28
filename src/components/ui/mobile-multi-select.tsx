@@ -122,7 +122,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
               >
                 <Checkbox 
                   checked={selectedValues.includes(option)}
-                  className="h-5 w-5"
+                  className="shrink-0"
                 />
                 <span className="text-base md:text-sm flex-1">{option}</span>
               </div>
