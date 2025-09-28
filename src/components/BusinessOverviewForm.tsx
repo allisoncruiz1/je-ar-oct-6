@@ -7,6 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -64,6 +65,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     preExistingMatters: initialData?.preExistingMatters || [],
     licenseTransferDate: initialData?.licenseTransferDate || undefined
   });
+
+  const [isDateDrawerOpen, setIsDateDrawerOpen] = useState(false);
+  const isMobileLike = isMobile || isTouch;
 
   // Helper to parse date string to local Date (avoids timezone issues)
   const toLocalDate = (yyyyMmDd: string) => {
@@ -224,11 +228,55 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               updateFormData('licenseTransferDate', dateValue);
             }}
             min={format(new Date(), "yyyy-MM-dd")}
-            className="w-full h-14 px-4 py-3 text-base md:h-10 md:px-3 md:py-2 rounded-lg"
+            className="w-full h-14 md:h-10 px-4 py-3 text-base md:text-sm rounded-lg"
             aria-label="License transfer date"
             inputMode="numeric"
-            pattern="\d{4}-\d{2}-\d{2}"
+            pattern="\\d{4}-\\d{2}-\\d{2}"
           />
+        ) : isMobileLike ? (
+          <>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full h-14 md:h-10 justify-start text-left font-normal",
+                !formData.licenseTransferDate && "text-muted-foreground"
+              )}
+              aria-label="Open date picker"
+              onClick={() => setIsDateDrawerOpen(true)}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {formData.licenseTransferDate ? format(formData.licenseTransferDate, "PPP") : "Select a Date"}
+            </Button>
+            <Drawer open={isDateDrawerOpen} onOpenChange={setIsDateDrawerOpen}>
+              <DrawerContent className="h-[100dvh] p-0">
+                <div className="flex h-full flex-col bg-background">
+                  <DrawerHeader className="px-4 py-3 border-b border-border">
+                    <DrawerTitle className="text-base">Select date</DrawerTitle>
+                  </DrawerHeader>
+                  <div className="flex-1 overflow-auto p-3">
+                    <Calendar
+                      mode="single"
+                      selected={formData.licenseTransferDate}
+                      onSelect={(date) => updateFormData('licenseTransferDate', date)}
+                      initialFocus
+                      className={cn("p-3 pointer-events-auto")}
+                      disabled={(date) => {
+                        const d = new Date(date);
+                        d.setHours(0, 0, 0, 0);
+                        return d < startOfToday;
+                      }}
+                    />
+                  </div>
+                  <div className="px-4 py-3 border-t border-border">
+                    <div className="flex gap-3">
+                      <Button variant="outline" className="flex-1" onClick={() => setIsDateDrawerOpen(false)}>Cancel</Button>
+                      <Button className="flex-1" onClick={() => setIsDateDrawerOpen(false)}>Done</Button>
+                    </div>
+                  </div>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          </>
         ) : (
           <Popover>
             <PopoverTrigger asChild>
