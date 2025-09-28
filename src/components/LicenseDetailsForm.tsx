@@ -4,12 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BinaryChoice } from "@/components/ui/binary-choice";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { MobileMultiSelect } from "@/components/ui/mobile-multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDown, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface LicenseDetailsData {
@@ -86,8 +83,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   showBack
 }) => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
-  const [associationsOpen, setAssociationsOpen] = useState(false);
-  const [mlsOpen, setMlsOpen] = useState(false);
 
   const currentState = licensedStates[currentStateIndex];
   const currentData = data[currentState] || {
@@ -133,29 +128,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     onFormValidChange(isValid);
   };
 
-  const toggleAssociation = (association: string) => {
-    const newAssociations = currentData.associations.includes(association)
-      ? currentData.associations.filter(a => a !== association)
-      : [...currentData.associations, association];
-    updateCurrentStateData('associations', newAssociations);
-  };
-
-  const toggleMLS = (mls: string) => {
-    const newMLS = currentData.mls.includes(mls)
-      ? currentData.mls.filter(m => m !== mls)
-      : [...currentData.mls, mls];
-    updateCurrentStateData('mls', newMLS);
-  };
-
-  const removeAssociation = (association: string) => {
-    const newAssociations = currentData.associations.filter(a => a !== association);
-    updateCurrentStateData('associations', newAssociations);
-  };
-
-  const removeMLS = (mls: string) => {
-    const newMLS = currentData.mls.filter(m => m !== mls);
-    updateCurrentStateData('mls', newMLS);
-  };
 
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
@@ -283,62 +255,13 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}:
         </Label>
-        <Popover open={associationsOpen} onOpenChange={setAssociationsOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={associationsOpen}
-              className="w-full justify-between text-left font-normal"
-            >
-              {currentData.associations.length > 0
-                ? `${currentData.associations.length} association(s) selected`
-                : "Select associations"}
-              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
-            <Command>
-              <CommandInput placeholder="Search associations..." className="h-9" />
-              <CommandList>
-                <CommandEmpty>No associations found.</CommandEmpty>
-                <CommandGroup>
-                  {ASSOCIATIONS.map((association) => (
-                    <CommandItem
-                      key={association}
-                      onSelect={() => toggleAssociation(association)}
-                      className="flex items-center space-x-2 cursor-pointer"
-                    >
-                      <Checkbox
-                        checked={currentData.associations.includes(association)}
-                        onChange={() => toggleAssociation(association)}
-                      />
-                      <span className="flex-1">{association}</span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-
-        {/* Selected Associations */}
-        {currentData.associations.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {currentData.associations.map((association) => (
-              <Badge key={association} variant="secondary" className="flex items-center gap-1">
-                {association}
-                <button
-                  type="button"
-                  onClick={() => removeAssociation(association)}
-                  className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
-        )}
+        <MobileMultiSelect
+          options={ASSOCIATIONS}
+          selectedValues={currentData.associations}
+          onSelectionChange={(values) => updateCurrentStateData('associations', values)}
+          placeholder="Select associations"
+          searchPlaceholder="Search associations..."
+        />
       </div>
 
       {/* MLS */}
@@ -346,62 +269,13 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Please select your MLS(s) you plan to be affiliated with as a real estate agent in {currentState}: <span className="text-destructive">*</span>
         </Label>
-        <Popover open={mlsOpen} onOpenChange={setMlsOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={mlsOpen}
-              className="w-full justify-between text-left font-normal"
-            >
-              {currentData.mls.length > 0
-                ? `${currentData.mls.length} MLS selected`
-                : "Select MLS"}
-              <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-full p-0" align="start">
-            <Command>
-              <CommandInput placeholder="Search MLS..." className="h-9" />
-              <CommandList>
-                <CommandEmpty>No MLS found.</CommandEmpty>
-                <CommandGroup>
-                  {MLS_OPTIONS.map((mls) => (
-                    <CommandItem
-                      key={mls}
-                      onSelect={() => toggleMLS(mls)}
-                      className="flex items-center space-x-2 cursor-pointer"
-                    >
-                      <Checkbox
-                        checked={currentData.mls.includes(mls)}
-                        onChange={() => toggleMLS(mls)}
-                      />
-                      <span className="flex-1">{mls}</span>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-
-        {/* Selected MLS */}
-        {currentData.mls.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {currentData.mls.map((mls) => (
-              <Badge key={mls} variant="secondary" className="flex items-center gap-1">
-                {mls}
-                <button
-                  type="button"
-                  onClick={() => removeMLS(mls)}
-                  className="ml-1 hover:bg-destructive/20 rounded-full p-0.5"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
-        )}
+        <MobileMultiSelect
+          options={MLS_OPTIONS}
+          selectedValues={currentData.mls}
+          onSelectionChange={(values) => updateCurrentStateData('mls', values)}
+          placeholder="Select MLS"
+          searchPlaceholder="Search MLS..."
+        />
       </div>
 
       {/* Certified Mentor Program */}
