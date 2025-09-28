@@ -105,8 +105,8 @@ All colors MUST be HSL.
 
   /* Mobile-first improvements */
   @media (max-width: 768px) {
-    /* Ensure proper touch targets */
-    button:not(.small-button) {
+    /* Ensure proper touch targets - exclude form controls */
+    button:not(.small-button):not([role="checkbox"]):not([role="radio"]):not([role="switch"]):not([data-radix-collection-item]) {
       min-height: 48px;
     }
     
