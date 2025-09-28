@@ -18,7 +18,7 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
   totalMainSteps
 }) => {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-sm mb-6">
+    <div className="bg-white p-4 rounded-lg shadow-sm mb-2">
       {/* Primary Level: Main step title */}
       <div className="mb-2">
         <h1 className="text-[#0C0F24] font-bold text-xl">

@@ -64,7 +64,7 @@ const Index = () => {
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-3 pb-6 max-md:pb-4">
         <div className="flex w-full flex-col items-stretch">
           {/* Mobile progress stepper */}
-          <div className="md:hidden sticky top-20 z-50 mt-2 bg-[rgba(239,241,247,1)] pt-2 pb-2">
+          <div className="md:hidden sticky top-20 z-50 mt-2 bg-[rgba(239,241,247,1)] pt-2 pb-0">
             <MobileProgressStepper 
               currentSection={currentSection}
               mainStepInfo={getMainStepInfo(currentSection)}
