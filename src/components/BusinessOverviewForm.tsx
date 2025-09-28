@@ -8,7 +8,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useIsTouchDevice } from "@/hooks/use-touch";
@@ -248,18 +248,59 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               {formData.licenseTransferDate ? format(formData.licenseTransferDate, "PPP") : "Select a Date"}
             </Button>
             <Drawer open={isDateDrawerOpen} onOpenChange={setIsDateDrawerOpen}>
-              <DrawerContent className="h-[100dvh] p-0">
+              <DrawerContent className="h-[100dvh] p-0 rounded-none">
                 <div className="flex h-full flex-col bg-background">
-                  <DrawerHeader className="px-4 py-3 border-b border-border">
-                    <DrawerTitle className="text-base">Select date</DrawerTitle>
-                  </DrawerHeader>
-                  <div className="flex-1 overflow-auto p-3">
+                  {/* Header */}
+                  <div className="flex items-center justify-between px-4 py-4 border-b border-border bg-background">
+                    <button 
+                      onClick={() => setIsDateDrawerOpen(false)}
+                      className="p-2 -ml-2 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                    <h2 className="text-lg font-medium">Select Transfer Date</h2>
+                    <button 
+                      onClick={() => {
+                        updateFormData('licenseTransferDate', undefined);
+                        setIsDateDrawerOpen(false);
+                      }}
+                      className="text-sm text-muted-foreground hover:text-foreground px-2 py-1"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  
+                  {/* Calendar */}
+                  <div className="flex-1 overflow-auto bg-background">
                     <Calendar
                       mode="single"
                       selected={formData.licenseTransferDate}
                       onSelect={(date) => updateFormData('licenseTransferDate', date)}
                       initialFocus
-                      className={cn("p-3 pointer-events-auto")}
+                      numberOfMonths={2}
+                      className={cn("p-4 pointer-events-auto w-full")}
+                      classNames={{
+                        months: "flex flex-col space-y-6 w-full",
+                        month: "space-y-4 w-full",
+                        caption: "flex justify-center pt-1 relative items-center text-lg font-medium",
+                        caption_label: "text-lg font-medium",
+                        nav: "space-x-1 flex items-center",
+                        nav_button: "h-8 w-8 bg-transparent p-0 opacity-50 hover:opacity-100 rounded-md border border-border hover:bg-accent",
+                        nav_button_previous: "absolute left-1",
+                        nav_button_next: "absolute right-1",
+                        table: "w-full border-collapse space-y-1",
+                        head_row: "flex w-full",
+                        head_cell: "text-muted-foreground rounded-md w-full font-normal text-sm py-2 text-center",
+                        row: "flex w-full mt-2",
+                        cell: "h-11 w-full text-center text-sm p-0 relative focus-within:relative focus-within:z-20",
+                        day: "h-11 w-full p-0 font-normal text-sm rounded-md hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground aria-selected:opacity-100",
+                        day_selected: "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
+                        day_today: "bg-accent text-accent-foreground font-medium",
+                        day_outside: "text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30",
+                        day_disabled: "text-muted-foreground opacity-50",
+                        day_range_middle: "aria-selected:bg-accent aria-selected:text-accent-foreground",
+                        day_hidden: "invisible",
+                      }}
                       disabled={(date) => {
                         const d = new Date(date);
                         d.setHours(0, 0, 0, 0);
@@ -267,11 +308,16 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
                       }}
                     />
                   </div>
-                  <div className="px-4 py-3 border-t border-border">
-                    <div className="flex gap-3">
-                      <Button variant="outline" className="flex-1" onClick={() => setIsDateDrawerOpen(false)}>Cancel</Button>
-                      <Button className="flex-1" onClick={() => setIsDateDrawerOpen(false)}>Done</Button>
-                    </div>
+                  
+                  {/* Bottom Action Bar */}
+                  <div className="p-4 border-t border-border bg-background">
+                    <Button 
+                      className="w-full h-12 text-base font-medium rounded-xl"
+                      onClick={() => setIsDateDrawerOpen(false)}
+                      disabled={!formData.licenseTransferDate}
+                    >
+                      {formData.licenseTransferDate ? 'Save Date' : 'Select a Date'}
+                    </Button>
                   </div>
                 </div>
               </DrawerContent>
