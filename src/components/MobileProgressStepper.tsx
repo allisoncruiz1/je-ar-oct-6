@@ -42,7 +42,7 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
       {/* Tertiary Level: Section info */}
       <div>
         <p className="text-[#858791] text-xs">
-          Section {currentSection + 1} of 5 • {sectionName}
+          Section 1.{currentSection + 1} of 1.5 • {sectionName}
         </p>
       </div>
     </div>

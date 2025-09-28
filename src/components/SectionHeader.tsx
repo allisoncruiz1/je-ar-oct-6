@@ -16,9 +16,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   onBack,
   showBack = false
 }) => {
-  // Calculate progress within "Your Information" (sections 0-2) or overall progress
-  const isInYourInformation = currentSection <= 2;
-  const progress = isInYourInformation ? (currentSection + 1) / 3 * 100 // Progress within "Your Information" 
+  // Calculate progress within "Your Information" (sections 0-4) - 20% per section
+  const isInYourInformation = currentSection <= 4;
+  const progress = isInYourInformation ? (currentSection + 1) * 20 
   : (currentSection + 1) / totalSections * 100;
   return <div className="mt-6 mb-4">
       <div className="flex items-center justify-between mb-3">
@@ -39,7 +39,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           </h2>
         </div>
         <span className="text-sm text-[#858791]">
-          {isInYourInformation ? `Step 1.${currentSection + 1} of 1.3` : `Step ${currentSection - 1} of ${totalSections - 2}`}
+          {isInYourInformation ? `Section 1.${currentSection + 1} of 1.5` : `Section ${currentSection + 1} of ${totalSections}`}
         </span>
       </div>
       
