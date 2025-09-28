@@ -34,11 +34,16 @@ export const MobileProgressStepper: React.FC<MobileProgressStepperProps> = ({
       </div>
 
       {/* Progress bar */}
-      <div className="bg-[rgba(0,0,0,0.1)] h-1.5 rounded-full">
-        <div 
-          className="bg-[#1B489B] h-full rounded-full transition-all duration-300" 
-          style={{ width: `${overallProgress}%` }}
-        />
+      <div className="flex items-center gap-3">
+        <div className="bg-[rgba(0,0,0,0.1)] h-1.5 rounded-full flex-1">
+          <div 
+            className="bg-[#1B489B] h-full rounded-full transition-all duration-300" 
+            style={{ width: `${overallProgress}%` }}
+          />
+        </div>
+        <div className="text-[#858791] text-sm font-semibold">
+          {overallProgress}%
+        </div>
       </div>
     </div>
   );
