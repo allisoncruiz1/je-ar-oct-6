@@ -15,14 +15,14 @@ const Index = () => {
     'License Business Info', 
     'License Details',
     'Business Overview',
-    'Business Disclosures',
-    'Team Function'
+    'Team Function',
+    'Business Disclosures'
   ];
 
   const getMainStep = (section: number) => {
-    if (section <= 3) return 0; // Your Information (sections 1.1-1.4)
-    if (section === 4) return 1; // Business Disclosures  
-    return 2; // Team Function
+    if (section <= 4) return 0; // Your Information (sections 1.1-1.5) - includes Team Function
+    if (section === 5) return 1; // Business Disclosures  
+    return 2; // Additional steps
   };
 
   const getMainStepInfo = (section: number) => {
@@ -30,7 +30,7 @@ const Index = () => {
     const mainSteps = [
       { title: 'Your Information', description: 'Personal & Business Details' },
       { title: 'Business Disclosures', description: 'Business Compliance' }, 
-      { title: 'Team Function', description: 'Team Configuration' }
+      { title: 'Additional Steps', description: 'Final Configuration' }
     ];
     return { ...mainSteps[step], stepNumber: step + 1 };
   };

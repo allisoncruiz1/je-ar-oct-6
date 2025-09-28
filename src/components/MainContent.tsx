@@ -3,6 +3,7 @@ import { AddressForm } from './AddressForm';
 import { LicenseBusinessInfoForm } from './LicenseBusinessInfoForm';
 import { LicenseDetailsForm, LicenseDetailsData } from './LicenseDetailsForm';
 import { BusinessOverviewForm, BusinessOverviewData } from './BusinessOverviewForm';
+import { TeamFunctionForm, TeamFunctionData } from './TeamFunctionForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
@@ -47,9 +48,11 @@ export const MainContent: React.FC<MainContentProps> = ({
   const [licenseBusinessData, setLicenseBusinessData] = useState<LicenseBusinessData | null>(null);
   const [licenseDetailsData, setLicenseDetailsData] = useState<LicenseDetailsData>({});
   const [businessOverviewData, setBusinessOverviewData] = useState<BusinessOverviewData | null>(null);
+  const [teamFunctionData, setTeamFunctionData] = useState<TeamFunctionData | null>(null);
   const [licenseBusinessFormComplete, setLicenseBusinessFormComplete] = useState(false);
   const [licenseDetailsFormComplete, setLicenseDetailsFormComplete] = useState(false);
   const [businessOverviewFormComplete, setBusinessOverviewFormComplete] = useState(false);
+  const [teamFunctionFormComplete, setTeamFunctionFormComplete] = useState(false);
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
@@ -85,6 +88,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       licenseBusinessFormComplete,
       licenseDetailsFormComplete,
       businessOverviewFormComplete,
+      teamFunctionFormComplete,
     });
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -114,6 +118,13 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Guard: do not advance from step 5 unless the team function form is complete
+    if (currentSection === 4 && !teamFunctionFormComplete) {
+      console.info('🚫 Continue blocked: Team Function incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
     console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
@@ -128,7 +139,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete]);
 
   const handleBack = () => {
     console.log('Back clicked');
@@ -213,46 +224,20 @@ export const MainContent: React.FC<MainContentProps> = ({
           />
         )}
         {currentSection === 4 && (
-          <div className="relative">
-            <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
-              Business Disclosure form will be implemented here.
-            </div>
-            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
-              <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
-                <Button
-                  variant="ghost"
-                  onClick={handleBack}
-                  aria-label="Go back to previous step"
-                  className="max-md:order-3 max-md:w-full"
-                >
-                  Back
-                </Button>
-                <div className="flex gap-3 max-md:w-full max-md:order-1">
-                  <Button
-                    variant="outline"
-                    onClick={onSaveResume}
-                    aria-label="Save and resume application later"
-                    className="max-md:flex-1 max-md:text-sm"
-                  >
-                    Save & Resume Later
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={triggerUserContinue}
-                    aria-label="Continue to next step"
-                    className="max-md:flex-1 max-md:text-sm"
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <TeamFunctionForm
+            onSubmit={handleFormSubmit}
+            onContinue={triggerUserContinue}
+            onFormValidChange={setTeamFunctionFormComplete}
+            onSaveResume={onSaveResume}
+            canContinue={teamFunctionFormComplete}
+            initialData={teamFunctionData || undefined}
+            onFormDataChange={setTeamFunctionData}
+          />
         )}
         {currentSection === 5 && (
           <div className="relative">
             <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
-              Team Function form will be implemented here.
+              Business Disclosure form will be implemented here.
             </div>
             <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
               <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
