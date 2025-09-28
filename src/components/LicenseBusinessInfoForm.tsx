@@ -156,23 +156,6 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 searchPlaceholder="Search states..."
               />
 
-              {/* Selected States Display */}
-              {formData.licensedStates.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {formData.licensedStates.map(state => (
-                    <Badge key={state} variant="secondary" className="text-sm px-3 py-1 flex items-center gap-2">
-                      {state}
-                      <X 
-                        className="h-3 w-3 cursor-pointer hover:text-destructive" 
-                        onClick={() => {
-                          const newStates = formData.licensedStates.filter(s => s !== state);
-                          updateFormData({ licensedStates: newStates });
-                        }} 
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
               
               {errors.licensedStates && (
                 <p className="text-sm text-destructive">{errors.licensedStates}</p>
@@ -224,23 +207,6 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 searchPlaceholder="Search countries..."
               />
 
-              {/* Selected Countries Display */}
-              {formData.internationalCountries.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {formData.internationalCountries.map(country => (
-                    <Badge key={country} variant="secondary" className="text-sm px-3 py-1 flex items-center gap-2">
-                      {country}
-                      <X 
-                        className="h-3 w-3 cursor-pointer hover:text-destructive" 
-                        onClick={() => {
-                          const newCountries = formData.internationalCountries.filter(c => c !== country);
-                          updateFormData({ internationalCountries: newCountries });
-                        }} 
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              )}
               
               {errors.internationalCountries && (
                 <p className="text-sm text-destructive">{errors.internationalCountries}</p>
