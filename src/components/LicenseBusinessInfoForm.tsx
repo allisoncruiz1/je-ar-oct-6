@@ -108,7 +108,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
             value={formData.preferredName} 
             onChange={e => updateFormData({ preferredName: e.target.value })} 
             placeholder="Enter your preferred name (optional)" 
-            className="h-12 md:h-10 text-base md:text-sm placeholder:text-muted-foreground" 
+            className="h-12 md:h-10 text-sm placeholder:text-muted-foreground" 
           />
         </div>
 
