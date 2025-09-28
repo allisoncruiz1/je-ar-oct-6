@@ -144,7 +144,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
       {/* Header section */}
       <div>
-        <div className="px-2 pt-0 pb-2 max-md:px-2 max-md:pt-0 max-md:pb-1">
+        <div className="px-2 pt-0 pb-0 max-md:px-2 max-md:pt-0 max-md:pb-0">
           <SectionHeader
             currentSection={currentSection}
             totalSections={sections.length}
