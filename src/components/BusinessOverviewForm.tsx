@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { useIsMobile } from "@/hooks/use-mobile";
+
 
 export interface BusinessOverviewData {
   ownsBrokerage: string;
@@ -50,7 +50,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   initialData,
   onFormDataChange
 }) => {
-  const isMobile = useIsMobile();
+  
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || 'no',
     spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || 'no',
@@ -192,7 +192,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        {isMobile ? (
+        {/* Mobile: native date input */}
+        <div className="block md:hidden">
           <Input
             type="date"
             value={formData.licenseTransferDate ? format(formData.licenseTransferDate, "yyyy-MM-dd") : ""}
@@ -202,8 +203,11 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
             }}
             min={format(new Date(), "yyyy-MM-dd")}
             className="w-full"
+            aria-label="License transfer date"
           />
-        ) : (
+        </div>
+        {/* Desktop: popover calendar */}
+        <div className="hidden md:block">
           <Popover>
             <PopoverTrigger asChild>
               <Button
@@ -212,6 +216,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
                   "w-full justify-start text-left font-normal",
                   !formData.licenseTransferDate && "text-muted-foreground"
                 )}
+                aria-label="Open calendar"
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
                 {formData.licenseTransferDate ? format(formData.licenseTransferDate, "PPP") : "Select a Date"}
@@ -228,7 +233,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               />
             </PopoverContent>
           </Popover>
-        )}
+        </div>
       </div>
 
       {/* Sticky Action Bar */}
