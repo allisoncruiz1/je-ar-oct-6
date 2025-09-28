@@ -150,23 +150,19 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
     </div>
   );
 
-  if (isMobile) {
-    return (
-      <Drawer open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          {TriggerButton}
-        </DrawerTrigger>
-        <DrawerContent className="max-h-[85vh] bg-card border-t border-border shadow-xl z-50">
-          <DrawerHeader className="text-left border-b border-border bg-card px-6 py-4">
-            <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</DrawerTitle>
-          </DrawerHeader>
-          {SelectionContent}
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-
-  return (
+  const MultiSelectComponent = isMobile ? (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        {TriggerButton}
+      </DrawerTrigger>
+      <DrawerContent className="max-h-[85vh] bg-card border-t border-border shadow-xl z-50">
+        <DrawerHeader className="text-left border-b border-border bg-card px-6 py-4">
+          <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</DrawerTitle>
+        </DrawerHeader>
+        {SelectionContent}
+      </DrawerContent>
+    </Drawer>
+  ) : (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         {TriggerButton}
@@ -180,5 +176,29 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
         </div>
       </SheetContent>
     </Sheet>
+  );
+
+  return (
+    <div className="w-full">
+      {MultiSelectComponent}
+      {/* Selected Tags underneath */}
+      {selectedValues.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3">
+          {selectedValues.map(value => (
+            <Badge 
+              key={value} 
+              variant="secondary" 
+              className="text-sm px-3 py-1 flex items-center gap-2"
+            >
+              {value}
+              <X 
+                className="h-3.5 w-3.5 cursor-pointer hover:text-destructive" 
+                onClick={() => handleRemoveOption(value)}
+              />
+            </Badge>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
