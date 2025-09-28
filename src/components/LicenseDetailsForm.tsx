@@ -118,7 +118,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
                        stateData?.salesTransactions?.trim() &&
                        stateData?.pendingTransactions?.trim() &&
                        stateData?.mls?.length > 0 &&
-                       stateData?.certifiedMentor?.trim();
+                       (stateData?.certifiedMentor === 'yes' || stateData?.certifiedMentor === 'no');
       
       // If pending transactions is "yes", also require existing transactions count
       const pendingValid = stateData?.pendingTransactions !== 'yes' || 

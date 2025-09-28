@@ -49,13 +49,13 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   const [errors, setErrors] = useState<Record<string, string>>({});
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    if (!formData.isLicensed) {
+    if (!formData.isLicensed || (formData.isLicensed !== 'yes' && formData.isLicensed !== 'no')) {
       newErrors.isLicensed = 'Please select whether you are currently licensed';
     }
     if (formData.isLicensed === 'yes' && formData.licensedStates.length === 0) {
       newErrors.licensedStates = 'Please select at least one state where you are licensed';
     }
-    if (!formData.conductBusinessOutsideUS) {
+    if (!formData.conductBusinessOutsideUS || (formData.conductBusinessOutsideUS !== 'yes' && formData.conductBusinessOutsideUS !== 'no')) {
       newErrors.conductBusinessOutsideUS = 'Please select whether you conduct business outside the US';
     }
     if (formData.conductBusinessOutsideUS === 'yes' && formData.internationalCountries.length === 0) {
@@ -65,7 +65,8 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     return Object.keys(newErrors).length === 0;
   };
   const isFormValid = () => {
-    const baseValid = !!(formData.isLicensed && formData.conductBusinessOutsideUS);
+    const baseValid = (formData.isLicensed === 'yes' || formData.isLicensed === 'no') && 
+                     (formData.conductBusinessOutsideUS === 'yes' || formData.conductBusinessOutsideUS === 'no');
     let additionalValid = true;
     if (formData.isLicensed === 'yes') {
       additionalValid = additionalValid && formData.licensedStates.length > 0;
