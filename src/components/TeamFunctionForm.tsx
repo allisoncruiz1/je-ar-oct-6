@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { z } from 'zod';
@@ -102,24 +102,27 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <RadioGroup
+        <ToggleGroup
+          type="single"
           value={formData.agentType}
-          onValueChange={(value) => updateFormData('agentType', value)}
-          className="mt-3"
+          onValueChange={(value) => value && updateFormData('agentType', value)}
+          className="flex flex-col items-start gap-2 mt-3"
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="individual" id="agent-individual" />
-            <Label htmlFor="agent-individual" className="text-sm font-normal">
-              Individual Agent
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="team" id="agent-team" />
-            <Label htmlFor="agent-team" className="text-sm font-normal">
-              Part of a team
-            </Label>
-          </div>
-        </RadioGroup>
+          <ToggleGroupItem 
+            value="individual" 
+            aria-label="Individual Agent"
+            className="w-full justify-start h-auto p-4 text-left data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+          >
+            Individual Agent
+          </ToggleGroupItem>
+          <ToggleGroupItem 
+            value="team" 
+            aria-label="Part of a team"
+            className="w-full justify-start h-auto p-4 text-left data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+          >
+            Part of a team
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
       {/* Corporate Staff Member Question */}
@@ -127,24 +130,27 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Are you an eXp realty Corporate Staff member? <span className="text-destructive">*</span>
         </Label>
-        <RadioGroup
+        <ToggleGroup
+          type="single"
           value={formData.corporateStaffMember}
-          onValueChange={(value) => updateFormData('corporateStaffMember', value)}
-          className="mt-3"
+          onValueChange={(value) => value && updateFormData('corporateStaffMember', value)}
+          className="flex flex-col items-start gap-2 mt-3"
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="corporate-yes" />
-            <Label htmlFor="corporate-yes" className="text-sm font-normal">
-              Yes
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="corporate-no" />
-            <Label htmlFor="corporate-no" className="text-sm font-normal">
-              No
-            </Label>
-          </div>
-        </RadioGroup>
+          <ToggleGroupItem 
+            value="yes" 
+            aria-label="Yes"
+            className="w-full justify-start h-auto p-4 text-left data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+          >
+            Yes
+          </ToggleGroupItem>
+          <ToggleGroupItem 
+            value="no" 
+            aria-label="No"
+            className="w-full justify-start h-auto p-4 text-left data-[state=on]:bg-primary data-[state=on]:text-primary-foreground"
+          >
+            No
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
 
       {/* Sticky Action Bar */}
