@@ -99,7 +99,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
       <form onSubmit={handleSubmit} className="w-full space-y-8 pb-20 md:pb-6">
         {/* Preferred Name Field */}
         <div className="w-full space-y-2">
-          <Label htmlFor="preferredName" className="text-base md:text-sm font-medium text-foreground leading-none">
+          <Label htmlFor="preferredName" className="text-sm font-medium text-foreground leading-none">
             Preferred Name
           </Label>
           <Input 
@@ -134,7 +134,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           {formData.isLicensed === 'yes' && (
             <div className="w-full space-y-3">
               <div className="flex items-center gap-2">
-                <Label className="text-base md:text-sm font-medium text-foreground leading-none">
+                <Label className="text-sm font-medium text-foreground leading-none">
                   What state(s) are you currently licensed in? <span className="text-destructive">*</span>
                 </Label>
                 <Tooltip>
@@ -202,7 +202,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
           {formData.conductBusinessOutsideUS === 'yes' && (
             <div className="w-full space-y-3">
               <div className="flex items-center gap-2">
-                <Label className="text-base md:text-sm font-medium text-foreground leading-none">
+                <Label className="text-sm font-medium text-foreground leading-none">
                   Where? <span className="text-destructive">*</span>
                 </Label>
                 <Tooltip>

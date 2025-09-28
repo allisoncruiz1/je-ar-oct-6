@@ -286,7 +286,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       <div className="w-full mt-4 max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold max-md:max-w-full">
+        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold max-md:max-w-full text-sm">
           Address Line 2 (Optional)
         </label>
         <input
@@ -299,7 +299,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       <div className="w-full mt-4 max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
+        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
           City
           <span className="text-[#A91616]">*</span>
         </label>
@@ -315,7 +315,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
       <div className="flex w-full gap-3 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
+          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
             State
             <span className="text-[#A91616]">*</span>
           </label>
@@ -388,7 +388,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         </div>
 
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full">
+          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
             Zip code
             <span className="text-[#A91616]">*</span>
           </label>
