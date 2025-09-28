@@ -6,9 +6,11 @@ import { BinaryChoice } from "@/components/ui/binary-choice";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Input } from "@/components/ui/input";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export interface BusinessOverviewData {
   ownsBrokerage: string;
@@ -48,6 +50,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   initialData,
   onFormDataChange
 }) => {
+  const isMobile = useIsMobile();
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || 'no',
     spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || 'no',
@@ -189,30 +192,43 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className={cn(
-                "w-full justify-start text-left font-normal",
-                !formData.licenseTransferDate && "text-muted-foreground"
-              )}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {formData.licenseTransferDate ? format(formData.licenseTransferDate, "PPP") : "Select a Date"}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
-            <Calendar
-              mode="single"
-              selected={formData.licenseTransferDate}
-              onSelect={(date) => updateFormData('licenseTransferDate', date)}
-              initialFocus
-              className={cn("p-3 pointer-events-auto")}
-              disabled={(date) => date < new Date()}
-            />
-          </PopoverContent>
-        </Popover>
+        {isMobile ? (
+          <Input
+            type="date"
+            value={formData.licenseTransferDate ? format(formData.licenseTransferDate, "yyyy-MM-dd") : ""}
+            onChange={(e) => {
+              const dateValue = e.target.value ? new Date(e.target.value) : undefined;
+              updateFormData('licenseTransferDate', dateValue);
+            }}
+            min={format(new Date(), "yyyy-MM-dd")}
+            className="w-full"
+          />
+        ) : (
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-start text-left font-normal",
+                  !formData.licenseTransferDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {formData.licenseTransferDate ? format(formData.licenseTransferDate, "PPP") : "Select a Date"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={formData.licenseTransferDate}
+                onSelect={(date) => updateFormData('licenseTransferDate', date)}
+                initialFocus
+                className={cn("p-3 pointer-events-auto")}
+                disabled={(date) => date < new Date()}
+              />
+            </PopoverContent>
+          </Popover>
+        )}
       </div>
 
       {/* Sticky Action Bar */}
