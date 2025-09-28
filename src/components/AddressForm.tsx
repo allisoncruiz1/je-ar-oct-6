@@ -294,7 +294,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           value={formData.addressLine2}
           onChange={(e) => handleInputChange('addressLine2', e.target.value)}
           placeholder="Apartment, suite, unit, building, etc"
-          className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+          className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
         />
       </div>
 
@@ -309,7 +309,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             onChange={(e) => handleInputChange('city', e.target.value)}
             placeholder="City"
             required
-            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
           />
       </div>
 
@@ -324,7 +324,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               value={formData.state}
               onChange={(e) => handleInputChange('state', e.target.value)}
               required
-              className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent appearance-none"
+              className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent appearance-none text-sm"
             >
               <option value="">Select State</option>
               <option value="AL">Alabama</option>
@@ -399,7 +399,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             placeholder="12345"
             required
             pattern="[0-9]{5}(-[0-9]{4})?"
-            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
           />
         </div>
       </div>
