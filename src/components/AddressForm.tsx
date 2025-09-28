@@ -241,7 +241,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0c0f24] font-semibold leading-6 max-md:max-w-full">
+        <label className="flex w-full items-center gap-1 text-[#0c0f24] font-semibold leading-6 max-md:max-w-full text-sm">
           Address Line 1
           <span className="text-[#A91616]">*</span>
         </label>
