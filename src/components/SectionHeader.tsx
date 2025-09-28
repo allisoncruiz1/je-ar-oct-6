@@ -42,11 +42,5 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {isInYourInformation ? `Section 1.${currentSection + 1} of 1.5` : `Section ${currentSection + 1} of ${totalSections}`}
         </span>
       </div>
-      
-      <div className="w-full bg-[rgba(0,0,0,0.1)] rounded-full h-2">
-        <div className="bg-[#1B489B] h-2 rounded-full transition-all duration-300" style={{
-        width: `${progress}%`
-      }} />
-      </div>
     </div>;
 };

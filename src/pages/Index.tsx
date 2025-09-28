@@ -70,6 +70,7 @@ const Index = () => {
               mainStepInfo={getMainStepInfo(currentSection)}
               overallProgress={getOverallProgress(currentSection)}
               sectionName={sections[currentSection]}
+              totalMainSteps={5}
             />
           </div>
 
