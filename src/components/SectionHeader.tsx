@@ -22,7 +22,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   const progress = isInYourInformation ? (currentSection + 1) * 20 
   : (currentSection + 1) / totalSections * 100;
   return <div className="mt-0 mb-0">
-      <div className="flex items-center justify-between mb-2 mt-1">
+      <div className="flex items-center justify-between mb-4 mt-3">
         <div className="flex items-center gap-3">
           {showBack && (
             <Button
