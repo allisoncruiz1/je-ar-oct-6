@@ -224,7 +224,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               updateFormData('licenseTransferDate', dateValue);
             }}
             min={format(new Date(), "yyyy-MM-dd")}
-            className="w-full"
+            className="w-full min-h-14 px-4 py-3 text-base md:text-sm md:min-h-10 md:px-3 md:py-2 rounded-lg border-2 focus-visible:ring-4"
             aria-label="License transfer date"
             inputMode="numeric"
             pattern="\d{4}-\d{2}-\d{2}"
