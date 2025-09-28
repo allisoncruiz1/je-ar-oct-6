@@ -58,39 +58,37 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       aria-expanded={open}
       className={cn(
         "w-full h-12 md:h-10 justify-between text-left font-normal text-base md:text-sm",
-        "bg-gradient-to-r from-background to-muted/30 border-border/60",
-        "hover:from-muted/50 hover:to-muted/80 hover:border-border",
-        "focus:ring-2 focus:ring-ring/20 focus:border-ring/50",
-        "shadow-sm hover:shadow-md transition-all duration-200 ease-out",
-        "backdrop-blur-sm supports-[backdrop-filter]:bg-background/95",
+        "bg-card border-border hover:bg-accent/50",
+        "focus:ring-2 focus:ring-ring/20 focus-visible:outline-none",
+        "shadow-sm transition-colors",
         selectedValues.length === 0 ? "text-muted-foreground" : "text-foreground font-medium",
         className
       )}
     >
       <span className="tracking-wide">{displayText}</span>
-      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-60 transition-transform duration-200 group-hover:opacity-80" />
+      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-60" />
     </Button>
   );
 
   const SelectionContent = (
-    <div className="flex flex-col h-full max-h-[80vh] backdrop-blur-sm">
+    <div className="flex flex-col h-full max-h-[80vh] bg-card">
       {/* Search */}
-      <div className="p-6 border-b border-border/50 bg-gradient-to-b from-background to-muted/20">
-        <div className="relative group">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary" />
+      <div className="p-4 border-b border-border bg-card">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder={searchPlaceholder}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 h-12 md:h-10 text-base md:text-sm bg-background/80 border-border/60 focus:border-primary/50 shadow-inner"
+            className="pl-10 h-12 md:h-10 text-base md:text-sm"
           />
         </div>
       </div>
 
       {/* Selected Items */}
       {selectedValues.length > 0 && (
-        <div className="p-6 border-b border-border/30 bg-gradient-to-r from-muted/20 to-muted/40">
-          <div className="text-sm font-semibold text-foreground mb-3 tracking-wide">
+        <div className="p-4 border-b bg-muted/30">
+          <div className="text-sm font-medium text-foreground mb-2">
             Selected ({selectedValues.length})
           </div>
           <div className="flex flex-wrap gap-2">
@@ -98,15 +96,12 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
               <Badge 
                 key={value} 
                 variant="secondary" 
-                className="text-sm px-4 py-2 flex items-center gap-2 bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20 shadow-sm transition-all duration-200 hover:shadow-md"
+                className="text-sm px-3 py-1 flex items-center gap-2"
               >
-                <span className="font-medium">{value}</span>
+                {value}
                 <X 
-                  className="h-3.5 w-3.5 cursor-pointer hover:text-destructive transition-colors p-0.5 hover:bg-destructive/10 rounded-full" 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveOption(value);
-                  }}
+                  className="h-3.5 w-3.5 cursor-pointer hover:text-destructive" 
+                  onClick={(e) => { e.stopPropagation(); handleRemoveOption(value); }}
                 />
               </Badge>
             ))}
@@ -117,23 +112,20 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       {/* Options List */}
       <div className="flex-1 overflow-y-auto">
         {filteredOptions.length === 0 ? (
-          <div className="p-8 text-center text-muted-foreground">
-            <div className="space-y-2">
+          <div className="p-6 text-center text-muted-foreground">
+            <div className="space-y-1">
               <div className="text-base font-medium">No options found</div>
               <div className="text-sm">Try adjusting your search terms</div>
             </div>
           </div>
         ) : (
-          <div className="p-4 space-y-1">
-            {filteredOptions.map((option, index) => (
+          <div className="p-2 space-y-1">
+            {filteredOptions.map((option) => (
               <div 
                 key={option}
                 className={cn(
-                  "flex items-center space-x-4 p-4 rounded-lg cursor-pointer transition-all duration-200 group",
-                  "hover:bg-gradient-to-r hover:from-accent/50 hover:to-accent/80 hover:shadow-sm",
-                  "focus:outline-none focus:ring-2 focus:ring-ring/20 focus:bg-accent",
-                  selectedValues.includes(option) && "bg-primary/5 border border-primary/20",
-                  index === 0 && "mt-2"
+                  "flex items-center gap-3 p-3 rounded-md cursor-pointer transition-colors",
+                  "hover:bg-accent focus:outline-none focus:ring-2 focus:ring-ring/20",
                 )}
                 onClick={() => handleToggleOption(option)}
                 tabIndex={0}
@@ -142,10 +134,10 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
               >
                 <Checkbox 
                   checked={selectedValues.includes(option)}
-                  className="h-4 w-4 shrink-0 transition-transform group-hover:scale-105"
+                  className="h-4 w-4 shrink-0"
                 />
                 <span className={cn(
-                  "text-base md:text-sm flex-1 transition-colors",
+                  "text-base md:text-sm flex-1",
                   selectedValues.includes(option) ? "font-medium text-primary" : "text-foreground"
                 )}>
                   {option}
@@ -164,10 +156,9 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
         <DrawerTrigger asChild>
           {TriggerButton}
         </DrawerTrigger>
-        <DrawerContent className="max-h-[85vh] bg-gradient-to-b from-background via-background to-muted/10 border-t-2 border-border/30 shadow-2xl">
-          <DrawerHeader className="text-left border-b border-border/30 bg-gradient-to-r from-background to-muted/20 px-6 py-4">
+        <DrawerContent className="max-h-[85vh] bg-card border-t border-border shadow-xl z-50">
+          <DrawerHeader className="text-left border-b border-border bg-card px-6 py-4">
             <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</DrawerTitle>
-            <div className="w-12 h-1 bg-muted-foreground/30 rounded-full mx-auto mt-2" />
           </DrawerHeader>
           {SelectionContent}
         </DrawerContent>
@@ -180,8 +171,8 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       <SheetTrigger asChild>
         {TriggerButton}
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-md bg-gradient-to-b from-background via-background to-muted/10 border-l-2 border-border/30 shadow-2xl backdrop-blur-sm">
-        <SheetHeader className="border-b border-border/30 bg-gradient-to-r from-background to-muted/20 -mx-6 px-6 pb-4">
+      <SheetContent side="right" className="w-full sm:max-w-md bg-card border-l border-border shadow-xl z-50">
+        <SheetHeader className="border-b border-border -mx-6 px-6 pb-4 bg-card">
           <SheetTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</SheetTitle>
         </SheetHeader>
         <div className="mt-6">
