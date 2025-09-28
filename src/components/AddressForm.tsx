@@ -253,7 +253,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             onChange={(e) => handleInputChange('addressLine1', e.target.value)}
             placeholder="Start typing your address..."
             required
-            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent"
+        className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
             aria-describedby="address1-help"
             autoComplete="off"
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
