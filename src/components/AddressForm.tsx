@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
-import { Check } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AddressFormData {
   addressLine1: string;
@@ -53,6 +55,63 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     Tennessee: 'TN', Texas: 'TX', Utah: 'UT', Vermont: 'VT', Virginia: 'VA', Washington: 'WA',
     'West Virginia': 'WV', Wisconsin: 'WI', Wyoming: 'WY', 'District of Columbia': 'DC'
   };
+
+  const US_STATES = [
+    { code: 'AL', name: 'Alabama' },
+    { code: 'AK', name: 'Alaska' },
+    { code: 'AZ', name: 'Arizona' },
+    { code: 'AR', name: 'Arkansas' },
+    { code: 'CA', name: 'California' },
+    { code: 'CO', name: 'Colorado' },
+    { code: 'CT', name: 'Connecticut' },
+    { code: 'DE', name: 'Delaware' },
+    { code: 'FL', name: 'Florida' },
+    { code: 'GA', name: 'Georgia' },
+    { code: 'HI', name: 'Hawaii' },
+    { code: 'ID', name: 'Idaho' },
+    { code: 'IL', name: 'Illinois' },
+    { code: 'IN', name: 'Indiana' },
+    { code: 'IA', name: 'Iowa' },
+    { code: 'KS', name: 'Kansas' },
+    { code: 'KY', name: 'Kentucky' },
+    { code: 'LA', name: 'Louisiana' },
+    { code: 'ME', name: 'Maine' },
+    { code: 'MD', name: 'Maryland' },
+    { code: 'MA', name: 'Massachusetts' },
+    { code: 'MI', name: 'Michigan' },
+    { code: 'MN', name: 'Minnesota' },
+    { code: 'MS', name: 'Mississippi' },
+    { code: 'MO', name: 'Missouri' },
+    { code: 'MT', name: 'Montana' },
+    { code: 'NE', name: 'Nebraska' },
+    { code: 'NV', name: 'Nevada' },
+    { code: 'NH', name: 'New Hampshire' },
+    { code: 'NJ', name: 'New Jersey' },
+    { code: 'NM', name: 'New Mexico' },
+    { code: 'NY', name: 'New York' },
+    { code: 'NC', name: 'North Carolina' },
+    { code: 'ND', name: 'North Dakota' },
+    { code: 'OH', name: 'Ohio' },
+    { code: 'OK', name: 'Oklahoma' },
+    { code: 'OR', name: 'Oregon' },
+    { code: 'PA', name: 'Pennsylvania' },
+    { code: 'RI', name: 'Rhode Island' },
+    { code: 'SC', name: 'South Carolina' },
+    { code: 'SD', name: 'South Dakota' },
+    { code: 'TN', name: 'Tennessee' },
+    { code: 'TX', name: 'Texas' },
+    { code: 'UT', name: 'Utah' },
+    { code: 'VT', name: 'Vermont' },
+    { code: 'VA', name: 'Virginia' },
+    { code: 'WA', name: 'Washington' },
+    { code: 'WV', name: 'West Virginia' },
+    { code: 'WI', name: 'Wisconsin' },
+    { code: 'WY', name: 'Wyoming' },
+    { code: 'DC', name: 'District of Columbia' }
+  ];
+
+  const isMobile = useIsMobile();
+  const [stateDrawerOpen, setStateDrawerOpen] = useState(false);
 
   const parseNominatimAddress = (addr: any) => {
     // Robust parsing for OpenStreetMap data (US only)
@@ -319,72 +378,67 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             State
             <span className="text-[#A91616]">*</span>
           </label>
-          <div className="relative">
-            <select
-              value={formData.state}
-              onChange={(e) => handleInputChange('state', e.target.value)}
-              required
-              className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent appearance-none text-sm"
-            >
-              <option value="">Select State</option>
-              <option value="AL">Alabama</option>
-              <option value="AK">Alaska</option>
-              <option value="AZ">Arizona</option>
-              <option value="AR">Arkansas</option>
-              <option value="CA">California</option>
-              <option value="CO">Colorado</option>
-              <option value="CT">Connecticut</option>
-              <option value="DE">Delaware</option>
-              <option value="FL">Florida</option>
-              <option value="GA">Georgia</option>
-              <option value="HI">Hawaii</option>
-              <option value="ID">Idaho</option>
-              <option value="IL">Illinois</option>
-              <option value="IN">Indiana</option>
-              <option value="IA">Iowa</option>
-              <option value="KS">Kansas</option>
-              <option value="KY">Kentucky</option>
-              <option value="LA">Louisiana</option>
-              <option value="ME">Maine</option>
-              <option value="MD">Maryland</option>
-              <option value="MA">Massachusetts</option>
-              <option value="MI">Michigan</option>
-              <option value="MN">Minnesota</option>
-              <option value="MS">Mississippi</option>
-              <option value="MO">Missouri</option>
-              <option value="MT">Montana</option>
-              <option value="NE">Nebraska</option>
-              <option value="NV">Nevada</option>
-              <option value="NH">New Hampshire</option>
-              <option value="NJ">New Jersey</option>
-              <option value="NM">New Mexico</option>
-              <option value="NY">New York</option>
-              <option value="NC">North Carolina</option>
-              <option value="ND">North Dakota</option>
-              <option value="OH">Ohio</option>
-              <option value="OK">Oklahoma</option>
-              <option value="OR">Oregon</option>
-              <option value="PA">Pennsylvania</option>
-              <option value="RI">Rhode Island</option>
-              <option value="SC">South Carolina</option>
-              <option value="SD">South Dakota</option>
-              <option value="TN">Tennessee</option>
-              <option value="TX">Texas</option>
-              <option value="UT">Utah</option>
-              <option value="VT">Vermont</option>
-              <option value="VA">Virginia</option>
-              <option value="WA">Washington</option>
-              <option value="WV">West Virginia</option>
-              <option value="WI">Wisconsin</option>
-              <option value="WY">Wyoming</option>
-              <option value="DC">District of Columbia</option>
-            </select>
-            <img
-              src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/1cd02bce6337600c23f86f2c759cc0582eb832cd?placeholderIfAbsent=true"
-              alt=""
-              className="aspect-[1] object-contain w-6 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-            />
-          </div>
+          
+          {isMobile ? (
+            <Drawer open={stateDrawerOpen} onOpenChange={setStateDrawerOpen}>
+              <DrawerTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="justify-between w-full mt-1 p-3 h-auto text-left font-normal border border-[#CECFD3] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm bg-white"
+                >
+                  <span className={formData.state ? "text-[#0C0F24]" : "text-[#858791]"}>
+                    {formData.state ? US_STATES.find(s => s.code === formData.state)?.name : "Select State"}
+                  </span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </Button>
+              </DrawerTrigger>
+              <DrawerContent className="max-h-[80vh]">
+                <DrawerHeader>
+                  <DrawerTitle>Select State</DrawerTitle>
+                </DrawerHeader>
+                <div className="overflow-y-auto p-4">
+                  <div className="space-y-2">
+                    {US_STATES.map((state) => (
+                      <button
+                        key={state.code}
+                        type="button"
+                        onClick={() => {
+                          handleInputChange('state', state.code);
+                          setStateDrawerOpen(false);
+                        }}
+                        className={`w-full text-left p-3 rounded-lg border transition-colors ${
+                          formData.state === state.code
+                            ? 'bg-[#1B489B] text-white border-[#1B489B]'
+                            : 'bg-white text-[#0C0F24] border-[#CECFD3] hover:bg-[#F5F6F7]'
+                        }`}
+                      >
+                        {state.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          ) : (
+            <div className="relative">
+              <select
+                value={formData.state}
+                onChange={(e) => handleInputChange('state', e.target.value)}
+                required
+                className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent appearance-none text-sm"
+              >
+                <option value="">Select State</option>
+                {US_STATES.map((state) => (
+                  <option key={state.code} value={state.code}>{state.name}</option>
+                ))}
+              </select>
+              <img
+                src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/1cd02bce6337600c23f86f2c759cc0582eb832cd?placeholderIfAbsent=true"
+                alt=""
+                className="aspect-[1] object-contain w-6 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+              />
+            </div>
+          )}
         </div>
 
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
