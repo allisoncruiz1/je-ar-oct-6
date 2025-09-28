@@ -6,8 +6,8 @@ import { BinaryChoice } from "@/components/ui/binary-choice";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Input } from "@/components/ui/input";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { CalendarIcon, X } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
@@ -219,21 +219,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        {useNativeDate ? (
-          <Input
-            type="date"
-            value={formData.licenseTransferDate ? format(formData.licenseTransferDate, "yyyy-MM-dd") : ""}
-            onChange={(e) => {
-              const dateValue = e.target.value ? toLocalDate(e.target.value) : undefined;
-              updateFormData('licenseTransferDate', dateValue);
-            }}
-            min={format(new Date(), "yyyy-MM-dd")}
-            className="w-full h-14 md:h-10 px-4 py-3 text-base md:text-sm rounded-lg"
-            aria-label="License transfer date"
-            inputMode="numeric"
-            pattern="\\d{4}-\\d{2}-\\d{2}"
-          />
-        ) : isMobileLike ? (
+        {isMobileLike ? (
           <>
             <Button
               variant="outline"
