@@ -14,13 +14,14 @@ const Index = () => {
     'Mailing Address',
     'License Business Info', 
     'License Details',
+    'Business Overview',
     'Business Disclosures',
     'Team Function'
   ];
 
   const getMainStep = (section: number) => {
-    if (section <= 2) return 0; // Your Information
-    if (section === 3) return 1; // Business Disclosures  
+    if (section <= 3) return 0; // Your Information (sections 1.1-1.4)
+    if (section === 4) return 1; // Business Disclosures  
     return 2; // Team Function
   };
 

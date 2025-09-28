@@ -215,6 +215,43 @@ export const MainContent: React.FC<MainContentProps> = ({
         {currentSection === 4 && (
           <div className="relative">
             <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
+              Business Disclosure form will be implemented here.
+            </div>
+            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
+              <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
+                <Button
+                  variant="ghost"
+                  onClick={handleBack}
+                  aria-label="Go back to previous step"
+                  className="max-md:order-3 max-md:w-full"
+                >
+                  Back
+                </Button>
+                <div className="flex gap-3 max-md:w-full max-md:order-1">
+                  <Button
+                    variant="outline"
+                    onClick={onSaveResume}
+                    aria-label="Save and resume application later"
+                    className="max-md:flex-1 max-md:text-sm"
+                  >
+                    Save & Resume Later
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={triggerUserContinue}
+                    aria-label="Continue to next step"
+                    className="max-md:flex-1 max-md:text-sm"
+                  >
+                    Continue
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        {currentSection === 5 && (
+          <div className="relative">
+            <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
               Team Function form will be implemented here.
             </div>
             <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
