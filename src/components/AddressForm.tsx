@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 import { Check, ChevronDown } from 'lucide-react';
+import { MobileMultiSelect } from '@/components/ui/mobile-multi-select';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
@@ -111,7 +112,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   ];
 
   const isMobile = useIsMobile();
-  const [stateDrawerOpen, setStateDrawerOpen] = useState(false);
 
   const parseNominatimAddress = (addr: any) => {
     // Robust parsing for OpenStreetMap data (US only)
@@ -379,66 +379,23 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             <span className="text-[#A91616]">*</span>
           </label>
           
-          {isMobile ? (
-            <Drawer open={stateDrawerOpen} onOpenChange={setStateDrawerOpen}>
-              <DrawerTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="justify-between w-full mt-1 p-3 h-auto text-left font-normal border border-[#CECFD3] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm bg-white"
-                >
-                  <span className={formData.state ? "text-[#0C0F24]" : "text-[#858791]"}>
-                    {formData.state ? US_STATES.find(s => s.code === formData.state)?.name : "Select State"}
-                  </span>
-                  <ChevronDown className="h-4 w-4 opacity-50" />
-                </Button>
-              </DrawerTrigger>
-              <DrawerContent className="max-h-[80vh]">
-                <DrawerHeader>
-                  <DrawerTitle>Select State</DrawerTitle>
-                </DrawerHeader>
-                <div className="overflow-y-auto p-4">
-                  <div className="space-y-2">
-                    {US_STATES.map((state) => (
-                      <button
-                        key={state.code}
-                        type="button"
-                        onClick={() => {
-                          handleInputChange('state', state.code);
-                          setStateDrawerOpen(false);
-                        }}
-                        className={`w-full text-left p-3 rounded-lg border transition-colors ${
-                          formData.state === state.code
-                            ? 'bg-[#1B489B] text-white border-[#1B489B]'
-                            : 'bg-white text-[#0C0F24] border-[#CECFD3] hover:bg-[#F5F6F7]'
-                        }`}
-                      >
-                        {state.name}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </DrawerContent>
-            </Drawer>
-          ) : (
-            <div className="relative">
-              <select
-                value={formData.state}
-                onChange={(e) => handleInputChange('state', e.target.value)}
-                required
-                className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent appearance-none text-sm"
-              >
-                <option value="">Select State</option>
-                {US_STATES.map((state) => (
-                  <option key={state.code} value={state.code}>{state.name}</option>
-                ))}
-              </select>
-              <img
-                src="https://api.builder.io/api/v1/image/assets/7ef6bd28ffce4d1e9df8b15ae0b59f98/1cd02bce6337600c23f86f2c759cc0582eb832cd?placeholderIfAbsent=true"
-                alt=""
-                className="aspect-[1] object-contain w-6 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-              />
-            </div>
-          )}
+          <MobileMultiSelect
+            options={US_STATES.map(state => state.name)}
+            selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []}
+            onSelectionChange={(values) => {
+              if (values.length > 0) {
+                const selectedState = US_STATES.find(s => s.name === values[0]);
+                if (selectedState) {
+                  handleInputChange('state', selectedState.code);
+                }
+              } else {
+                handleInputChange('state', '');
+              }
+            }}
+            placeholder="Select State"
+            searchPlaceholder="Search states..."
+            className="mt-1"
+          />
         </div>
 
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
