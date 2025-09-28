@@ -44,7 +44,7 @@ export const BinaryChoice = React.forwardRef<
       <div ref={ref} className={cn("space-y-3", className)} {...props}>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Label htmlFor={`${id}-switch`} className="text-base font-medium text-foreground">
+            <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
               {label} {required && <span className="text-destructive">*</span>}
             </Label>
             {tooltip && (
