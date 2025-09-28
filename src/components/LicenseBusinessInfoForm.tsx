@@ -114,7 +114,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
 
         {/* Real Estate License Section */}
         <div className="w-full space-y-6">
-          <h3 className="text-base font-semibold text-foreground leading-none">
+          <h3 className="text-sm font-semibold text-foreground leading-none">
             Real Estate License
           </h3>
           
@@ -182,7 +182,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
 
         {/* International Business Section */}
         <div className="w-full space-y-6">
-          <h3 className="text-base font-semibold text-foreground leading-none">
+          <h3 className="text-sm font-semibold text-foreground leading-none">
             International Business
           </h3>
           
