@@ -53,7 +53,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
       newErrors.isLicensed = 'Please select whether you are currently licensed';
     }
     if (formData.isLicensed === 'yes' && formData.licensedStates.length === 0) {
-      newErrors.licensedStates = 'Please select at least one state where you are licensed';
+      newErrors.licensedStates = 'Please select the state where you are licensed';
     }
     if (!formData.conductBusinessOutsideUS || (formData.conductBusinessOutsideUS !== 'yes' && formData.conductBusinessOutsideUS !== 'no')) {
       newErrors.conductBusinessOutsideUS = 'Please select whether you conduct business outside the US';
@@ -139,14 +139,14 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               <div className="w-full space-y-3">
                 <div className="flex items-center gap-2">
                   <Label className="text-sm font-medium text-foreground leading-none">
-                    What state(s) are you currently licensed in? <span className="text-destructive">*</span>
+                    What state are you currently licensed in? <span className="text-destructive">*</span>
                   </Label>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Select all states where you currently hold a real estate license</p>
+                      <p>Select the state where you currently hold a real estate license</p>
                     </TooltipContent>
                   </Tooltip>
                 </div>
@@ -154,8 +154,12 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 <MobileMultiSelect
                   options={US_STATES}
                   selectedValues={formData.licensedStates}
-                  onSelectionChange={(values) => updateFormData({ licensedStates: values })}
-                  placeholder="Select state(s)..."
+                  onSelectionChange={(values) => {
+                    // Only allow single selection for states
+                    const newValue = values.length > 0 ? [values[values.length - 1]] : [];
+                    updateFormData({ licensedStates: newValue });
+                  }}
+                  placeholder="Select state..."
                   searchPlaceholder="Search states..."
                 />
 
