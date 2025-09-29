@@ -74,7 +74,6 @@ const Index = () => {
               currentStep={getMainStep(currentSection)}
               currentSection={currentSection}
               completedSections={completedSections}
-              overallProgress={getOverallProgress(currentSection)}
               onOpenDrawer={() => setIsSubStepDrawerOpen(true)}
             />
           </div>

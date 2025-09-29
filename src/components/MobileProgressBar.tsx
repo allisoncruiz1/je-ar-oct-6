@@ -5,7 +5,6 @@ interface MobileProgressBarProps {
   currentStep: number;
   currentSection: number;
   completedSections: number[];
-  overallProgress: number;
   onOpenDrawer: () => void;
 }
 
@@ -13,7 +12,6 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   currentStep,
   currentSection,
   completedSections,
-  overallProgress,
   onOpenDrawer
 }) => {
   const mainSteps = [
@@ -40,12 +38,6 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
 
   return (
     <div className="bg-background rounded-lg p-4 shadow-sm border border-border">
-      {/* Progress percentage */}
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-medium text-muted-foreground">Progress</span>
-        <span className="text-sm font-semibold text-foreground">{overallProgress}%</span>
-      </div>
-
       {/* Progress dots */}
       <div className="flex items-center justify-between mb-3">
         {mainSteps.map((step, index) => (
