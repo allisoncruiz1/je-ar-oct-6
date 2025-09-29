@@ -35,7 +35,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
               <ChevronLeft size={16} />
             </Button>
           )}
-          <h2 className="font-semibold text-[#0C0F24] text-lg -ml-2">
+          <h2 className="font-semibold text-[#0C0F24] text-lg">
             {sectionTitle}
           </h2>
         </div>
