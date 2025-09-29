@@ -47,6 +47,12 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
 }) => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
   const currentState = licensedStates[currentStateIndex];
+  
+  console.log('🏠 LicenseDetailsForm state debug:', {
+    licensedStates,
+    currentStateIndex,
+    currentState
+  });
   const currentData = data[currentState] || {
     licenseNumber: '',
     salesTransactions: '',
@@ -116,7 +122,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       {/* Current State Header */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold text-foreground mb-1">
-          {currentState} License Details
+          {currentState || 'License'} License Details
         </h2>
         <p className="text-sm text-muted-foreground">
           {currentStateIndex + 1}/{licensedStates.length} Licensed States
