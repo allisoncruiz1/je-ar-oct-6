@@ -18,6 +18,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       {isInYourInformation && <div className="mb-4 flex justify-center md:hidden">
           
         </div>}
-      <Separator className="mt-2" />
+      
     </div>;
 };
