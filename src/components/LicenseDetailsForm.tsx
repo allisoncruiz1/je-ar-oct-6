@@ -114,7 +114,14 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </div>}
 
       {/* Current State Header */}
-      
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold text-foreground mb-1">
+          {currentState} License Details
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          {currentStateIndex + 1}/{licensedStates.length} Licensed States
+        </p>
+      </div>
 
       {/* License Number */}
       <div className="space-y-2">
