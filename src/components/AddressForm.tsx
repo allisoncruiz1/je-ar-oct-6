@@ -3,6 +3,7 @@ import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 import { Check, ChevronDown } from 'lucide-react';
 import { MobileMultiSelect } from '@/components/ui/mobile-multi-select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
@@ -379,23 +380,41 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             <span className="text-[#A91616]">*</span>
           </label>
           
-          <MobileMultiSelect
-            options={US_STATES.map(state => state.name)}
-            selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []}
-            onSelectionChange={(values) => {
-              if (values.length > 0) {
-                const selectedState = US_STATES.find(s => s.name === values[0]);
-                if (selectedState) {
-                  handleInputChange('state', selectedState.code);
+          {isMobile ? (
+            <MobileMultiSelect
+              options={US_STATES.map(state => state.name)}
+              selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []}
+              onSelectionChange={(values) => {
+                if (values.length > 0) {
+                  const selectedState = US_STATES.find(s => s.name === values[0]);
+                  if (selectedState) {
+                    handleInputChange('state', selectedState.code);
+                  }
+                } else {
+                  handleInputChange('state', '');
                 }
-              } else {
-                handleInputChange('state', '');
-              }
-            }}
-            placeholder="Select State"
-            searchPlaceholder="Search states..."
-            className="mt-1"
-          />
+              }}
+              placeholder="Select State"
+              searchPlaceholder="Search states..."
+              className="mt-1"
+            />
+          ) : (
+            <Select
+              value={formData.state}
+              onValueChange={(value) => handleInputChange('state', value)}
+            >
+              <SelectTrigger className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm">
+                <SelectValue placeholder="Select State" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-[#CECFD3] rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+                {US_STATES.map((state) => (
+                  <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-[#F5F6F7] text-sm text-[#0C0F24] cursor-pointer">
+                    {state.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
 
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
