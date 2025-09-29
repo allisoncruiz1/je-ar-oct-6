@@ -437,7 +437,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       {/* Sticky Action Bar - Minimized */}
-      <div className="sticky bottom-0 bg-background py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
+      <div className="sticky bottom-0 bg-background py-2 px-0 mt-12 max-md:px-2 max-md:py-2 max-md:mt-8">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
           <Button
             variant="outline"
