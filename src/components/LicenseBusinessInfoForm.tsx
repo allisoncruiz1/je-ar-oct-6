@@ -92,7 +92,6 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     e.preventDefault();
     if (validateForm()) {
       onSubmit?.(formData);
-      onContinue?.();
     }
   };
   return (
@@ -244,8 +243,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 Save & Resume Later
               </Button>
               <Button
-                type="submit"
+                type="button"
                 size="sm"
+                onClick={onContinue}
                 disabled={!canContinue}
                 aria-label="Continue to next step"
                 className="max-md:flex-1 max-md:text-sm"
