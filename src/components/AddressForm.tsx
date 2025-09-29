@@ -438,19 +438,17 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
       {/* Sticky Action Bar - Minimized */}
       <div className="sticky bottom-0 bg-background py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
-        <div className="flex items-center max-md:flex-col max-md:gap-2">
-          <div className="w-40 max-md:w-full">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onSaveResume}
-              aria-label="Save and resume application later"
-              className="max-md:order-1 max-md:w-full max-md:text-sm"
-            >
-              Save & Resume Later
-            </Button>
-          </div>
-          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2 ml-auto">
+        <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onSaveResume}
+            aria-label="Save and resume application later"
+            className="max-md:order-1 max-md:w-full max-md:text-sm ml-0"
+          >
+            Save & Resume Later
+          </Button>
+          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2">
             {showBack && (
               <Button
                 variant="ghost"
