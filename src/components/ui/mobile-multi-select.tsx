@@ -181,8 +181,8 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
   return (
     <div className="w-full">
       {MultiSelectComponent}
-      {/* Selected Tags underneath */}
-      {selectedValues.length > 0 && (
+      {/* Selected Tags underneath - Desktop only */}
+      {selectedValues.length > 0 && !isMobile && (
         <div className="flex flex-wrap gap-2 mt-3">
           {selectedValues.map(value => (
             <Badge 
