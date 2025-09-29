@@ -250,28 +250,28 @@ export const MainContent: React.FC<MainContentProps> = ({
             <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
               <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
                 <Button
-                  variant="ghost"
-                  onClick={handleBack}
-                  aria-label="Go back to previous step"
-                  className="max-md:order-3 max-md:w-full"
+                  variant="outline"
+                  onClick={onSaveResume}
+                  aria-label="Save and resume application later"
+                  className="max-md:order-1 max-md:w-full"
                 >
-                  Back
+                  Save & Resume Later
                 </Button>
-                <div className="flex gap-3 max-md:w-full max-md:order-1">
+                <div className="flex gap-3 max-md:w-full max-md:order-2">
                   <Button
-                    variant="outline"
-                    onClick={onSaveResume}
-                    aria-label="Save and resume application later"
-                    className="max-md:flex-1 max-md:text-sm"
+                    variant="ghost"
+                    onClick={handleBack}
+                    aria-label="Go back to previous step"
+                    className="max-md:w-full"
                   >
-                    Save & Resume Later
+                    Back
                   </Button>
                   <Button
                     type="button"
                     onClick={triggerUserContinue}
                     disabled={currentSection >= sections.length - 1}
                     aria-label="Continue to next step"
-                    className="max-md:flex-1 max-md:text-sm"
+                    className="max-md:w-full"
                   >
                     Continue
                   </Button>

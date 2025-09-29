@@ -437,36 +437,34 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       {/* Sticky Action Bar - Minimized */}
       <div className="sticky bottom-0 bg-background border-t border-border py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
-          {showBack ? (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={onBack}
-              aria-label="Go back to previous step"
-              className="max-md:order-3 max-md:w-full"
-            >
-              Back
-            </Button>
-          ) : (
-            <div></div>
-          )}
-          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-1">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onSaveResume}
-              aria-label="Save and resume application later"
-              className="max-md:flex-1 max-md:text-sm"
-            >
-              Save & Resume Later
-            </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onSaveResume}
+            aria-label="Save and resume application later"
+            className="max-md:order-1 max-md:w-full max-md:text-sm"
+          >
+            Save & Resume Later
+          </Button>
+          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2">
+            {showBack && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onBack}
+                aria-label="Go back to previous step"
+                className="max-md:w-full"
+              >
+                Back
+              </Button>
+            )}
             <Button
               type="button"
               size="sm"
               onClick={handleContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
-              className="max-md:flex-1 max-md:text-sm"
+              className="max-md:w-full max-md:text-sm"
             >
               Continue
             </Button>
