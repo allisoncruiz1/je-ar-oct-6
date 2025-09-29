@@ -171,8 +171,6 @@ export const MainContent: React.FC<MainContentProps> = ({
             currentSection={currentSection}
             totalSections={sections.length}
             sectionTitle={sections[currentSection]}
-            onBack={handleBack}
-            showBack={currentSection > 0}
           />
         </div>
       </div>
@@ -185,6 +183,8 @@ export const MainContent: React.FC<MainContentProps> = ({
             onContinue={triggerUserContinue}
             onFormValidChange={setFormComplete}
             onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
             canContinue={formComplete}
             initialData={addressData || undefined}
             onFormDataChange={setAddressData}
