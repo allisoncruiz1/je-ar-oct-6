@@ -345,7 +345,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         </div>
       </div>
 
-      <div className="w-full mt-4 max-md:max-w-full">
+      <div className="w-full mt-6 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold max-md:max-w-full text-sm">
           Address Line 2 (Optional)
         </label>
@@ -358,7 +358,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         />
       </div>
 
-      <div className="w-full mt-4 max-md:max-w-full">
+      <div className="w-full mt-6 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           City
           <span className="text-destructive">*</span>
@@ -373,9 +373,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           />
       </div>
 
-      <div className="flex w-full gap-3 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
-        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
+      <div className="flex w-full gap-4 mt-6 max-md:flex-col max-md:gap-4">
+        <div className="w-48 max-md:w-full">
+          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             State
             <span className="text-destructive">*</span>
           </label>
@@ -417,8 +417,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           )}
         </div>
 
-        <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
+        <div className="w-32 max-md:w-full">
+          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             Zip code
             <span className="text-destructive">*</span>
           </label>
@@ -429,7 +429,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             placeholder="12345"
             required
             pattern="[0-9]{5}(-[0-9]{4})?"
-            className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
+            className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
           />
         </div>
       </div>
