@@ -49,7 +49,9 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
 
   const displayText = selectedValues.length === 0 
     ? placeholder 
-    : `${selectedValues.length} item(s) selected`;
+    : selectedValues.length === 1 
+      ? selectedValues[0]
+      : `${selectedValues[0]} +${selectedValues.length - 1} more`;
 
   const TriggerButton = (
     <Button
