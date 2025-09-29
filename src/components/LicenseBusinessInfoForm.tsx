@@ -97,6 +97,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   return (
     <TooltipProvider>
       <div className="flex flex-col min-h-[calc(100vh-200px)]">
+        <div className="mb-6">
+          <h2 className="text-xl font-semibold text-foreground">License & Business Info</h2>
+        </div>
         <form onSubmit={handleSubmit} className="w-full space-y-8 flex-1">
           {/* Preferred Name Field */}
           <div className="w-full space-y-2">
