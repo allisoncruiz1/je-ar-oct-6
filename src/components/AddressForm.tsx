@@ -403,7 +403,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               value={formData.state}
               onValueChange={(value) => handleInputChange('state', value)}
             >
-              <SelectTrigger className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm">
+              <SelectTrigger className="justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm">
                 <SelectValue placeholder="Select State" />
               </SelectTrigger>
               <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
