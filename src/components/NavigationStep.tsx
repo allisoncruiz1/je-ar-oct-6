@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 interface NavigationStepProps {
   title: string;
@@ -6,6 +7,9 @@ interface NavigationStepProps {
   isActive: boolean;
   isCompleted: boolean;
   icon?: string;
+  hasSubSteps?: boolean;
+  isExpanded?: boolean;
+  onToggleExpanded?: () => void;
 }
 
 export const NavigationStep: React.FC<NavigationStepProps> = ({
@@ -13,16 +17,24 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
   description,
   isActive,
   isCompleted,
-  icon
+  icon,
+  hasSubSteps = false,
+  isExpanded = false,
+  onToggleExpanded
 }) => {
-  const textColor = isActive ? 'text-[#0C0F24]' : 'text-[#858791]';
+  const textColor = isActive ? 'text-foreground' : 'text-muted-foreground';
   
   return (
-    <div className={`flex w-full items-center gap-3 ${textColor}`}>
+    <div 
+      className={`flex w-full items-center gap-3 ${textColor} ${
+        hasSubSteps ? 'cursor-pointer' : ''
+      }`}
+      onClick={hasSubSteps ? onToggleExpanded : undefined}
+    >
       <div className="self-stretch w-6 my-auto">
         {isActive ? (
-          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-white border-4 border-[#1B489B]/40">
-            <div className="w-2.5 h-2.5 bg-[#1B489B] rounded-full" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-background border-4 border-primary/40">
+            <div className="w-2.5 h-2.5 bg-primary rounded-full" />
           </div>
         ) : (
           <img
@@ -40,6 +52,15 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
           {description}
         </div>
       </div>
+      {hasSubSteps && (
+        <div className="ml-2">
+          {isExpanded ? (
+            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          ) : (
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          )}
+        </div>
+      )}
     </div>
   );
 };

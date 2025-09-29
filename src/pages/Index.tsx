@@ -79,7 +79,12 @@ const Index = () => {
           <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
             {/* Desktop sticky sidebar */}
             <div className="max-md:hidden sticky top-20 self-start">
-              <SideNavigation currentStep={getMainStep(currentSection)} progress={getOverallProgress(currentSection)} />
+              <SideNavigation 
+                currentStep={getMainStep(currentSection)} 
+                progress={getOverallProgress(currentSection)}
+                currentSection={currentSection}
+                completedSections={completedSections}
+              />
             </div>
             <MainContent 
               key="wizard-v1"
