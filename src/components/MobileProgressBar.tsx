@@ -89,7 +89,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
             </div>
             {hasSubSteps && (
               <div className="text-xs text-muted-foreground mt-1">
-                {completedSubSteps} of {currentStepData.subStepCount} complete · Tap to view
+                Tap to view
               </div>
             )}
           </div>
