@@ -97,126 +97,128 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   };
   return (
     <TooltipProvider>
-      <form onSubmit={handleSubmit} className="w-full space-y-8 pb-20 md:pb-6">
-        {/* Preferred Name Field */}
-        <div className="w-full space-y-2">
-          <Label htmlFor="preferredName" className="text-sm font-medium text-foreground leading-none">
-            Preferred Name
-          </Label>
-          <Input 
-            id="preferredName" 
-            type="text" 
-            value={formData.preferredName} 
-            onChange={e => updateFormData({ preferredName: e.target.value })} 
-            placeholder="Enter your preferred name (optional)" 
-            className="h-12 md:h-10 text-sm placeholder:text-muted-foreground" 
-          />
-        </div>
-
-        {/* Real Estate License Section */}
-        <div className="w-full space-y-6">
-          <h3 className="text-base font-semibold text-foreground leading-none">
-            Real Estate License
-          </h3>
-          
-          <div className="w-full">
-            <BinaryChoice
-              value={formData.isLicensed}
-              onValueChange={value => updateFormData({ isLicensed: value })}
-              label="Are you currently licensed?"
-              tooltip="Select whether you currently hold a real estate license"
-              required
+      <div className="flex flex-col min-h-[calc(100vh-200px)]">
+        <form onSubmit={handleSubmit} className="w-full space-y-8 flex-1">
+          {/* Preferred Name Field */}
+          <div className="w-full space-y-2">
+            <Label htmlFor="preferredName" className="text-sm font-medium text-foreground leading-none">
+              Preferred Name
+            </Label>
+            <Input 
+              id="preferredName" 
+              type="text" 
+              value={formData.preferredName} 
+              onChange={e => updateFormData({ preferredName: e.target.value })} 
+              placeholder="Enter your preferred name (optional)" 
+              className="h-12 md:h-10 text-sm placeholder:text-muted-foreground" 
             />
-            
-            {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
           </div>
 
-          {/* Licensed States Selection - Conditional */}
-          {formData.isLicensed === 'yes' && (
-            <div className="w-full space-y-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-medium text-foreground leading-none">
-                  What state(s) are you currently licensed in? <span className="text-destructive">*</span>
-                </Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Select all states where you currently hold a real estate license</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              
-              <MobileMultiSelect
-                options={US_STATES}
-                selectedValues={formData.licensedStates}
-                onSelectionChange={(values) => updateFormData({ licensedStates: values })}
-                placeholder="Select state(s)..."
-                searchPlaceholder="Search states..."
-              />
-
-              
-              {errors.licensedStates && (
-                <p className="text-sm text-destructive">{errors.licensedStates}</p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* International Business Section */}
-        <div className="w-full space-y-6">
-          <h3 className="text-base font-semibold text-foreground leading-none">
-            International Business
-          </h3>
-          
-          <div className="w-full">
-            <BinaryChoice
-              value={formData.conductBusinessOutsideUS}
-              onValueChange={value => updateFormData({ conductBusinessOutsideUS: value })}
-              label="Do you conduct business outside US?"
-              tooltip="Select whether you conduct any business activities outside the United States"
-              required
-            />
+          {/* Real Estate License Section */}
+          <div className="w-full space-y-6">
+            <h3 className="text-base font-semibold text-foreground leading-none">
+              Real Estate License
+            </h3>
             
-            {errors.conductBusinessOutsideUS && <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>}
+            <div className="w-full">
+              <BinaryChoice
+                value={formData.isLicensed}
+                onValueChange={value => updateFormData({ isLicensed: value })}
+                label="Are you currently licensed?"
+                tooltip="Select whether you currently hold a real estate license"
+                required
+              />
+              
+              {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
+            </div>
+
+            {/* Licensed States Selection - Conditional */}
+            {formData.isLicensed === 'yes' && (
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm font-medium text-foreground leading-none">
+                    What state(s) are you currently licensed in? <span className="text-destructive">*</span>
+                  </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Select all states where you currently hold a real estate license</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                
+                <MobileMultiSelect
+                  options={US_STATES}
+                  selectedValues={formData.licensedStates}
+                  onSelectionChange={(values) => updateFormData({ licensedStates: values })}
+                  placeholder="Select state(s)..."
+                  searchPlaceholder="Search states..."
+                />
+
+                
+                {errors.licensedStates && (
+                  <p className="text-sm text-destructive">{errors.licensedStates}</p>
+                )}
+              </div>
+            )}
           </div>
 
-          {/* International Countries Selection - Conditional */}
-          {formData.conductBusinessOutsideUS === 'yes' && (
-            <div className="w-full space-y-3">
-              <div className="flex items-center gap-2">
-                <Label className="text-sm font-medium text-foreground leading-none">
-                  Where? <span className="text-destructive">*</span>
-                </Label>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Select all countries where you conduct business activities</p>
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              
-              <MobileMultiSelect
-                options={COUNTRIES}
-                selectedValues={formData.internationalCountries}
-                onSelectionChange={(values) => updateFormData({ internationalCountries: values })}
-                placeholder="Select country(ies)..."
-                searchPlaceholder="Search countries..."
+          {/* International Business Section */}
+          <div className="w-full space-y-6">
+            <h3 className="text-base font-semibold text-foreground leading-none">
+              International Business
+            </h3>
+            
+            <div className="w-full">
+              <BinaryChoice
+                value={formData.conductBusinessOutsideUS}
+                onValueChange={value => updateFormData({ conductBusinessOutsideUS: value })}
+                label="Do you conduct business outside US?"
+                tooltip="Select whether you conduct any business activities outside the United States"
+                required
               />
-
               
-              {errors.internationalCountries && (
-                <p className="text-sm text-destructive">{errors.internationalCountries}</p>
-              )}
+              {errors.conductBusinessOutsideUS && <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>}
             </div>
-          )}
-        </div>
 
-        {/* Sticky Action Bar */}
-        <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-6 max-md:p-2 max-md:mt-4">
+            {/* International Countries Selection - Conditional */}
+            {formData.conductBusinessOutsideUS === 'yes' && (
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm font-medium text-foreground leading-none">
+                    Where? <span className="text-destructive">*</span>
+                  </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Select all countries where you conduct business activities</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                
+                <MobileMultiSelect
+                  options={COUNTRIES}
+                  selectedValues={formData.internationalCountries}
+                  onSelectionChange={(values) => updateFormData({ internationalCountries: values })}
+                  placeholder="Select country(ies)..."
+                  searchPlaceholder="Search countries..."
+                />
+
+                
+                {errors.internationalCountries && (
+                  <p className="text-sm text-destructive">{errors.internationalCountries}</p>
+                )}
+              </div>
+            )}
+          </div>
+        </form>
+
+        {/* Action Bar at bottom */}
+        <div className="mt-auto bg-white border-t border-border py-2 px-4 max-md:p-2">
           <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
             {showBack ? (
               <Button
@@ -253,7 +255,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
             </div>
           </div>
         </div>
-      </form>
+      </div>
     </TooltipProvider>
   );
 };

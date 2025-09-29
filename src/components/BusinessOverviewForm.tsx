@@ -138,7 +138,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   startOfToday.setHours(0, 0, 0, 0);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="flex flex-col min-h-[calc(100vh-200px)]">
+      <form onSubmit={handleSubmit} className="space-y-6 flex-1">
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-foreground mb-2">
           Business Overview
@@ -342,8 +343,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         )}
       </div>
 
-      {/* Sticky Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-8 max-md:p-2 max-md:mt-6">
+      {/* Action Bar at bottom */}
+      </form>
+      <div className="mt-auto bg-white border-t border-border py-2 px-4 max-md:p-2">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
           {showBack ? (
             <Button
@@ -381,6 +383,6 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
           </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
