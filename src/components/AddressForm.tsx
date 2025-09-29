@@ -300,6 +300,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
+      <h2 className="text-xl font-semibold text-foreground mb-6">Mailing Address</h2>
+      
       <div className="w-full max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           Address Line 1
@@ -374,7 +376,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       <div className="flex w-full gap-4 mt-6 max-md:flex-col max-md:gap-4">
-        <div className="w-48 max-md:w-full">
+        <div className="w-40 max-md:w-full">
           <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             State
             <span className="text-destructive">*</span>
@@ -417,7 +419,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           )}
         </div>
 
-        <div className="w-32 max-md:w-full">
+        <div className="flex-1 max-md:w-full">
           <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             Zip code
             <span className="text-destructive">*</span>
