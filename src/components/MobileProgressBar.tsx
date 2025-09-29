@@ -37,7 +37,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   const hasSubSteps = currentStepData.subStepCount > 0;
 
   return (
-    <div className="bg-brand-blue/5 rounded-lg p-5 shadow-md mb-4">
+    <div className="bg-white rounded-lg p-5 shadow-md mb-4">
       {/* Progress dots */}
       <div className="flex items-center justify-between mb-4">
         {mainSteps.map((step, index) => (
@@ -84,7 +84,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <div className="text-lg font-semibold tracking-tight text-foreground">
+            <div className="text-xl font-semibold tracking-tight text-foreground">
               {currentStepData.title}
             </div>
             {hasSubSteps && (
