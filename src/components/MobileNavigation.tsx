@@ -39,6 +39,16 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   return (
     <div className="bg-white rounded-lg p-4 shadow-sm border border-border">
+      {/* Step indicator */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="text-xs font-medium text-muted-foreground">
+          Step {currentStep + 1} of {mainSteps.length}
+        </div>
+        <div className="text-xs font-medium text-muted-foreground">
+          {progress}%
+        </div>
+      </div>
+
       {/* Main Step and Sub-step */}
       <div className="flex items-center gap-2 mb-3">
         <div className="text-sm font-semibold text-foreground">
@@ -54,19 +64,36 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
         )}
       </div>
 
-      {/* Progress Bar */}
-      <div className="flex items-center gap-3">
-        <div className="flex-1">
+      {/* Progress Bar with step indicators */}
+      <div className="space-y-2">
+        <div className="relative">
           <div className="bg-muted h-1.5 rounded-full overflow-hidden">
             <div 
               className="bg-primary h-full transition-all duration-300 rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>
+          {/* Step dots */}
+          <div className="flex justify-between absolute -top-1 left-0 right-0">
+            {mainSteps.map((_, index) => (
+              <div
+                key={index}
+                className={`w-3 h-3 rounded-full border-2 ${
+                  index <= currentStep
+                    ? 'bg-primary border-primary'
+                    : 'bg-background border-muted-foreground/30'
+                }`}
+              />
+            ))}
+          </div>
         </div>
-        <div className="text-xs font-medium text-muted-foreground">
-          {progress}%
-        </div>
+        
+        {/* Next step indicator */}
+        {currentStep < mainSteps.length - 1 && (
+          <div className="text-xs text-muted-foreground">
+            Next: {mainSteps[currentStep + 1]}
+          </div>
+        )}
       </div>
     </div>
   );
