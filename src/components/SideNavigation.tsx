@@ -64,7 +64,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
 
   return (
     <nav 
-      className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex flex-col w-[260px] min-w-[260px] shrink-0 self-start bg-background pt-4 pb-3 rounded-lg border"
+      className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex flex-col w-[260px] min-w-[260px] shrink-0 self-start bg-white pt-4 pb-3 rounded-lg"
       aria-label="Application progress navigation"
     >
       <div className="w-full px-4">
@@ -74,7 +74,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
             
             {/* Show sub-steps for "Your Information" when expanded */}
             {step.title === "Your Information" && isYourInfoExpanded && (
-              <div className="ml-3 border-l border-border pl-0 py-2">
+              <div className="ml-3 border-l border-[#CECFD3] pl-0 py-2">
                 {yourInfoSubSteps.map((subStepTitle, subIndex) => (
                   <SubNavigationStep
                     key={subStepTitle}
@@ -89,14 +89,14 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
             {index < steps.length - 1 && (
               <div className="flex w-full items-center gap-2.5">
                 <div className={`ml-3 flex min-h-[29px] w-0.5 my-auto ${
-                  step.isActive ? 'bg-primary' : 'bg-border'
+                  step.isActive ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'
                 }`} />
               </div>
             )}
           </React.Fragment>
         ))}
       </div>
-      <div className="bg-border flex min-h-px w-full mt-3" />
+      <div className="bg-[rgba(239,241,247,1)] flex min-h-px w-full mt-3" />
       <ProgressIndicator percentage={progress} />
     </nav>
   );

@@ -22,7 +22,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
   isExpanded = false,
   onToggleExpanded
 }) => {
-  const textColor = isActive ? 'text-foreground' : 'text-muted-foreground';
+  const textColor = isActive ? 'text-[#0C0F24]' : 'text-[#858791]';
   
   return (
     <div 
@@ -33,8 +33,8 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
     >
       <div className="self-stretch w-6 my-auto">
         {isActive ? (
-          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-background border-4 border-primary/40">
-            <div className="w-2.5 h-2.5 bg-primary rounded-full" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-white border-4 border-[#1B489B]/40">
+            <div className="w-2.5 h-2.5 bg-[#1B489B] rounded-full" />
           </div>
         ) : (
           <img
@@ -55,9 +55,9 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
       {hasSubSteps && (
         <div className="ml-2">
           {isExpanded ? (
-            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+            <ChevronDown className="w-4 h-4 text-[#858791]" />
           ) : (
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+            <ChevronRight className="w-4 h-4 text-[#858791]" />
           )}
         </div>
       )}
