@@ -46,18 +46,18 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
               <div
                 className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
                   index < currentStep
-                    ? 'bg-primary border-primary'
+                    ? 'bg-brand-blue border-brand-blue'
                     : index === currentStep
-                    ? 'bg-background border-primary'
+                    ? 'bg-background border-brand-blue'
                     : 'bg-background border-muted-foreground/30'
                 }`}
               >
                 {index < currentStep ? (
-                  <Check className="w-4 h-4 text-primary-foreground" />
+                  <Check className="w-4 h-4 text-white" />
                 ) : (
                   <span
                     className={`text-xs font-medium ${
-                      index === currentStep ? 'text-primary' : 'text-muted-foreground'
+                      index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'
                     }`}
                   >
                     {index + 1}
@@ -68,7 +68,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
             {index < mainSteps.length - 1 && (
               <div
                 className={`flex-1 h-0.5 mx-1 ${
-                  index < currentStep ? 'bg-primary' : 'bg-muted-foreground/30'
+                  index < currentStep ? 'bg-brand-blue' : 'bg-muted-foreground/30'
                 }`}
               />
             )}
