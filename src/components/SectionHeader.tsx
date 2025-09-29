@@ -20,8 +20,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             {sectionTitle}
           </h2>
         </div>
-        <span className="text-sm text-[#858791]">
-          {isInYourInformation ? `Section 1.${currentSection + 1} of 1.5` : `Section ${currentSection + 1} of ${totalSections}`}
+        <span className="text-sm text-muted-foreground">
+          section 1 of 5
         </span>
       </div>
       {isInYourInformation && <div className="mb-4 flex justify-center md:hidden">
