@@ -27,7 +27,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         </span>
       </div>
       {isInYourInformation && (
-        <div className="mb-4 flex justify-center">
+        <div className="mb-4 flex justify-center md:hidden">
           <div className="relative h-2 w-64 overflow-hidden rounded-full bg-gray-200">
             <div 
               className="h-full bg-[#1B489B] transition-all duration-300 rounded-full"
