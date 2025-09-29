@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
-import { MobileProgressStepper } from '@/components/MobileProgressStepper';
+import { MobileNavigation } from '@/components/MobileNavigation';
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
@@ -65,14 +65,12 @@ const Index = () => {
       
       <div className="flex w-full flex-col items-stretch px-6 max-md:px-3 pb-6 max-md:pb-4">
         <div className="flex w-full flex-col items-stretch">
-          {/* Mobile progress stepper */}
+          {/* Mobile navigation */}
           <div className="md:hidden sticky top-20 z-50 mt-2 bg-[rgba(239,241,247,1)] pt-2 pb-0">
-            <MobileProgressStepper 
+            <MobileNavigation 
+              currentStep={getMainStep(currentSection)}
               currentSection={currentSection}
-              mainStepInfo={getMainStepInfo(currentSection)}
-              overallProgress={getOverallProgress(currentSection)}
-              sectionName={sections[currentSection]}
-              totalMainSteps={5}
+              progress={getOverallProgress(currentSection)}
             />
           </div>
 
