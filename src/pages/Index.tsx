@@ -3,12 +3,14 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
-import { MobileNavigation } from '@/components/MobileNavigation';
+import { MobileProgressBar } from '@/components/MobileProgressBar';
+import { SubStepDrawer } from '@/components/SubStepDrawer';
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
+  const [isSubStepDrawerOpen, setIsSubStepDrawerOpen] = useState(false);
 
   const sections = [
     'Mailing Address',
@@ -68,12 +70,22 @@ const Index = () => {
         <div className="flex w-full flex-col items-stretch">
           {/* Mobile navigation */}
           <div className="md:hidden sticky top-20 z-50 mt-2 bg-[rgba(239,241,247,1)] pt-2 pb-0">
-            <MobileNavigation 
+            <MobileProgressBar
               currentStep={getMainStep(currentSection)}
               currentSection={currentSection}
-              progress={getOverallProgress(currentSection)}
+              completedSections={completedSections}
+              onOpenDrawer={() => setIsSubStepDrawerOpen(true)}
             />
           </div>
+
+          {/* Sub-step drawer for mobile */}
+          <SubStepDrawer
+            isOpen={isSubStepDrawerOpen}
+            onClose={() => setIsSubStepDrawerOpen(false)}
+            currentSection={currentSection}
+            completedSections={completedSections}
+            onSubStepSelect={setCurrentSection}
+          />
 
           <div className="flex w-full gap-6 flex-wrap mt-4 max-md:flex-col max-md:gap-4 max-md:mt-0">
             {/* Desktop sticky sidebar */}
