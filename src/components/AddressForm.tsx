@@ -301,9 +301,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
       <div className="w-full max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0c0f24] font-semibold leading-6 max-md:max-w-full text-sm">
+        <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           Address Line 1
-          <span className="text-[#A91616]">*</span>
+          <span className="text-destructive">*</span>
         </label>
         <div className="relative">
           <input
@@ -313,7 +313,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             onChange={(e) => handleInputChange('addressLine1', e.target.value)}
             placeholder="Start typing your address..."
             required
-        className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
+        className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
             aria-describedby="address1-help"
             autoComplete="off"
             onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
@@ -327,14 +327,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           )}
 
           {!hasGoogle && showSuggestions && suggestions.length > 0 && (
-            <ul className="absolute left-0 right-0 mt-2 bg-white border border-[#CECFD3] rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+            <ul className="absolute left-0 right-0 mt-2 bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
               {suggestions.map((item, idx) => (
                 <li key={item.place_id || item.osm_id || idx}>
                   <button
                     type="button"
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleFallbackSelect(item)}
-                    className="w-full text-left px-3 py-2 hover:bg-[#F5F6F7] text-sm text-[#0C0F24]"
+                    className="w-full text-left px-3 py-2 hover:bg-accent text-sm text-foreground"
                   >
                     {item.display_name}
                   </button>
@@ -346,7 +346,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       <div className="w-full mt-4 max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold max-md:max-w-full text-sm">
+        <label className="flex w-full items-center gap-1 text-foreground font-semibold max-md:max-w-full text-sm">
           Address Line 2 (Optional)
         </label>
         <input
@@ -354,14 +354,14 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           value={formData.addressLine2}
           onChange={(e) => handleInputChange('addressLine2', e.target.value)}
           placeholder="Apartment, suite, unit, building, etc"
-          className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
+          className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
         />
       </div>
 
       <div className="w-full mt-4 max-md:max-w-full">
-        <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
+        <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           City
-          <span className="text-[#A91616]">*</span>
+          <span className="text-destructive">*</span>
         </label>
           <input
             type="text"
@@ -369,15 +369,15 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             onChange={(e) => handleInputChange('city', e.target.value)}
             placeholder="City"
             required
-            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
+            className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
           />
       </div>
 
       <div className="flex w-full gap-3 flex-wrap mt-4 max-md:flex-col max-md:gap-4">
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
+          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
             State
-            <span className="text-[#A91616]">*</span>
+            <span className="text-destructive">*</span>
           </label>
           
           {isMobile ? (
@@ -403,12 +403,12 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               value={formData.state}
               onValueChange={(value) => handleInputChange('state', value)}
             >
-              <SelectTrigger className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm">
+              <SelectTrigger className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm">
                 <SelectValue placeholder="Select State" />
               </SelectTrigger>
-              <SelectContent className="bg-white border border-[#CECFD3] rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+              <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
                 {US_STATES.map((state) => (
-                  <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-[#F5F6F7] text-sm text-[#0C0F24] cursor-pointer">
+                  <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-accent text-sm text-foreground cursor-pointer">
                     {state.name}
                   </SelectItem>
                 ))}
@@ -418,9 +418,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         </div>
 
         <div className="min-w-60 flex-1 shrink basis-[0%] max-md:min-w-full">
-          <label className="flex w-full items-center gap-1 text-[#0C0F24] font-semibold leading-6 max-md:max-w-full text-sm">
+          <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
             Zip code
-            <span className="text-[#A91616]">*</span>
+            <span className="text-destructive">*</span>
           </label>
           <input
             type="text"
@@ -429,13 +429,13 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             placeholder="12345"
             required
             pattern="[0-9]{5}(-[0-9]{4})?"
-            className="justify-center items-center border flex w-full gap-2 text-[#858791] font-normal bg-white mt-1 p-3 rounded-lg border-solid border-[#CECFD3] max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-[#1B489B] focus:border-transparent text-sm"
+            className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
           />
         </div>
       </div>
 
       {/* Sticky Action Bar - Minimized */}
-      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
+      <div className="sticky bottom-0 bg-background border-t border-border py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
           {showBack ? (
             <Button
