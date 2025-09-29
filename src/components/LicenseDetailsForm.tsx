@@ -77,6 +77,20 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // If certified mentor is "yes", also require selected mentor
     const mentorValid = currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
     const isCurrentStateValid = baseValid && pendingValid && mentorValid;
+    
+    console.log('🔍 LicenseDetailsForm validation:', {
+      currentState,
+      baseValid,
+      pendingValid,
+      mentorValid,
+      isCurrentStateValid,
+      licenseNumber: currentStateData?.licenseNumber,
+      salesTransactions: currentStateData?.salesTransactions,
+      pendingTransactions: currentStateData?.pendingTransactions,
+      mlsLength: currentStateData?.mls?.length,
+      certifiedMentor: currentStateData?.certifiedMentor
+    });
+    
     onFormValidChange(isCurrentStateValid);
   };
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
