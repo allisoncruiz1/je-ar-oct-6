@@ -216,7 +216,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         </div>
 
         {/* Sticky Action Bar */}
-        <div className="sticky bottom-0 bg-white border-t border-border py-4 px-4 mt-4 max-md:p-2 max-md:mt-2">
+        <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-4 max-md:p-2 max-md:mt-2">
           <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
             {showBack ? (
               <Button
