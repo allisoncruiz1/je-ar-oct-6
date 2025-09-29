@@ -37,14 +37,14 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   const hasSubSteps = currentStepData.subStepCount > 0;
 
   return (
-    <div className="bg-white rounded-lg p-4 shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)]">
+    <div className="bg-brand-blue/5 rounded-lg p-5 shadow-md mb-4">
       {/* Progress dots */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-4">
         {mainSteps.map((step, index) => (
           <React.Fragment key={step.title}>
             <div className="flex flex-col items-center gap-1">
               <div
-                className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${
+                className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
                   index < currentStep
                     ? 'bg-brand-blue border-brand-blue'
                     : index === currentStep
@@ -53,10 +53,10 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
                 }`}
               >
                 {index < currentStep ? (
-                  <Check className="w-4 h-4 text-white" />
+                  <Check className="w-5 h-5 text-white" />
                 ) : (
                   <span
-                    className={`text-xs font-medium ${
+                    className={`text-sm font-medium ${
                       index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'
                     }`}
                   >
@@ -84,7 +84,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
       >
         <div className="flex items-center justify-between">
           <div className="flex-1">
-            <div className="text-base font-semibold text-foreground">
+            <div className="text-lg font-semibold tracking-tight text-foreground">
               {currentStepData.title}
             </div>
             {hasSubSteps && (
