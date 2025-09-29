@@ -343,7 +343,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* Sticky Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-12 max-md:p-2 max-md:mt-8">
+      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-8 max-md:p-2 max-md:mt-6">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
           {showBack ? (
             <Button
