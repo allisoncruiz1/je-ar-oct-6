@@ -418,7 +418,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       {/* Sticky Action Bar - Minimized */}
       <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-4 max-md:p-2 max-md:mt-2">
         <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
-          {showBack && (
+          {showBack ? (
             <Button
               variant="ghost"
               size="sm"
@@ -428,6 +428,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             >
               Back
             </Button>
+          ) : (
+            <div></div>
           )}
           <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-1">
             <Button
@@ -435,7 +437,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               size="sm"
               onClick={onSaveResume}
               aria-label="Save and resume application later"
-              className="flex-1 max-md:text-sm"
+              className="max-md:flex-1 max-md:text-sm"
             >
               Save & Resume Later
             </Button>
@@ -445,7 +447,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               onClick={handleContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
-              className="flex-1 max-md:text-sm"
+              className="max-md:flex-1 max-md:text-sm"
             >
               Continue
             </Button>
