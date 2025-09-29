@@ -2,6 +2,7 @@ import React from 'react';
 import { ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { Progress } from '@/components/ui/progress';
 
 interface SectionHeaderProps {
   currentSection: number;
@@ -43,6 +44,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {isInYourInformation ? `Section 1.${currentSection + 1} of 1.5` : `Section ${currentSection + 1} of ${totalSections}`}
         </span>
       </div>
+      {isInYourInformation && (
+        <div className="mb-4">
+          <Progress value={progress} className="w-full" />
+        </div>
+      )}
       <Separator className="mt-2" />
     </div>;
 };
