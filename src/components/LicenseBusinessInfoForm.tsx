@@ -217,7 +217,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         </form>
 
         {/* Action Bar at bottom */}
-        <div className="mt-auto bg-white border-t border-border py-2 px-4 max-md:p-2">
+        <div className="mt-auto bg-white py-2 px-4 max-md:p-2">
           <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
             <Button
               variant="outline"
