@@ -36,9 +36,10 @@ const Index = () => {
   };
 
   const getOverallProgress = (section: number) => {
-    // Progress should reflect main step completion only (20% per main step)
+    // Progress starts at 0% and increases based on completed sections
+    // Each of the 5 main steps represents 20% of total progress
     const step = getMainStep(section);
-    return (step + 1) * 20;
+    return step * 20;
   };
 
   const handleSaveResume = () => {
