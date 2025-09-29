@@ -1,6 +1,5 @@
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
-
 interface SectionHeaderProps {
   currentSection: number;
   totalSections: number;
@@ -13,8 +12,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => {
   // Calculate progress within "Your Information" (sections 0-4) - 20% per section
   const isInYourInformation = currentSection <= 4;
-  const progress = isInYourInformation ? (currentSection + 1) * 20 
-  : (currentSection + 1) / totalSections * 100;
+  const progress = isInYourInformation ? (currentSection + 1) * 20 : (currentSection + 1) / totalSections * 100;
   return <div className="mt-0 mb-0">
       <div className="flex items-center justify-between mb-4 mt-4">
         <div className="flex items-center gap-3">
@@ -26,16 +24,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {isInYourInformation ? `Section 1.${currentSection + 1} of 1.5` : `Section ${currentSection + 1} of ${totalSections}`}
         </span>
       </div>
-      {isInYourInformation && (
-        <div className="mb-4 flex justify-center md:hidden">
-          <div className="relative h-2 w-64 overflow-hidden rounded-full bg-gray-200">
-            <div 
-              className="h-full bg-[#1B489B] transition-all duration-300 rounded-full"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        </div>
-      )}
+      {isInYourInformation && <div className="mb-4 flex justify-center md:hidden">
+          
+        </div>}
       <Separator className="mt-2" />
     </div>;
 };
