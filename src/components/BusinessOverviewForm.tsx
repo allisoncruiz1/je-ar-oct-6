@@ -178,18 +178,19 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         <RadioGroup
           value={formData.ownsRealEstateOffice}
           onValueChange={(value) => updateFormData('ownsRealEstateOffice', value)}
+          className="flex flex-col gap-3 md:flex-row md:gap-6"
         >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="owns-office-yes" />
-            <Label htmlFor="owns-office-yes" className="text-sm">Yes</Label>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="yes" id="owns-office-yes" className="h-5 w-5" />
+            <Label htmlFor="owns-office-yes" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Yes</Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="owns-office-no" />
-            <Label htmlFor="owns-office-no" className="text-sm">No</Label>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="no" id="owns-office-no" className="h-5 w-5" />
+            <Label htmlFor="owns-office-no" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">No</Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="not-sure" id="owns-office-not-sure" />
-            <Label htmlFor="owns-office-not-sure" className="text-sm">Not Sure/Maybe</Label>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="not-sure" id="owns-office-not-sure" className="h-5 w-5" />
+            <Label htmlFor="owns-office-not-sure" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Not Sure/Maybe</Label>
           </div>
         </RadioGroup>
       </div>

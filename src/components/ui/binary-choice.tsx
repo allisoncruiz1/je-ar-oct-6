@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -44,7 +43,7 @@ export const BinaryChoice = React.forwardRef<
       <div ref={ref} className={cn("space-y-3", className)} {...props}>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <Label htmlFor={`${id}-switch`} className="text-sm font-medium text-foreground">
+            <Label className="text-sm font-medium text-foreground">
               {label} {required && <span className="text-destructive">*</span>}
             </Label>
             {tooltip && (
@@ -63,29 +62,25 @@ export const BinaryChoice = React.forwardRef<
           )}
         </div>
         
-        <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg min-h-[64px]">
-          <div className="flex flex-col gap-1">
-            <span className="text-base font-medium text-foreground">
-              {value === "yes" ? yesLabel : value === "no" ? noLabel : "Select an option"}
-            </span>
-            {value && (
-              <span className="text-sm text-muted-foreground">
-                Tap to change to {value === "yes" ? noLabel.toLowerCase() : yesLabel.toLowerCase()}
-              </span>
-            )}
+        <RadioGroup
+          value={value}
+          onValueChange={onValueChange}
+          disabled={disabled}
+          className="flex flex-col gap-3"
+        >
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14">
+            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+            <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer flex-1">
+              {yesLabel}
+            </Label>
           </div>
-          <div className="flex items-center gap-2 select-none">
-            <span className="text-xs text-muted-foreground">{noLabel}</span>
-            <Switch
-              id={`${id}-switch`}
-              checked={value === "yes"}
-              onCheckedChange={(checked) => onValueChange(checked ? "yes" : "no")}
-              disabled={disabled}
-              aria-label={`${label}: Currently ${value === "yes" ? yesLabel : noLabel}`}
-            />
-            <span className="text-xs text-muted-foreground">{yesLabel}</span>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14">
+            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+            <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer flex-1">
+              {noLabel}
+            </Label>
           </div>
-        </div>
+        </RadioGroup>
       </div>
     );
   }

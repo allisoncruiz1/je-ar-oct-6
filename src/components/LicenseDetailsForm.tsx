@@ -183,18 +183,18 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Do you have any pending transactions or active listings in {currentState} that you plan to bring with you to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        <RadioGroup value={currentData.pendingTransactions} onValueChange={value => updateCurrentStateData('pendingTransactions', value)}>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="yes" id="pending-yes" />
-            <Label htmlFor="pending-yes" className="text-sm">Yes</Label>
+        <RadioGroup value={currentData.pendingTransactions} onValueChange={value => updateCurrentStateData('pendingTransactions', value)} className="flex flex-col gap-3 md:flex-row md:gap-6">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="yes" id="pending-yes" className="h-5 w-5" />
+            <Label htmlFor="pending-yes" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Yes</Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="no" id="pending-no" />
-            <Label htmlFor="pending-no" className="text-sm">No</Label>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="no" id="pending-no" className="h-5 w-5" />
+            <Label htmlFor="pending-no" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">No</Label>
           </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="not-sure" id="pending-not-sure" />
-            <Label htmlFor="pending-not-sure" className="text-sm">Not Sure Yet</Label>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <RadioGroupItem value="not-sure" id="pending-not-sure" className="h-5 w-5" />
+            <Label htmlFor="pending-not-sure" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Not Sure Yet</Label>
           </div>
         </RadioGroup>
 
