@@ -47,11 +47,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
     onSelectionChange(newValues);
   };
 
-  const displayText = selectedValues.length === 0 
-    ? placeholder 
-    : selectedValues.length === 1 
-      ? selectedValues[0]
-      : `${selectedValues[0]} +${selectedValues.length - 1} more`;
+  const displayText = placeholder;
 
   const TriggerButton = (
     <Button
@@ -63,7 +59,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
         "bg-card border-border hover:bg-accent/50",
         "focus:ring-2 focus:ring-ring/20 focus-visible:outline-none",
         "shadow-sm transition-colors",
-        selectedValues.length === 0 ? "text-muted-foreground" : "text-foreground font-medium",
+        selectedValues.length === 0 ? "text-muted-foreground" : "text-foreground",
         className
       )}
     >
