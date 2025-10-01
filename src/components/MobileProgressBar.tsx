@@ -59,8 +59,10 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
                   <div className="w-2.5 h-2.5 bg-[#1B489B] rounded-full" />
                 </div>
               ) : (
-                // Future step - gray circle
-                <div className="w-7 h-7 rounded-full bg-[#CECFD3] flex items-center justify-center" />
+                // Future step - gray double circle design
+                <div className="flex items-center justify-center w-7 h-7 rounded-full bg-white border-2 border-[#CECFD3]">
+                  <div className="w-2 h-2 bg-[#CECFD3] rounded-full" />
+                </div>
               )}
             </div>
             {/* Connector Line */}
