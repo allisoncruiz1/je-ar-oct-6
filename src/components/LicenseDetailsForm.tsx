@@ -184,15 +184,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
           Do you have any pending transactions or active listings in {currentState} that you plan to bring with you to eXp Realty? <span className="text-destructive">*</span>
         </Label>
         <RadioGroup value={currentData.pendingTransactions} onValueChange={value => updateCurrentStateData('pendingTransactions', value)} className="flex flex-col gap-3 md:flex-row md:gap-6">
-          <div className="flex items-center space-x-3 p-4 border border-border rounded-lg h-14 flex-1 md:h-auto md:border-0 md:p-0 md:space-x-2 md:flex-none">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="yes" id="pending-yes" className="h-5 w-5" />
             <Label htmlFor="pending-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
           </div>
-          <div className="flex items-center space-x-3 p-4 border border-border rounded-lg h-14 flex-1 md:h-auto md:border-0 md:p-0 md:space-x-2 md:flex-none">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="no" id="pending-no" className="h-5 w-5" />
             <Label htmlFor="pending-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
           </div>
-          <div className="flex items-center space-x-3 p-4 border border-border rounded-lg h-14 flex-1 md:h-auto md:border-0 md:p-0 md:space-x-2 md:flex-none">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="not-sure" id="pending-not-sure" className="h-5 w-5" />
             <Label htmlFor="pending-not-sure" className="text-base md:text-sm text-foreground cursor-pointer">Not Sure Yet</Label>
           </div>
