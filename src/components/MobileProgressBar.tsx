@@ -42,15 +42,13 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   };
   const completedSubSteps = getCompletedSubStepsCount();
   const hasSubSteps = currentStepData.subStepCount > 0;
-  return <div className="bg-white rounded-lg p-5 shadow-md mb-4 border border-border">
-      {/* Save & Resume Later link - Top right corner */}
-
+  return <div className="bg-white rounded-lg p-3 shadow-md mb-4 border border-border">
       {/* Progress dots */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3">
         {mainSteps.map((step, index) => <React.Fragment key={step.title}>
             <div className="flex flex-col items-center gap-1">
-              <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${index < currentStep ? 'bg-brand-blue border-brand-blue' : index === currentStep ? 'bg-background border-brand-blue' : 'bg-background border-muted-foreground/30'}`}>
-                {index < currentStep ? <Check className="w-5 h-5 text-white" /> : <span className={`text-sm font-medium ${index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'}`}>
+              <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all ${index < currentStep ? 'bg-brand-blue border-brand-blue' : index === currentStep ? 'bg-background border-brand-blue' : 'bg-background border-muted-foreground/30'}`}>
+                {index < currentStep ? <Check className="w-4 h-4 text-white" /> : <span className={`text-xs font-medium ${index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'}`}>
                     {index + 1}
                   </span>}
               </div>
@@ -59,16 +57,9 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
           </React.Fragment>)}
       </div>
 
-      {/* Current step title - tappable if has sub-steps */}
-      <button onClick={hasSubSteps ? onOpenDrawer : undefined} disabled={!hasSubSteps} className={`w-full text-left ${hasSubSteps ? 'active:opacity-70' : ''}`}>
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <div className="text-xl font-semibold tracking-tight text-foreground">
-              {currentStepData.title}
-            </div>
-            {hasSubSteps}
-          </div>
-        </div>
-      </button>
+      {/* Current step title */}
+      <div className="text-lg font-semibold tracking-tight text-foreground">
+        {currentStepData.title}
+      </div>
     </div>;
 };
