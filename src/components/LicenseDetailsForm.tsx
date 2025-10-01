@@ -17,6 +17,7 @@ export interface LicenseDetailsData {
     pendingTransactions: string;
     existingTransactionsCount?: string;
     associations: string[];
+    primaryAssociation?: string;
     mls: string[];
     certifiedMentor: string;
     selectedMentor?: string;
@@ -64,6 +65,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     pendingTransactions: '',
     existingTransactionsCount: '',
     associations: [],
+    primaryAssociation: '',
     mls: [],
     certifiedMentor: '',
     selectedMentor: ''
@@ -91,7 +93,11 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
 
     // If certified mentor is "yes" AND mentor program is shown, also require selected mentor
     const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
-    const isCurrentStateValid = baseValid && pendingValid && mentorValid;
+    
+    // If multiple associations are selected, require primary association
+    const primaryAssociationValid = currentStateData?.associations?.length <= 1 || !!currentStateData?.primaryAssociation?.trim();
+    
+    const isCurrentStateValid = baseValid && pendingValid && mentorValid && primaryAssociationValid;
     console.log('🔍 LicenseDetailsForm validation:', {
       currentState,
       baseValid,
@@ -213,9 +219,33 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </Label>
         <MobileMultiSelect options={ASSOCIATIONS} selectedValues={currentData.associations} onSelectionChange={values => {
         updateCurrentStateData('associations', values);
+        // Clear primary association if less than 2 associations selected
+        if (values.length <= 1) {
+          updateCurrentStateData('primaryAssociation', '');
+        }
         if (values.length > 0) scrollToNextField(4);
       }} placeholder="Select associations" searchPlaceholder="Search associations..." />
       </div>
+
+      {/* Primary Association - Only show if multiple associations selected */}
+      {currentData.associations.length > 1 && <div className="space-y-2">
+          <Label htmlFor="primaryAssociation" className="text-sm font-medium text-foreground">
+            Which Association is your Primary? <span className="text-destructive">*</span>
+          </Label>
+          <Select value={currentData.primaryAssociation || ''} onValueChange={value => {
+          updateCurrentStateData('primaryAssociation', value);
+          scrollToNextField(5);
+        }}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select primary association" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border border-border shadow-lg z-50">
+              {currentData.associations.map(association => <SelectItem key={association} value={association} className="cursor-pointer">
+                  {association}
+                </SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>}
 
       {/* MLS */}
       <div ref={setFieldRef(5)} className="space-y-2">
