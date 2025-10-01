@@ -17,18 +17,23 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   const [isSubStepsExpanded, setIsSubStepsExpanded] = useState(true);
   const mainSteps = [{
     title: "Your Information",
+    description: "Personal and Business Details",
     subStepCount: 5
   }, {
     title: "Sponsor",
+    description: "Select Sponsor",
     subStepCount: 0
   }, {
     title: "Financial Info",
+    description: "Payment and Direct Deposit",
     subStepCount: 0
   }, {
     title: "Review",
+    description: "Review Application",
     subStepCount: 0
   }, {
     title: "Documents",
+    description: "W9 and Document Signing",
     subStepCount: 0
   }];
   
@@ -85,9 +90,14 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
         className={`flex items-center justify-between ${hasSubSteps ? 'cursor-pointer' : ''}`}
         onClick={hasSubSteps ? () => setIsSubStepsExpanded(!isSubStepsExpanded) : undefined}
       >
-        <h1 className="text-[#0C0F24] text-4xl font-bold leading-tight">
-          {currentStepData.title}
-        </h1>
+        <div>
+          <h1 className="text-[#0C0F24] text-4xl font-bold leading-tight">
+            {currentStepData.title}
+          </h1>
+          <p className="text-[#858791] text-sm mt-1">
+            {currentStepData.description}
+          </p>
+        </div>
         {hasSubSteps && (
           <div className="ml-2">
             {isSubStepsExpanded ? (
