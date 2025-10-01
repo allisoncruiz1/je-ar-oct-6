@@ -176,7 +176,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       </div>
 
       {/* Save & Resume Later link - Mobile only */}
-      <div className="md:hidden px-4 pt-4 pb-2 flex justify-end">
+      <div className="md:hidden px-4 pt-2 pb-0 flex justify-end">
         <button
           onClick={onSaveResume}
           className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
