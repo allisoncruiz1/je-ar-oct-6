@@ -264,6 +264,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
       <MobileActionBar
         onBack={onBack}
         onContinue={onContinue}
+        onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
       />

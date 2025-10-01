@@ -386,6 +386,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       <MobileActionBar
         onBack={onBack}
         onContinue={onContinue}
+        onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
       />
