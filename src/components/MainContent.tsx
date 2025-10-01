@@ -166,14 +166,24 @@ export const MainContent: React.FC<MainContentProps> = ({
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
       {/* Header section */}
       <div>
-        <div className="px-2 pt-0 pb-0 max-md:px-0 max-md:pt-0 max-md:pb-0">
+        <div className="px-2 pt-0 pb-0 max-md:px-2 max-md:pt-0 max-md:pb-0">
           <SectionHeader
             currentSection={currentSection}
             totalSections={sections.length}
             sectionTitle={sections[currentSection]}
-            onSaveResume={onSaveResume}
           />
         </div>
+      </div>
+
+      {/* Save & Resume Later link - Mobile only */}
+      <div className="md:hidden px-4 pt-4 pb-2 flex justify-end">
+        <button
+          onClick={onSaveResume}
+          className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+          aria-label="Save and resume application later"
+        >
+          Save & Resume Later
+        </button>
       </div>
 
       {/* Form content with padding */}
