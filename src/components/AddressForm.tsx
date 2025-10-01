@@ -478,6 +478,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       <MobileActionBar
         onBack={onBack}
         onContinue={handleContinue}
+        onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
       />

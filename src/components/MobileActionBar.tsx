@@ -25,7 +25,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({
             className="text-sm text-primary hover:underline whitespace-nowrap"
             aria-label="Save and resume application later"
           >
-            Save & Resume
+            Save & Resume Later
           </button>
         )}
         <div className="flex gap-2 ml-auto">

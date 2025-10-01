@@ -41,15 +41,6 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   return (
     <div className="bg-white rounded-lg p-5 shadow-md mb-4 border border-border">
       {/* Save & Resume Later link - Top right corner */}
-      <div className="flex justify-end mb-3">
-        <button
-          onClick={onSaveResume}
-          className="text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
-          aria-label="Save and resume application later"
-        >
-          Save & Resume Later
-        </button>
-      </div>
 
       {/* Progress dots */}
       <div className="flex items-center justify-between mb-4">
