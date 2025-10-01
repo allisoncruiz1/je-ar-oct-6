@@ -145,6 +145,28 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Input id="salesTransactions" type="number" value={currentData.salesTransactions} onChange={e => updateCurrentStateData('salesTransactions', e.target.value)} placeholder="Number of transactions" className="w-full" min="0" />
       </div>
 
+      {/* Certified Mentor Program */}
+      <div className="space-y-3">
+        <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => updateCurrentStateData('certifiedMentor', value)} label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" required />
+
+        {/* Conditional field for selecting a specific mentor */}
+        {currentData.certifiedMentor === 'yes' && <div className="space-y-2 mt-4">
+            <Label htmlFor="selectedMentor" className="text-sm font-medium text-foreground">
+              Select a certified mentor from <span className="text-destructive">*</span>
+            </Label>
+            <Select value={currentData.selectedMentor || ''} onValueChange={value => updateCurrentStateData('selectedMentor', value)}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Choose a mentor" />
+              </SelectTrigger>
+              <SelectContent className="bg-background border border-border shadow-lg z-50">
+                {MENTOR_OPTIONS.map(mentor => <SelectItem key={mentor} value={mentor} className="cursor-pointer">
+                    {mentor}
+                  </SelectItem>)}
+              </SelectContent>
+            </Select>
+          </div>}
+      </div>
+
       {/* Pending Transactions */}
       <div className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
@@ -188,28 +210,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
           Please select your MLS(s) you plan to be affiliated with as a real estate agent in {currentState}: <span className="text-destructive">*</span>
         </Label>
         <MobileMultiSelect options={MLS_OPTIONS} selectedValues={currentData.mls} onSelectionChange={values => updateCurrentStateData('mls', values)} placeholder="Select MLS" searchPlaceholder="Search MLS..." />
-      </div>
-
-      {/* Certified Mentor Program */}
-      <div className="space-y-3">
-        <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => updateCurrentStateData('certifiedMentor', value)} label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" required />
-
-        {/* Conditional field for selecting a specific mentor */}
-        {currentData.certifiedMentor === 'yes' && <div className="space-y-2 mt-4">
-            <Label htmlFor="selectedMentor" className="text-sm font-medium text-foreground">
-              Select a certified mentor from <span className="text-destructive">*</span>
-            </Label>
-            <Select value={currentData.selectedMentor || ''} onValueChange={value => updateCurrentStateData('selectedMentor', value)}>
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Choose a mentor" />
-              </SelectTrigger>
-              <SelectContent className="bg-background border border-border shadow-lg z-50">
-                {MENTOR_OPTIONS.map(mentor => <SelectItem key={mentor} value={mentor} className="cursor-pointer">
-                    {mentor}
-                  </SelectItem>)}
-              </SelectContent>
-            </Select>
-          </div>}
       </div>
 
       {/* Sticky Action Bar */}
