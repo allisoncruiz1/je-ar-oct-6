@@ -41,9 +41,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
 }) => {
   const [formData, setFormData] = useState<LicenseBusinessData>({
     preferredName: initialData?.preferredName || '',
-    isLicensed: initialData?.isLicensed || 'no',
+    isLicensed: initialData?.isLicensed || '',
     licensedStates: initialData?.licensedStates || [],
-    conductBusinessOutsideUS: initialData?.conductBusinessOutsideUS || 'no',
+    conductBusinessOutsideUS: initialData?.conductBusinessOutsideUS || '',
     internationalCountries: initialData?.internationalCountries || []
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
