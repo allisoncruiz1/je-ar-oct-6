@@ -66,17 +66,17 @@ export const BinaryChoice = React.forwardRef<
           value={value}
           onValueChange={onValueChange}
           disabled={disabled}
-          className="flex flex-col gap-3"
+          className="flex gap-3"
         >
-          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1">
             <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
-            <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer flex-1">
+            <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer">
               {yesLabel}
             </Label>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1">
             <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
-            <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer flex-1">
+            <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer">
               {noLabel}
             </Label>
           </div>

@@ -180,17 +180,17 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
           onValueChange={(value) => updateFormData('ownsRealEstateOffice', value)}
           className="flex flex-col gap-3 md:flex-row md:gap-6"
         >
-          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="yes" id="owns-office-yes" className="h-5 w-5" />
-            <Label htmlFor="owns-office-yes" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Yes</Label>
+            <Label htmlFor="owns-office-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="no" id="owns-office-no" className="h-5 w-5" />
-            <Label htmlFor="owns-office-no" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">No</Label>
+            <Label htmlFor="owns-office-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
           </div>
-          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="not-sure" id="owns-office-not-sure" className="h-5 w-5" />
-            <Label htmlFor="owns-office-not-sure" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none">Not Sure/Maybe</Label>
+            <Label htmlFor="owns-office-not-sure" className="text-base md:text-sm text-foreground cursor-pointer">Not Sure/Maybe</Label>
           </div>
         </RadioGroup>
       </div>

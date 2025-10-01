@@ -107,17 +107,17 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           <RadioGroup
             value={formData.agentType}
             onValueChange={(value) => updateFormData('agentType', value)}
-            className="flex flex-col gap-3 mt-3 md:flex-row md:gap-6"
+            className="flex gap-3 mt-3 md:gap-6"
           >
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="individual" id="agent-individual" className="h-5 w-5" />
-              <Label htmlFor="agent-individual" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none md:font-normal">
+              <Label htmlFor="agent-individual" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
                 Individual Agent
               </Label>
             </div>
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="team" id="agent-team" className="h-5 w-5" />
-              <Label htmlFor="agent-team" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none md:font-normal">
+              <Label htmlFor="agent-team" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
                 Part of a team
               </Label>
             </div>
@@ -132,17 +132,17 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           <RadioGroup
             value={formData.corporateStaffMember}
             onValueChange={(value) => updateFormData('corporateStaffMember', value)}
-            className="flex flex-col gap-3 mt-3 md:flex-row md:gap-6"
+            className="flex gap-3 mt-3 md:gap-6"
           >
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="yes" id="staff-yes" className="h-5 w-5" />
-              <Label htmlFor="staff-yes" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none md:font-normal">
+              <Label htmlFor="staff-yes" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
                 Yes
               </Label>
             </div>
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="no" id="staff-no" className="h-5 w-5" />
-              <Label htmlFor="staff-no" className="text-base md:text-sm text-foreground cursor-pointer flex-1 md:flex-none md:font-normal">
+              <Label htmlFor="staff-no" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
                 No
               </Label>
             </div>
