@@ -50,9 +50,17 @@ export const useAddressAutocomplete = (
         await loader.load();
         if (!inputRef.current) return;
 
+        // Restrict autocomplete to Florida addresses only
+        const floridaBounds = new google.maps.LatLngBounds(
+          new google.maps.LatLng(24.396308, -87.634938), // Southwest corner of Florida
+          new google.maps.LatLng(31.000888, -79.974306)  // Northeast corner of Florida
+        );
+
         const autocomplete = new google.maps.places.Autocomplete(inputRef.current!, {
           types: ['address'],
           componentRestrictions: { country: 'us' },
+          bounds: floridaBounds,
+          strictBounds: true, // Only return results within Florida bounds
           fields: ['address_components', 'formatted_address'],
         });
 
@@ -73,6 +81,12 @@ export const useAddressAutocomplete = (
               if (type === 'subpremise') components.subpremise = component.short_name;
             });
           });
+
+          // Verify the address is in Florida
+          if (components.administrative_area_level_1 !== 'FL') {
+            console.warn('Address must be in Florida');
+            return;
+          }
 
           const result: PlaceResult = {
             addressLine1: `${components.street_number || ''} ${components.route || ''}`.trim(),
