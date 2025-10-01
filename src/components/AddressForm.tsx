@@ -305,7 +305,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
 
   return (
-    <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
+    <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full pb-28 md:pb-0">
       <h2 className="text-xl font-semibold text-foreground mb-6 mt-4">Mailing Address</h2>
       
       <div ref={setFieldRef(0)} className="w-full max-md:max-w-full">
