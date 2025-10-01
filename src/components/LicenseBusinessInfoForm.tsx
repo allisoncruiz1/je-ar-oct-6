@@ -8,6 +8,7 @@ import { HelpCircle, X } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
 const US_STATES = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming', 'District of Columbia'];
 const COUNTRIES = ['Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Bulgaria', 'Canada', 'Chile', 'China', 'Colombia', 'Croatia', 'Czech Republic', 'Denmark', 'Egypt', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'South Korea', 'Latvia', 'Lebanon', 'Lithuania', 'Luxembourg', 'Malaysia', 'Mexico', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway', 'Pakistan', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Russia', 'Saudi Arabia', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'Spain', 'Sweden', 'Switzerland', 'Thailand', 'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'Vietnam', 'Other'];
 interface LicenseBusinessData {
@@ -47,6 +48,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     internationalCountries: initialData?.internationalCountries || []
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const { setFieldRef, scrollToNextField } = useAutoScroll();
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.isLicensed || (formData.isLicensed !== 'yes' && formData.isLicensed !== 'no')) {
@@ -116,111 +118,119 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
             />
           </div>
 
-          {/* Real Estate License Section */}
-          <div className="w-full space-y-6">
-            <h3 className="text-base font-semibold text-foreground leading-none">
-              Real Estate License
-            </h3>
-            
-            <div className="w-full">
-              <BinaryChoice
-                value={formData.isLicensed}
-                onValueChange={value => updateFormData({ isLicensed: value })}
-                label="Are you currently licensed?"
-                tooltip="Select whether you currently hold a real estate license"
-                required
-              />
+            {/* Real Estate License Section */}
+            <div ref={setFieldRef(0)} className="w-full space-y-6">
+              <h3 className="text-base font-semibold text-foreground leading-none">
+                Real Estate License
+              </h3>
               
-              {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
-            </div>
-
-            {/* Licensed States Selection - Conditional */}
-            {formData.isLicensed === 'yes' && (
-              <div className="w-full space-y-3">
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm font-medium text-foreground leading-none">
-                    What state are you currently licensed in? <span className="text-destructive">*</span>
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Select the state where you currently hold a real estate license</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                
-                <MobileMultiSelect
-                  options={US_STATES}
-                  selectedValues={formData.licensedStates}
-                  onSelectionChange={(values) => {
-                    // Only allow single selection for states
-                    const newValue = values.length > 0 ? [values[values.length - 1]] : [];
-                    updateFormData({ licensedStates: newValue });
+              <div className="w-full">
+                <BinaryChoice
+                  value={formData.isLicensed}
+                  onValueChange={value => {
+                    updateFormData({ isLicensed: value });
+                    if (value === 'yes') scrollToNextField(0);
+                    else scrollToNextField(1);
                   }}
-                  placeholder="Select state..."
-                  searchPlaceholder="Search states..."
+                  label="Are you currently licensed?"
+                  tooltip="Select whether you currently hold a real estate license"
+                  required
                 />
-
                 
-                {errors.licensedStates && (
-                  <p className="text-sm text-destructive">{errors.licensedStates}</p>
-                )}
+                {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
               </div>
-            )}
-          </div>
 
-          {/* International Business Section */}
-          <div className="w-full space-y-6">
-            <h3 className="text-base font-semibold text-foreground leading-none">
-              International Business
-            </h3>
-            
-            <div className="w-full">
-              <BinaryChoice
-                value={formData.conductBusinessOutsideUS}
-                onValueChange={value => updateFormData({ conductBusinessOutsideUS: value })}
-                label="Do you conduct business outside US?"
-                tooltip="Select whether you conduct any business activities outside the United States"
-                required
-              />
-              
-              {errors.conductBusinessOutsideUS && <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>}
+              {/* Licensed States Selection - Conditional */}
+              {formData.isLicensed === 'yes' && (
+                <div ref={setFieldRef(1)} className="w-full space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium text-foreground leading-none">
+                      What state are you currently licensed in? <span className="text-destructive">*</span>
+                    </Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Select the state where you currently hold a real estate license</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  
+                  <MobileMultiSelect
+                    options={US_STATES}
+                    selectedValues={formData.licensedStates}
+                    onSelectionChange={(values) => {
+                      // Only allow single selection for states
+                      const newValue = values.length > 0 ? [values[values.length - 1]] : [];
+                      updateFormData({ licensedStates: newValue });
+                      if (newValue.length > 0) scrollToNextField(1);
+                    }}
+                    placeholder="Select state..."
+                    searchPlaceholder="Search states..."
+                  />
+
+                  
+                  {errors.licensedStates && (
+                    <p className="text-sm text-destructive">{errors.licensedStates}</p>
+                  )}
+                </div>
+              )}
             </div>
 
-            {/* International Countries Selection - Conditional */}
-            {formData.conductBusinessOutsideUS === 'yes' && (
-              <div className="w-full space-y-3">
-                <div className="flex items-center gap-2">
-                  <Label className="text-sm font-medium text-foreground leading-none">
-                    Where? <span className="text-destructive">*</span>
-                  </Label>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Select all countries where you conduct business activities</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </div>
-                
-                <MobileMultiSelect
-                  options={COUNTRIES}
-                  selectedValues={formData.internationalCountries}
-                  onSelectionChange={(values) => updateFormData({ internationalCountries: values })}
-                  placeholder="Select country(ies)..."
-                  searchPlaceholder="Search countries..."
+            {/* International Business Section */}
+            <div ref={setFieldRef(2)} className="w-full space-y-6">
+              <h3 className="text-base font-semibold text-foreground leading-none">
+                International Business
+              </h3>
+              
+              <div className="w-full">
+                <BinaryChoice
+                  value={formData.conductBusinessOutsideUS}
+                  onValueChange={value => {
+                    updateFormData({ conductBusinessOutsideUS: value });
+                    if (value === 'yes') scrollToNextField(2);
+                  }}
+                  label="Do you conduct business outside US?"
+                  tooltip="Select whether you conduct any business activities outside the United States"
+                  required
                 />
-
                 
-                {errors.internationalCountries && (
-                  <p className="text-sm text-destructive">{errors.internationalCountries}</p>
-                )}
+                {errors.conductBusinessOutsideUS && <p className="text-sm text-[#A91616] mt-1">{errors.conductBusinessOutsideUS}</p>}
               </div>
-            )}
-          </div>
+
+              {/* International Countries Selection - Conditional */}
+              {formData.conductBusinessOutsideUS === 'yes' && (
+                <div ref={setFieldRef(3)} className="w-full space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium text-foreground leading-none">
+                      Where? <span className="text-destructive">*</span>
+                    </Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Select all countries where you conduct business activities</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  
+                  <MobileMultiSelect
+                    options={COUNTRIES}
+                    selectedValues={formData.internationalCountries}
+                    onSelectionChange={(values) => updateFormData({ internationalCountries: values })}
+                    placeholder="Select country(ies)..."
+                    searchPlaceholder="Search countries..."
+                  />
+
+                  
+                  {errors.internationalCountries && (
+                    <p className="text-sm text-destructive">{errors.internationalCountries}</p>
+                  )}
+                </div>
+              )}
+            </div>
         </form>
 
         {/* Action Bar at bottom */}

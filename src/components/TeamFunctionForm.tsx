@@ -6,6 +6,7 @@ import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { z } from 'zod';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
 
 export interface TeamFunctionData {
   agentType: string;
@@ -45,6 +46,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     agentType: initialData?.agentType || '',
     corporateStaffMember: initialData?.corporateStaffMember || ''
   });
+  const { setFieldRef, scrollToNextField } = useAutoScroll();
 
   const updateFormData = (field: keyof TeamFunctionData, value: string) => {
     const newData = { ...formData, [field]: value };
@@ -86,7 +88,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         </div>
 
         {/* Agent Type Question */}
-        <div className="space-y-3">
+        <div ref={setFieldRef(0)} className="space-y-3">
           <div className="flex items-center gap-2">
             <Label className="text-sm font-medium text-foreground">
               Will you be selling real estate with eXp as an individual agent or as part of a team? <span className="text-destructive">*</span>
@@ -106,7 +108,10 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           </div>
           <RadioGroup
             value={formData.agentType}
-            onValueChange={(value) => updateFormData('agentType', value)}
+            onValueChange={(value) => {
+              updateFormData('agentType', value);
+              scrollToNextField(0);
+            }}
             className="flex gap-3 mt-3 md:gap-6"
           >
             <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
@@ -125,7 +130,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         </div>
 
         {/* Corporate Staff Member Question */}
-        <div className="space-y-3">
+        <div ref={setFieldRef(1)} className="space-y-3">
           <Label className="text-sm font-medium text-foreground">
             Are you an eXp realty Corporate Staff member? <span className="text-destructive">*</span>
           </Label>

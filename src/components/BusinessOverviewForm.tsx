@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { useIsTouchDevice } from "@/hooks/use-touch";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
 
 
 export interface BusinessOverviewData {
@@ -69,6 +70,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
 
   const [isDateDrawerOpen, setIsDateDrawerOpen] = useState(false);
   const isMobileLike = isMobile || isTouch;
+  const { setFieldRef, scrollToNextField } = useAutoScroll();
 
   // Helper to parse date string to local Date (avoids timezone issues)
   const toLocalDate = (yyyyMmDd: string) => {
@@ -151,33 +153,42 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* Own Brokerage */}
-      <div className="space-y-3">
+      <div ref={setFieldRef(0)} className="space-y-3">
         <BinaryChoice
           value={formData.ownsBrokerage}
-          onValueChange={(value) => updateFormData('ownsBrokerage', value)}
+          onValueChange={(value) => {
+            updateFormData('ownsBrokerage', value);
+            scrollToNextField(0);
+          }}
           label="Do you currently own a real estate brokerage or share interest in another real estate brokerage?"
           required
         />
       </div>
 
       {/* Spouse at Different Brokerage */}
-      <div className="space-y-3">
+      <div ref={setFieldRef(1)} className="space-y-3">
         <BinaryChoice
           value={formData.spouseAtDifferentBrokerage}
-          onValueChange={(value) => updateFormData('spouseAtDifferentBrokerage', value)}
+          onValueChange={(value) => {
+            updateFormData('spouseAtDifferentBrokerage', value);
+            scrollToNextField(1);
+          }}
           label="Do you have a spouse or domestic partner that is affiliated with a different brokerage?"
           required
         />
       </div>
 
       {/* Owns Real Estate Office */}
-      <div className="space-y-3">
+      <div ref={setFieldRef(2)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
           Do you currently own lease, or manage a real estate office in any capacity? <span className="text-destructive">*</span>
         </Label>
         <RadioGroup
           value={formData.ownsRealEstateOffice}
-          onValueChange={(value) => updateFormData('ownsRealEstateOffice', value)}
+          onValueChange={(value) => {
+            updateFormData('ownsRealEstateOffice', value);
+            scrollToNextField(2);
+          }}
           className="flex flex-col gap-3 md:flex-row md:gap-6"
         >
           <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
@@ -196,7 +207,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* Pre-existing Matters Disclosure */}
-      <div className="space-y-3">
+      <div ref={setFieldRef(3)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
           Pre-existing Matters Disclosure (Choose all that apply) <span className="text-destructive">*</span>
         </Label>
@@ -206,7 +217,10 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               <Checkbox
                 id={`pre-existing-${option}`}
                 checked={formData.preExistingMatters.includes(option)}
-                onCheckedChange={(checked) => handlePreExistingMatterChange(option, checked as boolean)}
+                onCheckedChange={(checked) => {
+                  handlePreExistingMatterChange(option, checked as boolean);
+                  if (checked) scrollToNextField(3);
+                }}
                 className="mt-0.5"
               />
               <Label htmlFor={`pre-existing-${option}`} className="text-sm leading-relaxed">
@@ -218,7 +232,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* License Transfer Date */}
-      <div className="space-y-2">
+      <div ref={setFieldRef(4)} className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
