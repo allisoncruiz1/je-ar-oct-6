@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { useAutoScroll } from '@/hooks/useAutoScroll';
 
 interface AddressFormData {
   addressLine1: string;
@@ -45,6 +46,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
   const [verified, setVerified] = useState(false);
   const [isAutocompleting, setIsAutocompleting] = useState(false);
   const fetchTimeoutRef = useRef<number | null>(null);
+  const { setFieldRef, scrollToNextField } = useAutoScroll();
 
   const US_STATE_ABBR: Record<string, string> = {
     Alabama: 'AL', Alaska: 'AK', Arizona: 'AZ', Arkansas: 'AR', California: 'CA', Colorado: 'CO',
@@ -170,8 +172,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     setTimeout(() => {
       console.log('✅ Autocompleting flag reset to false');
       setIsAutocompleting(false);
+      // Scroll to city field after address is selected
+      scrollToNextField(0);
     }, 500); // Increased delay to ensure form validity doesn't trigger progression
-  }, [onFormDataChange]);
+  }, [onFormDataChange, scrollToNextField]);
 
   useAddressAutocomplete(addressInputRef, handlePlaceSelected);
 
@@ -258,6 +262,13 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     
     setFormData(newData);
     onFormDataChange?.(newData);
+    
+    // Trigger auto-scroll after field is filled
+    if (field === 'city' && value.trim()) {
+      scrollToNextField(1);
+    } else if (field === 'state' && value.trim()) {
+      scrollToNextField(2);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -303,7 +314,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
       <h2 className="text-xl font-semibold text-foreground mb-6 mt-4">Mailing Address</h2>
       
-      <div className="w-full max-md:max-w-full">
+      <div ref={setFieldRef(0)} className="w-full max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           Address Line 1
           <span className="text-destructive">*</span>
@@ -361,7 +372,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
         />
       </div>
 
-      <div className="w-full mt-6 max-md:max-w-full">
+      <div ref={setFieldRef(1)} className="w-full mt-6 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
           City
           <span className="text-destructive">*</span>
@@ -377,7 +388,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       <div className="flex w-full gap-4 mt-6 max-md:flex-col max-md:gap-4">
-        <div className="w-40 max-md:w-full">
+        <div ref={setFieldRef(2)} className="w-40 max-md:w-full">
           <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             State
             <span className="text-destructive">*</span>
@@ -420,7 +431,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           )}
         </div>
 
-        <div className="flex-1 max-md:w-full">
+        <div ref={setFieldRef(3)} className="flex-1 max-md:w-full">
           <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 text-sm">
             Zip code
             <span className="text-destructive">*</span>
