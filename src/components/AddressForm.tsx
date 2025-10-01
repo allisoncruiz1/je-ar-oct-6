@@ -332,10 +332,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       const startsWithNumber = /^\d+\s+/.test(q);
       let url: string;
       if (startsWithNumber) {
-        // Structured search biases to street-level, improves residential hits
-        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&street=${encodeURIComponent(q)}`;
+        // Structured search biases to street-level, improves residential hits - restricted to Florida
+        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&state=Florida&dedupe=1&street=${encodeURIComponent(q)}`;
       } else {
-        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&q=${encodeURIComponent(q)}`;
+        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&state=Florida&dedupe=1&q=${encodeURIComponent(q)}`;
       }
       const res = await fetch(url, {
         headers: {
@@ -355,9 +355,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       };
       const hasAddressBits = (a: any) => !!(a.house_number && (a.road || a.street) && a.postcode);
       const inUS = (a: any) => a?.country_code === 'us' || a?.country === 'United States';
+      const inFlorida = (a: any) => a?.state === 'Florida' || a?.['ISO3166-2-lvl4'] === 'US-FL';
       const filtered = items.filter((item: any) => {
         const a = item.address || {};
-        return inUS(a) && hasAddressBits(a) && isResidentialBuilding(item);
+        return inUS(a) && inFlorida(a) && hasAddressBits(a) && isResidentialBuilding(item);
       }).slice(0, 5);
       console.log('[Nominatim] q=', q, 'items=', items.length, 'filtered=', filtered.length, filtered.map((i: any) => ({
         cls: i.class,
