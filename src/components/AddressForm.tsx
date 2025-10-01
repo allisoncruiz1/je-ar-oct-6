@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { MobileActionBar } from '@/components/MobileActionBar';
 
 interface AddressFormData {
   addressLine1: string;
@@ -437,25 +438,25 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
       </div>
 
       {/* Sticky Action Bar - Minimized */}
-      <div className="sticky bottom-0 bg-background py-2 px-0 mt-12 max-md:px-2 max-md:py-2 max-md:mt-8">
-        <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
+      {/* Desktop action bar */}
+      <div className="sticky bottom-0 bg-background py-2 px-0 mt-12 max-md:hidden">
+        <div className="flex items-center justify-between">
           <Button
             variant="outline"
             size="sm"
             onClick={onSaveResume}
             aria-label="Save and resume application later"
-            className="max-md:order-1 max-md:w-full max-md:text-sm ml-0"
+            className="ml-0"
           >
             Save & Resume Later
           </Button>
-          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2">
+          <div className="flex gap-3">
             {showBack && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onBack}
                 aria-label="Go back to previous step"
-                className="max-md:w-full"
               >
                 Back
               </Button>
@@ -466,13 +467,20 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
               onClick={handleContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
-              className="max-md:w-full max-md:text-sm"
             >
               Continue
             </Button>
           </div>
         </div>
       </div>
+      
+      {/* Mobile action bar */}
+      <MobileActionBar
+        onBack={onBack}
+        onContinue={handleContinue}
+        canContinue={canContinue}
+        showBack={showBack}
+      />
     </form>
   );
 };

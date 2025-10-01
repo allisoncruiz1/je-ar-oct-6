@@ -8,6 +8,7 @@ import { MobileMultiSelect } from "@/components/ui/mobile-multi-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { MobileActionBar } from '@/components/MobileActionBar';
 export interface LicenseDetailsData {
   [state: string]: {
     licenseNumber: string;
@@ -222,21 +223,29 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <MobileMultiSelect options={MLS_OPTIONS} selectedValues={currentData.mls} onSelectionChange={values => updateCurrentStateData('mls', values)} placeholder="Select MLS" searchPlaceholder="Search MLS..." />
       </div>
 
-      {/* Sticky Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-10 max-md:p-2 max-md:mt-6">
-        <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
-          <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later" className="max-md:order-1 max-md:w-full max-md:text-sm">
+      {/* Desktop action bar */}
+      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-10 max-md:hidden">
+        <div className="flex items-center justify-between">
+          <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>
-          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2">
-            {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step" className="max-md:w-full">
+          <div className="flex gap-3">
+            {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step">
               Back
             </Button>}
-            <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step" className="max-md:w-full max-md:text-sm">
+            <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
               Continue
             </Button>
           </div>
         </div>
       </div>
+      
+      {/* Mobile action bar */}
+      <MobileActionBar
+        onBack={onBack}
+        onContinue={onContinue}
+        canContinue={canContinue}
+        showBack={showBack}
+      />
     </div>;
 };

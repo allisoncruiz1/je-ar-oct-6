@@ -75,6 +75,7 @@ const Index = () => {
               currentSection={currentSection}
               completedSections={completedSections}
               onOpenDrawer={() => setIsSubStepDrawerOpen(true)}
+              onSaveResume={handleSaveResume}
             />
           </div>
 

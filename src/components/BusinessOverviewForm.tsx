@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { useIsTouchDevice } from "@/hooks/use-touch";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { MobileActionBar } from '@/components/MobileActionBar';
 
 
 export interface BusinessOverviewData {
@@ -346,24 +347,24 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       {/* Action Bar at bottom */}
       </form>
       <div className="mt-auto bg-white border-t border-border py-2 px-4 max-md:p-2">
-        <div className="flex items-center justify-between max-md:flex-col max-md:gap-2">
+      {/* Desktop action bar */}
+      <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:hidden">
+        <div className="flex items-center justify-between">
           <Button
             variant="outline"
             size="sm"
             onClick={onSaveResume}
             aria-label="Save and resume application later"
-            className="max-md:order-1 max-md:w-full max-md:text-sm"
           >
             Save & Resume Later
           </Button>
-          <div className="flex gap-3 max-md:gap-2 max-md:w-full max-md:order-2">
+          <div className="flex gap-3">
             {showBack && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={onBack}
                 aria-label="Go back to previous step"
-                className="max-md:w-full"
               >
                 Back
               </Button>
@@ -374,12 +375,20 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               onClick={onContinue}
               disabled={!canContinue}
               aria-label="Continue to next step"
-              className="max-md:w-full max-md:text-sm"
             >
               Continue
             </Button>
           </div>
         </div>
+      </div>
+      
+      {/* Mobile action bar */}
+      <MobileActionBar
+        onBack={onBack}
+        onContinue={onContinue}
+        canContinue={canContinue}
+        showBack={showBack}
+      />
       </div>
     </div>
   );
