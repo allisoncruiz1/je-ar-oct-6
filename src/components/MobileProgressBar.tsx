@@ -92,9 +92,9 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
               {currentStepData.title}
             </div>
             {hasSubSteps && (
-              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-1">
-                <span>Tap to view</span>
-                <ChevronDown className="w-3 h-3" />
+              <div className="flex items-center gap-1.5 mt-2 text-xs font-medium text-primary bg-primary/10 rounded-full px-3 py-1.5 w-fit">
+                <span>View sub-steps ({completedSubSteps}/{currentStepData.subStepCount})</span>
+                <ChevronDown className="w-3.5 h-3.5" />
               </div>
             )}
           </div>
