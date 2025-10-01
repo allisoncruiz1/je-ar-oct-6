@@ -263,12 +263,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
     setFormData(newData);
     onFormDataChange?.(newData);
     
-    // Trigger auto-scroll after field is filled
-    if (field === 'city' && value.trim()) {
-      scrollToNextField(1);
-    } else if (field === 'state' && value.trim()) {
-      scrollToNextField(2);
-    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -381,6 +375,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
             type="text"
             value={formData.city}
             onChange={(e) => handleInputChange('city', e.target.value)}
+            onBlur={() => { if ((formData.city || '').trim()) scrollToNextField(1); }}
             placeholder="City"
             required
             className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm"
@@ -403,6 +398,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
                   const selectedState = US_STATES.find(s => s.name === values[0]);
                   if (selectedState) {
                     handleInputChange('state', selectedState.code);
+                    scrollToNextField(2);
                   }
                 } else {
                   handleInputChange('state', '');
@@ -415,7 +411,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
           ) : (
             <Select
               value={formData.state}
-              onValueChange={(value) => handleInputChange('state', value)}
+              onValueChange={(value) => { handleInputChange('state', value); scrollToNextField(2); }}
             >
               <SelectTrigger className="justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm">
                 <SelectValue placeholder="Select State" />
