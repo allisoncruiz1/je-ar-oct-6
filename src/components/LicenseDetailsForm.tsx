@@ -75,13 +75,23 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
 
     // Check if current state is valid (allow continuing with partial data)
     const currentStateData = newData[currentState];
-    const baseValid = !!(currentStateData?.licenseNumber?.trim() && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no'));
+    const salesCount = parseInt(currentStateData?.salesTransactions || '0');
+    const showMentorProgram = salesCount <= 2;
+    
+    // Base validation - mentor field only required if sales <= 2
+    const baseValid = !!(
+      currentStateData?.licenseNumber?.trim() && 
+      currentStateData?.salesTransactions?.trim() && 
+      currentStateData?.pendingTransactions?.trim() && 
+      currentStateData?.mls?.length > 0 && 
+      (showMentorProgram ? (currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no') : true)
+    );
 
     // If pending transactions is "yes", also require existing transactions count
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
 
-    // If certified mentor is "yes", also require selected mentor
-    const mentorValid = currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
+    // If certified mentor is "yes" AND mentor program is shown, also require selected mentor
+    const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
     const isCurrentStateValid = baseValid && pendingValid && mentorValid;
     
     console.log('🔍 LicenseDetailsForm validation:', {
@@ -145,8 +155,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Input id="salesTransactions" type="number" value={currentData.salesTransactions} onChange={e => updateCurrentStateData('salesTransactions', e.target.value)} placeholder="Number of transactions" className="w-full" min="0" />
       </div>
 
-      {/* Certified Mentor Program */}
-      <div className="space-y-3">
+      {/* Certified Mentor Program - Only show if sales transactions are 2 or less */}
+      {(currentData.salesTransactions === '' || parseInt(currentData.salesTransactions) <= 2) && <div className="space-y-3">
         <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => updateCurrentStateData('certifiedMentor', value)} label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" required />
 
         {/* Conditional field for selecting a specific mentor */}
@@ -165,7 +175,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               </SelectContent>
             </Select>
           </div>}
-      </div>
+      </div>}
 
       {/* Pending Transactions */}
       <div className="space-y-3">
