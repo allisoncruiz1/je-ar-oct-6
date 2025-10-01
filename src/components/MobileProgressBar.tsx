@@ -42,23 +42,34 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   };
   const completedSubSteps = getCompletedSubStepsCount();
   const hasSubSteps = currentStepData.subStepCount > 0;
-  return <div className="bg-white rounded-lg p-3 shadow-md mb-4 border border-border">
-      {/* Progress stepper */}
+  return <div className="bg-white rounded-lg p-4 shadow-md mb-4 border border-border">
+      {/* Horizontal Progress Stepper */}
       <div className="flex items-center justify-between mb-3">
         {mainSteps.map((step, index) => <React.Fragment key={step.title}>
             <div className="flex flex-col items-center gap-1">
-              <div className={`rounded-full flex items-center justify-center transition-all ${index < currentStep ? 'w-8 h-8 bg-[#003087] shadow-sm' : index === currentStep ? 'w-10 h-10 bg-[#003087] shadow-[0_0_12px_rgba(0,48,135,0.4)]' : 'w-8 h-8 bg-gray-200'}`}>
-                {index < currentStep ? <Check className="w-4 h-4 text-white" /> : <span className={`font-semibold ${index === currentStep ? 'text-white text-sm' : 'text-gray-400 text-xs'}`}>
-                    {index + 1}
-                  </span>}
-              </div>
+              {/* Step Circle Indicator */}
+              {index < currentStep ? (
+                // Completed step - filled circle with checkmark
+                <div className="w-7 h-7 rounded-full bg-[#1B489B] flex items-center justify-center">
+                  <Check className="w-4 h-4 text-white" />
+                </div>
+              ) : index === currentStep ? (
+                // Active step - double circle design
+                <div className="flex items-center justify-center w-7 h-7 rounded-full bg-white border-4 border-[#1B489B]/40">
+                  <div className="w-2.5 h-2.5 bg-[#1B489B] rounded-full" />
+                </div>
+              ) : (
+                // Future step - gray circle
+                <div className="w-7 h-7 rounded-full bg-[#CECFD3] flex items-center justify-center" />
+              )}
             </div>
-            {index < mainSteps.length - 1 && <div className={`flex-1 h-1 mx-1.5 rounded-full ${index < currentStep ? 'bg-[#003087]' : 'bg-gray-200'}`} />}
+            {/* Connector Line */}
+            {index < mainSteps.length - 1 && <div className={`flex-1 h-0.5 mx-1 ${index < currentStep ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'}`} />}
           </React.Fragment>)}
       </div>
 
       {/* Current step title */}
-      <div className="text-lg font-semibold tracking-tight text-foreground">
+      <div className="text-[#0C0F24] text-base font-bold leading-tight">
         {currentStepData.title}
       </div>
     </div>;
