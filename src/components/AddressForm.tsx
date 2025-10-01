@@ -301,7 +301,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({ onSubmit, onContinue, 
 
   return (
     <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full">
-      <h2 className="text-xl font-semibold text-foreground mb-6 mt-4">Mailing Address</h2>
+      <h2 className="text-xl font-semibold text-foreground mb-6 mt-4 max-md:mt-0">Mailing Address</h2>
       
       <div className="w-full max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold leading-6 max-md:max-w-full text-sm">
