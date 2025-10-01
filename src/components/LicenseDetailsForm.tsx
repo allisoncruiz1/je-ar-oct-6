@@ -79,7 +79,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // Check if current state is valid (allow continuing with partial data)
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
-    const showMentorProgram = salesCount <= 2;
+    const showMentorProgram = salesCount === 2;
     
     // Base validation - mentor field only required if sales <= 2
     const baseValid = !!(
@@ -179,8 +179,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         />
       </div>
 
-      {/* Certified Mentor Program - Only show if sales transactions are 2 or less */}
-      {(currentData.salesTransactions === '' || parseInt(currentData.salesTransactions) <= 2) && <div ref={setFieldRef(2)} className="space-y-3">
+      {/* Certified Mentor Program - Only show if sales transactions are exactly 2 */}
+      {currentData.salesTransactions === '2' && <div ref={setFieldRef(2)} className="space-y-3">
         <BinaryChoice 
           value={currentData.certifiedMentor} 
           onValueChange={value => {
