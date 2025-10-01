@@ -49,8 +49,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
 }) => {
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
   const currentState = licensedStates[currentStateIndex];
-  const { setFieldRef, scrollToNextField } = useAutoScroll();
-  
+  const {
+    setFieldRef,
+    scrollToNextField
+  } = useAutoScroll();
   console.log('🏠 LicenseDetailsForm state debug:', {
     licensedStates,
     currentStateIndex,
@@ -80,15 +82,9 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
     const showMentorProgram = salesCount === 2;
-    
+
     // Base validation - mentor field only required if sales <= 2
-    const baseValid = !!(
-      currentStateData?.licenseNumber?.trim() && 
-      currentStateData?.salesTransactions?.trim() && 
-      currentStateData?.pendingTransactions?.trim() && 
-      currentStateData?.mls?.length > 0 && 
-      (showMentorProgram ? (currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no') : true)
-    );
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
 
     // If pending transactions is "yes", also require existing transactions count
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
@@ -96,7 +92,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // If certified mentor is "yes" AND mentor program is shown, also require selected mentor
     const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
     const isCurrentStateValid = baseValid && pendingValid && mentorValid;
-    
     console.log('🔍 LicenseDetailsForm validation:', {
       currentState,
       baseValid,
@@ -109,7 +104,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       mlsLength: currentStateData?.mls?.length,
       certifiedMentor: currentStateData?.certifiedMentor
     });
-    
     onFormValidChange(isCurrentStateValid);
   };
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
@@ -117,19 +111,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   return <div className="space-y-6">
       {/* State Navigation Header */}
       {licensedStates.length > 1 && <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Button type="button" variant="outline" size="sm" onClick={() => setCurrentStateIndex(currentStateIndex - 1)} disabled={!canGoPrevious()} className="flex items-center gap-2">
-              <ChevronLeft className="h-4 w-4" />
-              Previous State
-            </Button>
-            <span className="text-sm font-medium text-muted-foreground">
-              {currentStateIndex + 1} of {licensedStates.length} Licensed States
-            </span>
-            <Button type="button" variant="outline" size="sm" onClick={() => setCurrentStateIndex(currentStateIndex + 1)} disabled={!canGoNext()} className="flex items-center gap-2">
-              Next State
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
+          
         </div>}
 
       {/* Current State Header */}
@@ -147,17 +129,9 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label htmlFor="licenseNumber" className="text-sm font-medium text-foreground">
           License Number <span className="text-destructive">*</span>
         </Label>
-        <Input 
-          id="licenseNumber" 
-          type="text" 
-          value={currentData.licenseNumber} 
-          onChange={e => updateCurrentStateData('licenseNumber', e.target.value)}
-          onBlur={() => {
-            if (currentData.licenseNumber.trim()) scrollToNextField(0);
-          }}
-          placeholder="Enter your license number" 
-          className="w-full" 
-        />
+        <Input id="licenseNumber" type="text" value={currentData.licenseNumber} onChange={e => updateCurrentStateData('licenseNumber', e.target.value)} onBlur={() => {
+        if (currentData.licenseNumber.trim()) scrollToNextField(0);
+      }} placeholder="Enter your license number" className="w-full" />
       </div>
 
       {/* Sales Transactions */}
@@ -165,45 +139,27 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label htmlFor="salesTransactions" className="text-sm font-medium text-foreground">
           Sales Transactions (Past 12 Months) <span className="text-destructive">*</span>
         </Label>
-        <Input 
-          id="salesTransactions" 
-          type="number" 
-          value={currentData.salesTransactions} 
-          onChange={e => updateCurrentStateData('salesTransactions', e.target.value)}
-          onBlur={() => {
-            if (currentData.salesTransactions.trim()) scrollToNextField(1);
-          }}
-          placeholder="Number of transactions" 
-          className="w-full" 
-          min="0" 
-        />
+        <Input id="salesTransactions" type="number" value={currentData.salesTransactions} onChange={e => updateCurrentStateData('salesTransactions', e.target.value)} onBlur={() => {
+        if (currentData.salesTransactions.trim()) scrollToNextField(1);
+      }} placeholder="Number of transactions" className="w-full" min="0" />
       </div>
 
       {/* Certified Mentor Program - Only show if sales transactions are exactly 2 */}
       {currentData.salesTransactions === '2' && <div ref={setFieldRef(2)} className="space-y-3">
-        <BinaryChoice 
-          value={currentData.certifiedMentor} 
-          onValueChange={value => {
-            updateCurrentStateData('certifiedMentor', value);
-            if (value === 'yes') scrollToNextField(2);
-            else scrollToNextField(3);
-          }}
-          label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" 
-          required 
-        />
+        <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => {
+        updateCurrentStateData('certifiedMentor', value);
+        if (value === 'yes') scrollToNextField(2);else scrollToNextField(3);
+      }} label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" required />
 
         {/* Conditional field for selecting a specific mentor */}
         {currentData.certifiedMentor === 'yes' && <div className="space-y-2 mt-4">
             <Label htmlFor="selectedMentor" className="text-sm font-medium text-foreground">
               Select a certified mentor from <span className="text-destructive">*</span>
             </Label>
-            <Select 
-              value={currentData.selectedMentor || ''} 
-              onValueChange={value => {
-                updateCurrentStateData('selectedMentor', value);
-                scrollToNextField(3);
-              }}
-            >
+            <Select value={currentData.selectedMentor || ''} onValueChange={value => {
+          updateCurrentStateData('selectedMentor', value);
+          scrollToNextField(3);
+        }}>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Choose a mentor" />
               </SelectTrigger>
@@ -221,15 +177,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Do you have any pending transactions or active listings in {currentState} that you plan to bring with you to eXp Realty? <span className="text-destructive">*</span>
         </Label>
-        <RadioGroup 
-          value={currentData.pendingTransactions} 
-          onValueChange={value => {
-            updateCurrentStateData('pendingTransactions', value);
-            if (value === 'yes') scrollToNextField(3);
-            else scrollToNextField(4);
-          }}
-          className="flex flex-col gap-3 md:flex-row md:gap-6"
-        >
+        <RadioGroup value={currentData.pendingTransactions} onValueChange={value => {
+        updateCurrentStateData('pendingTransactions', value);
+        if (value === 'yes') scrollToNextField(3);else scrollToNextField(4);
+      }} className="flex flex-col gap-3 md:flex-row md:gap-6">
           <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="yes" id="pending-yes" className="h-5 w-5" />
             <Label htmlFor="pending-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
@@ -249,18 +200,9 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             <Label htmlFor="existingTransactionsCount" className="text-sm font-medium text-foreground">
               How many existing transactions or listings do you have? <span className="text-destructive">*</span>
             </Label>
-            <Input 
-              id="existingTransactionsCount" 
-              type="number" 
-              value={currentData.existingTransactionsCount || ''} 
-              onChange={e => updateCurrentStateData('existingTransactionsCount', e.target.value)}
-              onBlur={() => {
-                if (currentData.existingTransactionsCount?.trim()) scrollToNextField(4);
-              }}
-              placeholder="Enter the number of transactions/listings" 
-              className="w-full" 
-              min="0" 
-            />
+            <Input id="existingTransactionsCount" type="number" value={currentData.existingTransactionsCount || ''} onChange={e => updateCurrentStateData('existingTransactionsCount', e.target.value)} onBlur={() => {
+          if (currentData.existingTransactionsCount?.trim()) scrollToNextField(4);
+        }} placeholder="Enter the number of transactions/listings" className="w-full" min="0" />
           </div>}
       </div>
 
@@ -269,16 +211,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}:
         </Label>
-        <MobileMultiSelect 
-          options={ASSOCIATIONS} 
-          selectedValues={currentData.associations} 
-          onSelectionChange={values => {
-            updateCurrentStateData('associations', values);
-            if (values.length > 0) scrollToNextField(4);
-          }}
-          placeholder="Select associations" 
-          searchPlaceholder="Search associations..." 
-        />
+        <MobileMultiSelect options={ASSOCIATIONS} selectedValues={currentData.associations} onSelectionChange={values => {
+        updateCurrentStateData('associations', values);
+        if (values.length > 0) scrollToNextField(4);
+      }} placeholder="Select associations" searchPlaceholder="Search associations..." />
       </div>
 
       {/* MLS */}
@@ -307,12 +243,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar
-        onBack={onBack}
-        onContinue={onContinue}
-        onSaveResume={onSaveResume}
-        canContinue={canContinue}
-        showBack={showBack}
-      />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
     </div>;
 };
