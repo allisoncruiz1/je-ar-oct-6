@@ -87,19 +87,19 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
 
       {/* Current step title with dropdown for sub-steps */}
       <div 
-        className={`flex items-center justify-between ${hasSubSteps ? 'cursor-pointer' : ''}`}
+        className={`flex items-start justify-between ${hasSubSteps ? 'cursor-pointer' : ''}`}
         onClick={hasSubSteps ? () => setIsSubStepsExpanded(!isSubStepsExpanded) : undefined}
       >
         <div>
           <h1 className="text-[#0C0F24] text-4xl font-bold leading-tight">
             {currentStepData.title}
           </h1>
-          <p className="text-[#858791] text-sm mt-1">
+          <p className="text-[#858791] text-sm mt-1 font-normal">
             {currentStepData.description}
           </p>
         </div>
         {hasSubSteps && (
-          <div className="ml-2">
+          <div className="ml-2 mt-1 flex-shrink-0">
             {isSubStepsExpanded ? (
               <ChevronUp className="w-5 h-5 text-[#858791]" />
             ) : (
