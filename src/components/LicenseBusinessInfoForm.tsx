@@ -145,14 +145,14 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 <div ref={setFieldRef(1)} className="w-full space-y-3">
                   <div className="flex items-center gap-2">
                     <Label className="text-sm font-medium text-foreground leading-none">
-                      What state are you currently licensed in? <span className="text-destructive">*</span>
+                      What state(s) are you currently licensed in? <span className="text-destructive">*</span>
                     </Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Select the state where you currently hold a real estate license</p>
+                        <p>Select all states where you currently hold a real estate license</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
@@ -161,12 +161,10 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     options={US_STATES}
                     selectedValues={formData.licensedStates}
                     onSelectionChange={(values) => {
-                      // Only allow single selection for states
-                      const newValue = values.length > 0 ? [values[values.length - 1]] : [];
-                      updateFormData({ licensedStates: newValue });
-                      if (newValue.length > 0) scrollToNextField(1);
+                      updateFormData({ licensedStates: values });
+                      if (values.length > 0) scrollToNextField(1);
                     }}
-                    placeholder="Select state..."
+                    placeholder="Select state(s)..."
                     searchPlaceholder="Search states..."
                   />
 
