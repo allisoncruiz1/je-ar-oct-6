@@ -45,7 +45,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
         )}
       </div>
       <div className="self-stretch flex-1 shrink basis-[0%] my-auto">
-        <div className={`${textColor} ${isActive ? 'text-2xl' : 'text-base'} font-bold leading-none`}>
+        <div className={`${textColor} text-base font-bold leading-none`}>
           {title}
         </div>
         <div className={`${textColor} text-xs font-normal`}>
