@@ -1,5 +1,5 @@
-import React from 'react';
-import { Check, ChevronDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { Check, ChevronDown, ChevronUp } from 'lucide-react';
 interface MobileProgressBarProps {
   currentStep: number;
   currentSection: number;
@@ -14,6 +14,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   onOpenDrawer,
   onSaveResume
 }) => {
+  const [isSubStepsExpanded, setIsSubStepsExpanded] = useState(true);
   const mainSteps = [{
     title: "Your Information",
     subStepCount: 5
@@ -30,6 +31,15 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
     title: "Documents",
     subStepCount: 0
   }];
+  
+  const yourInfoSubSteps = [
+    'Mailing Address',
+    'License Business Info',
+    'License Details',
+    'Business Overview',
+    'Team Function'
+  ];
+  
   const currentStepData = mainSteps[currentStep];
 
   // Calculate how many sub-steps are completed for the current main step
@@ -70,9 +80,52 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
           </React.Fragment>)}
       </div>
 
-      {/* Current step title */}
-      <div className="text-[#0C0F24] text-base font-bold leading-tight">
-        {currentStepData.title}
+      {/* Current step title with dropdown for sub-steps */}
+      <div 
+        className={`flex items-center justify-between ${hasSubSteps ? 'cursor-pointer' : ''}`}
+        onClick={hasSubSteps ? () => setIsSubStepsExpanded(!isSubStepsExpanded) : undefined}
+      >
+        <div className="text-[#0C0F24] text-base font-bold leading-tight">
+          {currentStepData.title}
+        </div>
+        {hasSubSteps && (
+          <div className="ml-2">
+            {isSubStepsExpanded ? (
+              <ChevronUp className="w-5 h-5 text-[#858791]" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-[#858791]" />
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Sub-steps dropdown */}
+      {hasSubSteps && isSubStepsExpanded && (
+        <div className="mt-3 pt-3 border-t border-[#CECFD3] space-y-2 bg-white">
+          {yourInfoSubSteps.map((subStep, index) => (
+            <div 
+              key={subStep}
+              className={`flex items-center gap-2 py-1 px-2 rounded ${
+                currentSection === index ? 'bg-[#F5F7FA]' : ''
+              }`}
+            >
+              <div className={`w-1.5 h-1.5 rounded-full ${
+                completedSections.includes(index) 
+                  ? 'bg-[#1B489B]' 
+                  : currentSection === index 
+                  ? 'bg-[#1B489B]' 
+                  : 'bg-[#CECFD3]'
+              }`} />
+              <span className={`text-sm ${
+                currentSection === index 
+                  ? 'text-[#0C0F24] font-semibold' 
+                  : 'text-[#858791]'
+              }`}>
+                {subStep}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>;
 };
