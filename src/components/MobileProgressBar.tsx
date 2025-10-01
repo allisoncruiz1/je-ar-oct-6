@@ -1,6 +1,5 @@
 import React from 'react';
 import { Check, ChevronDown } from 'lucide-react';
-
 interface MobileProgressBarProps {
   currentStep: number;
   currentSection: number;
@@ -8,7 +7,6 @@ interface MobileProgressBarProps {
   onOpenDrawer: () => void;
   onSaveResume?: () => void;
 }
-
 export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   currentStep,
   currentSection,
@@ -16,16 +14,24 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   onOpenDrawer,
   onSaveResume
 }) => {
-  const mainSteps = [
-    { title: "Your Information", subStepCount: 5 },
-    { title: "Sponsor", subStepCount: 0 },
-    { title: "Financial Info", subStepCount: 0 },
-    { title: "Review", subStepCount: 0 },
-    { title: "Documents", subStepCount: 0 }
-  ];
-
+  const mainSteps = [{
+    title: "Your Information",
+    subStepCount: 5
+  }, {
+    title: "Sponsor",
+    subStepCount: 0
+  }, {
+    title: "Financial Info",
+    subStepCount: 0
+  }, {
+    title: "Review",
+    subStepCount: 0
+  }, {
+    title: "Documents",
+    subStepCount: 0
+  }];
   const currentStepData = mainSteps[currentStep];
-  
+
   // Calculate how many sub-steps are completed for the current main step
   const getCompletedSubStepsCount = () => {
     if (currentStep === 0) {
@@ -34,72 +40,35 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
     }
     return 0;
   };
-
   const completedSubSteps = getCompletedSubStepsCount();
   const hasSubSteps = currentStepData.subStepCount > 0;
-
-  return (
-    <div className="bg-white rounded-lg p-5 shadow-md mb-4 border border-border">
+  return <div className="bg-white rounded-lg p-5 shadow-md mb-4 border border-border">
       {/* Save & Resume Later link - Top right corner */}
 
       {/* Progress dots */}
       <div className="flex items-center justify-between mb-4">
-        {mainSteps.map((step, index) => (
-          <React.Fragment key={step.title}>
+        {mainSteps.map((step, index) => <React.Fragment key={step.title}>
             <div className="flex flex-col items-center gap-1">
-              <div
-                className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${
-                  index < currentStep
-                    ? 'bg-brand-blue border-brand-blue'
-                    : index === currentStep
-                    ? 'bg-background border-brand-blue'
-                    : 'bg-background border-muted-foreground/30'
-                }`}
-              >
-                {index < currentStep ? (
-                  <Check className="w-5 h-5 text-white" />
-                ) : (
-                  <span
-                    className={`text-sm font-medium ${
-                      index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'
-                    }`}
-                  >
+              <div className={`w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all ${index < currentStep ? 'bg-brand-blue border-brand-blue' : index === currentStep ? 'bg-background border-brand-blue' : 'bg-background border-muted-foreground/30'}`}>
+                {index < currentStep ? <Check className="w-5 h-5 text-white" /> : <span className={`text-sm font-medium ${index === currentStep ? 'text-brand-blue' : 'text-muted-foreground'}`}>
                     {index + 1}
-                  </span>
-                )}
+                  </span>}
               </div>
             </div>
-            {index < mainSteps.length - 1 && (
-              <div
-                className={`flex-1 h-0.5 mx-1 ${
-                  index < currentStep ? 'bg-brand-blue' : 'bg-muted-foreground/30'
-                }`}
-              />
-            )}
-          </React.Fragment>
-        ))}
+            {index < mainSteps.length - 1 && <div className={`flex-1 h-0.5 mx-1 ${index < currentStep ? 'bg-brand-blue' : 'bg-muted-foreground/30'}`} />}
+          </React.Fragment>)}
       </div>
 
       {/* Current step title - tappable if has sub-steps */}
-      <button
-        onClick={hasSubSteps ? onOpenDrawer : undefined}
-        disabled={!hasSubSteps}
-        className={`w-full text-left ${hasSubSteps ? 'active:opacity-70' : ''}`}
-      >
+      <button onClick={hasSubSteps ? onOpenDrawer : undefined} disabled={!hasSubSteps} className={`w-full text-left ${hasSubSteps ? 'active:opacity-70' : ''}`}>
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <div className="text-xl font-semibold tracking-tight text-foreground">
               {currentStepData.title}
             </div>
-            {hasSubSteps && (
-              <div className="flex items-center gap-1.5 mt-2 text-xs font-medium text-primary bg-primary/10 rounded-full px-3 py-1.5 w-fit">
-                <span>View sub-steps ({completedSubSteps}/{currentStepData.subStepCount})</span>
-                <ChevronDown className="w-3.5 h-3.5" />
-              </div>
-            )}
+            {hasSubSteps}
           </div>
         </div>
       </button>
-    </div>
-  );
+    </div>;
 };
