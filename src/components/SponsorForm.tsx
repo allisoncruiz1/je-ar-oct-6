@@ -73,9 +73,6 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             <li>
               Sponsor selections are final and cannot be changed after submission
             </li>
-            <li className="font-semibold">
-              IF YOU ARE UNCERTAIN about your sponsor, DO NOT PROCEED until you're 100% sure
-            </li>
           </ul>
 
           <div className="mt-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
