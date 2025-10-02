@@ -232,7 +232,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
           updateCurrentStateData('licenseType', value);
           scrollToNextField(1);
         }}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full text-foreground">
               <SelectValue placeholder="Select license type" />
             </SelectTrigger>
             <SelectContent className="bg-background border border-border shadow-lg z-50">
