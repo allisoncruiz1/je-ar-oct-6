@@ -115,6 +115,46 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     });
     onFormValidChange(isCurrentStateValid);
   };
+
+  // Batch updater to avoid stale overwrites when multiple fields must change together
+  const updateCurrentStateDataBatch = (patch: Partial<typeof currentData>) => {
+    const newData = {
+      ...data,
+      [currentState]: {
+        ...currentData,
+        ...patch,
+      },
+    };
+    console.log('🧩 LicenseDetailsForm update (batch)', { patch, currentState, newState: newData[currentState] });
+    onDataChange(newData);
+
+    // Re-run validation with the updated state
+    const currentStateData = newData[currentState];
+    const salesCount = parseInt(currentStateData?.salesTransactions || '0');
+    const showMentorProgram = salesCount === 2;
+
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
+    const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
+    const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
+    const primaryAssociationValid = currentStateData?.associations?.length <= 1 || !!currentStateData?.primaryAssociation?.trim();
+
+    const isCurrentStateValid = baseValid && pendingValid && mentorValid && primaryAssociationValid;
+    console.log('🔍 LicenseDetailsForm validation:', {
+      currentState,
+      baseValid,
+      pendingValid,
+      mentorValid,
+      isCurrentStateValid,
+      licenseNumber: currentStateData?.licenseNumber,
+      salesTransactions: currentStateData?.salesTransactions,
+      pendingTransactions: currentStateData?.pendingTransactions,
+      associationsLength: currentStateData?.associations?.length,
+      primaryAssociation: currentStateData?.primaryAssociation,
+      mlsLength: currentStateData?.mls?.length,
+      certifiedMentor: currentStateData?.certifiedMentor
+    });
+    onFormValidChange(isCurrentStateValid);
+  };
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
   return <div className="space-y-6">
@@ -220,14 +260,19 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <Label className="text-sm font-medium text-foreground">
           Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}:
         </Label>
-        <MobileMultiSelect options={ASSOCIATIONS} selectedValues={currentData.associations} onSelectionChange={values => {
-        updateCurrentStateData('associations', values);
-        // Clear primary association if less than 2 associations selected
-        if (values.length <= 1) {
-          updateCurrentStateData('primaryAssociation', '');
-        }
-        if (values.length > 0) scrollToNextField(4);
-      }} placeholder="Select associations" searchPlaceholder="Search associations..." />
+        <MobileMultiSelect
+          options={ASSOCIATIONS}
+          selectedValues={currentData.associations}
+          onSelectionChange={(values) => {
+            updateCurrentStateDataBatch({
+              associations: values,
+              primaryAssociation: values.length <= 1 ? '' : currentData.primaryAssociation,
+            });
+            if (values.length > 0) scrollToNextField(4);
+          }}
+          placeholder="Select associations"
+          searchPlaceholder="Search associations..."
+        />
       </div>
 
       {/* Primary Association - Only show if multiple associations selected */}
