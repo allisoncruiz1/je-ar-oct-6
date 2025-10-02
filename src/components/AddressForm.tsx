@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import { addressSchema } from '@/schemas/formValidation';
 import { AddressConfirmationDialog } from '@/components/AddressConfirmationDialog';
@@ -79,6 +80,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     setFieldRef,
     scrollToNextField
   } = useAutoScroll();
+  const isMobile = useIsMobile();
+  const [stateDrawerOpen, setStateDrawerOpen] = React.useState(false);
   const US_STATE_ABBR: Record<string, string> = {
     Alabama: 'AL',
     Alaska: 'AK',
@@ -687,26 +690,69 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             <span className="text-destructive">*</span>
           </label>
           
-          <Select
-            value={formData.state} 
-            onValueChange={value => {
-              handleInputChange('state', value);
-              handleFieldBlur('state');
-              scrollToNextField(2);
-            }}
-          >
-            <SelectTrigger className={cn(
-              "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-              fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border"
-            )}>
-              <SelectValue placeholder="Select State" />
-            </SelectTrigger>
-            <SelectContent>
-              {US_STATES.map(state => <SelectItem key={state.code} value={state.code}>
-                  {state.name}
-                </SelectItem>)}
-            </SelectContent>
-          </Select>
+          {isMobile ? (
+            <Drawer open={stateDrawerOpen} onOpenChange={setStateDrawerOpen}>
+              <DrawerTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "justify-start items-center border flex w-full gap-2 font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+                    fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border",
+                    formData.state ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {formData.state ? US_STATES.find(s => s.code === formData.state)?.name : "Select State"}
+                  <ChevronDown className="ml-auto h-4 w-4 opacity-50" />
+                </button>
+              </DrawerTrigger>
+              <DrawerContent className="max-h-[60vh]">
+                <DrawerHeader>
+                  <DrawerTitle>Select State</DrawerTitle>
+                </DrawerHeader>
+                <div className="overflow-y-auto px-4 pb-4">
+                  {US_STATES.map(state => (
+                    <button
+                      key={state.code}
+                      type="button"
+                      onClick={() => {
+                        handleInputChange('state', state.code);
+                        handleFieldBlur('state');
+                        scrollToNextField(2);
+                        setStateDrawerOpen(false);
+                      }}
+                      className={cn(
+                        "w-full text-left p-4 border-b border-border hover:bg-accent transition-colors",
+                        formData.state === state.code && "bg-accent font-semibold"
+                      )}
+                    >
+                      {state.name}
+                    </button>
+                  ))}
+                </div>
+              </DrawerContent>
+            </Drawer>
+          ) : (
+            <Select
+              value={formData.state} 
+              onValueChange={value => {
+                handleInputChange('state', value);
+                handleFieldBlur('state');
+                scrollToNextField(2);
+              }}
+            >
+              <SelectTrigger className={cn(
+                "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+                fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border"
+              )}>
+                <SelectValue placeholder="Select State" />
+              </SelectTrigger>
+              <SelectContent>
+                {US_STATES.map(state => <SelectItem key={state.code} value={state.code}>
+                    {state.name}
+                  </SelectItem>)}
+              </SelectContent>
+            </Select>
+          )}
           {fieldErrors.state && touchedFields.state && (
             <p className="mt-1 text-sm text-destructive">{fieldErrors.state}</p>
           )}
