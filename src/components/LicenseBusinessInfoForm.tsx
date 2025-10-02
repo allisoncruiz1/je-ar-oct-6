@@ -236,14 +236,6 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     <Label className="text-sm font-medium text-foreground leading-none">
                       Where do you plan to get licensed? <span className="text-destructive">*</span>
                     </Label>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Select all states where you plan to obtain a real estate license</p>
-                      </TooltipContent>
-                    </Tooltip>
                   </div>
                   
                   <MobileMultiSelect
