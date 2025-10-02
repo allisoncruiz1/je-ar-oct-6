@@ -230,9 +230,16 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                 {/* Credit Card */}
                 {formData.paymentMethods.find(m => m.type === 'credit-card') && (
                   <div>
-                    <h4 className="font-semibold text-foreground text-lg mb-3">
-                      Credit Card Details<span className="text-destructive">*</span>
-                    </h4>
+                    <div className="flex items-center gap-3 mb-3">
+                      <h4 className="font-semibold text-foreground text-lg">
+                        Credit Card Details<span className="text-destructive">*</span>
+                      </h4>
+                      {formData.paymentMethods.find(m => m.type === 'credit-card')?.isDefault && (
+                        <span className="px-3 py-1 rounded-md bg-muted text-muted-foreground text-sm font-normal">
+                          Default
+                        </span>
+                      )}
+                    </div>
                     <div className="p-6 border-2 border-border rounded-2xl bg-background">
                       <div className="flex items-center gap-4">
                         <div className="w-16 h-16 rounded-full border-2 border-border flex items-center justify-center bg-white">
