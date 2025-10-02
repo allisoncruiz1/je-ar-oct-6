@@ -100,18 +100,18 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             Monthly Fee Collection Setup
           </h2>
           
-          <div className="space-y-4 text-[#1B489B]">
+          <div className="space-y-4 text-muted-foreground">
             <p className="text-base leading-relaxed">
               Every joining agent is required to have 2 forms of payment on file. Initial fee is charged after onboarding has been completed.
             </p>
             
             <div className="space-y-1">
-              <p className="font-semibold text-base">Fee Structure:</p>
+              <p className="font-semibold text-foreground text-base">Fee Structure:</p>
               <p className="text-base">
-                <span className="font-semibold">Initial Fee:</span> $149
+                <span className="font-semibold text-foreground">Initial Fee:</span> $149
               </p>
               <p className="text-base">
-                <span className="font-semibold">Ongoing Monthly Fee:</span> $85
+                <span className="font-semibold text-foreground">Ongoing Monthly Fee:</span> $85
               </p>
             </div>
           </div>
@@ -147,7 +147,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               Payment Details
             </h3>
             
-            <div className="space-y-3 text-[#1B489B]">
+            <div className="space-y-3 text-muted-foreground">
               <p className="text-base leading-relaxed">
                 Please add 2 forms of your personal payment details.
               </p>
