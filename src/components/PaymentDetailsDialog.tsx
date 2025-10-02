@@ -5,12 +5,20 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from '@/components/ui/drawer';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Eye, EyeOff } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PaymentDetailsDialogProps {
   open: boolean;
@@ -29,6 +37,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   onAddPayment,
   existingPayments = [],
 }) => {
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState('credit-card');
   const [showCVV, setShowCVV] = useState(false);
   const [addedPayments, setAddedPayments] = useState<Array<any>>([]);
@@ -148,218 +157,245 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     return cleaned;
   };
 
+  // Shared form content
+  const formContent = (
+    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <TabsList className="grid w-full grid-cols-3 mb-4">
+        <TabsTrigger 
+          value="credit-card" 
+          className="text-xs sm:text-sm px-2 min-h-[44px]"
+          disabled={addedPayments.length > 0}
+        >
+          {isMobile ? '1. Card' : '1. Add Credit Card'}
+        </TabsTrigger>
+        <TabsTrigger 
+          value="bank-account" 
+          className="text-xs sm:text-sm px-2 min-h-[44px]"
+          disabled={addedPayments.length === 0 || addedPayments.length > 1}
+        >
+          {isMobile ? '2. Bank' : '2. Add Bank Account'}
+        </TabsTrigger>
+        <TabsTrigger 
+          value="default-method" 
+          className="text-xs sm:text-sm px-2 min-h-[44px]" 
+          disabled={addedPayments.length < 2}
+        >
+          {isMobile ? '3. Default' : '3. Set Default Method'}
+        </TabsTrigger>
+      </TabsList>
+
+      <TabsContent value="credit-card" className="space-y-4 sm:space-y-6">
+        <div>
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Add Credit Card</h3>
+          <p className="text-[hsl(var(--brand-blue))] text-sm">
+            Add your credit card information for secure payment processing.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="cardholder-name">
+              Cardholder Name<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="cardholder-name"
+              placeholder="Full name on card"
+              value={cardholderName}
+              onChange={(e) => setCardholderName(e.target.value)}
+              className="min-h-[44px]"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="card-number">
+              Card Number<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="card-number"
+              placeholder="1234 5647 2627 8901"
+              value={cardNumber}
+              onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+              maxLength={19}
+              className="min-h-[44px]"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="expiry-date">
+                Expiry Date<span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="expiry-date"
+                placeholder="MM/YYYY"
+                value={expiryDate}
+                onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
+                maxLength={7}
+                className="min-h-[44px]"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="cvv">
+                CVV<span className="text-destructive">*</span>
+              </Label>
+              <div className="relative">
+                <Input
+                  id="cvv"
+                  type={showCVV ? 'text' : 'password'}
+                  placeholder="123"
+                  value={cvv}
+                  onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                  maxLength={4}
+                  className="pr-10 min-h-[44px]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCVV(!showCVV)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-2 -m-2"
+                >
+                  {showCVV ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="billing-zip">
+              Billing ZIP Code<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="billing-zip"
+              placeholder="12345"
+              value={billingZip}
+              onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
+              maxLength={5}
+              className="min-h-[44px]"
+            />
+          </div>
+        </div>
+
+        <Button
+          onClick={handleAddCard}
+          disabled={!cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+          className="w-full min-h-[48px]"
+          size="lg"
+        >
+          Add Card
+        </Button>
+      </TabsContent>
+
+      <TabsContent value="bank-account" className="space-y-4 sm:space-y-6">
+        <div>
+          <h3 className="text-base sm:text-lg font-semibold mb-2">Add Bank Account</h3>
+          <p className="text-[hsl(var(--brand-blue))] text-sm">
+            Add your bank account information for secure ACH transfers.
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="routing-number">
+              Routing Number<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="routing-number"
+              placeholder="9-digit routing number"
+              value={routingNumber}
+              onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
+              maxLength={9}
+              className="min-h-[44px]"
+            />
+            <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="account-number">
+              Account Number<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="account-number"
+              placeholder="5657 8858 3733 3383"
+              value={accountNumber}
+              onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
+              className="min-h-[44px]"
+            />
+            <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
+          </div>
+        </div>
+
+        <Button
+          onClick={handleAddBankAccount}
+          disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
+          className="w-full min-h-[48px]"
+          size="lg"
+        >
+          Add Bank Account
+        </Button>
+      </TabsContent>
+
+      <TabsContent value="default-method" className="space-y-4 sm:space-y-6">
+        <div>
+          <p className="text-[hsl(var(--brand-blue))] text-sm leading-relaxed">
+            Your default payment method is used for all payment types where you haven't chosen a different payment method.
+          </p>
+        </div>
+
+        <RadioGroup value={defaultPaymentId} onValueChange={setDefaultPaymentId} className="space-y-3">
+          {allPayments.map((payment) => (
+            <div
+              key={payment.id}
+              className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-muted/30 transition-colors min-h-[60px]"
+            >
+              <RadioGroupItem value={payment.id} id={payment.id} className="h-5 w-5" />
+              <Label htmlFor={payment.id} className="flex-1 cursor-pointer">
+                <div className="font-semibold text-foreground">
+                  {getPaymentDisplayName(payment)}
+                </div>
+                <div className="text-sm text-muted-foreground mt-0.5">
+                  {getPaymentMaskedNumber(payment)}
+                </div>
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+
+        <Button
+          onClick={handleSaveDefault}
+          disabled={!defaultPaymentId}
+          className="w-full min-h-[48px]"
+          size="lg"
+        >
+          Save
+        </Button>
+      </TabsContent>
+    </Tabs>
+  );
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onOpenChange={onOpenChange}>
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader className="text-left">
+            <DrawerTitle className="text-xl font-semibold">Add Payment Details</DrawerTitle>
+          </DrawerHeader>
+          <ScrollArea className="flex-1 px-4 pb-4">
+            {formContent}
+          </ScrollArea>
+        </DrawerContent>
+      </Drawer>
+    );
+  }
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add Payment Details</DialogTitle>
         </DialogHeader>
-
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger 
-              value="credit-card" 
-              className="text-xs sm:text-sm"
-              disabled={addedPayments.length > 0}
-            >
-              1. Add Credit Card
-            </TabsTrigger>
-            <TabsTrigger 
-              value="bank-account" 
-              className="text-xs sm:text-sm"
-              disabled={addedPayments.length === 0 || addedPayments.length > 1}
-            >
-              2. Add Bank Account
-            </TabsTrigger>
-            <TabsTrigger 
-              value="default-method" 
-              className="text-xs sm:text-sm" 
-              disabled={addedPayments.length < 2}
-            >
-              3. Set Default Method
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="credit-card" className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Add Credit Card</h3>
-              <p className="text-[hsl(var(--brand-blue))] text-sm">
-                Add your credit card information for secure payment processing.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="cardholder-name">
-                  Cardholder Name<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="cardholder-name"
-                  placeholder="Full name on card"
-                  value={cardholderName}
-                  onChange={(e) => setCardholderName(e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="card-number">
-                  Card Number<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="card-number"
-                  placeholder="1234 5647 2627 8901"
-                  value={cardNumber}
-                  onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-                  maxLength={19}
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="expiry-date">
-                    Expiry Date<span className="text-destructive">*</span>
-                  </Label>
-                  <Input
-                    id="expiry-date"
-                    placeholder="MM/YYYY"
-                    value={expiryDate}
-                    onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
-                    maxLength={7}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="cvv">
-                    CVV<span className="text-destructive">*</span>
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="cvv"
-                      type={showCVV ? 'text' : 'password'}
-                      placeholder="123"
-                      value={cvv}
-                      onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                      maxLength={4}
-                      className="pr-10"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowCVV(!showCVV)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      {showCVV ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="billing-zip">
-                  Billing ZIP Code<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="billing-zip"
-                  placeholder="12345"
-                  value={billingZip}
-                  onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
-                  maxLength={5}
-                />
-              </div>
-            </div>
-
-            <Button
-              onClick={handleAddCard}
-              disabled={!cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-              className="w-full"
-              size="lg"
-            >
-              Add Card
-            </Button>
-          </TabsContent>
-
-          <TabsContent value="bank-account" className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-2">Add Bank Account</h3>
-              <p className="text-[hsl(var(--brand-blue))] text-sm">
-                Add your bank account information for secure ACH transfers.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="routing-number">
-                  Routing Number<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="routing-number"
-                  placeholder="9-digit routing number"
-                  value={routingNumber}
-                  onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
-                  maxLength={9}
-                />
-                <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="account-number">
-                  Account Number<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="account-number"
-                  placeholder="5657 8858 3733 3383"
-                  value={accountNumber}
-                  onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
-                />
-                <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
-              </div>
-            </div>
-
-            <Button
-              onClick={handleAddBankAccount}
-              disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
-              className="w-full"
-              size="lg"
-            >
-              Add Bank Account
-            </Button>
-          </TabsContent>
-
-          <TabsContent value="default-method" className="space-y-6">
-            <div>
-              <p className="text-[hsl(var(--brand-blue))] text-sm leading-relaxed">
-                Your default payment method is used for all payment types where you haven't chosen a different payment method.
-              </p>
-            </div>
-
-            <RadioGroup value={defaultPaymentId} onValueChange={setDefaultPaymentId} className="space-y-3">
-              {allPayments.map((payment) => (
-                <div
-                  key={payment.id}
-                  className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-muted/30 transition-colors"
-                >
-                  <RadioGroupItem value={payment.id} id={payment.id} className="h-5 w-5" />
-                  <Label htmlFor={payment.id} className="flex-1 cursor-pointer">
-                    <div className="font-semibold text-foreground">
-                      {getPaymentDisplayName(payment)}
-                    </div>
-                    <div className="text-sm text-muted-foreground mt-0.5">
-                      {getPaymentMaskedNumber(payment)}
-                    </div>
-                  </Label>
-                </div>
-              ))}
-            </RadioGroup>
-
-            <Button
-              onClick={handleSaveDefault}
-              disabled={!defaultPaymentId}
-              className="w-full"
-              size="lg"
-            >
-              Save
-            </Button>
-          </TabsContent>
-        </Tabs>
+        <ScrollArea className="flex-1 pr-4">
+          {formContent}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
