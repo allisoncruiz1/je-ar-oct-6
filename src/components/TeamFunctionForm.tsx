@@ -20,6 +20,9 @@ export interface TeamFunctionData {
   teamLeaderName?: string;
   customTeamName?: string;
   teamDetails?: string;
+  numberOfAgents?: string;
+  leaderTeamName?: string;
+  teamSetupDetails?: string;
   corporateStaffMember: string;
 }
 
@@ -53,6 +56,9 @@ const teamFunctionSchema = z.object({
   teamLeaderName: z.string().optional(),
   customTeamName: z.string().optional(),
   teamDetails: z.string().optional(),
+  numberOfAgents: z.string().optional(),
+  leaderTeamName: z.string().optional(),
+  teamSetupDetails: z.string().optional(),
   corporateStaffMember: z.string().trim().nonempty({ message: "Please indicate if you're a corporate staff member" })
 }).refine((data) => {
   if (data.agentType === 'team') {
@@ -86,6 +92,30 @@ const teamFunctionSchema = z.object({
 }, {
   message: "Please enter the team name",
   path: ["customTeamName"]
+}).refine((data) => {
+  if (data.teamRole === 'leader') {
+    return data.numberOfAgents && data.numberOfAgents.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please enter the number of agents on your team",
+  path: ["numberOfAgents"]
+}).refine((data) => {
+  if (data.teamRole === 'leader') {
+    return data.leaderTeamName && data.leaderTeamName.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please enter your team name",
+  path: ["leaderTeamName"]
+}).refine((data) => {
+  if (data.teamRole === 'leader') {
+    return data.teamSetupDetails && data.teamSetupDetails.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please share details about your team setup",
+  path: ["teamSetupDetails"]
 });
 
 export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
@@ -106,6 +136,9 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     teamLeaderName: initialData?.teamLeaderName || '',
     customTeamName: initialData?.customTeamName || '',
     teamDetails: initialData?.teamDetails || '',
+    numberOfAgents: initialData?.numberOfAgents || '',
+    leaderTeamName: initialData?.leaderTeamName || '',
+    teamSetupDetails: initialData?.teamSetupDetails || '',
     corporateStaffMember: initialData?.corporateStaffMember || ''
   });
   const [open, setOpen] = useState(false);
@@ -340,9 +373,80 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           </>
         )}
 
+        {/* Leader - Team Information */}
+        {formData.teamRole === 'leader' && (
+          <>
+            <div ref={setFieldRef(2)} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Label htmlFor="numberOfAgents" className="text-sm font-medium text-foreground">
+                  How many agents are currently on your team? <span className="text-destructive">*</span>
+                </Label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="text-xs">
+                        Enter the current number of active agents working under your team leadership.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <Input
+                id="numberOfAgents"
+                type="number"
+                placeholder="Enter number of Agents"
+                value={formData.numberOfAgents}
+                onChange={(e) => updateFormData('numberOfAgents', e.target.value)}
+                className="h-12 md:h-10"
+                min="0"
+              />
+            </div>
+
+            <div ref={setFieldRef(3)} className="space-y-2">
+              <Label htmlFor="leaderTeamName" className="text-sm font-medium text-foreground">
+                What is the official or working name of your team? <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="leaderTeamName"
+                placeholder="Enter team name"
+                value={formData.leaderTeamName}
+                onChange={(e) => updateFormData('leaderTeamName', e.target.value)}
+                className="h-12 md:h-10"
+              />
+            </div>
+
+            <div ref={setFieldRef(4)} className="space-y-2">
+              <Label htmlFor="teamSetupDetails" className="text-sm font-medium text-foreground">
+                Use this space to share anything unique about your team setup <span className="text-destructive">*</span>
+              </Label>
+              <div className="relative">
+                <Textarea
+                  id="teamSetupDetails"
+                  placeholder="Share any additional details about your team..."
+                  value={formData.teamSetupDetails}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 200) {
+                      updateFormData('teamSetupDetails', e.target.value);
+                    }
+                  }}
+                  className="min-h-[120px] resize-none pr-20"
+                  maxLength={200}
+                />
+                <span className="absolute bottom-3 right-3 text-xs text-muted-foreground">
+                  {formData.teamSetupDetails?.length || 0}/200 characters
+                </span>
+              </div>
+            </div>
+          </>
+        )}
+
         {/* Corporate Staff Member Question */}
         <div ref={setFieldRef(
           formData.teamName === 'cant-find' ? 6 : 
+          formData.teamRole === 'leader' ? 5 :
           formData.teamRole === 'member' ? 3 : 
           formData.agentType === 'team' ? 2 : 1
         )} className="space-y-3">
