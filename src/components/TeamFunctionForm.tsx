@@ -219,7 +219,13 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                  <button
+                    type="button"
+                    aria-label="Help: Function role"
+                    className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
+                  >
+                    <Info className="h-4 w-4" />
+                  </button>
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs">
                   <p className="text-xs">
@@ -274,7 +280,13 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                    <button
+                      type="button"
+                      aria-label="Help: Team role"
+                      className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
+                    >
+                      <Info className="h-4 w-4" />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent side="top" className="max-w-xs">
                     <p className="text-xs">
@@ -376,7 +388,13 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Info className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <button
+                        type="button"
+                        aria-label="Help: Number of agents"
+                        className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
+                      >
+                        <Info className="h-4 w-4" />
+                      </button>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
                       <p className="text-xs">

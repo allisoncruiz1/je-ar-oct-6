@@ -49,8 +49,12 @@ export const BinaryChoice = React.forwardRef<
             {tooltip && (
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button type="button" className="inline-flex">
-                    <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                  <button
+                    type="button"
+                    aria-label="Help information"
+                    className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
+                  >
+                    <HelpCircle className="h-4 w-4" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -97,8 +101,12 @@ export const BinaryChoice = React.forwardRef<
           {tooltip && (
             <Tooltip>
               <TooltipTrigger asChild>
-                <button type="button" className="inline-flex">
-                  <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                <button
+                  type="button"
+                  aria-label="Help information"
+                  className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
+                >
+                  <HelpCircle className="h-4 w-4" />
                 </button>
               </TooltipTrigger>
               <TooltipContent>
