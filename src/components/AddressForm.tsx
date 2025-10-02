@@ -693,10 +693,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
           )}
         />
-        {fieldErrors.city && touchedFields.city ? (
+        {fieldErrors.city && touchedFields.city && (
           <p className="mt-1 text-sm text-destructive">{fieldErrors.city}</p>
-        ) : (
-          <p className="mt-1 text-xs text-muted-foreground">Auto-filled from ZIP code if available</p>
         )}
       </div>
 
