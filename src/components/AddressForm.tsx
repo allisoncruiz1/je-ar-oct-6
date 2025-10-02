@@ -515,18 +515,55 @@ export const AddressForm: React.FC<AddressFormProps> = ({
 
         if (error) {
           console.error('usps-validate error:', error);
-          toast.error('Unable to validate address. Please check your USPS configuration.');
         }
         
+        let anySuggestion: any = null;
         if (data?.suggestedAddress) {
-          setSuggestedAddress(data.suggestedAddress);
-        } else if (data && !data.deliverable) {
-          // USPS could not validate but no suggestion provided
+          anySuggestion = data.suggestedAddress;
+        } else {
+          // Fallback to OpenStreetMap suggestion when USPS can't provide one
+          try {
+            const q = `${formData.addressLine1}, ${formData.city}, ${formData.state} ${formData.zipCode}`;
+            const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
+            const res = await fetch(url, { headers: { Accept: 'application/json' } });
+            const arr = await res.json();
+            const first = Array.isArray(arr) ? arr[0] : null;
+            if (first?.address) {
+              const parsed = parseNominatimAddress(first.address);
+              if (parsed.addressLine1 && parsed.city && parsed.state && parsed.zipCode) {
+                anySuggestion = parsed;
+              }
+            }
+          } catch (nf) {
+            console.error('Fallback suggestion failed', nf);
+          }
+        }
+
+        if (anySuggestion) {
+          setSuggestedAddress(anySuggestion);
+        } else if (data && data.deliverable === false) {
+          // USPS could not validate and no fallback suggestion
           toast.info('Address could not be automatically verified. Please confirm it is correct.');
         }
       } catch (e) {
         console.error('Error calling usps-validate:', e);
-        toast.error('Address validation service unavailable. Please verify your address manually.');
+        // Attempt fallback suggestion even if USPS call failed
+        try {
+          const q = `${formData.addressLine1}, ${formData.city}, ${formData.state} ${formData.zipCode}`;
+          const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
+          const res = await fetch(url, { headers: { Accept: 'application/json' } });
+          const arr = await res.json();
+          const first = Array.isArray(arr) ? arr[0] : null;
+          if (first?.address) {
+            const parsed = parseNominatimAddress(first.address);
+            if (parsed.addressLine1 && parsed.city && parsed.state && parsed.zipCode) {
+              setSuggestedAddress(parsed);
+            }
+          }
+        } catch (nf) {
+          console.error('Fallback suggestion failed after USPS error', nf);
+          toast.error('Address validation service unavailable. Please verify your address manually.');
+        }
       } finally {
         setValidating(false);
         setShowConfirmDialog(true);
