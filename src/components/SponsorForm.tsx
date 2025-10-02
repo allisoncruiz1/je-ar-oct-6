@@ -7,6 +7,7 @@ import { MobileActionBar } from '@/components/MobileActionBar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 
 interface SponsorFormProps {
   onContinue?: () => void;
@@ -47,6 +48,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showNoSponsorDialog, setShowNoSponsorDialog] = useState(false);
+  const [manualSponsorName, setManualSponsorName] = useState('');
+  const [manualSponsorDetails, setManualSponsorDetails] = useState('');
 
   const handleAcknowledge = () => {
     setPolicyAcknowledged(true);
@@ -83,16 +86,28 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   };
 
   const handleNoSponsor = () => {
+    setShowSearchResults(false);
     setShowNoSponsorDialog(true);
   };
 
-  const confirmNoSponsor = () => {
-    setSelectedSponsor({
-      id: 'exp-default',
-      name: 'eXp Realty (Assigned)'
-    });
+  const confirmManualSponsor = () => {
+    if (manualSponsorName.trim()) {
+      setSelectedSponsor({
+        id: 'manual-sponsor',
+        name: manualSponsorName,
+        email: manualSponsorDetails
+      });
+      setShowNoSponsorDialog(false);
+      setManualSponsorName('');
+      setManualSponsorDetails('');
+      onFormValidChange?.(true);
+    }
+  };
+
+  const cancelManualSponsor = () => {
     setShowNoSponsorDialog(false);
-    onFormValidChange?.(true);
+    setManualSponsorName('');
+    setManualSponsorDetails('');
   };
 
   const handleClearSponsor = () => {
@@ -526,21 +541,60 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </DialogContent>
       </Dialog>
 
-      {/* No Sponsor Confirmation Dialog */}
-      <AlertDialog open={showNoSponsorDialog} onOpenChange={setShowNoSponsorDialog}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Confirm No Sponsor</AlertDialogTitle>
-            <AlertDialogDescription>
-              If you don't select a sponsor, eXp Realty will be assigned as your permanent sponsor. This cannot be changed later. Continue?
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmNoSponsor}>Continue</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      {/* Manual Sponsor Entry Dialog */}
+      <Dialog open={showNoSponsorDialog} onOpenChange={setShowNoSponsorDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <div className="space-y-6">
+            <div>
+              <p className="text-foreground">
+                Please provide your sponsor's information so we can help identify them.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="manual-sponsor-name">Sponsor Full Name</Label>
+                <Input
+                  id="manual-sponsor-name"
+                  placeholder="Sponsor Full Name"
+                  value={manualSponsorName}
+                  onChange={(e) => setManualSponsorName(e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="manual-sponsor-details">Additional Details</Label>
+                <Textarea
+                  id="manual-sponsor-details"
+                  placeholder="Any additional helpful details (location, email, phone number, etc)"
+                  value={manualSponsorDetails}
+                  onChange={(e) => setManualSponsorDetails(e.target.value)}
+                  rows={4}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                onClick={confirmManualSponsor}
+                disabled={!manualSponsorName.trim()}
+                size="lg"
+                className="w-full sm:flex-1"
+              >
+                Continue with this Sponsor
+              </Button>
+              <Button
+                onClick={cancelManualSponsor}
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Desktop action bar */}
       <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
