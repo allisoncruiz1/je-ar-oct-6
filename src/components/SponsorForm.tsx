@@ -93,37 +93,37 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
         {/* Acknowledgment Section */}
         <div className="mt-8 border border-border rounded-lg p-6">
-          <div className="flex items-start gap-3 mb-4">
-            <Checkbox 
-              id="sponsor-policy" 
-              checked={acknowledged}
-              onCheckedChange={handleCheckboxChange}
-            />
-            <label 
-              htmlFor="sponsor-policy" 
-              className="text-foreground cursor-pointer select-none text-sm"
-            >
-              I have read and understood the sponsor policy.
-            </label>
-          </div>
-          
-          <button
-            onClick={handleReadPolicy}
-            className="text-foreground underline hover:no-underline mb-4 block text-sm italic"
-          >
-            Read the full policy
-          </button>
-
-          <div className="flex justify-end">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex items-start gap-3">
+              <Checkbox 
+                id="sponsor-policy" 
+                checked={acknowledged}
+                onCheckedChange={handleCheckboxChange}
+              />
+              <label 
+                htmlFor="sponsor-policy" 
+                className="text-foreground cursor-pointer select-none text-sm"
+              >
+                I have read and understood the sponsor policy.
+              </label>
+            </div>
+            
             <Button
               onClick={handleAcknowledge}
               disabled={!acknowledged}
               size="lg"
-              className="w-auto"
+              className="w-auto flex-shrink-0"
             >
               I understand the sponsor policy
             </Button>
           </div>
+          
+          <button
+            onClick={handleReadPolicy}
+            className="text-foreground underline hover:no-underline block text-sm italic"
+          >
+            Read the full policy
+          </button>
         </div>
       </div>
 
