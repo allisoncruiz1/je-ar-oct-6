@@ -130,7 +130,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
             Direct Deposit Information
           </h2>
           
-          <p className="text-base text-[#1B489B] leading-relaxed mb-6">
+          <p className="text-base text-muted-foreground leading-relaxed mb-6">
             Please provide your banking information for commission deposits. This information will be securely stored and encrypted.
           </p>
         </div>
