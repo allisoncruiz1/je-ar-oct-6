@@ -615,8 +615,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             placeholder="Start typing your address..." 
             required 
             className={cn(
-              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-              fieldErrors.addressLine1 && touchedFields.addressLine1 ? "border-destructive" : "border-border"
+              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none text-sm",
+              fieldErrors.addressLine1 && touchedFields.addressLine1 
+                ? "border-destructive focus:ring-2 focus:ring-destructive"
+                : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
             )}
             aria-describedby="address1-help" 
             autoComplete="off" 
@@ -682,8 +684,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           placeholder="City" 
           required 
           className={cn(
-            "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-            fieldErrors.city && touchedFields.city ? "border-destructive" : "border-border"
+            "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none text-sm",
+            fieldErrors.city && touchedFields.city 
+              ? "border-destructive focus:ring-2 focus:ring-destructive"
+              : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
           )}
         />
         {fieldErrors.city && touchedFields.city ? (
@@ -706,8 +710,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 <button
                   type="button"
                   className={cn(
-                    "justify-start items-center border flex w-full gap-2 font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-                    fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border",
+                    "justify-start items-center border flex w-full gap-2 font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none text-sm",
+                    fieldErrors.state && touchedFields.state 
+                      ? "border-destructive focus:ring-2 focus:ring-destructive"
+                      : "border-border focus:ring-2 focus:ring-ring focus:border-transparent",
                     formData.state ? "text-foreground" : "text-muted-foreground"
                   )}
                 >
@@ -751,8 +757,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               }}
             >
               <SelectTrigger className={cn(
-                "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-                fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border"
+                "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none text-sm",
+                fieldErrors.state && touchedFields.state 
+                  ? "border-destructive focus:ring-2 focus:ring-destructive"
+                  : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
               )}>
                 <SelectValue placeholder="Select State" />
               </SelectTrigger>
@@ -783,8 +791,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             pattern="[0-9]{5}(-[0-9]{4})?" 
             maxLength={10}
             className={cn(
-              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
-              fieldErrors.zipCode && touchedFields.zipCode ? "border-destructive" : "border-border"
+              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none text-sm",
+              fieldErrors.zipCode && touchedFields.zipCode 
+                ? "border-destructive focus:ring-2 focus:ring-destructive"
+                : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
             )}
           />
           {fieldErrors.zipCode && touchedFields.zipCode ? (
