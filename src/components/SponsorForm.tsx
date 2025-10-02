@@ -48,6 +48,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showNoSponsorDialog, setShowNoSponsorDialog] = useState(false);
+  const [showManualConfirmation, setShowManualConfirmation] = useState(false);
   const [manualSponsorName, setManualSponsorName] = useState('');
   const [manualSponsorDetails, setManualSponsorDetails] = useState('');
 
@@ -92,22 +93,38 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   const confirmManualSponsor = () => {
     if (manualSponsorName.trim()) {
-      setSelectedSponsor({
+      setPendingSponsor({
         id: 'manual-sponsor',
         name: manualSponsorName,
-        email: manualSponsorDetails
+        email: manualSponsorDetails || undefined
       });
+      setShowManualConfirmation(true);
+    }
+  };
+
+  const handleConfirmManualSponsor = () => {
+    if (pendingSponsor) {
+      setSelectedSponsor(pendingSponsor);
+      setPendingSponsor(null);
       setShowNoSponsorDialog(false);
+      setShowManualConfirmation(false);
       setManualSponsorName('');
       setManualSponsorDetails('');
       onFormValidChange?.(true);
     }
   };
 
+  const handleBackToManualForm = () => {
+    setShowManualConfirmation(false);
+    setPendingSponsor(null);
+  };
+
   const cancelManualSponsor = () => {
     setShowNoSponsorDialog(false);
+    setShowManualConfirmation(false);
     setManualSponsorName('');
     setManualSponsorDetails('');
+    setPendingSponsor(null);
   };
 
   const handleClearSponsor = () => {
@@ -545,53 +562,105 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
       <Dialog open={showNoSponsorDialog} onOpenChange={setShowNoSponsorDialog}>
         <DialogContent className="sm:max-w-[600px]">
           <div className="space-y-6">
-            <div>
-              <p className="text-foreground">
-                Please provide your sponsor's information so we can help identify them.
-              </p>
-            </div>
+            {!showManualConfirmation ? (
+              <>
+                <div>
+                  <p className="text-foreground">
+                    Please provide your sponsor's information so we can help identify them.
+                  </p>
+                </div>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="manual-sponsor-name">Sponsor Full Name</Label>
-                <Input
-                  id="manual-sponsor-name"
-                  placeholder="Sponsor Full Name"
-                  value={manualSponsorName}
-                  onChange={(e) => setManualSponsorName(e.target.value)}
-                />
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="manual-sponsor-name">Sponsor Full Name</Label>
+                    <Input
+                      id="manual-sponsor-name"
+                      placeholder="Sponsor Full Name"
+                      value={manualSponsorName}
+                      onChange={(e) => setManualSponsorName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="manual-sponsor-details">Additional Details</Label>
+                    <Textarea
+                      id="manual-sponsor-details"
+                      placeholder="Any additional helpful details (location, email, phone number, etc)"
+                      value={manualSponsorDetails}
+                      onChange={(e) => setManualSponsorDetails(e.target.value)}
+                      rows={4}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={confirmManualSponsor}
+                    disabled={!manualSponsorName.trim()}
+                    size="lg"
+                    className="w-full sm:flex-1"
+                  >
+                    Continue with this Sponsor
+                  </Button>
+                  <Button
+                    onClick={cancelManualSponsor}
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </>
+            ) : (
+              /* Confirmation Section for Manual Entry */
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-1">Confirm Your Selection</h3>
+                  <p className="text-sm text-muted-foreground">Please verify this is the correct sponsor before confirming.</p>
+                </div>
+
+                <div className="border border-border rounded-lg p-6">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Name</p>
+                      <p className="font-semibold text-foreground text-lg">{pendingSponsor?.name}</p>
+                    </div>
+                    
+                    {pendingSponsor?.email && (
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Additional Details</p>
+                        <p className="text-foreground">{pendingSponsor.email}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-muted/50 border border-border rounded-lg p-4">
+                  <p className="text-sm text-foreground">
+                    <span className="font-semibold">Important:</span> Sponsor selections are final and cannot be changed after submission.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={handleConfirmManualSponsor}
+                    size="lg"
+                    className="w-full sm:flex-1"
+                  >
+                    Confirm This Sponsor
+                  </Button>
+                  <Button
+                    onClick={handleBackToManualForm}
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    Back to Form
+                  </Button>
+                </div>
               </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="manual-sponsor-details">Additional Details</Label>
-                <Textarea
-                  id="manual-sponsor-details"
-                  placeholder="Any additional helpful details (location, email, phone number, etc)"
-                  value={manualSponsorDetails}
-                  onChange={(e) => setManualSponsorDetails(e.target.value)}
-                  rows={4}
-                />
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                onClick={confirmManualSponsor}
-                disabled={!manualSponsorName.trim()}
-                size="lg"
-                className="w-full sm:flex-1"
-              >
-                Continue with this Sponsor
-              </Button>
-              <Button
-                onClick={cancelManualSponsor}
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                Cancel
-              </Button>
-            </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
