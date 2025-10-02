@@ -407,8 +407,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   // Validate a single field
   const validateField = (field: keyof AddressFormData, value: string) => {
     try {
-      // Validate the entire form object to get accurate field validation
-      addressSchema.parse(formData);
+      // Create a temporary form data object with the new value for accurate validation
+      const tempFormData = { ...formData, [field]: value };
+      addressSchema.parse(tempFormData);
       
       // Clear error for this field
       setFieldErrors(prev => {
