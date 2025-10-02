@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -51,6 +51,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   const [showManualConfirmation, setShowManualConfirmation] = useState(false);
   const [manualSponsorName, setManualSponsorName] = useState('');
   const [manualSponsorDetails, setManualSponsorDetails] = useState('');
+
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   const handleAcknowledge = () => {
     setPolicyAcknowledged(true);
@@ -181,6 +183,18 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
     });
   };
   const mockResults = getFilteredResults();
+
+  // Auto-scroll to results when they appear
+  useEffect(() => {
+    if (showSearchResults && !pendingSponsor && resultsRef.current) {
+      setTimeout(() => {
+        resultsRef.current?.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'start' 
+        });
+      }, 100);
+    }
+  }, [showSearchResults, pendingSponsor, mockResults.length]);
 
   const handleReadPolicy = () => {
     // Open policy document in new tab - replace with actual policy URL
@@ -416,7 +430,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
-        <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto scroll-smooth">
           <DialogHeader>
             <DialogTitle>Sponsor Search</DialogTitle>
           </DialogHeader>
@@ -424,7 +438,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             {!pendingSponsor ? (
               <>
                 {/* Results - Desktop Table / Mobile Cards */}
-                <div>
+                <div ref={resultsRef}>
                   {/* Desktop Table View */}
                   <div className="hidden md:block overflow-x-auto">
                     <table className="w-full border-collapse">
