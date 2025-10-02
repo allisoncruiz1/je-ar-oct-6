@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
-import { Check, ChevronDown } from 'lucide-react';
+import { Check, ChevronDown, AlertCircle } from 'lucide-react';
 import { MobileMultiSelect } from '@/components/ui/mobile-multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
@@ -11,6 +11,9 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { cn } from '@/lib/utils';
+import { addressSchema } from '@/schemas/formValidation';
+import { AddressConfirmationDialog } from '@/components/AddressConfirmationDialog';
+import { z } from 'zod';
 interface AddressFormData {
   addressLine1: string;
   addressLine2: string;
@@ -67,6 +70,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [verified, setVerified] = useState(false);
   const [isAutocompleting, setIsAutocompleting] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
   const fetchTimeoutRef = useRef<number | null>(null);
   const {
     setFieldRef,
@@ -395,11 +401,35 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     }
     handlePlaceSelected(parsed);
   };
+  // Validate a single field
+  const validateField = (field: keyof AddressFormData, value: string) => {
+    try {
+      // Validate the specific field
+      const fieldSchema = addressSchema.shape[field];
+      fieldSchema.parse(value);
+      
+      // Clear error for this field
+      setFieldErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setFieldErrors(prev => ({
+          ...prev,
+          [field]: error.errors[0]?.message || 'Invalid input'
+        }));
+      }
+    }
+  };
+
   const handleInputChange = (field: keyof AddressFormData, value: string) => {
     const newData = {
       ...formData,
       [field]: value
     };
+    
     if (field === 'addressLine1') {
       setVerified(false);
       const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
@@ -413,22 +443,66 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       }
     }
 
-    // Handle ZIP code autofill
+    // Handle ZIP code autofill with improved logic
     if (field === 'zipCode' && value.length >= 5) {
-      const cityState = getCityStateFromZip(value);
-      if (cityState && !formData.city && !formData.state) {
-        newData.city = cityState.city;
-        newData.state = cityState.state;
+      const cityState = getCityStateFromZip(value.slice(0, 5));
+      if (cityState) {
+        // Only autofill if fields are empty or if it's a new zip
+        if (!formData.city || !formData.state || formData.zipCode.slice(0, 5) !== value.slice(0, 5)) {
+          newData.city = cityState.city;
+          newData.state = cityState.state;
+          toast.success(`Auto-filled: ${cityState.city}, ${cityState.state}`);
+        }
       }
     }
+
     setFormData(newData);
     onFormDataChange?.(newData);
+
+    // Validate on change if field has been touched
+    if (touchedFields[field]) {
+      validateField(field, value);
+    }
+  };
+
+  const handleFieldBlur = (field: keyof AddressFormData) => {
+    setTouchedFields(prev => ({ ...prev, [field]: true }));
+    validateField(field, formData[field]);
   };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit?.(formData);
   };
   const handleContinue = () => {
+    // Validate all fields before showing confirmation
+    try {
+      addressSchema.parse(formData);
+      setShowConfirmDialog(true);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errors: Record<string, string> = {};
+        error.errors.forEach(err => {
+          const field = err.path[0] as string;
+          errors[field] = err.message;
+        });
+        setFieldErrors(errors);
+        
+        // Mark all fields as touched
+        setTouchedFields({
+          addressLine1: true,
+          addressLine2: true,
+          city: true,
+          state: true,
+          zipCode: true
+        });
+        
+        toast.error('Please correct the errors before continuing');
+      }
+    }
+  };
+
+  const handleConfirmAddress = () => {
+    setShowConfirmDialog(false);
     onContinue?.();
   };
   const isFormComplete = !!(formData.addressLine1 && formData.city && formData.state && formData.zipCode);
@@ -468,13 +542,37 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <span className="text-destructive">*</span>
         </label>
         <div className="relative">
-          <input ref={addressInputRef} type="text" value={formData.addressLine1} onChange={e => handleInputChange('addressLine1', e.target.value)} placeholder="Start typing your address..." required className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm" aria-describedby="address1-help" autoComplete="off" onBlur={() => setTimeout(() => setShowSuggestions(false), 150)} onFocus={() => {
-          if (!hasGoogle && suggestions.length > 0) setShowSuggestions(true);
-        }} />
+          <input 
+            ref={addressInputRef} 
+            type="text" 
+            value={formData.addressLine1} 
+            onChange={e => handleInputChange('addressLine1', e.target.value)} 
+            onBlur={() => {
+              setTimeout(() => setShowSuggestions(false), 150);
+              handleFieldBlur('addressLine1');
+            }}
+            placeholder="Start typing your address..." 
+            required 
+            className={cn(
+              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+              fieldErrors.addressLine1 && touchedFields.addressLine1 ? "border-destructive" : "border-border"
+            )}
+            aria-describedby="address1-help" 
+            autoComplete="off" 
+            onFocus={() => {
+              if (!hasGoogle && suggestions.length > 0) setShowSuggestions(true);
+            }} 
+          />
 
           {verified && <span className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600 text-sm inline-flex items-center gap-1">
               <Check className="w-4 h-4" /> Verified
             </span>}
+          
+          {fieldErrors.addressLine1 && touchedFields.addressLine1 && (
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-destructive">
+              <AlertCircle className="w-4 h-4" />
+            </div>
+          )}
 
           {!hasGoogle && showSuggestions && suggestions.length > 0 && <ul className="absolute left-0 right-0 mt-2 bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
               {suggestions.map((item, idx) => <li key={item.place_id || item.osm_id || idx}>
@@ -484,13 +582,27 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 </li>)}
             </ul>}
         </div>
+        
+        {fieldErrors.addressLine1 && touchedFields.addressLine1 ? (
+          <p className="mt-1 text-sm text-destructive">{fieldErrors.addressLine1}</p>
+        ) : (
+          <p className="mt-1 text-xs text-muted-foreground">Street address with number (e.g., 123 Main St)</p>
+        )}
       </div>
 
       <div className="w-full mt-6 max-md:max-w-full">
         <label className="flex w-full items-center gap-1 text-foreground font-semibold max-md:max-w-full text-sm">
           Address Line 2 (Optional)
         </label>
-        <input type="text" value={formData.addressLine2} onChange={e => handleInputChange('addressLine2', e.target.value)} placeholder="Apartment, suite, unit, building, etc" className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm" />
+        <input 
+          type="text" 
+          value={formData.addressLine2} 
+          onChange={e => handleInputChange('addressLine2', e.target.value)} 
+          onBlur={() => handleFieldBlur('addressLine2')}
+          placeholder="Apartment, suite, unit, building, etc" 
+          className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm" 
+        />
+        <p className="mt-1 text-xs text-muted-foreground">Apt, suite, unit, building, floor, etc.</p>
       </div>
 
       <div ref={setFieldRef(1)} className="w-full mt-6 max-md:max-w-full">
@@ -498,9 +610,26 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           City
           <span className="text-destructive">*</span>
         </label>
-          <input type="text" value={formData.city} onChange={e => handleInputChange('city', e.target.value)} onBlur={() => {
-        if ((formData.city || '').trim()) scrollToNextField(1);
-      }} placeholder="City" required className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm" />
+        <input 
+          type="text" 
+          value={formData.city} 
+          onChange={e => handleInputChange('city', e.target.value)} 
+          onBlur={() => {
+            if ((formData.city || '').trim()) scrollToNextField(1);
+            handleFieldBlur('city');
+          }} 
+          placeholder="City" 
+          required 
+          className={cn(
+            "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+            fieldErrors.city && touchedFields.city ? "border-destructive" : "border-border"
+          )}
+        />
+        {fieldErrors.city && touchedFields.city ? (
+          <p className="mt-1 text-sm text-destructive">{fieldErrors.city}</p>
+        ) : (
+          <p className="mt-1 text-xs text-muted-foreground">Auto-filled from ZIP code if available</p>
+        )}
       </div>
 
       <div className="flex w-full gap-4 mt-6 max-md:flex-col max-md:gap-4">
@@ -510,29 +639,47 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             <span className="text-destructive">*</span>
           </label>
           
-          {isMobile ? <MobileMultiSelect options={US_STATES.map(state => state.name)} selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []} onSelectionChange={values => {
-          if (values.length > 0) {
-            const selectedState = US_STATES.find(s => s.name === values[0]);
-            if (selectedState) {
-              handleInputChange('state', selectedState.code);
+          {isMobile ? <MobileMultiSelect 
+            options={US_STATES.map(state => state.name)} 
+            selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []} 
+            onSelectionChange={values => {
+              if (values.length > 0) {
+                const selectedState = US_STATES.find(s => s.name === values[0]);
+                if (selectedState) {
+                  handleInputChange('state', selectedState.code);
+                  handleFieldBlur('state');
+                  scrollToNextField(2);
+                }
+              } else {
+                handleInputChange('state', '');
+              }
+            }} 
+            placeholder="Select State" 
+            searchPlaceholder="Search states..." 
+            className="mt-1" 
+          /> : <Select 
+            value={formData.state} 
+            onValueChange={value => {
+              handleInputChange('state', value);
+              handleFieldBlur('state');
               scrollToNextField(2);
-            }
-          } else {
-            handleInputChange('state', '');
-          }
-        }} placeholder="Select State" searchPlaceholder="Search states..." className="mt-1" /> : <Select value={formData.state} onValueChange={value => {
-          handleInputChange('state', value);
-          scrollToNextField(2);
-        }}>
-              <SelectTrigger className="justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm">
-                <SelectValue placeholder="Select State" />
-              </SelectTrigger>
-              <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
-                {US_STATES.map(state => <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-accent text-sm text-foreground cursor-pointer">
-                    {state.name}
-                  </SelectItem>)}
-              </SelectContent>
-            </Select>}
+            }}
+          >
+            <SelectTrigger className={cn(
+              "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+              fieldErrors.state && touchedFields.state ? "border-destructive" : "border-border"
+            )}>
+              <SelectValue placeholder="Select State" />
+            </SelectTrigger>
+            <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+              {US_STATES.map(state => <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-accent text-sm text-foreground cursor-pointer">
+                  {state.name}
+                </SelectItem>)}
+            </SelectContent>
+          </Select>}
+          {fieldErrors.state && touchedFields.state && (
+            <p className="mt-1 text-sm text-destructive">{fieldErrors.state}</p>
+          )}
         </div>
 
         <div ref={setFieldRef(3)} className="flex-1 max-md:w-full">
@@ -540,7 +687,25 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             Zip code
             <span className="text-destructive">*</span>
           </label>
-          <input type="text" value={formData.zipCode} onChange={e => handleInputChange('zipCode', e.target.value)} placeholder="12345" required pattern="[0-9]{5}(-[0-9]{4})?" className="justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid border-border focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm" />
+          <input 
+            type="text" 
+            value={formData.zipCode} 
+            onChange={e => handleInputChange('zipCode', e.target.value)} 
+            onBlur={() => handleFieldBlur('zipCode')}
+            placeholder="12345" 
+            required 
+            pattern="[0-9]{5}(-[0-9]{4})?" 
+            maxLength={10}
+            className={cn(
+              "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent text-sm",
+              fieldErrors.zipCode && touchedFields.zipCode ? "border-destructive" : "border-border"
+            )}
+          />
+          {fieldErrors.zipCode && touchedFields.zipCode ? (
+            <p className="mt-1 text-sm text-destructive">{fieldErrors.zipCode}</p>
+          ) : (
+            <p className="mt-1 text-xs text-muted-foreground">5 digits (e.g., 12345) or 9 digits (12345-6789)</p>
+          )}
         </div>
       </div>
 
@@ -554,7 +719,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step">
                 Back
               </Button>}
-            <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
+            <Button type="button" size="sm" onClick={handleContinue} disabled={!canContinue} aria-label="Continue to next step">
               {continueButtonText}
             </Button>
           </div>
@@ -562,6 +727,16 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
+      <MobileActionBar onBack={onBack} onContinue={handleContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
+      
+      {/* Address Confirmation Dialog */}
+      <AddressConfirmationDialog 
+        open={showConfirmDialog}
+        onOpenChange={setShowConfirmDialog}
+        onConfirm={handleConfirmAddress}
+        onEdit={() => setShowConfirmDialog(false)}
+        address={formData}
+        isVerified={verified}
+      />
     </form>;
 };
