@@ -208,7 +208,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       </div>
 
       {/* Form content with padding */}
-      <section className="p-4 max-md:p-4 pt-0">
+      <section className="p-4 pt-0">
         {currentSection === 0 && (
           <AddressForm
             onSubmit={handleFormSubmit}
