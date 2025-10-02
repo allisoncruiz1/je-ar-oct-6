@@ -44,7 +44,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Sponsor Definition */}
         <div className="mb-6">
           <p className="text-foreground">
-            Your sponsor is the person <span className="font-semibold">MOST INFLUENTIAL</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
+            Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
           </p>
         </div>
 
