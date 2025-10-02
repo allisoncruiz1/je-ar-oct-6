@@ -87,15 +87,17 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   };
 
   const handleSaveDefault = () => {
-    // Save all added payments with default preference
-    addedPayments.forEach(payment => {
-      onAddPayment({
-        id: payment.id,
-        type: payment.type,
-        details: payment.details,
-        isDefault: payment.id === defaultPaymentId
-      });
-    });
+    // Save all added payments at once to avoid state update race conditions
+    const allNewPayments = addedPayments.map(payment => ({
+      id: payment.id,
+      type: payment.type,
+      details: payment.details,
+      isDefault: payment.id === defaultPaymentId
+    }));
+    
+    // Pass all payments at once
+    onAddPayment(allNewPayments);
+    
     setAddedPayments([]);
     setDefaultPaymentId('');
     setActiveTab('credit-card');

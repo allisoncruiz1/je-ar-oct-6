@@ -92,19 +92,32 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     onFormValidChange(isValid);
   }, [formData]);
   const handleAddPaymentMethod = (paymentData: any) => {
-    const newMethod = {
-      id: paymentData.id,
-      type: paymentData.type,
-      details: paymentData.details,
-      isDefault: paymentData.isDefault || false
-    };
-    updateFormData('paymentMethods', [...formData.paymentMethods, newMethod]);
-    
-    // Show success toast
-    toast({
-      title: "Payment method added successfully",
-      description: "Your payment details have been saved.",
-    });
+    // Handle both single payment and array of payments
+    if (Array.isArray(paymentData)) {
+      // Adding multiple payments at once
+      updateFormData('paymentMethods', [...formData.paymentMethods, ...paymentData]);
+      
+      // Show success toast
+      toast({
+        title: "Payment methods added successfully",
+        description: "Your payment details have been saved.",
+      });
+    } else {
+      // Adding single payment
+      const newMethod = {
+        id: paymentData.id,
+        type: paymentData.type,
+        details: paymentData.details,
+        isDefault: paymentData.isDefault || false
+      };
+      updateFormData('paymentMethods', [...formData.paymentMethods, newMethod]);
+      
+      // Show success toast
+      toast({
+        title: "Payment method added successfully",
+        description: "Your payment details have been saved.",
+      });
+    }
   };
   return <div className="space-y-8 md:pb-0">
       {/* Page Title */}
