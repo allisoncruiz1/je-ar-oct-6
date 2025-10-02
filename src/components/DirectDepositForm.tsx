@@ -123,7 +123,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
   }, [formData, usePreviousAccount]);
 
   return (
-    <div className="space-y-8 md:pb-0">
+    <div className="space-y-8 md:pb-0 pt-6 md:pt-8">
       <div className="space-y-6">
         <div>
           <h2 className="text-xl font-semibold text-foreground mb-4">
