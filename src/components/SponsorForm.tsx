@@ -332,7 +332,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                   </Button>
                   <Button
                     onClick={handleNoSponsor}
-                    variant="ghost"
+                    variant="outline"
                     size="lg"
                     className="w-full sm:w-auto"
                   >
