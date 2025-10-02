@@ -9,25 +9,41 @@ const TooltipProvider = TooltipPrimitive.Provider;
 type TooltipCtx = { isTouch: boolean };
 const TooltipContext = React.createContext<TooltipCtx | null>(null);
 
-function useIsTouch() {
-  const [isTouch, setIsTouch] = React.useState(false);
+function useMobileTooltip() {
+  const [isMobile, setIsMobile] = React.useState(false);
   React.useEffect(() => {
     if (typeof window === "undefined") return;
-    const mq = window.matchMedia("(hover: none), (pointer: coarse)");
-    setIsTouch(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
-    if (mq.addEventListener) mq.addEventListener("change", handler);
-    else mq.addListener(handler);
+    const mqCoarse = window.matchMedia("(pointer: coarse)");
+    const mqNoHover = window.matchMedia("(hover: none)");
+    const compute = () => setIsMobile(mqCoarse.matches || mqNoHover.matches || window.innerWidth < 768);
+    compute();
+    const onResize = () => compute();
+    const onChange = () => compute();
+    window.addEventListener("resize", onResize);
+    if (mqCoarse.addEventListener) {
+      mqCoarse.addEventListener("change", onChange);
+      mqNoHover.addEventListener("change", onChange);
+    } else {
+      // Safari fallback
+      mqCoarse.addListener(onChange);
+      mqNoHover.addListener(onChange);
+    }
     return () => {
-      if (mq.removeEventListener) mq.removeEventListener("change", handler);
-      else mq.removeListener(handler);
+      window.removeEventListener("resize", onResize);
+      if (mqCoarse.removeEventListener) {
+        mqCoarse.removeEventListener("change", onChange);
+        mqNoHover.removeEventListener("change", onChange);
+      } else {
+        mqCoarse.removeListener(onChange);
+        mqNoHover.removeListener(onChange);
+      }
     };
   }, []);
-  return isTouch;
+  return isMobile;
 }
 
 const Tooltip: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>> = ({ children, ...props }) => {
-  const isTouch = useIsTouch();
+  const isTouch = useMobileTooltip();
   return (
     <TooltipContext.Provider value={{ isTouch }}>
       {isTouch ? (
