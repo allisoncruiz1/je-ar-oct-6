@@ -162,7 +162,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                         <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                       </button>
                     </TooltipTrigger>
-                    <TooltipContent side="right" className="max-w-xs">
+                    <TooltipContent side="right" align="start" collisionPadding={16} sideOffset={8} className="max-w-[220px] whitespace-normal leading-snug">
                       <p className="mb-1">This includes active licenses in any state or province.</p>
                       <p>If your license is inactive or expired, select &apos;No&apos;.</p>
                     </TooltipContent>
@@ -208,7 +208,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                           <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                         </button>
                       </TooltipTrigger>
-                      <TooltipContent side="right" className="max-w-xs">
+                      <TooltipContent side="right" align="start" collisionPadding={16} sideOffset={8} className="max-w-[220px] whitespace-normal leading-snug">
                         <p className="mb-1">Select the state where you currently hold</p>
                         <p>an active real estate license.</p>
                       </TooltipContent>
