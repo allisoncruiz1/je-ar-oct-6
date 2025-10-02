@@ -94,8 +94,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Acknowledgment Section */}
         <div className="mt-8 border border-border rounded-lg p-6">
           <div className="flex items-start justify-between gap-4 mb-0">
-            <div className="flex flex-col gap-2">
-              <div className="flex items-start gap-3">
+            <div>
+              <div className="flex items-start gap-3 mb-2">
                 <Checkbox 
                   id="sponsor-policy" 
                   checked={acknowledged}
