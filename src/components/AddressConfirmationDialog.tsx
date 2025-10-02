@@ -67,13 +67,13 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
       </Alert>
 
       {typeof onUseSuggested === 'function' && (
-        <div className="mt-6 rounded-lg border-2 border-primary/20 bg-primary/5 p-5 animate-in fade-in-50 duration-300">
-          <div className="flex items-start gap-3 mb-3">
+        <div className="mt-3 rounded-lg border-2 border-primary/20 bg-primary/5 p-3 animate-in fade-in-50 duration-300">
+          <div className="flex items-start gap-2.5 mb-2">
             <div className="mt-0.5 p-1.5 rounded-full bg-primary/10">
-              <MapPin className="h-4 w-4 text-primary" />
+              <MapPin className="h-3.5 w-3.5 text-primary" />
             </div>
             <div className="flex-1">
-              <div className="text-sm font-semibold text-primary mb-2">
+              <div className="text-xs font-semibold text-primary mb-1.5">
                 Suggested Address
               </div>
               <div className="space-y-0.5 text-sm">
@@ -86,11 +86,11 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         </div>
       )}
       
-      <div className="mt-4 rounded-lg border border-border bg-muted/40 p-5">
-        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+      <div className="mt-3 rounded-lg border border-border bg-muted/40 p-3">
+        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
           Your Entered Address
         </div>
-        <div className="space-y-1 text-sm">
+        <div className="space-y-0.5 text-sm">
           <div className="font-medium text-foreground">
             {address.addressLine1}
           </div>
@@ -106,7 +106,7 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
   );
 
   const buttons = (
-    <div className="flex flex-col gap-3 w-full">
+    <div className="flex flex-col gap-2 w-full">
       {typeof onUseSuggested === 'function' && (
         <Button 
           onClick={onUseSuggested} 
@@ -140,24 +140,24 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className="max-h-[85vh]">
           <div className="overflow-y-auto px-4">
-            <DrawerHeader className="px-0 pb-4">
-              <DrawerTitle className="flex items-center gap-2.5 text-lg font-semibold">
-                <div className="p-2 rounded-lg bg-primary/10">
-                  <MapPin className="h-5 w-5 text-primary" />
+            <DrawerHeader className="px-0 pb-3">
+              <DrawerTitle className="flex items-center gap-2 text-lg font-semibold">
+                <div className="p-1.5 rounded-lg bg-primary/10">
+                  <MapPin className="h-4 w-4 text-primary" />
                 </div>
                 Address Validation
               </DrawerTitle>
-              <DrawerDescription className="text-left text-muted-foreground">
+              <DrawerDescription className="text-left text-muted-foreground text-sm">
                 Please confirm your manually entered address.
               </DrawerDescription>
             </DrawerHeader>
             
-            <div className="pb-4">
+            <div className="pb-3">
               {content}
             </div>
           </div>
 
-          <DrawerFooter className="pt-4 px-4 pb-6 border-t border-border bg-background">
+          <DrawerFooter className="pt-3 px-4 pb-6 border-t border-border bg-background">
             {buttons}
           </DrawerFooter>
         </DrawerContent>
@@ -168,10 +168,10 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader className="pb-4">
-          <DialogTitle className="flex items-center gap-2.5 text-xl font-semibold">
-            <div className="p-2 rounded-lg bg-primary/10">
-              <MapPin className="h-5 w-5 text-primary" />
+        <DialogHeader className="pb-3">
+          <DialogTitle className="flex items-center gap-2 text-xl font-semibold">
+            <div className="p-1.5 rounded-lg bg-primary/10">
+              <MapPin className="h-4 w-4 text-primary" />
             </div>
             Address Validation
           </DialogTitle>
@@ -182,7 +182,7 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         
         {content}
 
-        <DialogFooter className="flex-col gap-3 sm:gap-3 mt-6 pt-6 border-t border-border">
+        <DialogFooter className="flex-col gap-2 sm:gap-2 mt-4 pt-4 border-t border-border">
           {buttons}
         </DialogFooter>
       </DialogContent>
