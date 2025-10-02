@@ -158,8 +158,12 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                   </Label>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button type="button" className="inline-flex">
-                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <button
+                        type="button"
+                        aria-label="Help: Are you currently licensed"
+                        className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                      >
+                        <HelpCircle className="h-4 w-4" />
                       </button>
                     </TooltipTrigger>
                     <TooltipContent side="right" align="start" collisionPadding={16} sideOffset={8} className="max-w-[220px] whitespace-normal leading-snug">
@@ -204,8 +208,12 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     </Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <button type="button" className="inline-flex">
-                          <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                        <button
+                          type="button"
+                          aria-label="Help: Licensed states"
+                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                        >
+                          <HelpCircle className="h-4 w-4" />
                         </button>
                       </TooltipTrigger>
                       <TooltipContent side="right" align="start" collisionPadding={16} sideOffset={8} className="max-w-[220px] whitespace-normal leading-snug">
@@ -291,7 +299,13 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     </Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                        <button
+                          type="button"
+                          aria-label="Help: Countries you conduct business in"
+                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                        >
+                          <HelpCircle className="h-4 w-4" />
+                        </button>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Select all countries where you conduct business activities</p>
