@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Info } from "lucide-react";
+import { Info, Check, ChevronsUpDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { z } from 'zod';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { cn } from "@/lib/utils";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export interface TeamFunctionData {
   agentType: string;
   teamRole?: string;
+  teamName?: string;
   corporateStaffMember: string;
 }
 
@@ -26,10 +30,21 @@ interface TeamFunctionFormProps {
   onFormDataChange?: (data: TeamFunctionData) => void;
 }
 
+// Mock data for teams - in production, this would come from an API
+const mockTeams = [
+  { value: "team-1", label: "The Innovators - John Smith" },
+  { value: "team-2", label: "Elite Realty Group - Sarah Johnson" },
+  { value: "team-3", label: "Premier Partners - Mike Davis" },
+  { value: "team-4", label: "Summit Sellers - Lisa Anderson" },
+  { value: "team-5", label: "Apex Agents - Robert Wilson" },
+  { value: "cant-find", label: "Can't find the team" },
+];
+
 // Validation schema
 const teamFunctionSchema = z.object({
   agentType: z.string().trim().nonempty({ message: "Please select how you'll work at eXp" }),
   teamRole: z.string().optional(),
+  teamName: z.string().optional(),
   corporateStaffMember: z.string().trim().nonempty({ message: "Please indicate if you're a corporate staff member" })
 }).refine((data) => {
   if (data.agentType === 'team') {
@@ -39,6 +54,14 @@ const teamFunctionSchema = z.object({
 }, {
   message: "Please select your role within the team",
   path: ["teamRole"]
+}).refine((data) => {
+  if (data.teamRole === 'member') {
+    return data.teamName && data.teamName.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please select which team you're joining",
+  path: ["teamName"]
 });
 
 export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
@@ -55,8 +78,10 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
   const [formData, setFormData] = useState<TeamFunctionData>({
     agentType: initialData?.agentType || '',
     teamRole: initialData?.teamRole || '',
+    teamName: initialData?.teamName || '',
     corporateStaffMember: initialData?.corporateStaffMember || ''
   });
+  const [open, setOpen] = useState(false);
   const { setFieldRef, scrollToNextField } = useAutoScroll();
 
   const updateFormData = (field: keyof TeamFunctionData, value: string) => {
@@ -184,8 +209,68 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           </div>
         )}
 
+        {/* Team Selection - Conditional on Team Member */}
+        {formData.teamRole === 'member' && (
+          <div ref={setFieldRef(2)} className="space-y-3">
+            <Label className="text-sm font-medium text-foreground">
+              Which of our rockstar teams are you planning on joining? <span className="text-destructive">*</span>
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              Here's a list of active teams. Let's try to select which team you are joining by searching for Team name or Team Leader.
+            </p>
+            <p className="text-xs text-muted-foreground italic">
+              Note: If you can't find it, that's ok, we will still capture these details for you.
+            </p>
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="w-full justify-between h-12 text-base md:text-sm md:h-10 bg-background"
+                >
+                  {formData.teamName
+                    ? mockTeams.find((team) => team.value === formData.teamName)?.label
+                    : "Search by team name, leader, state or city..."}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-full p-0 bg-popover" align="start">
+                <Command>
+                  <CommandInput placeholder="Search teams..." className="h-12 md:h-9" />
+                  <CommandList>
+                    <CommandEmpty>No team found.</CommandEmpty>
+                    <CommandGroup>
+                      {mockTeams.map((team) => (
+                        <CommandItem
+                          key={team.value}
+                          value={team.value}
+                          onSelect={(currentValue) => {
+                            updateFormData('teamName', currentValue === formData.teamName ? '' : currentValue);
+                            setOpen(false);
+                            scrollToNextField(2);
+                          }}
+                          className="cursor-pointer"
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              formData.teamName === team.value ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                          {team.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
+
         {/* Corporate Staff Member Question */}
-        <div ref={setFieldRef(formData.agentType === 'team' ? 2 : 1)} className="space-y-3">
+        <div ref={setFieldRef(formData.teamRole === 'member' ? 3 : formData.agentType === 'team' ? 2 : 1)} className="space-y-3">
           <Label className="text-sm font-medium text-foreground">
             Are you an eXp realty Corporate Staff member? <span className="text-destructive">*</span>
           </Label>
