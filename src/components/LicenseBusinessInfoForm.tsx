@@ -283,7 +283,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     if (value === 'yes') scrollToNextField(2);
                   }}
                   label="Do you conduct business outside US?"
-                  tooltip="Select whether you conduct any business activities outside the United States"
+                  tooltip="This includes any real estate activities, referrals, or business relationships with clients outside your primary country."
                   required
                 />
                 
