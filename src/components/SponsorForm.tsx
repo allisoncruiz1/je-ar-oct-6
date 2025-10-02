@@ -101,7 +101,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             />
             <label 
               htmlFor="sponsor-policy" 
-              className="text-foreground cursor-pointer select-none"
+              className="text-foreground cursor-pointer select-none text-sm"
             >
               I have read and understood the sponsor policy.
             </label>
