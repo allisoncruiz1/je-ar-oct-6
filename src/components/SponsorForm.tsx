@@ -405,7 +405,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             ) : (
               /* Selected Sponsor Summary */
               <div className="border border-border rounded-lg p-4">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
                   <div className="flex-1">
                     <p className="text-sm text-muted-foreground mb-1">Selected Sponsor:</p>
                     <p className="font-semibold text-foreground">{selectedSponsor.name}</p>
@@ -413,13 +413,14 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                       <p className="text-sm text-muted-foreground">{selectedSponsor.email}</p>
                     )}
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 max-md:w-full max-md:mt-2">
                     {selectedSponsor.id !== 'exp-default' ? (
                       <>
                         <Button
                           variant="outline"
                           size="sm"
                           onClick={handleClearSponsor}
+                          className="max-md:flex-1"
                         >
                           Change
                         </Button>
@@ -427,6 +428,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                           variant="ghost"
                           size="sm"
                           onClick={handleClearSponsor}
+                          className="max-md:flex-1"
                         >
                           Clear
                         </Button>
@@ -436,6 +438,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                         variant="outline"
                         size="sm"
                         onClick={handleClearSponsor}
+                        className="max-md:w-full"
                       >
                         Change decision
                       </Button>
