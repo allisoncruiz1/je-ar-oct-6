@@ -127,48 +127,48 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
           </h2>
         </div>
 
-        {/* Section A: Policy Acknowledgement OR Success Row */}
-        {!policyAcknowledged ? (
-          <div className="space-y-6 mb-6">
-            {/* Sponsor Definition */}
-            <div>
-              <p className="text-foreground">
-                Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
-              </p>
-            </div>
+        {/* Section A: Understanding + Video + Key Points */}
+        <div className="space-y-6 mb-6">
+          {/* Sponsor Definition */}
+          <div>
+            <p className="text-foreground">
+              Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
+            </p>
+          </div>
 
-            {/* Optional Video Section */}
-            <div className="bg-muted rounded p-4 md:p-6 flex flex-col items-center justify-center space-y-3 min-h-[200px] w-full max-w-xl mx-auto">
-              <p className="text-muted-foreground text-center text-sm">
-                Optional: Watch this video to learn more
-              </p>
-              <Button
-                variant="outline"
-                onClick={handleWatchVideo}
-                size="sm"
-                className="bg-background hover:bg-background/90"
-              >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Watch Video
-              </Button>
-            </div>
+          {/* Optional Video Section */}
+          <div className="bg-muted rounded p-4 md:p-6 flex flex-col items-center justify-center space-y-3 min-h-[200px] w-full max-w-xl mx-auto">
+            <p className="text-muted-foreground text-center text-sm">
+              Optional: Watch this video to learn more
+            </p>
+            <Button
+              variant="outline"
+              onClick={handleWatchVideo}
+              size="sm"
+              className="bg-background hover:bg-background/90"
+            >
+              <ExternalLink className="mr-2 h-4 w-4" />
+              Watch Video
+            </Button>
+          </div>
 
-            {/* Key Points */}
-            <div className="space-y-4 w-full">
-              <ul className="space-y-3 list-disc pl-6 md:pl-12 text-foreground">
-                <li>
-                  Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
-                </li>
-                <li>
-                  If you are uncertain about your sponsor, do not proceed until you are 100% sure.
-                </li>
-                <li className="font-semibold italic">
-                  Sponsor selections are final and cannot be changed after submission.
-                </li>
-              </ul>
-            </div>
+          {/* Key Points */}
+          <div className="space-y-4 w-full">
+            <ul className="space-y-3 list-disc pl-6 md:pl-12 text-foreground">
+              <li>
+                Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
+              </li>
+              <li>
+                If you are uncertain about your sponsor, do not proceed until you are 100% sure.
+              </li>
+              <li className="font-semibold italic">
+                Sponsor selections are final and cannot be changed after submission.
+              </li>
+            </ul>
+          </div>
 
-            {/* Acknowledgment Section */}
+          {/* Acknowledgment Section OR Success Row */}
+          {!policyAcknowledged ? (
             <div className="border border-border rounded-lg p-4 md:p-6">
               <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                 <div className="flex-1">
@@ -204,18 +204,17 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                 </Button>
               </div>
             </div>
-          </div>
-        ) : (
-          /* Success Row - replaces the policy section */
-          <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg border border-border mb-6">
-            <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-              <Check className="w-3 h-3 text-white" />
+          ) : (
+            <div className="flex items-center gap-2 p-3 bg-muted/50 rounded-lg border border-border">
+              <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                <Check className="w-3 h-3 text-white" />
+              </div>
+              <p className="text-sm text-foreground">
+                <span className="font-semibold">Acknowledgement recorded</span> — Logged on {acknowledgedAt && formatTimestamp(acknowledgedAt)}
+              </p>
             </div>
-            <p className="text-sm text-foreground">
-              <span className="font-semibold">Acknowledgement recorded</span> — Logged on {acknowledgedAt && formatTimestamp(acknowledgedAt)}
-            </p>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Section B: Choose Your Sponsor */}
         {policyAcknowledged && (
