@@ -54,19 +54,21 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   const resultsRef = useRef<HTMLDivElement>(null);
   const sponsorSectionRef = useRef<HTMLDivElement>(null);
+  const actionBarRef = useRef<HTMLDivElement>(null);
 
   const handleAcknowledge = () => {
     setPolicyAcknowledged(true);
     setAcknowledgedAt(new Date());
-    
-    // Scroll to sponsor selection section after acknowledgment
-    setTimeout(() => {
-      sponsorSectionRef.current?.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center'
-      });
-    }, 300);
   };
+
+  // Ensure action buttons are visible after acknowledging policy
+  useEffect(() => {
+    if (policyAcknowledged) {
+      requestAnimationFrame(() => {
+        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      });
+    }
+  }, [policyAcknowledged]);
 
   const handleSearchSponsor = () => {
     const first = sponsorFirstName.trim();
@@ -684,7 +686,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
       </Dialog>
 
       {/* Desktop action bar */}
-      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+      <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
         <div className="flex items-center justify-between">
           <Button
             variant="outline"
