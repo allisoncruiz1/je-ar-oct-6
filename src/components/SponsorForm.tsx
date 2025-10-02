@@ -78,9 +78,11 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             </li>
           </ul>
 
-          <p className="text-foreground mt-6">
-            This is an irrevocable decision. Choose carefully or eXp Realty will be your sponsor.
-          </p>
+          <div className="mt-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
+            <p className="text-destructive font-semibold text-center">
+              ⚠️ This is an irrevocable decision. Choose carefully or eXp Realty will be your sponsor.
+            </p>
+          </div>
         </div>
 
         {/* Acknowledgment Button */}
