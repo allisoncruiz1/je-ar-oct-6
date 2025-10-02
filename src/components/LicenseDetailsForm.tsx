@@ -103,7 +103,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // Check if current state is valid (allow continuing with partial data)
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
-    const showMentorProgram = salesCount === 2;
+    const showMentorProgram = salesCount > 0 && salesCount <= 3;
     const isNorthCarolina = currentState === 'North Carolina';
 
     // Base validation - mentor field only required if sales <= 2, license type required for NC
@@ -151,7 +151,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     // Re-run validation with the updated state
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
-    const showMentorProgram = salesCount === 2;
+    const showMentorProgram = salesCount > 0 && salesCount <= 3;
     const isNorthCarolina = currentState === 'North Carolina';
 
     const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
@@ -250,8 +250,11 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       }} placeholder="Number of transactions" className="w-full" min="0" />
       </div>
 
-      {/* Certified Mentor Program - Only show if sales transactions are exactly 2 */}
-      {currentData.salesTransactions === '2' && <div ref={setFieldRef(2)} className="space-y-3">
+      {/* Certified Mentor Program - Show if sales transactions are 3 or fewer */}
+      {(() => {
+        const salesCount = parseInt(currentData.salesTransactions || '0');
+        return salesCount > 0 && salesCount <= 3;
+      })() && <div ref={setFieldRef(2)} className="space-y-3">
         <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => {
         updateCurrentStateData('certifiedMentor', value);
         if (value === 'yes') scrollToNextField(2);else scrollToNextField(3);
