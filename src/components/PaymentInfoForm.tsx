@@ -105,8 +105,8 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               Every joining agent is required to have 2 forms of payment on file. Initial fee is charged after onboarding has been completed.
             </p>
             
-            <div className="space-y-1">
-              <p className="font-semibold text-foreground text-base">Fee Structure:</p>
+            <div className="space-y-1 p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5">
+              <p className="font-semibold text-[hsl(var(--brand-blue))] text-base">Fee Structure:</p>
               <p className="text-base">
                 <span className="font-semibold text-foreground">Initial Fee:</span> $149
               </p>
@@ -183,7 +183,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             </div>}
 
           {/* Add Payment Button */}
-          <Button variant="outline" size="lg" onClick={handleAddPaymentMethod} className="w-full md:w-auto">
+          <Button variant="outline" size="lg" onClick={handleAddPaymentMethod} className="w-full md:w-auto border-[hsl(var(--brand-blue))] text-[hsl(var(--brand-blue))] hover:bg-[hsl(var(--brand-blue))]/10">
             <Plus className="mr-2 h-5 w-5" />
             Add Payment Details
           </Button>
