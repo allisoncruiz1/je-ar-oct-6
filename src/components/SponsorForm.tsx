@@ -68,10 +68,13 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         <div className="space-y-4">
           <ul className="space-y-3 list-disc pl-12 text-foreground">
             <li>
-              Without a sponsor selection, eXp Realty becomes your permanent sponsor
+              Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
             </li>
             <li>
-              Sponsor selections are final and cannot be changed after submission
+              Sponsor selections are final and cannot be changed after submission.
+            </li>
+            <li>
+              If you are uncertain about your sponsor, do not proceed until you are 100% sure.
             </li>
           </ul>
 
