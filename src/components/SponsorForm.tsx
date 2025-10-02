@@ -328,7 +328,10 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                     size="lg"
                     className="w-full sm:w-auto"
                   >
-                    Search Sponsor
+                    {sponsorFirstName || sponsorLastName 
+                      ? `Search for ${[sponsorFirstName, sponsorLastName].filter(Boolean).join(' ')}`
+                      : 'Search Sponsor'
+                    }
                   </Button>
                   <Button
                     onClick={handleNoSponsor}
