@@ -160,7 +160,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     <TooltipTrigger asChild>
                       <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                     </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
+                    <TooltipContent side="right" className="max-w-xs">
                       <p className="mb-1">This includes active licenses in any state or province.</p>
                       <p>If your license is inactive or expired, select &apos;No&apos;.</p>
                     </TooltipContent>
