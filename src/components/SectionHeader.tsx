@@ -17,6 +17,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   const title = currentSection === 5 ? 'Sponsor' : sectionTitle;
   const subtitle = currentSection === 5 ? 'Select Sponsor' : undefined;
 
+  if (currentSection === 5) {
+    return null;
+  }
+
   return (
     <header className="pt-4 pb-6">
       <h1 className="text-2xl font-bold text-foreground">{title}</h1>
