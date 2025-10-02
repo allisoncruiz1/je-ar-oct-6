@@ -111,7 +111,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               
               <button
                 onClick={handleReadPolicy}
-                className="text-foreground underline hover:no-underline block text-sm italic ml-0"
+                className="text-foreground underline hover:no-underline block text-sm italic"
               >
                 Read the full policy
               </button>
