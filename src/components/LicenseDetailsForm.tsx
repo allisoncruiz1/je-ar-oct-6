@@ -174,18 +174,38 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   const canGoPrevious = () => currentStateIndex > 0;
   return <div className="space-y-6 pb-24 md:pb-0">
       {/* State Navigation Header */}
-      {licensedStates.length > 1 && <div className="flex items-center justify-between mb-6">
-          
+      {licensedStates.length > 1 && <div className="mb-6">
+          <div className="flex items-center gap-2 flex-wrap">
+            {licensedStates.map((state, index) => (
+              <button
+                key={state}
+                onClick={() => setCurrentStateIndex(index)}
+                className={cn(
+                  "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                  index === currentStateIndex
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                )}
+              >
+                {state}
+                {data[state]?.licenseNumber && (
+                  <span className="ml-2 text-xs">✓</span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>}
 
       {/* Current State Header */}
       <div className="mb-6 mt-8 max-md:mt-2">
         <h2 className="text-xl font-semibold text-foreground mb-1">
-          {currentState} License Details
+          License Details - {currentState}
         </h2>
-        <p className="text-sm text-muted-foreground">
-          {currentStateIndex + 1}/{licensedStates.length} Licensed States
-        </p>
+        {licensedStates.length > 1 && (
+          <p className="text-sm text-muted-foreground">
+            State {currentStateIndex + 1} of {licensedStates.length}
+          </p>
+        )}
       </div>
 
       {/* License Number */}
