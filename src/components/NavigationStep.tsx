@@ -22,7 +22,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
   isExpanded = false,
   onToggleExpanded
 }) => {
-  const textColor = isActive ? 'text-[#0C0F24]' : 'text-[#858791]';
+  const textColor = (isActive || isCompleted) ? 'text-[#1B489B]' : 'text-[#858791]';
   
   return (
     <div 
@@ -35,6 +35,10 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
         {isActive ? (
           <div className="flex items-center justify-center w-7 h-7 rounded-full bg-white border-4 border-[#1B489B]/40">
             <div className="w-2.5 h-2.5 bg-[#1B489B] rounded-full" />
+          </div>
+        ) : isCompleted ? (
+          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#1B489B]">
+            <div className="w-2 h-2 bg-white rounded-full" />
           </div>
         ) : (
           <img

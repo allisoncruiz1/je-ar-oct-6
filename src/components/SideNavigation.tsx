@@ -30,8 +30,8 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     {
       title: "Your Information",
       description: "Personal and Business Details",
-      isActive: currentStep === 0,
-      isCompleted: currentStep > 0,
+      isActive: false,
+      isCompleted: currentStep >= 1,
       hasSubSteps: true,
       isExpanded: isYourInfoExpanded,
       onToggleExpanded: () => setIsYourInfoExpanded(!isYourInfoExpanded)
@@ -89,7 +89,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
             {index < steps.length - 1 && (
               <div className="flex w-full items-center gap-2.5">
                 <div className={`ml-3 flex min-h-[29px] w-0.5 my-auto ${
-                  step.isActive ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'
+                  step.isCompleted || steps[index + 1].isActive ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'
                 }`} />
               </div>
             )}
