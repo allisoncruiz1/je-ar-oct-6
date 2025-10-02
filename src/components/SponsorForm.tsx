@@ -219,7 +219,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)] w-full overflow-x-hidden">
-      <div className="space-y-6 flex-1 pb-24 md:pb-0">
+      <div className="space-y-6 flex-1 md:pb-0">
         <div className="mb-6 mt-8 max-md:mt-2">
           <h2 className="text-xl font-semibold text-foreground mb-2">
             Understanding Your eXp Sponsor
