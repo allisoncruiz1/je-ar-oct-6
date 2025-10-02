@@ -160,24 +160,24 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   // Shared form content
   const formContent = (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-3 mb-4">
+      <TabsList className="w-full mb-4 gap-1">
         <TabsTrigger 
           value="credit-card" 
-          className="text-xs sm:text-sm px-2 min-h-[44px]"
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length > 0}
         >
           {isMobile ? '1. Card' : '1. Add Credit Card'}
         </TabsTrigger>
         <TabsTrigger 
           value="bank-account" 
-          className="text-xs sm:text-sm px-2 min-h-[44px]"
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length === 0 || addedPayments.length > 1}
         >
           {isMobile ? '2. Bank' : '2. Add Bank Account'}
         </TabsTrigger>
         <TabsTrigger 
           value="default-method" 
-          className="text-xs sm:text-sm px-2 min-h-[44px]" 
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none" 
           disabled={addedPayments.length < 2}
         >
           {isMobile ? '3. Default' : '3. Set Default Method'}
