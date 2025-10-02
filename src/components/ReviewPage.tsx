@@ -95,24 +95,26 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
     onEdit: () => void;
     children: React.ReactNode;
   }> = ({ icon, title, onEdit, children }) => (
-    <div className="bg-background border border-border rounded-lg p-6 max-md:p-4">
+    <div className="bg-card border-2 border-border rounded-2xl p-6 max-md:p-4 transition-all hover:border-[hsl(var(--brand-blue))]/30 hover:shadow-sm">
       <div className="flex items-start justify-between mb-6 max-md:mb-4">
         <div className="flex items-center gap-3">
-          <div className="text-foreground">{icon}</div>
+          <div className="w-10 h-10 rounded-full bg-[hsl(var(--brand-blue))]/10 flex items-center justify-center text-[hsl(var(--brand-blue))]">
+            {icon}
+          </div>
           <h3 className="text-lg font-semibold text-foreground max-md:text-base">{title}</h3>
         </div>
         <Button
           variant="ghost"
           size="sm"
           onClick={onEdit}
-          className="flex items-center gap-2 text-primary hover:text-primary"
+          className="flex items-center gap-2 text-[hsl(var(--brand-blue))] hover:text-[hsl(var(--brand-blue))]/80 hover:bg-[hsl(var(--brand-blue))]/10 transition-colors"
           aria-label={`Edit ${title}`}
         >
           <Pencil className="h-4 w-4" />
-          <span>Edit</span>
+          <span className="max-md:hidden">Edit</span>
         </Button>
       </div>
-      <div className="space-y-4 max-md:space-y-3">
+      <div className="space-y-5 max-md:space-y-4">
         {children}
       </div>
     </div>
@@ -122,9 +124,9 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
     if (!value || (Array.isArray(value) && value.length === 0)) return null;
     
     return (
-      <div className="space-y-1">
-        <p className="text-sm text-muted-foreground">{label}</p>
-        <p className="text-base text-foreground">
+      <div className="space-y-1.5">
+        <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{label}</p>
+        <p className="text-base font-medium text-foreground leading-relaxed">
           {Array.isArray(value) ? value.join(', ') : value}
         </p>
       </div>
@@ -132,27 +134,32 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
   };
 
   return (
-    <div className="space-y-6 max-md:space-y-4 pb-24 max-md:pb-4">
+    <div className="space-y-8 max-md:space-y-6 pb-24 max-md:pb-4">
       {/* Header */}
-      <div className="space-y-4">
-        <h1 className="text-3xl font-bold text-foreground max-md:text-2xl">
-          Review Your Application
-        </h1>
-        <p className="text-base text-foreground leading-relaxed max-md:text-sm">
-          Please review all your information below. You can edit any section by clicking the "Edit" button. Once you confirm everything is correct, proceed to the documents step.
-        </p>
+      <div className="space-y-6 max-md:space-y-4 mb-2">
+        <div className="space-y-3">
+          <h1 className="text-3xl font-bold text-foreground max-md:text-2xl">
+            Review Your Application
+          </h1>
+          <p className="text-base text-muted-foreground leading-relaxed max-md:text-sm">
+            Please review all your information below. You can edit any section by clicking the "Edit" button. Once you confirm everything is correct, proceed to the documents step.
+          </p>
+        </div>
         
         {/* Info banner */}
-        <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 max-md:p-3">
-          <p className="text-sm text-primary leading-relaxed max-md:text-xs">
-            You can update your payment details anytime after submitting your application in your My eXp account.
+        <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5 max-md:p-3">
+          <p className="text-sm text-muted-foreground leading-relaxed max-md:text-xs">
+            <span className="font-semibold text-[hsl(var(--brand-blue))]">Note:</span> You can update your payment details anytime after submitting your application in your My eXp account.
           </p>
         </div>
       </div>
 
       {/* Your Information Section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Your Information</h2>
+      <div className="space-y-5 bg-muted/30 p-6 rounded-2xl max-md:p-4 max-md:space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="h-1 w-1 rounded-full bg-[hsl(var(--brand-blue))]" />
+          <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Your Information</h2>
+        </div>
 
         {/* Mailing Address */}
         {addressData && (
@@ -201,9 +208,9 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
             onEdit={() => onEdit(2)}
           >
             {Object.entries(licenseDetailsData).map(([state, details]) => (
-              <div key={state} className="space-y-3 pb-3 border-b border-border last:border-0 last:pb-0">
-                <p className="font-semibold text-foreground">{state}</p>
-                <div className="space-y-3 pl-4">
+              <div key={state} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
+                <p className="font-semibold text-foreground text-base">{state}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pl-4">
                   <DataField label="License Number" value={details.licenseNumber} />
                   <DataField label="Sales Transactions" value={details.salesTransactions} />
                   {details.mentorProgram && (
@@ -276,8 +283,11 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
       </div>
 
       {/* Sponsor Section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Sponsor</h2>
+      <div className="space-y-5 bg-muted/30 p-6 rounded-2xl max-md:p-4 max-md:space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="h-1 w-1 rounded-full bg-[hsl(var(--brand-blue))]" />
+          <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Sponsor</h2>
+        </div>
         <ReviewSection
           icon={<UserCheck className="h-5 w-5" />}
           title="Sponsor Information"
@@ -288,8 +298,11 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
       </div>
 
       {/* Financial Info Section */}
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Financial Info</h2>
+      <div className="space-y-5 bg-muted/30 p-6 rounded-2xl max-md:p-4 max-md:space-y-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="h-1 w-1 rounded-full bg-[hsl(var(--brand-blue))]" />
+          <h2 className="text-xl font-semibold text-foreground max-md:text-lg">Financial Info</h2>
+        </div>
 
         {/* Payment Info */}
         {paymentInfoData && (
@@ -299,11 +312,11 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
             onEdit={() => onEdit(6)}
           >
             {paymentInfoData.paymentMethods.map((method, index) => (
-              <div key={index} className="space-y-3 pb-3 border-b border-border last:border-0 last:pb-0">
-                <p className="font-semibold text-foreground capitalize">
+              <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
+                <p className="font-semibold text-foreground capitalize text-base">
                   {method.type.replace('-', ' ')}
                 </p>
-                <div className="space-y-3 pl-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pl-4">
                   {method.type === 'credit-card' && (
                     <>
                       <DataField label="Card Number" value={`**** **** **** ${method.details.cardNumber?.slice(-4) || ''}`} />
