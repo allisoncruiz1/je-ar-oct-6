@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Info, Check, ChevronsUpDown } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -15,6 +17,9 @@ export interface TeamFunctionData {
   agentType: string;
   teamRole?: string;
   teamName?: string;
+  teamLeaderName?: string;
+  customTeamName?: string;
+  teamDetails?: string;
   corporateStaffMember: string;
 }
 
@@ -45,6 +50,9 @@ const teamFunctionSchema = z.object({
   agentType: z.string().trim().nonempty({ message: "Please select how you'll work at eXp" }),
   teamRole: z.string().optional(),
   teamName: z.string().optional(),
+  teamLeaderName: z.string().optional(),
+  customTeamName: z.string().optional(),
+  teamDetails: z.string().optional(),
   corporateStaffMember: z.string().trim().nonempty({ message: "Please indicate if you're a corporate staff member" })
 }).refine((data) => {
   if (data.agentType === 'team') {
@@ -62,6 +70,22 @@ const teamFunctionSchema = z.object({
 }, {
   message: "Please select which team you're joining",
   path: ["teamName"]
+}).refine((data) => {
+  if (data.teamName === 'cant-find') {
+    return data.teamLeaderName && data.teamLeaderName.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please enter the team leader's name",
+  path: ["teamLeaderName"]
+}).refine((data) => {
+  if (data.teamName === 'cant-find') {
+    return data.customTeamName && data.customTeamName.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please enter the team name",
+  path: ["customTeamName"]
 });
 
 export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
@@ -79,6 +103,9 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     agentType: initialData?.agentType || '',
     teamRole: initialData?.teamRole || '',
     teamName: initialData?.teamName || '',
+    teamLeaderName: initialData?.teamLeaderName || '',
+    customTeamName: initialData?.customTeamName || '',
+    teamDetails: initialData?.teamDetails || '',
     corporateStaffMember: initialData?.corporateStaffMember || ''
   });
   const [open, setOpen] = useState(false);
@@ -269,8 +296,56 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
           </div>
         )}
 
+        {/* Can't Find Team - Additional Fields */}
+        {formData.teamName === 'cant-find' && (
+          <>
+            <div ref={setFieldRef(3)} className="space-y-2">
+              <Label htmlFor="teamLeaderName" className="text-sm font-medium text-foreground">
+                Please enter the full name of your team leader <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="teamLeaderName"
+                placeholder="Enter team leader's full name"
+                value={formData.teamLeaderName}
+                onChange={(e) => updateFormData('teamLeaderName', e.target.value)}
+                className="h-12 md:h-10"
+              />
+            </div>
+
+            <div ref={setFieldRef(4)} className="space-y-2">
+              <Label htmlFor="customTeamName" className="text-sm font-medium text-foreground">
+                What's the team's name? <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="customTeamName"
+                placeholder="Enter team name"
+                value={formData.customTeamName}
+                onChange={(e) => updateFormData('customTeamName', e.target.value)}
+                className="h-12 md:h-10"
+              />
+            </div>
+
+            <div ref={setFieldRef(5)} className="space-y-2">
+              <Label htmlFor="teamDetails" className="text-sm font-medium text-foreground">
+                Any additional team details? (Optional)
+              </Label>
+              <Textarea
+                id="teamDetails"
+                placeholder="Share any additional details about your team..."
+                value={formData.teamDetails}
+                onChange={(e) => updateFormData('teamDetails', e.target.value)}
+                className="min-h-[120px] resize-none"
+              />
+            </div>
+          </>
+        )}
+
         {/* Corporate Staff Member Question */}
-        <div ref={setFieldRef(formData.teamRole === 'member' ? 3 : formData.agentType === 'team' ? 2 : 1)} className="space-y-3">
+        <div ref={setFieldRef(
+          formData.teamName === 'cant-find' ? 6 : 
+          formData.teamRole === 'member' ? 3 : 
+          formData.agentType === 'team' ? 2 : 1
+        )} className="space-y-3">
           <Label className="text-sm font-medium text-foreground">
             Are you an eXp realty Corporate Staff member? <span className="text-destructive">*</span>
           </Label>
