@@ -217,18 +217,24 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
             </TooltipProvider>
           </div>
           <RadioGroup value={formData.agentType} onValueChange={value => {
-          updateFormData('agentType', value);
-          if (value === 'individual') {
-            // Clear any team-related selections to avoid showing team fields
-            updateFormData('teamRole', '');
-            updateFormData('teamName', '');
-            updateFormData('teamLeaderName', '');
-            updateFormData('customTeamName', '');
-            updateFormData('teamDetails', '');
-            updateFormData('numberOfAgents', '');
-            updateFormData('leaderTeamName', '');
-            updateFormData('teamSetupDetails', '');
-          }
+          // Batch all updates together to prevent race conditions
+          const newData = {
+            ...formData,
+            agentType: value,
+            // Clear team-related fields if individual is selected
+            ...(value === 'individual' ? {
+              teamRole: '',
+              teamName: '',
+              teamLeaderName: '',
+              customTeamName: '',
+              teamDetails: '',
+              numberOfAgents: '',
+              leaderTeamName: '',
+              teamSetupDetails: ''
+            } : {})
+          };
+          setFormData(newData);
+          onFormDataChange?.(newData);
           scrollToNextField(0);
         }} className="flex gap-3 mt-3 md:gap-6">
             <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
