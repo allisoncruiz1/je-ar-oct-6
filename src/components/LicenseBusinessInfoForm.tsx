@@ -161,7 +161,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                       <button
                         type="button"
                         aria-label="Help: Are you currently licensed"
-                        className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                         className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
                       >
                         <HelpCircle className="h-4 w-4" />
                       </button>
@@ -211,7 +211,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                         <button
                           type="button"
                           aria-label="Help: Licensed states"
-                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                           className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
                         >
                           <HelpCircle className="h-4 w-4" />
                         </button>
@@ -302,7 +302,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                         <button
                           type="button"
                           aria-label="Help: Countries you conduct business in"
-                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full border border-border text-muted-foreground bg-background hover:bg-muted/30 focus:outline-none focus:ring-2 focus:ring-ring/50"
+                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
                         >
                           <HelpCircle className="h-4 w-4" />
                         </button>

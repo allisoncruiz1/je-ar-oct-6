@@ -1,32 +1,16 @@
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { Popover as RPopover, PopoverTrigger as RPopoverTrigger, PopoverContent as RPopoverContent } from "@/components/ui/popover";
 
 import { cn } from "@/lib/utils";
 
-// Touch-aware Tooltip that toggles on tap and disables hover on mobile
 const TooltipProvider = TooltipPrimitive.Provider;
 
-type RootProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>;
-
-type TooltipCtx = {
-  isTouch: boolean;
-  open: boolean;
-  setOpen: (o: boolean) => void;
-};
-
+type TooltipCtx = { isTouch: boolean };
 const TooltipContext = React.createContext<TooltipCtx | null>(null);
 
-const Tooltip: React.FC<RootProps> = ({
-  children,
-  open: controlledOpen,
-  onOpenChange,
-  delayDuration,
-  disableHoverableContent,
-  ...props
-}) => {
+function useIsTouch() {
   const [isTouch, setIsTouch] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-
   React.useEffect(() => {
     if (typeof window === "undefined") return;
     const mq = window.matchMedia("(hover: none), (pointer: coarse)");
@@ -39,66 +23,63 @@ const Tooltip: React.FC<RootProps> = ({
       else mq.removeListener(handler);
     };
   }, []);
+  return isTouch;
+}
 
-  const handleOpenChange = (next: boolean) => {
-    if (isTouch) setOpen(next);
-    onOpenChange?.(next);
-  };
-
+const Tooltip: React.FC<React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>> = ({ children, ...props }) => {
+  const isTouch = useIsTouch();
   return (
-    <TooltipContext.Provider value={{ isTouch, open: isTouch ? open : Boolean(controlledOpen), setOpen }}>
-      <TooltipPrimitive.Root
-        open={isTouch ? open : controlledOpen}
-        onOpenChange={handleOpenChange}
-        delayDuration={isTouch ? 0 : delayDuration}
-        disableHoverableContent={isTouch ? true : disableHoverableContent}
-        {...props}
-      >
-        {children}
-      </TooltipPrimitive.Root>
+    <TooltipContext.Provider value={{ isTouch }}>
+      {isTouch ? (
+        <RPopover>{children}</RPopover>
+      ) : (
+        <TooltipPrimitive.Root delayDuration={200} {...props}>
+          {children}
+        </TooltipPrimitive.Root>
+      )}
     </TooltipContext.Provider>
   );
 };
 
-type TriggerProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>;
-
 const TooltipTrigger = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Trigger>,
-  TriggerProps
->(({ onClick, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+>((props, ref) => {
   const ctx = React.useContext(TooltipContext);
-
-  const handleClick: React.MouseEventHandler<HTMLElement> = (e) => {
-    onClick?.(e as any);
-    if (ctx?.isTouch) {
-      e.preventDefault();
-      e.stopPropagation();
-      ctx.setOpen(!ctx.open);
-    }
-  };
-
-  return (
-    <TooltipPrimitive.Trigger ref={ref} onClick={handleClick as any} {...props} />
-  );
+  if (ctx?.isTouch) {
+    return <RPopoverTrigger ref={ref as any} {...props} />;
+  }
+  return <TooltipPrimitive.Trigger ref={ref} {...props} />;
 });
 TooltipTrigger.displayName = TooltipPrimitive.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, side, sideOffset = 8, align = "start", collisionPadding = 16, ...props }, ref) => {
+>(({ className, side = "top", sideOffset = 8, align = "start", collisionPadding = 12, ...props }, ref) => {
   const ctx = React.useContext(TooltipContext);
-  const resolvedSide = side ?? (ctx?.isTouch ? "bottom" : "top");
+  const bubbleClasses = cn(
+    "z-50 overflow-hidden rounded-xl border border-border bg-popover px-4 py-3 text-sm text-popover-foreground shadow-lg whitespace-normal break-words leading-snug max-w-[280px] sm:max-w-xs",
+    className,
+  );
+
+  if (ctx?.isTouch) {
+    return (
+      <RPopoverContent ref={ref as any} sideOffset={sideOffset} align={align} className={bubbleClasses}>
+        {props.children as React.ReactNode}
+      </RPopoverContent>
+    );
+  }
   return (
     <TooltipPrimitive.Content
       ref={ref}
-      side={resolvedSide}
+      side={side}
       sideOffset={sideOffset}
       align={align}
       collisionPadding={collisionPadding}
       className={cn(
-        "z-50 overflow-hidden rounded-xl border border-border bg-popover px-4 py-3 text-sm text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 max-w-[280px] sm:max-w-xs whitespace-normal break-words leading-snug",
-        className,
+        "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        bubbleClasses,
       )}
       {...props}
     />
