@@ -416,7 +416,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
-        <DialogContent className="sm:max-w-[900px]">
+        <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
           <div className="space-y-6">
             {!pendingSponsor ? (
               <>
@@ -481,39 +481,64 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                 {/* Divider */}
                 <div className="border-t border-border"></div>
 
-                {/* Results Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse">
-                    <thead>
-                      <tr className="border-b border-border">
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Name</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Email</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">City</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">State</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Country</th>
-                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {mockResults.map((result) => (
-                        <tr key={result.id} className="border-b border-border hover:bg-muted/50">
-                          <td className="py-3 px-4 text-sm text-foreground">{result.name}</td>
-                          <td className="py-3 px-4 text-sm text-foreground">{result.email}</td>
-                          <td className="py-3 px-4 text-sm text-foreground">{result.city}</td>
-                          <td className="py-3 px-4 text-sm text-foreground">{result.state}</td>
-                          <td className="py-3 px-4 text-sm text-foreground">{result.country}</td>
-                          <td className="py-3 px-4">
-                            <Button
-                              size="sm"
-                              onClick={() => handleSelectSponsor(result)}
-                            >
-                              Select
-                            </Button>
-                          </td>
+                {/* Results - Desktop Table / Mobile Cards */}
+                <div>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block overflow-x-auto">
+                    <table className="w-full border-collapse">
+                      <thead>
+                        <tr className="border-b border-border">
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Name</th>
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Email</th>
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">City</th>
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">State</th>
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Country</th>
+                          <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Action</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {mockResults.map((result) => (
+                          <tr key={result.id} className="border-b border-border hover:bg-muted/50">
+                            <td className="py-3 px-4 text-sm text-foreground">{result.name}</td>
+                            <td className="py-3 px-4 text-sm text-foreground">{result.email}</td>
+                            <td className="py-3 px-4 text-sm text-foreground">{result.city}</td>
+                            <td className="py-3 px-4 text-sm text-foreground">{result.state}</td>
+                            <td className="py-3 px-4 text-sm text-foreground">{result.country}</td>
+                            <td className="py-3 px-4">
+                              <Button
+                                size="sm"
+                                onClick={() => handleSelectSponsor(result)}
+                              >
+                                Select
+                              </Button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-3">
+                    {mockResults.map((result) => (
+                      <div key={result.id} className="border border-border rounded-lg p-4 space-y-3">
+                        <div>
+                          <p className="font-semibold text-foreground">{result.name}</p>
+                          <p className="text-sm text-muted-foreground break-all">{result.email}</p>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          {result.city}, {result.state} • {result.country}
+                        </div>
+                        <Button
+                          size="sm"
+                          onClick={() => handleSelectSponsor(result)}
+                          className="w-full"
+                        >
+                          Select
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
                 {/* My Sponsor isn't listed link */}
