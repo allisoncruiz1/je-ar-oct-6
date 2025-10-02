@@ -148,11 +148,30 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
     });
   };
 
-  // Mock search results
-  const mockResults: SelectedSponsor[] = [
+  // Mock search results - expanded dataset
+  const allMockResults: SelectedSponsor[] = [
     { id: '1', name: 'James Miller', email: 'james.miller@exprealty.com', city: 'Seattle', state: 'WA', country: 'United States' },
     { id: '2', name: 'James Miller', email: 'j.miller@exprealty.com', city: 'Los Angeles', state: 'CA', country: 'United States' },
+    { id: '3', name: 'Sarah Johnson', email: 'sarah.johnson@exprealty.com', city: 'Miami', state: 'FL', country: 'United States' },
+    { id: '4', name: 'Michael Smith', email: 'michael.smith@exprealty.com', city: 'Austin', state: 'TX', country: 'United States' },
+    { id: '5', name: 'Jennifer Davis', email: 'jennifer.davis@exprealty.com', city: 'Denver', state: 'CO', country: 'United States' },
   ];
+
+  // Filter results based on search criteria
+  const getFilteredResults = () => {
+    return allMockResults.filter(result => {
+      const firstNameMatch = !sponsorFirstName || 
+        result.name.toLowerCase().includes(sponsorFirstName.toLowerCase());
+      const lastNameMatch = !sponsorLastName || 
+        result.name.toLowerCase().includes(sponsorLastName.toLowerCase());
+      const emailMatch = !sponsorEmail || 
+        result.email?.toLowerCase().includes(sponsorEmail.toLowerCase());
+      
+      return firstNameMatch && lastNameMatch && emailMatch;
+    });
+  };
+
+  const mockResults = getFilteredResults();
 
   const handleReadPolicy = () => {
     // Open policy document in new tab - replace with actual policy URL
@@ -328,10 +347,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                     size="lg"
                     className="w-full sm:w-auto"
                   >
-                    {sponsorFirstName || sponsorLastName 
-                      ? `Search for ${[sponsorFirstName, sponsorLastName].filter(Boolean).join(' ')}`
-                      : 'Search Sponsor'
-                    }
+                    Search Sponsor
                   </Button>
                   <Button
                     onClick={handleNoSponsor}
