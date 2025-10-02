@@ -173,7 +173,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)]">
-      <form onSubmit={handleSubmit} className="space-y-6 flex-1">
+      <form onSubmit={handleSubmit} className="space-y-6 flex-1 pt-6">
         <div className="mb-6">
           <h3 className="text-lg font-semibold text-foreground mb-2">
             How you'll run your business at eXp
