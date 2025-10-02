@@ -67,7 +67,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Key Points */}
         <div className="space-y-4">
           <ul className="space-y-3 list-disc pl-5 text-foreground">
-            <li className="text-sm">
+            <li>
               Without a sponsor selection, eXp Realty becomes your permanent sponsor
             </li>
             <li>
