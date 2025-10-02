@@ -114,14 +114,16 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             Read the full policy
           </button>
 
-          <Button
-            onClick={handleAcknowledge}
-            disabled={!acknowledged}
-            size="lg"
-            className="w-auto"
-          >
-            I understand the sponsor policy
-          </Button>
+          <div className="flex justify-end">
+            <Button
+              onClick={handleAcknowledge}
+              disabled={!acknowledged}
+              size="lg"
+              className="w-auto"
+            >
+              I understand the sponsor policy
+            </Button>
+          </div>
         </div>
       </div>
 
