@@ -333,6 +333,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     };
     console.log('📝 Setting form data to:', newData);
     setFormData(newData);
+    // Clear all field errors when autocomplete populates the form
+    setFieldErrors({});
     onFormDataChange?.(newData);
     setVerified(true);
     setShowSuggestions(false);
