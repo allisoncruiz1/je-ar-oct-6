@@ -162,6 +162,15 @@ export const MainContent: React.FC<MainContentProps> = ({
     // Check if returning from edit mode
     if (isEditingFromReview) {
       console.log('✅ Returning to Review page after edit');
+      console.log('📊 Current data state:', { 
+        addressData, 
+        licenseBusinessData, 
+        licenseDetailsData, 
+        businessOverviewData,
+        teamFunctionData,
+        paymentInfoData,
+        directDepositData
+      });
       setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
       setIsEditingFromReview(false);
       setCurrentSection(8);
@@ -347,6 +356,15 @@ export const MainContent: React.FC<MainContentProps> = ({
             paymentInfoData={paymentInfoData}
             directDepositData={directDepositData}
             onEdit={(section) => {
+              console.log('📝 Edit clicked. Current data:', { 
+                addressData, 
+                licenseBusinessData, 
+                licenseDetailsData, 
+                businessOverviewData,
+                teamFunctionData,
+                paymentInfoData,
+                directDepositData
+              });
               setIsEditingFromReview(true);
               setCurrentSection(section);
             }}
