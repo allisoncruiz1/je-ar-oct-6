@@ -13,6 +13,7 @@ import { useAutoScroll } from '@/hooks/useAutoScroll';
 export interface LicenseDetailsData {
   [state: string]: {
     licenseNumber: string;
+    licenseType?: string;
     salesTransactions: string;
     pendingTransactions: string;
     existingTransactionsCount?: string;
@@ -38,6 +39,7 @@ interface LicenseDetailsFormProps {
 const ASSOCIATIONS = ["National Association of REALTORS® (NAR)", "Real Estate Buyer's Agent Council (REBAC)", "CCIM Institute", "Institute of Real Estate Management (IREM)", "Women's Council of REALTORS® (WCR)", "Commercial Real Estate Development Association (NAIOP)", "Counselors of Real Estate (CRE)", "Society of Industrial and Office REALTORS® (SIOR)", "Real Estate Securities and Syndication Institute (RESSI)", "Certified Commercial Investment Member (CCIM)", "Other"];
 const MLS_OPTIONS = ["Multiple Listing Service (MLS)", "Bright MLS", "California Regional MLS (CRMLS)", "Houston Association of REALTORS® (HAR)", "Miami Association of REALTORS® (MIAMI)", "TREND MLS", "Northeast Florida Association of REALTORS® (NEFAR)", "Triangle MLS", "Denver Metro Association of REALTORS® (DMAR)", "Greater Las Vegas Association of REALTORS® (GLVAR)", "Other"];
 const MENTOR_OPTIONS = ["John Smith - Residential Specialist", "Sarah Johnson - Commercial Expert", "Mike Davis - New Agent Mentor", "Lisa Brown - Luxury Market Specialist", "David Wilson - Investment Property Expert", "No preference - Assign me a mentor"];
+const NC_LICENSE_TYPES = ["Salesperson", "Broker", "Provisional Broker", "BIC Eligible"];
 export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   licensedStates,
   data,
@@ -76,6 +78,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   });
   const currentData = data[currentState] || {
     licenseNumber: '',
+    licenseType: '',
     salesTransactions: '',
     pendingTransactions: '',
     existingTransactionsCount: '',
@@ -100,9 +103,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
     const showMentorProgram = salesCount === 2;
+    const isNorthCarolina = currentState === 'North Carolina';
 
-    // Base validation - mentor field only required if sales <= 2
-    const baseValid = !!(currentStateData?.licenseNumber?.trim() && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
+    // Base validation - mentor field only required if sales <= 2, license type required for NC
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
 
     // If pending transactions is "yes", also require existing transactions count
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
@@ -147,8 +151,9 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     const currentStateData = newData[currentState];
     const salesCount = parseInt(currentStateData?.salesTransactions || '0');
     const showMentorProgram = salesCount === 2;
+    const isNorthCarolina = currentState === 'North Carolina';
 
-    const baseValid = !!(currentStateData?.licenseNumber?.trim() && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
     const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
     const primaryAssociationValid = currentStateData?.associations?.length <= 1 || !!currentStateData?.primaryAssociation?.trim();
@@ -217,6 +222,26 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         if (currentData.licenseNumber.trim()) scrollToNextField(0);
       }} placeholder="Enter your license number" className="w-full" />
       </div>
+
+      {/* License Type - Only for North Carolina */}
+      {currentState === 'North Carolina' && <div className="space-y-2">
+          <Label htmlFor="licenseType" className="text-sm font-medium text-foreground">
+            License Type <span className="text-destructive">*</span>
+          </Label>
+          <Select value={currentData.licenseType || ''} onValueChange={value => {
+          updateCurrentStateData('licenseType', value);
+          scrollToNextField(1);
+        }}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select license type" />
+            </SelectTrigger>
+            <SelectContent className="bg-background border border-border shadow-lg z-50">
+              {NC_LICENSE_TYPES.map(type => <SelectItem key={type} value={type} className="cursor-pointer">
+                  {type}
+                </SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>}
 
       {/* Sales Transactions */}
       <div ref={setFieldRef(1)} className="space-y-2">
