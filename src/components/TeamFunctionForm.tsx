@@ -9,7 +9,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { z } from 'zod';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
-import { useViewportSticky } from '@/hooks/useViewportSticky';
 import { cn } from "@/lib/utils";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -159,7 +158,6 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     setFieldRef,
     scrollToNextField
   } = useAutoScroll();
-  const { isSticky, formRef, actionBarRef } = useViewportSticky();
   const updateFormData = (field: keyof TeamFunctionData, value: string) => {
     const newData = {
       ...formData,
@@ -187,7 +185,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     }
   };
   return <div className="flex flex-col min-h-[calc(100vh-200px)]">
-      <form ref={formRef as any} onSubmit={handleSubmit} className="space-y-6 flex-1 pt-6 pb-24 md:pb-0">
+      <form onSubmit={handleSubmit} className="space-y-6 flex-1 pt-6 pb-24 md:pb-0">
         <div className="mb-6">
           <h3 className="font-semibold text-foreground mb-2 text-xl">
             How you'll run your business at eXp
@@ -423,14 +421,8 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
       </form>
 
       {/* Desktop action bar */}
-      <div 
-        ref={actionBarRef}
-        className={cn(
-          "bg-background border-t border-border p-4 mt-6 max-md:hidden transition-all",
-          isSticky ? "fixed bottom-0 left-0 right-0 shadow-lg z-40" : "relative"
-        )}
-      >
-        <div className={cn("flex items-center justify-between", isSticky && "max-w-[calc(100%-280px)] ml-auto")}>
+      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+        <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>

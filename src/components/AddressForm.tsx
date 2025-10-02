@@ -10,7 +10,6 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
-import { useViewportSticky } from '@/hooks/useViewportSticky';
 import { cn } from '@/lib/utils';
 interface AddressFormData {
   addressLine1: string;
@@ -58,7 +57,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     setFieldRef,
     scrollToNextField
   } = useAutoScroll();
-  const { isSticky, formRef, actionBarRef } = useViewportSticky();
   const US_STATE_ABBR: Record<string, string> = {
     Alabama: 'AL',
     Alaska: 'AK',
@@ -446,7 +444,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     return () => window.removeEventListener("resize", logWidth);
   }, []);
   const hasGoogle = typeof window !== 'undefined' && (window as any).google?.maps?.places;
-  return <form ref={formRef as any} onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full pb-28 md:pb-0">
+  return <form onSubmit={handleSubmit} className="w-full text-base mt-1 max-md:max-w-full pb-28 md:pb-0">
       <h2 className="text-foreground mb-6 mt-4 font-semibold text-xl">Mailing Address</h2>
       
       <div ref={setFieldRef(0)} className="w-full max-md:max-w-full">
@@ -532,21 +530,15 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       </div>
 
       {/* Desktop action bar */}
-      <div 
-        ref={actionBarRef}
-        className={cn(
-          "bg-background border-t border-border p-4 mt-6 max-md:hidden transition-all",
-          isSticky ? "fixed bottom-0 left-0 right-0 shadow-lg z-40" : "relative"
-        )}
-      >
-        <div className={cn("flex items-center justify-between", isSticky && "max-w-[calc(100%-280px)] ml-auto")}>
+      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+        <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>
           <div className="flex gap-3">
             {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step">
-              Back
-            </Button>}
+                Back
+              </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
               Continue
             </Button>
