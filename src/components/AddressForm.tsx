@@ -503,12 +503,18 @@ export const AddressForm: React.FC<AddressFormProps> = ({
 
         if (error) {
           console.error('usps-validate error:', error);
+          toast.error('Unable to validate address. Please check your USPS configuration.');
         }
+        
         if (data?.suggestedAddress) {
           setSuggestedAddress(data.suggestedAddress);
+        } else if (data && !data.deliverable) {
+          // USPS could not validate but no suggestion provided
+          toast.info('Address could not be automatically verified. Please confirm it is correct.');
         }
       } catch (e) {
         console.error('Error calling usps-validate:', e);
+        toast.error('Address validation service unavailable. Please verify your address manually.');
       } finally {
         setValidating(false);
         setShowConfirmDialog(true);
@@ -716,7 +722,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             )}>
               <SelectValue placeholder="Select State" />
             </SelectTrigger>
-            <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
+            <SelectContent>
               {US_STATES.map(state => <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-accent text-sm text-foreground cursor-pointer">
                   {state.name}
                 </SelectItem>)}
