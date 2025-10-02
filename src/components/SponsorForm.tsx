@@ -16,6 +16,7 @@ interface SponsorFormProps {
   onFormValidChange?: (isValid: boolean) => void;
   canContinue?: boolean;
   showBack?: boolean;
+  continueButtonText?: string;
 }
 
 interface SelectedSponsor {
@@ -33,7 +34,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   onBack,
   onFormValidChange,
   canContinue,
-  showBack
+  showBack,
+  continueButtonText = "Continue"
 }) => {
   const [policyChecked, setPolicyChecked] = useState(false);
   const [policyAcknowledged, setPolicyAcknowledged] = useState(false);
@@ -726,7 +728,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               disabled={!canContinue}
               aria-label="Continue to next step"
             >
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
@@ -739,6 +741,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
+        continueButtonText={continueButtonText}
       />
     </div>
   );

@@ -33,6 +33,7 @@ interface LicenseDetailsFormProps {
   onBack?: () => void;
   canContinue?: boolean;
   showBack?: boolean;
+  continueButtonText?: string;
 }
 const ASSOCIATIONS = ["National Association of REALTORS® (NAR)", "Real Estate Buyer's Agent Council (REBAC)", "CCIM Institute", "Institute of Real Estate Management (IREM)", "Women's Council of REALTORS® (WCR)", "Commercial Real Estate Development Association (NAIOP)", "Counselors of Real Estate (CRE)", "Society of Industrial and Office REALTORS® (SIOR)", "Real Estate Securities and Syndication Institute (RESSI)", "Certified Commercial Investment Member (CCIM)", "Other"];
 const MLS_OPTIONS = ["Multiple Listing Service (MLS)", "Bright MLS", "California Regional MLS (CRMLS)", "Houston Association of REALTORS® (HAR)", "Miami Association of REALTORS® (MIAMI)", "TREND MLS", "Northeast Florida Association of REALTORS® (NEFAR)", "Triangle MLS", "Denver Metro Association of REALTORS® (DMAR)", "Greater Las Vegas Association of REALTORS® (GLVAR)", "Other"];
@@ -46,7 +47,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   onSaveResume,
   onBack,
   canContinue,
-  showBack
+  showBack,
+  continueButtonText = "Continue"
  }) => {
   const actionBarRef = useRef<HTMLDivElement>(null);
   
@@ -327,13 +329,13 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               Back
             </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
     </div>;
 };

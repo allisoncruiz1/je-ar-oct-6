@@ -34,6 +34,7 @@ interface TeamFunctionFormProps {
   showBack?: boolean;
   initialData?: Partial<TeamFunctionData>;
   onFormDataChange?: (data: TeamFunctionData) => void;
+  continueButtonText?: string;
 }
 
 // Mock data for teams - in production, this would come from an API
@@ -139,7 +140,8 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
   canContinue,
   showBack,
   initialData,
-  onFormDataChange
+  onFormDataChange,
+  continueButtonText = "Continue"
 }) => {
   const [formData, setFormData] = useState<TeamFunctionData>({
     agentType: initialData?.agentType || '',
@@ -444,13 +446,13 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
                 Back
               </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
     </div>;
 };

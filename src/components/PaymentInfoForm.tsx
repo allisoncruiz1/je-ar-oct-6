@@ -29,6 +29,7 @@ interface PaymentInfoFormProps {
   showBack?: boolean;
   initialData?: Partial<PaymentInfoData>;
   onFormDataChange?: (data: PaymentInfoData) => void;
+  continueButtonText?: string;
 }
 export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
   onSubmit,
@@ -39,7 +40,8 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
   canContinue,
   showBack,
   initialData,
-  onFormDataChange
+  onFormDataChange,
+  continueButtonText = "Continue"
 }) => {
   const [formData, setFormData] = useState<PaymentInfoData>({
     thirdPartyPayment: initialData?.thirdPartyPayment || '',
@@ -328,13 +330,13 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                 Back
               </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
       </div>
 
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
     </div>;
 };

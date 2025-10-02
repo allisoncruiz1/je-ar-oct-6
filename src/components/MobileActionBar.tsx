@@ -7,6 +7,7 @@ interface MobileActionBarProps {
   onSaveResume?: () => void;
   canContinue?: boolean;
   showBack?: boolean;
+  continueButtonText?: string;
 }
 
 export const MobileActionBar: React.FC<MobileActionBarProps> = ({ 
@@ -14,7 +15,8 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({
   onContinue, 
   onSaveResume,
   canContinue = false, 
-  showBack = false 
+  showBack = false,
+  continueButtonText = "Continue"
 }) => {
   return (
     <>
@@ -53,7 +55,7 @@ export const MobileActionBar: React.FC<MobileActionBarProps> = ({
               className="h-10"
               aria-label="Continue to next step"
             >
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>

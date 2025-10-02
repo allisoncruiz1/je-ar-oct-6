@@ -30,6 +30,7 @@ interface DirectDepositFormProps {
     accountNumber: string;
     routingNumber: string;
   };
+  continueButtonText?: string;
 }
 
 export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
@@ -42,7 +43,8 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
   showBack,
   initialData,
   onFormDataChange,
-  previousBankAccount
+  previousBankAccount,
+  continueButtonText = "Continue"
 }) => {
   const [usePreviousAccount, setUsePreviousAccount] = useState<string>('');
   const [formData, setFormData] = useState<DirectDepositData>({
@@ -327,7 +329,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
               disabled={!canContinue}
               aria-label="Continue to next step"
             >
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
@@ -340,6 +342,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
         onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
+        continueButtonText={continueButtonText}
       />
     </div>
   );

@@ -28,6 +28,7 @@ interface LicenseBusinessInfoFormProps {
   showBack?: boolean;
   initialData?: LicenseBusinessData;
   onFormDataChange?: (data: LicenseBusinessData) => void;
+  continueButtonText?: string;
 }
 export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = ({
   onSubmit,
@@ -38,7 +39,8 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   canContinue,
   showBack,
   initialData,
-  onFormDataChange
+  onFormDataChange,
+  continueButtonText = "Continue"
 }) => {
   const [formData, setFormData] = useState<LicenseBusinessData>({
     preferredName: initialData?.preferredName || '',
@@ -275,7 +277,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               disabled={!canContinue}
               aria-label="Continue to next step"
             >
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
@@ -288,6 +290,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         onSaveResume={onSaveResume}
         canContinue={canContinue}
         showBack={showBack}
+        continueButtonText={continueButtonText}
       />
         </div>
       </div>

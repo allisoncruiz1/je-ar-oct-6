@@ -11,6 +11,7 @@ import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { ReviewPage } from './ReviewPage';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AddressData {
   addressLine1: string;
@@ -47,6 +48,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   onFormSubmit, 
   onSaveResume 
 }) => {
+  const isMobile = useIsMobile();
   const [formComplete, setFormComplete] = useState(false);
   const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
@@ -221,6 +223,10 @@ export const MainContent: React.FC<MainContentProps> = ({
     }
   }, [handleContinue]);
 
+  // Conditional button text based on edit mode
+  const continueButtonText = isEditingFromReview 
+    ? (isMobile ? "Save & Return" : "Save & Return to Review")
+    : "Continue";
 
   return (
     <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
@@ -248,6 +254,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={formComplete}
             initialData={addressData || undefined}
             onFormDataChange={setAddressData}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 1 && (
@@ -261,6 +268,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={licenseBusinessFormComplete}
             initialData={licenseBusinessData || undefined}
             onFormDataChange={setLicenseBusinessData}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 2 && (
@@ -274,6 +282,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             onBack={handleBack}
             showBack={currentSection > 0}
             canContinue={licenseDetailsFormComplete}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 3 && (
@@ -287,6 +296,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={businessOverviewFormComplete}
             initialData={businessOverviewData || undefined}
             onFormDataChange={setBusinessOverviewData}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 4 && (
@@ -300,6 +310,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={teamFunctionFormComplete}
             initialData={teamFunctionData || undefined}
             onFormDataChange={setTeamFunctionData}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 5 && (
@@ -310,6 +321,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             onBack={handleBack}
             showBack={currentSection > 0}
             canContinue={sponsorFormComplete}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 6 && (
@@ -323,6 +335,7 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={paymentInfoFormComplete}
             initialData={paymentInfoData || undefined}
             onFormDataChange={setPaymentInfoData}
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 7 && (
@@ -344,6 +357,7 @@ export const MainContent: React.FC<MainContentProps> = ({
                   }
                 : undefined
             }
+            continueButtonText={continueButtonText}
           />
         )}
         {currentSection === 8 && (

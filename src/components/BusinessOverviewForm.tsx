@@ -32,6 +32,7 @@ interface BusinessOverviewFormProps {
   showBack?: boolean;
   initialData?: Partial<BusinessOverviewData>;
   onFormDataChange?: (data: BusinessOverviewData) => void;
+  continueButtonText?: string;
 }
 const PRE_EXISTING_MATTERS_OPTIONS = ["I have past or pending criminal charges or judgments (excluding minor traffic infractions)", "I have past or pending lawsuits or disputes related to real estate or a brokerage", "I have had issues with a real estate licensing authority that could affect my license", "None of the above apply to me"];
 export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
@@ -43,7 +44,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   canContinue,
   showBack,
   initialData,
-  onFormDataChange
+  onFormDataChange,
+  continueButtonText = "Continue"
 }) => {
   const isTouch = useIsTouchDevice();
   const isMobile = useIsMobile();
@@ -349,14 +351,14 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
                 Back
               </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
       </div>
     </div>;
 };

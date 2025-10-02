@@ -28,6 +28,7 @@ interface AddressFormProps {
   showBack?: boolean;
   initialData?: AddressFormData;
   onFormDataChange?: (data: AddressFormData) => void;
+  continueButtonText?: string;
 }
 export const AddressForm: React.FC<AddressFormProps> = ({
   onSubmit,
@@ -38,7 +39,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   canContinue,
   showBack,
   initialData,
-  onFormDataChange
+  onFormDataChange,
+  continueButtonText = "Continue"
 }) => {
   const [formData, setFormData] = useState<AddressFormData>(initialData || {
     addressLine1: '',
@@ -553,13 +555,13 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 Back
               </Button>}
             <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              Continue
+              {continueButtonText}
             </Button>
           </div>
         </div>
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
     </form>;
 };
