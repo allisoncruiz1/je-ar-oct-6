@@ -3,9 +3,11 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Badge } from '@/components/ui/badge';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { PaymentDetailsDialog } from '@/components/PaymentDetailsDialog';
 import { Plus } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 export interface PaymentInfoData {
   thirdPartyPayment: string;
   payerName?: string;
@@ -14,6 +16,7 @@ export interface PaymentInfoData {
     id: string;
     type: string;
     details: any;
+    isDefault?: boolean;
   }>;
 }
 interface PaymentInfoFormProps {
@@ -46,6 +49,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const actionBarRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   // Scroll to top on mobile, action bar on desktop
   useEffect(() => {
@@ -89,11 +93,18 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
   }, [formData]);
   const handleAddPaymentMethod = (paymentData: any) => {
     const newMethod = {
-      id: `payment-${Date.now()}`,
+      id: paymentData.id,
       type: paymentData.type,
-      details: paymentData.details
+      details: paymentData.details,
+      isDefault: paymentData.isDefault || false
     };
     updateFormData('paymentMethods', [...formData.paymentMethods, newMethod]);
+    
+    // Show success toast
+    toast({
+      title: "Payment method added successfully",
+      description: "Your payment details have been saved.",
+    });
   };
   return <div className="space-y-8 md:pb-0">
       {/* Page Title */}
@@ -200,37 +211,84 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
           </div>
 
           {/* Payment Methods List */}
-          {formData.paymentMethods.length > 0 && <div className="space-y-3">
-              {formData.paymentMethods.map((method, index) => <div key={method.id} className="p-4 border border-border rounded-lg bg-muted/30">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-foreground">
-                        Payment Method {index + 1}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-1">
-                        {method.type}
-                      </p>
-                    </div>
-                    <Button variant="ghost" size="sm" onClick={() => {
-                const newMethods = formData.paymentMethods.filter(m => m.id !== method.id);
-                updateFormData('paymentMethods', newMethods);
-              }}>
-                      Remove
-                    </Button>
+          {formData.paymentMethods.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Credit Card */}
+              {formData.paymentMethods.find(m => m.type === 'credit-card') && (
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h4 className="font-semibold text-foreground">Credit Card Details</h4>
+                    {formData.paymentMethods.find(m => m.type === 'credit-card')?.isDefault && (
+                      <Badge variant="secondary" className="text-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/10">
+                        Default
+                      </Badge>
+                    )}
+                    <span className="text-destructive">*</span>
                   </div>
-                </div>)}
-            </div>}
+                  <div className="p-4 border border-border rounded-lg bg-background">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-[hsl(var(--brand-blue))] flex items-center justify-center text-white font-bold">
+                        VISA
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground">Credit card</p>
+                        <p className="text-sm text-muted-foreground">
+                          **** **** **** {formData.paymentMethods.find(m => m.type === 'credit-card')?.details.cardNumber}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
-          {/* Add Payment Button */}
-          <Button 
-            variant="outline" 
-            size="lg" 
-            onClick={() => setIsDialogOpen(true)} 
-            className="w-full md:w-auto border-[hsl(var(--brand-blue))] text-[hsl(var(--brand-blue))] hover:bg-[hsl(var(--brand-blue))]/10"
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Add Payment Details
-          </Button>
+              {/* Bank Account */}
+              {formData.paymentMethods.find(m => m.type === 'bank-account') && (
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <h4 className="font-semibold text-foreground">Bank Account Details</h4>
+                    {formData.paymentMethods.find(m => m.type === 'bank-account')?.isDefault && (
+                      <Badge variant="secondary" className="text-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/10">
+                        Default
+                      </Badge>
+                    )}
+                    <span className="text-destructive">*</span>
+                  </div>
+                  <div className="p-4 border border-border rounded-lg bg-background">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center text-background font-bold text-xs">
+                        capital
+                      </div>
+                      <div>
+                        <p className="font-semibold text-foreground">Capital Bank - Checking</p>
+                        <p className="text-sm text-muted-foreground">
+                          ****{formData.paymentMethods.find(m => m.type === 'bank-account')?.details.accountNumber}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {formData.paymentMethods.length === 2 && (
+            <p className="text-sm text-muted-foreground">
+              Note: You can update your payment details anytime after submitting your application in your My eXp account.
+            </p>
+          )}
+
+          {/* Add Payment Button - Only show if less than 2 payment methods */}
+          {formData.paymentMethods.length < 2 && (
+            <Button 
+              variant="outline" 
+              size="lg" 
+              onClick={() => setIsDialogOpen(true)} 
+              className="w-full md:w-auto border-[hsl(var(--brand-blue))] text-[hsl(var(--brand-blue))] hover:bg-[hsl(var(--brand-blue))]/10"
+            >
+              <Plus className="mr-2 h-5 w-5" />
+              Add Payment Details
+            </Button>
+          )}
         </div>
       </div>
 

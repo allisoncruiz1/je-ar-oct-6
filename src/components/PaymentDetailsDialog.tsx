@@ -90,11 +90,12 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     // Save all added payments with default preference
     addedPayments.forEach(payment => {
       onAddPayment({
-        ...payment,
+        id: payment.id,
+        type: payment.type,
+        details: payment.details,
         isDefault: payment.id === defaultPaymentId
       });
     });
-    resetForm();
     setAddedPayments([]);
     setDefaultPaymentId('');
     setActiveTab('credit-card');
