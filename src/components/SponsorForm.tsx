@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { ExternalLink, Video, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 import { MobileActionBar } from '@/components/MobileActionBar';
 
 interface SponsorFormProps {
@@ -42,54 +44,80 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </div>
 
         {/* Video Player Section */}
-        <div className="bg-muted rounded-lg p-12 flex flex-col items-center justify-center min-h-[300px] space-y-4">
-          <p className="text-foreground text-center text-lg">
-            Click to watch 'Understanding your eXp Sponsor'
-          </p>
-          <Button
-            variant="outline"
-            onClick={handleWatchVideo}
-            className="bg-background hover:bg-background/90"
-          >
-            <ExternalLink className="mr-2 h-4 w-4" />
-            Watch Video
-          </Button>
-        </div>
+        <Card className="border-2 shadow-md">
+          <CardContent className="p-8 md:p-12 flex flex-col items-center justify-center min-h-[280px] space-y-5">
+            <div className="rounded-full bg-primary/10 p-4">
+              <Video className="h-8 w-8 text-primary" />
+            </div>
+            <p className="text-foreground text-center text-lg font-medium">
+              Click to watch 'Understanding your eXp Sponsor'
+            </p>
+            <Button
+              onClick={handleWatchVideo}
+              size="lg"
+              className="gap-2"
+            >
+              <ExternalLink className="h-4 w-4" />
+              Watch Video
+            </Button>
+          </CardContent>
+        </Card>
 
         {/* Sponsor Information */}
-        <div className="space-y-4 mt-8">
-          <p className="text-foreground font-semibold">
-            Your sponsor is the person MOST INFLUENTIAL in your decision to join eXp Realty. They are NOT simply a mentor or team partner, unless that person was also most influential in your decision to join.
-          </p>
+        <Card className="border-l-4 border-l-primary bg-card/50">
+          <CardContent className="p-6 space-y-5">
+            <div className="flex gap-3">
+              <Info className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-foreground font-semibold leading-relaxed">
+                Your sponsor is the person MOST INFLUENTIAL in your decision to join eXp Realty. They are NOT simply a mentor or team partner, unless that person was also most influential in your decision to join.
+              </p>
+            </div>
 
-          <ul className="space-y-3 list-disc pl-5 text-foreground">
-            <li>
-              Without a sponsor selection, eXp Realty becomes your permanent sponsor
-            </li>
-            <li>
-              Sponsor selections are final and cannot be changed after submission
-            </li>
-            <li className="font-semibold">
-              IF YOU ARE UNCERTAIN about your sponsor, DO NOT PROCEED until you're 100% sure
-            </li>
-          </ul>
+            <div className="space-y-3">
+              <div className="flex gap-3 items-start">
+                <CheckCircle2 className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <p className="text-foreground">
+                  Without a sponsor selection, eXp Realty becomes your permanent sponsor
+                </p>
+              </div>
+              <div className="flex gap-3 items-start">
+                <CheckCircle2 className="h-5 w-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <p className="text-foreground">
+                  Sponsor selections are final and cannot be changed after submission
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-          <p className="text-foreground mt-6">
+        {/* Warning Alert */}
+        <Alert className="border-destructive/50 bg-destructive/5">
+          <AlertTriangle className="h-5 w-5 text-destructive" />
+          <AlertDescription className="text-foreground font-semibold ml-2">
+            IF YOU ARE UNCERTAIN about your sponsor, DO NOT PROCEED until you're 100% sure
+          </AlertDescription>
+        </Alert>
+
+        <Alert className="border-2">
+          <AlertDescription className="text-foreground font-medium">
             This is an irrevocable decision. Choose carefully or eXp Realty will be your sponsor.
-          </p>
-        </div>
+          </AlertDescription>
+        </Alert>
 
         {/* Acknowledgment Button */}
-        <div className="mt-8 flex justify-center">
-          <Button
-            onClick={handleAcknowledge}
-            disabled={acknowledged}
-            size="lg"
-            className="px-8"
-          >
-            I understand the sponsor policy.
-          </Button>
-        </div>
+        <Card className={acknowledged ? "border-primary bg-primary/5" : "border-2"}>
+          <CardContent className="p-6 flex justify-center">
+            <Button
+              onClick={handleAcknowledge}
+              disabled={acknowledged}
+              size="lg"
+              className="px-8 gap-2"
+            >
+              {acknowledged && <CheckCircle2 className="h-4 w-4" />}
+              I understand the sponsor policy
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Desktop action bar */}
