@@ -363,9 +363,71 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               Select your sponsor from the results below
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-6">
             {!pendingSponsor ? (
               <>
+                {/* Search Form in Dialog */}
+                <div className="space-y-4">
+                  <p className="text-foreground">
+                    Please provide your Sponsor information — at least one field(s) is required to search our database.
+                  </p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="dialog-sponsor-first-name">Sponsor First Name</Label>
+                      <Input
+                        id="dialog-sponsor-first-name"
+                        placeholder="Enter First Name"
+                        value={sponsorFirstName}
+                        onChange={(e) => setSponsorFirstName(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="dialog-sponsor-last-name">Sponsor Last Name</Label>
+                      <Input
+                        id="dialog-sponsor-last-name"
+                        placeholder="Enter Last Name"
+                        value={sponsorLastName}
+                        onChange={(e) => setSponsorLastName(e.target.value)}
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="dialog-sponsor-email">Sponsor eXp Email</Label>
+                      <Input
+                        id="dialog-sponsor-email"
+                        type="email"
+                        placeholder="Enter eXp Email"
+                        value={sponsorEmail}
+                        onChange={(e) => setSponsorEmail(e.target.value)}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={handleSearchSponsor}
+                      size="lg"
+                      className="w-full sm:w-auto"
+                    >
+                      Search Sponsor
+                    </Button>
+                    <Button
+                      onClick={handleNoSponsor}
+                      variant="outline"
+                      size="lg"
+                      className="w-full sm:w-auto"
+                    >
+                      I don't have a Sponsor
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-border"></div>
+
+                {/* Results Table */}
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
@@ -399,9 +461,11 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                     </tbody>
                   </table>
                 </div>
+
+                {/* My Sponsor isn't listed link */}
                 <button
                   onClick={handleNoSponsor}
-                  className="text-foreground underline hover:no-underline font-semibold text-sm"
+                  className="text-primary underline hover:no-underline font-semibold text-sm"
                 >
                   My Sponsor isn't listed.
                 </button>
