@@ -158,42 +158,6 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
         </div>
       </div>
 
-      {/* Compact Summary Section */}
-      <div className="bg-gradient-to-r from-[hsl(var(--brand-blue))]/5 to-[hsl(var(--brand-blue))]/10 border-2 border-[hsl(var(--brand-blue))]/20 rounded-2xl p-6 max-md:p-4">
-        <div className="flex items-start justify-between gap-4 flex-wrap">
-          <div className="space-y-3 flex-1 min-w-[200px]">
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-5 w-5 text-[hsl(var(--brand-blue))]" />
-              <h2 className="text-lg font-semibold text-foreground">Application Summary</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-sm">
-              {addressData && <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Location</p>
-                  <p className="font-medium text-foreground">{addressData.city}, {addressData.state}</p>
-                </div>}
-              {licenseBusinessData && <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Licensed States</p>
-                  <p className="font-medium text-foreground">{licenseBusinessData.licensedStates.length || 0}</p>
-                </div>}
-              {paymentInfoData && <div>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">Payment Method</p>
-                  <p className="font-medium text-foreground capitalize">
-                    {paymentInfoData.paymentMethods[0]?.type.replace('-', ' ') || 'Not set'}
-                  </p>
-                </div>}
-            </div>
-          </div>
-          {isMobile && <Button variant="outline" size="sm" onClick={toggleAllSections} className="flex items-center gap-2">
-              {expandedSections.length === 3 ? <>
-                  <ChevronUp className="h-4 w-4" />
-                  Collapse All
-                </> : <>
-                  <ChevronDown className="h-4 w-4" />
-                  Expand All
-                </>}
-            </Button>}
-        </div>
-      </div>
 
       {/* Your Information Section */}
       {isMobile ? <Accordion type="multiple" value={expandedSections} onValueChange={setExpandedSections}>
