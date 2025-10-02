@@ -143,7 +143,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)]">
       <form onSubmit={handleSubmit} className="space-y-6 flex-1">
-      <div className="mb-6">
+      <div className="mb-6 mt-8">
         <h3 className="text-lg font-semibold text-foreground mb-2">
           Business Overview
         </h3>
