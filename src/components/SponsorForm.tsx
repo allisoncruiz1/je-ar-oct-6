@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, AlertTriangle } from 'lucide-react';
 import { MobileActionBar } from '@/components/MobileActionBar';
 
 interface SponsorFormProps {
@@ -79,9 +79,12 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
           </ul>
 
           <div className="mt-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
-            <p className="text-destructive font-semibold text-center">
-              ⚠️ This is an irrevocable decision. Choose carefully or eXp Realty will be your sponsor.
-            </p>
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+              <p className="text-destructive">
+                <span className="font-semibold">Irrevocable decision.</span> Choose carefully; if no sponsor is selected, eXp Realty will be assigned.
+              </p>
+            </div>
           </div>
         </div>
 
