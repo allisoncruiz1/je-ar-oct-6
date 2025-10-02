@@ -206,6 +206,17 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
             value={formData.agentType}
             onValueChange={(value) => {
               updateFormData('agentType', value);
+              if (value === 'individual') {
+                // Clear any team-related selections to avoid showing team fields
+                updateFormData('teamRole', '');
+                updateFormData('teamName', '');
+                updateFormData('teamLeaderName', '');
+                updateFormData('customTeamName', '');
+                updateFormData('teamDetails', '');
+                updateFormData('numberOfAgents', '');
+                updateFormData('leaderTeamName', '');
+                updateFormData('teamSetupDetails', '');
+              }
               scrollToNextField(0);
             }}
             className="flex gap-3 mt-3 md:gap-6"
@@ -270,7 +281,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         )}
 
         {/* Team Selection - Conditional on Team Member */}
-        {formData.teamRole === 'member' && (
+        {formData.agentType === 'team' && formData.teamRole === 'member' && (
           <div ref={setFieldRef(2)} className="space-y-3">
             <Label className="text-sm font-medium text-foreground">
               Which of our rockstar teams are you planning on joining? <span className="text-destructive">*</span>
@@ -295,7 +306,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
                   <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
               </PopoverTrigger>
-              <PopoverContent className="w-full p-0 bg-popover" align="start">
+              <PopoverContent className="w-full p-0 bg-popover z-50" align="start">
                 <Command>
                   <CommandInput placeholder="Search teams..." className="h-12 md:h-9" />
                   <CommandList>
@@ -330,7 +341,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         )}
 
         {/* Can't Find Team - Additional Fields */}
-        {formData.teamName === 'cant-find' && (
+        {formData.agentType === 'team' && formData.teamRole === 'member' && formData.teamName === 'cant-find' && (
           <>
             <div ref={setFieldRef(3)} className="space-y-2">
               <Label htmlFor="teamLeaderName" className="text-sm font-medium text-foreground">
@@ -374,7 +385,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         )}
 
         {/* Leader - Team Information */}
-        {formData.teamRole === 'leader' && (
+        {formData.agentType === 'team' && formData.teamRole === 'leader' && (
           <>
             <div ref={setFieldRef(2)} className="space-y-2">
               <div className="flex items-center gap-2">
