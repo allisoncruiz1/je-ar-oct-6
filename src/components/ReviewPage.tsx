@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, FileText, Award, Building2, Users, UserCheck, CreditCard, Landmark, Pencil, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, FileText, Award, Building2, Users, UserCheck, CreditCard, Landmark, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -123,11 +123,10 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
         </div>
         <button
           onClick={onEdit}
-          className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-[hsl(var(--brand-blue))] transition-colors px-3 py-1.5 rounded-md hover:bg-[hsl(var(--brand-blue))]/5 border border-transparent hover:border-[hsl(var(--brand-blue))]/20"
+          className="text-sm font-medium text-[hsl(var(--brand-blue))] hover:text-[hsl(var(--brand-blue))]/80 transition-colors underline underline-offset-4 decoration-[hsl(var(--brand-blue))]/30 hover:decoration-[hsl(var(--brand-blue))]/60"
           aria-label={`Edit ${title}`}
         >
-          <Pencil className="h-3.5 w-3.5" />
-          <span>Edit</span>
+          Edit
         </button>
       </div>
       <div className="space-y-5 max-md:space-y-4">
