@@ -6,6 +6,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
 
 export interface DirectDepositData {
+  firstName: string;
+  lastName: string;
   bankName: string;
   accountType: string;
   routingNumber: string;
@@ -43,6 +45,8 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
 }) => {
   const [usePreviousAccount, setUsePreviousAccount] = useState<string>('');
   const [formData, setFormData] = useState<DirectDepositData>({
+    firstName: initialData?.firstName || '',
+    lastName: initialData?.lastName || '',
     bankName: initialData?.bankName || '',
     accountType: initialData?.accountType || '',
     routingNumber: initialData?.routingNumber || '',
@@ -82,6 +86,8 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
     // If providing different details, validate all fields
     if (usePreviousAccount === 'different') {
       const isValid = 
+        formData.firstName.trim() !== '' &&
+        formData.lastName.trim() !== '' &&
         formData.bankName.trim() !== '' &&
         formData.accountType !== '' &&
         formData.routingNumber.trim() !== '' &&
@@ -153,6 +159,32 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
         {/* Bank Information - Only show if providing different details or no previous account */}
         {(usePreviousAccount === 'different' || !previousBankAccount) && (
           <div className="space-y-4 pt-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="first-name">
+                  First Name on Account <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="first-name"
+                  placeholder="Enter first name"
+                  value={formData.firstName}
+                  onChange={(e) => updateFormData('firstName', e.target.value)}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="last-name">
+                  Last Name on Account <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="last-name"
+                  placeholder="Enter last name"
+                  value={formData.lastName}
+                  onChange={(e) => updateFormData('lastName', e.target.value)}
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="bank-name">
                 Bank Name <span className="text-destructive">*</span>
