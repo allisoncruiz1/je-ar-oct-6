@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { PaymentDetailsDialog } from '@/components/PaymentDetailsDialog';
 import { Plus } from 'lucide-react';
 export interface PaymentInfoData {
   thirdPartyPayment: string;
@@ -43,6 +44,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     payerEmail: initialData?.payerEmail || '',
     paymentMethods: initialData?.paymentMethods || []
   });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const actionBarRef = useRef<HTMLDivElement>(null);
 
   // Scroll to top on mobile, action bar on desktop
@@ -85,14 +87,11 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     const isValid = validateForm();
     onFormValidChange(isValid);
   }, [formData]);
-  const handleAddPaymentMethod = () => {
-    // This will be implemented with a dialog/modal for payment method entry
-    console.log('Add payment method clicked');
-    // For now, just add a placeholder
+  const handleAddPaymentMethod = (paymentData: any) => {
     const newMethod = {
       id: `payment-${Date.now()}`,
-      type: 'credit-card',
-      details: {}
+      type: paymentData.type,
+      details: paymentData.details
     };
     updateFormData('paymentMethods', [...formData.paymentMethods, newMethod]);
   };
@@ -223,12 +222,24 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             </div>}
 
           {/* Add Payment Button */}
-          <Button variant="outline" size="lg" onClick={handleAddPaymentMethod} className="w-full md:w-auto border-[hsl(var(--brand-blue))] text-[hsl(var(--brand-blue))] hover:bg-[hsl(var(--brand-blue))]/10">
+          <Button 
+            variant="outline" 
+            size="lg" 
+            onClick={() => setIsDialogOpen(true)} 
+            className="w-full md:w-auto border-[hsl(var(--brand-blue))] text-[hsl(var(--brand-blue))] hover:bg-[hsl(var(--brand-blue))]/10"
+          >
             <Plus className="mr-2 h-5 w-5" />
             Add Payment Details
           </Button>
         </div>
       </div>
+
+      {/* Payment Details Dialog */}
+      <PaymentDetailsDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        onAddPayment={handleAddPaymentMethod}
+      />
 
       {/* Desktop action bar */}
       <div ref={actionBarRef} className="hidden md:block sticky bottom-0 bg-background border-t border-border p-4 -mx-4 -mb-0 mt-8">
