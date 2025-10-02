@@ -4,6 +4,7 @@ import { LicenseBusinessInfoForm } from './LicenseBusinessInfoForm';
 import { LicenseDetailsForm, LicenseDetailsData } from './LicenseDetailsForm';
 import { BusinessOverviewForm, BusinessOverviewData } from './BusinessOverviewForm';
 import { TeamFunctionForm, TeamFunctionData } from './TeamFunctionForm';
+import { SponsorForm } from './SponsorForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
@@ -53,6 +54,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   const [licenseDetailsFormComplete, setLicenseDetailsFormComplete] = useState(false);
   const [businessOverviewFormComplete, setBusinessOverviewFormComplete] = useState(false);
   const [teamFunctionFormComplete, setTeamFunctionFormComplete] = useState(false);
+  const [sponsorFormComplete, setSponsorFormComplete] = useState(false);
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
@@ -89,6 +91,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       licenseDetailsFormComplete,
       businessOverviewFormComplete,
       teamFunctionFormComplete,
+      sponsorFormComplete,
     });
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -125,6 +128,13 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Guard: do not advance from step 6 unless the sponsor form is complete
+    if (currentSection === 5 && !sponsorFormComplete) {
+      console.info('🚫 Continue blocked: Sponsor incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
     console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
@@ -139,7 +149,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete]);
 
   const handleBack = () => {
     console.log('Back clicked');
@@ -243,6 +253,16 @@ export const MainContent: React.FC<MainContentProps> = ({
           />
         )}
         {currentSection === 5 && (
+          <SponsorForm
+            onContinue={triggerUserContinue}
+            onFormValidChange={setSponsorFormComplete}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
+            canContinue={sponsorFormComplete}
+          />
+        )}
+        {currentSection === 6 && (
           <div className="relative">
             <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
               Business Disclosure form will be implemented here.
