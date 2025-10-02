@@ -151,7 +151,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
   return (
     <div className="space-y-8 max-md:space-y-6 pb-24 max-md:pb-4">
       {/* Header */}
-      <div className="space-y-6 max-md:space-y-4 mb-2 px-2 max-md:px-0">
+      <div className="space-y-6 max-md:space-y-4 mb-2">
         <div className="space-y-3">
           <h1 className="text-3xl font-bold text-foreground max-md:text-2xl">
             Review Your Application
