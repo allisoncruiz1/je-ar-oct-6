@@ -158,7 +158,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                   </Label>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      <button type="button" className="inline-flex">
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </button>
                     </TooltipTrigger>
                     <TooltipContent side="right" className="max-w-xs">
                       <p className="mb-1">This includes active licenses in any state or province.</p>
@@ -202,7 +204,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     </Label>
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                        <button type="button" className="inline-flex">
+                          <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                        </button>
                       </TooltipTrigger>
                       <TooltipContent side="right" className="max-w-xs">
                         <p className="mb-1">Select the state where you currently hold</p>
