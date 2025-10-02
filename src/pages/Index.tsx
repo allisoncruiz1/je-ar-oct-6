@@ -21,7 +21,7 @@ const Index = () => {
     'Sponsor',
     'Payment Info',
     'Direct Deposit',
-    'Business Disclosures'
+    'Review Application'
   ];
 
   const getMainStep = (section: number) => {

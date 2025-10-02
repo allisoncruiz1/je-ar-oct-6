@@ -10,6 +10,7 @@ import { DirectDepositForm, DirectDepositData } from './DirectDepositForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { ReviewPage } from './ReviewPage';
 
 interface AddressData {
   addressLine1: string;
@@ -319,42 +320,19 @@ export const MainContent: React.FC<MainContentProps> = ({
           />
         )}
         {currentSection === 8 && (
-          <div className="relative">
-            <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
-              Business Disclosure form will be implemented here.
-            </div>
-            <div className="sticky bottom-0 bg-white border-t border-border p-4 mt-6 max-md:p-3 max-md:mt-4">
-              <div className="flex items-center justify-between max-md:flex-col max-md:gap-3">
-                <Button
-                  variant="outline"
-                  onClick={onSaveResume}
-                  aria-label="Save and resume application later"
-                  className="max-md:order-1 max-md:w-full"
-                >
-                  Save & Resume Later
-                </Button>
-                <div className="flex gap-3 max-md:w-full max-md:order-2">
-                  <Button
-                    variant="ghost"
-                    onClick={handleBack}
-                    aria-label="Go back to previous step"
-                    className="max-md:w-full"
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={triggerUserContinue}
-                    disabled={currentSection >= sections.length - 1}
-                    aria-label="Continue to next step"
-                    className="max-md:w-full"
-                  >
-                    Continue
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ReviewPage
+            addressData={addressData}
+            licenseBusinessData={licenseBusinessData}
+            licenseDetailsData={licenseDetailsData}
+            businessOverviewData={businessOverviewData}
+            teamFunctionData={teamFunctionData}
+            paymentInfoData={paymentInfoData}
+            directDepositData={directDepositData}
+            onEdit={(section) => setCurrentSection(section)}
+            onBack={handleBack}
+            onContinue={triggerUserContinue}
+            onSaveResume={onSaveResume}
+          />
         )}
       </section>
 
