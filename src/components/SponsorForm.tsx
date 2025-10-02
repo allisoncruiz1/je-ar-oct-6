@@ -44,8 +44,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   };
 
   return (
-    <div className="flex flex-col min-h-[calc(100vh-200px)]">
-      <div className="space-y-6 flex-1 pb-24 md:pb-0">
+    <div className="flex flex-col min-h-[calc(100vh-200px)] w-full overflow-x-hidden">
+      <div className="space-y-6 flex-1 pb-24 md:pb-0 px-4 md:px-0">
         <div className="mb-6 mt-8 max-md:mt-2">
           <h2 className="text-xl font-semibold text-foreground mb-2">
             Understanding Your eXp Sponsor
@@ -60,7 +60,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </div>
 
         {/* Optional Video Section */}
-        <div className="bg-muted rounded p-6 flex flex-col items-center justify-center space-y-3 mb-6 min-h-[200px] aspect-video max-w-xl mx-auto">
+        <div className="bg-muted rounded p-4 md:p-6 flex flex-col items-center justify-center space-y-3 mb-6 min-h-[200px] w-full max-w-xl mx-auto">
           <p className="text-muted-foreground text-center text-sm">
             Optional: Watch this video to learn more
           </p>
@@ -76,8 +76,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </div>
 
         {/* Key Points */}
-        <div className="space-y-4">
-          <ul className="space-y-3 list-disc pl-12 text-foreground">
+        <div className="space-y-4 w-full">
+          <ul className="space-y-3 list-disc pl-6 md:pl-12 text-foreground">
             <li>
               Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
             </li>
