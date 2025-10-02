@@ -42,7 +42,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </div>
 
         {/* Optional Video Section */}
-        <div className="bg-muted rounded-lg p-6 flex flex-col items-center justify-center space-y-3 mb-6">
+        <div className="bg-muted rounded p-6 flex flex-col items-center justify-center space-y-3 mb-6">
           <p className="text-muted-foreground text-center text-sm">
             Optional: Watch this video to learn more
           </p>
