@@ -21,7 +21,9 @@ interface SelectedSponsor {
   id: string;
   name: string;
   email?: string;
-  market?: string;
+  city?: string;
+  state?: string;
+  country?: string;
 }
 
 export const SponsorForm: React.FC<SponsorFormProps> = ({
@@ -103,9 +105,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   // Mock search results
   const mockResults: SelectedSponsor[] = [
-    { id: '1', name: 'John Smith', email: 'john.smith@exprealty.com', market: 'California' },
-    { id: '2', name: 'Jane Doe', email: 'jane.doe@exprealty.com', market: 'Texas' },
-    { id: '3', name: 'Mike Johnson', email: 'mike.johnson@exprealty.com', market: 'Florida' },
+    { id: '1', name: 'James Miller', email: 'james.miller@exprealty.com', city: 'Seattle', state: 'WA', country: 'United States' },
+    { id: '2', name: 'James Miller', email: 'j.miller@exprealty.com', city: 'Los Angeles', state: 'CA', country: 'United States' },
   ];
 
   const handleReadPolicy = () => {
@@ -342,32 +343,53 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
-        <DialogContent className="sm:max-w-[600px]">
+        <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Search Results</DialogTitle>
             <DialogDescription>
               Select your sponsor from the results below
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-2 max-h-[400px] overflow-y-auto">
-            {mockResults.map((result) => (
-              <div
-                key={result.id}
-                className="flex items-center justify-between p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
-              >
-                <div>
-                  <p className="font-semibold text-foreground">{result.name}</p>
-                  <p className="text-sm text-muted-foreground">{result.email}</p>
-                  <p className="text-sm text-muted-foreground">{result.market}</p>
-                </div>
-                <Button
-                  size="sm"
-                  onClick={() => handleSelectSponsor(result)}
-                >
-                  Select
-                </Button>
-              </div>
-            ))}
+          <div className="space-y-4">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Name</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Email</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">City</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">State</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Country</th>
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {mockResults.map((result) => (
+                    <tr key={result.id} className="border-b border-border hover:bg-muted/50">
+                      <td className="py-3 px-4 text-sm text-foreground">{result.name}</td>
+                      <td className="py-3 px-4 text-sm text-foreground">{result.email}</td>
+                      <td className="py-3 px-4 text-sm text-foreground">{result.city}</td>
+                      <td className="py-3 px-4 text-sm text-foreground">{result.state}</td>
+                      <td className="py-3 px-4 text-sm text-foreground">{result.country}</td>
+                      <td className="py-3 px-4">
+                        <Button
+                          size="sm"
+                          onClick={() => handleSelectSponsor(result)}
+                        >
+                          Select
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <button
+              onClick={handleNoSponsor}
+              className="text-foreground underline hover:no-underline font-semibold text-sm"
+            >
+              My Sponsor isn't listed.
+            </button>
           </div>
         </DialogContent>
       </Dialog>
