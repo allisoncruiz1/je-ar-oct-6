@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { addressSchema } from '@/schemas/formValidation';
 import { AddressConfirmationDialog } from '@/components/AddressConfirmationDialog';
 import { z } from 'zod';
+import { supabase } from "@/integrations/supabase/client";
 interface AddressFormData {
   addressLine1: string;
   addressLine2: string;
@@ -73,6 +74,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [touchedFields, setTouchedFields] = useState<Record<string, boolean>>({});
+  const [suggestedAddress, setSuggestedAddress] = useState<AddressFormData | null>(null);
+  const [validating, setValidating] = useState(false);
   const fetchTimeoutRef = useRef<number | null>(null);
   const {
     setFieldRef,
@@ -473,19 +476,43 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     e.preventDefault();
     onSubmit?.(formData);
   };
-  const handleContinue = () => {
+  const handleContinue = async () => {
     // Validate all fields first
     try {
       addressSchema.parse(formData);
-      
+
       // If address was verified via autocomplete, skip confirmation
       if (verified) {
         onContinue?.();
         return;
       }
-      
-      // For manually entered addresses, show confirmation dialog
-      setShowConfirmDialog(true);
+
+      // Manually entered address: validate via USPS
+      setValidating(true);
+      setSuggestedAddress(null);
+      try {
+        const { data, error } = await supabase.functions.invoke('usps-validate', {
+          body: {
+            addressLine1: formData.addressLine1,
+            addressLine2: formData.addressLine2,
+            city: formData.city,
+            state: formData.state,
+            zipCode: formData.zipCode,
+          },
+        });
+
+        if (error) {
+          console.error('usps-validate error:', error);
+        }
+        if (data?.suggestedAddress) {
+          setSuggestedAddress(data.suggestedAddress);
+        }
+      } catch (e) {
+        console.error('Error calling usps-validate:', e);
+      } finally {
+        setValidating(false);
+        setShowConfirmDialog(true);
+      }
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errors: Record<string, string> = {};
@@ -494,22 +521,32 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           errors[field] = err.message;
         });
         setFieldErrors(errors);
-        
+
         // Mark all fields as touched
         setTouchedFields({
           addressLine1: true,
           addressLine2: true,
           city: true,
           state: true,
-          zipCode: true
+          zipCode: true,
         });
-        
+
         toast.error('Please correct the errors before continuing');
       }
     }
   };
 
-  const handleConfirmAddress = () => {
+  const handleUseCurrentAddress = () => {
+    setShowConfirmDialog(false);
+    onContinue?.();
+  };
+
+  const handleUseSuggestedAddress = () => {
+    if (suggestedAddress) {
+      setFormData(suggestedAddress);
+      onFormDataChange?.(suggestedAddress);
+      setVerified(true);
+    }
     setShowConfirmDialog(false);
     onContinue?.();
   };
@@ -741,8 +778,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       <AddressConfirmationDialog 
         open={showConfirmDialog}
         onOpenChange={setShowConfirmDialog}
-        onConfirm={handleConfirmAddress}
+        onConfirm={handleUseCurrentAddress}
         onEdit={() => setShowConfirmDialog(false)}
+        onUseSuggested={suggestedAddress ? handleUseSuggestedAddress : undefined}
+        suggestedAddress={suggestedAddress || undefined}
         address={formData}
         isVerified={verified}
       />

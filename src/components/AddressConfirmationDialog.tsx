@@ -14,9 +14,17 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 interface AddressConfirmationDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onConfirm: () => void;
-  onEdit: () => void;
+  onConfirm: () => void; // Use current address
+  onEdit: () => void;    // Re-enter address
+  onUseSuggested?: () => void; // Use suggested address if available
   address: {
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+  suggestedAddress?: {
     addressLine1: string;
     addressLine2: string;
     city: string;
@@ -31,7 +39,9 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
   onOpenChange,
   onConfirm,
   onEdit,
+  onUseSuggested,
   address,
+  suggestedAddress,
   isVerified = false
 }) => {
   return (
@@ -50,9 +60,20 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         <Alert className="my-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
           <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
           <AlertDescription className="text-amber-800 dark:text-amber-200">
-            We couldn't verify this address. Please review carefully before continuing.
+            We couldn't verify this address. {typeof onUseSuggested === 'function' ? 'We found a standardized suggestion below.' : 'Please review carefully before continuing.'}
           </AlertDescription>
         </Alert>
+
+        {typeof onUseSuggested === 'function' && (
+          <div className="my-4 rounded-lg border border-border bg-background p-4">
+            <div className="text-sm font-semibold text-primary mb-2">Suggested Address:</div>
+            <div className="space-y-1 text-sm text-foreground">
+              <div className="font-medium">{suggestedAddress?.addressLine1}</div>
+              {suggestedAddress?.addressLine2 && <div>{suggestedAddress?.addressLine2}</div>}
+              <div>{suggestedAddress?.city}, {suggestedAddress?.state} {suggestedAddress?.zipCode}</div>
+            </div>
+          </div>
+        )}
         
         <div className="my-4 rounded-lg border border-border bg-muted/50 p-4">
           <div className="text-sm font-semibold text-muted-foreground mb-2">Current Address:</div>
@@ -83,18 +104,24 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         </div>
 
         <DialogFooter className="flex-col sm:flex-row gap-2">
+          {typeof onUseSuggested === 'function' && (
+            <Button onClick={onUseSuggested} className="w-full sm:w-auto">
+              Use Suggested Address
+            </Button>
+          )}
           <Button
             variant="outline"
-            onClick={onEdit}
-            className="w-full sm:w-auto"
-          >
-            Re-enter Address
-          </Button>
-          <Button
             onClick={onConfirm}
             className="w-full sm:w-auto"
           >
             Use Current Address
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={onEdit}
+            className="w-full sm:w-auto"
+          >
+            Re-enter Address
           </Button>
         </DialogFooter>
       </DialogContent>
