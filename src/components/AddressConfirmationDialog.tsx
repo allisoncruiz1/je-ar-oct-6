@@ -57,37 +57,47 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
 
   const content = (
     <>
-      <Alert className="border-amber-500 bg-amber-50 dark:bg-amber-950/20">
-        <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
-        <AlertDescription className="text-amber-800 dark:text-amber-200">
-          We couldn't verify this address. {typeof onUseSuggested === 'function' ? 'We found a standardized suggestion below.' : 'Please review carefully before continuing.'}
+      <Alert className="border-l-4 border-l-destructive bg-destructive/5">
+        <AlertTriangle className="h-4 w-4 text-destructive" />
+        <AlertDescription className="text-sm text-foreground">
+          {typeof onUseSuggested === 'function' 
+            ? 'We found a standardized address suggestion below.' 
+            : 'We couldn\'t verify this address. Please review carefully before continuing.'}
         </AlertDescription>
       </Alert>
 
       {typeof onUseSuggested === 'function' && (
-        <div className="mt-4 rounded-lg border-2 border-primary/20 bg-primary/5 p-4">
-          <div className="text-sm font-semibold text-primary mb-3 flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            Suggested Address
-          </div>
-          <div className="space-y-1 text-sm">
-            <div className="font-semibold text-foreground">{suggestedAddress?.addressLine1}</div>
-            {suggestedAddress?.addressLine2 && <div className="text-foreground">{suggestedAddress?.addressLine2}</div>}
-            <div className="text-foreground">{suggestedAddress?.city}, {suggestedAddress?.state} {suggestedAddress?.zipCode}</div>
+        <div className="mt-6 rounded-lg border-2 border-primary/20 bg-primary/5 p-5 animate-in fade-in-50 duration-300">
+          <div className="flex items-start gap-3 mb-3">
+            <div className="mt-0.5 p-1.5 rounded-full bg-primary/10">
+              <MapPin className="h-4 w-4 text-primary" />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold text-primary mb-2">
+                Suggested Address
+              </div>
+              <div className="space-y-0.5 text-sm">
+                <div className="font-semibold text-foreground">{suggestedAddress?.addressLine1}</div>
+                {suggestedAddress?.addressLine2 && <div className="text-foreground/80">{suggestedAddress?.addressLine2}</div>}
+                <div className="text-foreground/80">{suggestedAddress?.city}, {suggestedAddress?.state} {suggestedAddress?.zipCode}</div>
+              </div>
+            </div>
           </div>
         </div>
       )}
       
-      <div className="mt-4 rounded-lg border border-border bg-muted/30 p-4">
-        <div className="text-sm font-semibold text-muted-foreground mb-3">Your Address:</div>
-        <div className="space-y-1.5 text-sm">
-          <div className="text-foreground">
-            <span className="font-medium">{address.addressLine1}</span>
+      <div className="mt-4 rounded-lg border border-border bg-muted/40 p-5">
+        <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">
+          Your Entered Address
+        </div>
+        <div className="space-y-1 text-sm">
+          <div className="font-medium text-foreground">
+            {address.addressLine1}
           </div>
           {address.addressLine2 && (
-            <div className="text-foreground">{address.addressLine2}</div>
+            <div className="text-foreground/70">{address.addressLine2}</div>
           )}
-          <div className="text-foreground">
+          <div className="text-foreground/70">
             {address.city}, {address.state} {address.zipCode}
           </div>
         </div>
@@ -96,9 +106,13 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
   );
 
   const buttons = (
-    <div className="flex flex-col gap-2 w-full">
+    <div className="flex flex-col gap-3 w-full">
       {typeof onUseSuggested === 'function' && (
-        <Button onClick={onUseSuggested} className="w-full" size="lg">
+        <Button 
+          onClick={onUseSuggested} 
+          className="w-full shadow-sm" 
+          size="lg"
+        >
           Use Suggested Address
         </Button>
       )}
@@ -108,12 +122,12 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         className="w-full"
         size="lg"
       >
-        Use Current Address
+        Use My Address
       </Button>
       <Button
         variant="ghost"
         onClick={onEdit}
-        className="w-full"
+        className="w-full text-muted-foreground hover:text-foreground"
         size="lg"
       >
         Re-enter Address
@@ -126,12 +140,14 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent className="max-h-[85vh]">
           <div className="overflow-y-auto px-4">
-            <DrawerHeader className="px-0">
-              <DrawerTitle className="flex items-center gap-2 text-lg">
-                <MapPin className="h-5 w-5 text-primary" />
+            <DrawerHeader className="px-0 pb-4">
+              <DrawerTitle className="flex items-center gap-2.5 text-lg font-semibold">
+                <div className="p-2 rounded-lg bg-primary/10">
+                  <MapPin className="h-5 w-5 text-primary" />
+                </div>
                 Address Validation
               </DrawerTitle>
-              <DrawerDescription className="text-left">
+              <DrawerDescription className="text-left text-muted-foreground">
                 Please confirm your manually entered address.
               </DrawerDescription>
             </DrawerHeader>
@@ -141,7 +157,7 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
             </div>
           </div>
 
-          <DrawerFooter className="pt-2 px-4 pb-6">
+          <DrawerFooter className="pt-4 px-4 pb-6 border-t border-border bg-background">
             {buttons}
           </DrawerFooter>
         </DrawerContent>
@@ -152,19 +168,21 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <MapPin className="h-5 w-5 text-primary" />
+        <DialogHeader className="pb-4">
+          <DialogTitle className="flex items-center gap-2.5 text-xl font-semibold">
+            <div className="p-2 rounded-lg bg-primary/10">
+              <MapPin className="h-5 w-5 text-primary" />
+            </div>
             Address Validation
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-muted-foreground">
             Please confirm your manually entered address.
           </DialogDescription>
         </DialogHeader>
         
         {content}
 
-        <DialogFooter className="flex-col gap-2 sm:gap-2 mt-4">
+        <DialogFooter className="flex-col gap-3 sm:gap-3 mt-6 pt-6 border-t border-border">
           {buttons}
         </DialogFooter>
       </DialogContent>
