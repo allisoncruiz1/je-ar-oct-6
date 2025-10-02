@@ -39,6 +39,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
     const newValues = isSelected
       ? selectedValues.filter(value => value !== option)
       : [...selectedValues, option];
+    console.log('[MobileMultiSelect] toggle', option, { isSelected, newValues });
     onSelectionChange(newValues);
   };
 
@@ -133,6 +134,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
                 <Checkbox 
                   checked={selectedValues.includes(option)}
                   onCheckedChange={() => handleToggleOption(option)}
+                  onClick={(e) => e.stopPropagation()}
                   className="h-4 w-4 shrink-0"
                 />
                 <span className={cn(
