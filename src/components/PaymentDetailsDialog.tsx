@@ -49,18 +49,22 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
       },
     };
     onAddPayment(paymentData);
-    resetForm();
-    onOpenChange(false);
+    // Reset credit card form
+    setCardholderName('');
+    setCardNumber('');
+    setExpiryDate('');
+    setCvv('');
+    setBillingZip('');
+    // Switch to bank account tab
+    setActiveTab('bank-account');
   };
 
   const handleAddBankAccount = () => {
     const paymentData = {
       type: 'bank-account',
       details: {
-        accountHolderName,
         routingNumber,
         accountNumber: accountNumber.slice(-4), // Only store last 4 digits
-        accountType,
       },
     };
     onAddPayment(paymentData);
@@ -215,34 +219,23 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             <div>
               <h3 className="text-lg font-semibold mb-2">Add Bank Account</h3>
               <p className="text-[hsl(var(--brand-blue))] text-sm">
-                Add your bank account information for direct payment processing.
+                Add your bank account information for secure ACH transfers.
               </p>
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="account-holder-name">
-                  Account Holder Name<span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="account-holder-name"
-                  placeholder="Full name on account"
-                  value={accountHolderName}
-                  onChange={(e) => setAccountHolderName(e.target.value)}
-                />
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="routing-number">
                   Routing Number<span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="routing-number"
-                  placeholder="9 digit routing number"
+                  placeholder="9-digit routing number"
                   value={routingNumber}
                   onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
                   maxLength={9}
                 />
+                <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
               </div>
 
               <div className="space-y-2">
@@ -251,32 +244,17 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                 </Label>
                 <Input
                   id="account-number"
-                  placeholder="Account number"
+                  placeholder="5657 8858 3733 3383"
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
                 />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="account-type">
-                  Account Type<span className="text-destructive">*</span>
-                </Label>
-                <select
-                  id="account-type"
-                  value={accountType}
-                  onChange={(e) => setAccountType(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                >
-                  <option value="">Select account type</option>
-                  <option value="checking">Checking</option>
-                  <option value="savings">Savings</option>
-                </select>
+                <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
               </div>
             </div>
 
             <Button
               onClick={handleAddBankAccount}
-              disabled={!accountHolderName || !routingNumber || !accountNumber || !accountType}
+              disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
               className="w-full"
               size="lg"
             >
