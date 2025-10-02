@@ -39,6 +39,8 @@ const Index = () => {
   };
 
   const getOverallProgress = (section: number) => {
+    // Sponsor step (section 5) shows 20% progress
+    if (section === 5) return 20;
     // Progress starts at 0% and increases based on completed sections
     // Each of the 5 main steps represents 20% of total progress
     const step = getMainStep(section);

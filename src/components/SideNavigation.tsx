@@ -23,7 +23,8 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     'License Business Info', 
     'License Details',
     'Business Overview',
-    'Team Function'
+    'Team Function',
+    'Sponsor'
   ];
 
   const steps = [
@@ -37,8 +38,8 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       onToggleExpanded: () => setIsYourInfoExpanded(!isYourInfoExpanded)
     },
     {
-      title: "Sponsor",
-      description: "Select Sponsor",
+      title: "Business Disclosures",
+      description: "Business Compliance",
       isActive: currentStep === 1,
       isCompleted: currentStep > 1
     },
