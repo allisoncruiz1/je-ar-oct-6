@@ -4,7 +4,6 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Plus } from 'lucide-react';
-
 export interface PaymentInfoData {
   thirdPartyPayment: string;
   paymentMethods: Array<{
@@ -13,7 +12,6 @@ export interface PaymentInfoData {
     details: any;
   }>;
 }
-
 interface PaymentInfoFormProps {
   onSubmit?: (data: PaymentInfoData) => void;
   onContinue?: () => void;
@@ -25,7 +23,6 @@ interface PaymentInfoFormProps {
   initialData?: Partial<PaymentInfoData>;
   onFormDataChange?: (data: PaymentInfoData) => void;
 }
-
 export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
   onSubmit,
   onContinue,
@@ -41,21 +38,25 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     thirdPartyPayment: initialData?.thirdPartyPayment || '',
     paymentMethods: initialData?.paymentMethods || []
   });
-
   const actionBarRef = useRef<HTMLDivElement>(null);
 
   // Scroll to top on mobile, action bar on desktop
   useEffect(() => {
     const timer = setTimeout(() => {
       if (window.innerWidth < 768) {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       } else {
-        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        actionBarRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        });
       }
     }, 100);
     return () => clearTimeout(timer);
   }, []);
-
   const updateFormData = (field: keyof PaymentInfoData, value: any) => {
     const newData = {
       ...formData,
@@ -64,20 +65,15 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     setFormData(newData);
     onFormDataChange?.(newData);
   };
-
   const validateForm = () => {
     // Form is valid if third party payment is selected and has at least 2 payment methods
-    const isValid = 
-      formData.thirdPartyPayment !== '' && 
-      formData.paymentMethods.length >= 2;
+    const isValid = formData.thirdPartyPayment !== '' && formData.paymentMethods.length >= 2;
     return isValid;
   };
-
   useEffect(() => {
     const isValid = validateForm();
     onFormValidChange(isValid);
   }, [formData]);
-
   const handleAddPaymentMethod = () => {
     // This will be implemented with a dialog/modal for payment method entry
     console.log('Add payment method clicked');
@@ -89,12 +85,10 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     };
     updateFormData('paymentMethods', [...formData.paymentMethods, newMethod]);
   };
-
-  return (
-    <div className="space-y-8 md:pb-0">
+  return <div className="space-y-8 md:pb-0">
       {/* Page Title */}
       <div className="mb-6 mt-8 max-md:mt-2">
-        <h1 className="text-3xl font-semibold text-foreground">
+        <h1 className="font-semibold text-foreground text-xl">
           Payment Info
         </h1>
       </div>
@@ -102,7 +96,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
       {/* Monthly Fee Collection Setup */}
       <div className="space-y-6">
         <div>
-          <h2 className="text-xl font-semibold text-foreground mb-4">
+          <h2 className="font-semibold text-foreground mb-4 text-lg">
             Monthly Fee Collection Setup
           </h2>
           
@@ -130,26 +124,16 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             <span className="text-destructive ml-1">*</span>
           </Label>
           
-          <RadioGroup 
-            value={formData.thirdPartyPayment} 
-            onValueChange={(value) => updateFormData('thirdPartyPayment', value)}
-            className="flex flex-col gap-3 md:flex-row md:gap-6"
-          >
+          <RadioGroup value={formData.thirdPartyPayment} onValueChange={value => updateFormData('thirdPartyPayment', value)} className="flex flex-col gap-3 md:flex-row md:gap-6">
             <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="yes" id="third-party-yes" className="h-5 w-5" />
-              <Label 
-                htmlFor="third-party-yes" 
-                className="text-base md:text-sm text-foreground cursor-pointer"
-              >
+              <Label htmlFor="third-party-yes" className="text-base md:text-sm text-foreground cursor-pointer">
                 Yes
               </Label>
             </div>
             <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
               <RadioGroupItem value="no" id="third-party-no" className="h-5 w-5" />
-              <Label 
-                htmlFor="third-party-no" 
-                className="text-base md:text-sm text-foreground cursor-pointer"
-              >
+              <Label htmlFor="third-party-no" className="text-base md:text-sm text-foreground cursor-pointer">
                 No
               </Label>
             </div>
@@ -159,7 +143,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
         {/* Payment Details Section */}
         <div className="space-y-4 pt-6 border-t border-border">
           <div>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="font-semibold text-foreground mb-4 text-lg">
               Payment Details
             </h3>
             
@@ -177,13 +161,8 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
           </div>
 
           {/* Payment Methods List */}
-          {formData.paymentMethods.length > 0 && (
-            <div className="space-y-3">
-              {formData.paymentMethods.map((method, index) => (
-                <div 
-                  key={method.id}
-                  className="p-4 border border-border rounded-lg bg-muted/30"
-                >
+          {formData.paymentMethods.length > 0 && <div className="space-y-3">
+              {formData.paymentMethods.map((method, index) => <div key={method.id} className="p-4 border border-border rounded-lg bg-muted/30">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-sm font-medium text-foreground">
@@ -193,29 +172,18 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                         {method.type}
                       </p>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => {
-                        const newMethods = formData.paymentMethods.filter(m => m.id !== method.id);
-                        updateFormData('paymentMethods', newMethods);
-                      }}
-                    >
+                    <Button variant="ghost" size="sm" onClick={() => {
+                const newMethods = formData.paymentMethods.filter(m => m.id !== method.id);
+                updateFormData('paymentMethods', newMethods);
+              }}>
                       Remove
                     </Button>
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                </div>)}
+            </div>}
 
           {/* Add Payment Button */}
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={handleAddPaymentMethod}
-            className="w-full md:w-auto"
-          >
+          <Button variant="outline" size="lg" onClick={handleAddPaymentMethod} className="w-full md:w-auto">
             <Plus className="mr-2 h-5 w-5" />
             Add Payment Details
           </Button>
@@ -223,36 +191,16 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
       </div>
 
       {/* Desktop action bar */}
-      <div 
-        ref={actionBarRef}
-        className="hidden md:block sticky bottom-0 bg-background border-t border-border p-4 -mx-4 -mb-0 mt-8"
-      >
+      <div ref={actionBarRef} className="hidden md:block sticky bottom-0 bg-background border-t border-border p-4 -mx-4 -mb-0 mt-8">
         <div className="flex items-center justify-between">
-          <Button
-            variant="outline"
-            onClick={onSaveResume}
-            aria-label="Save and resume application later"
-          >
+          <Button variant="outline" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>
           <div className="flex gap-3">
-            {showBack && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onBack}
-                aria-label="Go back to previous step"
-              >
+            {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step">
                 Back
-              </Button>
-            )}
-            <Button
-              type="button"
-              size="sm"
-              onClick={onContinue}
-              disabled={!canContinue}
-              aria-label="Continue to next step"
-            >
+              </Button>}
+            <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
               Continue
             </Button>
           </div>
@@ -260,13 +208,6 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
       </div>
 
       {/* Mobile action bar */}
-      <MobileActionBar
-        onBack={onBack}
-        onContinue={onContinue}
-        onSaveResume={onSaveResume}
-        canContinue={canContinue}
-        showBack={showBack}
-      />
-    </div>
-  );
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} />
+    </div>;
 };
