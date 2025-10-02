@@ -59,28 +59,23 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Sponsor Information */}
         <div className="space-y-4 mt-8">
           <p className="text-foreground font-semibold">
-            What is a sponsor? A sponsor is the MOST INFLUENTIAL person in your decision to join eXp Realty. 
-            A sponsor is different than a mentor or an agent you want to partner with in order to build revenue 
-            share or a sales team, UNLESS that person was the most influential in your decision to join eXp Realty.
+            Your sponsor is the person MOST INFLUENTIAL in your decision to join eXp Realty. They are NOT simply a mentor or team partner, unless that person was also most influential in your decision to join.
           </p>
 
           <ul className="space-y-3 list-disc pl-5 text-foreground">
             <li>
-              If you do not choose a sponsor, eXp Realty will hold that sponsorship position and that selection 
-              may not be modified in the future.
+              Without a sponsor selection, eXp Realty becomes your permanent sponsor
             </li>
             <li>
-              Once the application is completed, changes in sponsorship will not be made under any circumstances.
+              Sponsor selections are final and cannot be changed after submission
             </li>
             <li className="font-semibold">
-              IF YOU ARE UNCLEAR on who should be named as your sponsor, PLEASE DO NOT PROCEED with your application 
-              until you are 100% certain.
+              IF YOU ARE UNCERTAIN about your sponsor, DO NOT PROCEED until you're 100% sure
             </li>
           </ul>
 
           <p className="text-foreground mt-6">
-            The following selection is a significant decision which is irrevocable. If you do not have a sponsor, 
-            eXp Realty will be selected as your sponsor and will hold that position going forward.
+            This is an irrevocable decision. Choose carefully or eXp Realty will be your sponsor.
           </p>
         </div>
 
