@@ -430,7 +430,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
-        <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto scroll-smooth">
+        <DialogContent className="sm:max-w-[900px]">
           <DialogHeader>
             <DialogTitle>Sponsor Search</DialogTitle>
           </DialogHeader>
