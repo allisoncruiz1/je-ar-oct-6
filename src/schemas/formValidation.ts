@@ -56,6 +56,139 @@ export const licenseBusinessSchema = z.object({
   path: ["internationalCountries"]
 });
 
+// License Details Validation (per state)
+export const licenseDetailsSchema = z.object({
+  licenseNumber: z.string()
+    .trim()
+    .min(1, { message: "License number is required" })
+    .max(50, { message: "License number must be less than 50 characters" }),
+  salesTransactions: z.string()
+    .trim()
+    .regex(/^\d+$/, { message: "Must be a valid number" }),
+  pendingTransactions: z.string()
+    .trim()
+    .regex(/^\d+$/, { message: "Must be a valid number" }),
+  associations: z.array(z.string())
+    .min(1, { message: "Please select at least one association" }),
+  primaryAssociation: z.string().optional(),
+  mls: z.array(z.string())
+    .min(1, { message: "Please select at least one MLS" }),
+  certifiedMentor: z.enum(['yes', 'no']).optional()
+}).refine((data) => {
+  if (data.associations.length > 1 && (!data.primaryAssociation || !data.primaryAssociation.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please select your primary association",
+  path: ["primaryAssociation"]
+});
+
+// Business Overview Validation
+export const businessOverviewSchema = z.object({
+  brokerageOwnership: z.enum(['yes', 'no'], { 
+    required_error: "Please indicate brokerage ownership" 
+  }),
+  spouseAffiliated: z.enum(['yes', 'no'], { 
+    required_error: "Please indicate spouse affiliation" 
+  }),
+  managesOffice: z.enum(['yes', 'no'], { 
+    required_error: "Please indicate office management status" 
+  }),
+  formingPartnership: z.enum(['yes', 'no']).optional(),
+  preExistingMatters: z.array(z.string()).optional(),
+  otherDisclosureDetails: z.string()
+    .max(500, { message: "Details must be less than 500 characters" })
+    .optional(),
+  licenseTransferDate: z.date().optional()
+}).refine((data) => {
+  if (data.spouseAffiliated === 'yes' && data.formingPartnership === undefined) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please indicate partnership formation",
+  path: ["formingPartnership"]
+});
+
+// Team Function Validation
+export const teamFunctionSchema = z.object({
+  agentType: z.enum(['individual', 'team'], { 
+    required_error: "Please select how you'll work at eXp" 
+  }),
+  teamRole: z.string().optional(),
+  teamName: z.string().optional(),
+  teamLeaderName: z.string().optional(),
+  customTeamName: z.string().optional(),
+  teamDetails: z.string()
+    .max(500, { message: "Details must be less than 500 characters" })
+    .optional(),
+  numberOfAgents: z.string().optional(),
+  leaderTeamName: z.string().optional(),
+  teamSetupDetails: z.string()
+    .max(200, { message: "Details must be less than 200 characters" })
+    .optional(),
+  corporateStaffMember: z.enum(['yes', 'no'], { 
+    required_error: "Please indicate if you're a corporate staff member" 
+  })
+}).refine((data) => {
+  if (data.agentType === 'team' && (!data.teamRole || !data.teamRole.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please select your role within the team",
+  path: ["teamRole"]
+}).refine((data) => {
+  if (data.teamRole === 'member' && (!data.teamName || !data.teamName.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please select which team you're joining",
+  path: ["teamName"]
+}).refine((data) => {
+  if (data.teamName === 'cant-find' && (!data.teamLeaderName || !data.teamLeaderName.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please enter the team leader's name",
+  path: ["teamLeaderName"]
+}).refine((data) => {
+  if (data.teamName === 'cant-find' && (!data.customTeamName || !data.customTeamName.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please enter the team name",
+  path: ["customTeamName"]
+}).refine((data) => {
+  if (data.teamRole === 'leader' && (!data.numberOfAgents || !data.numberOfAgents.trim() || !/^\d+$/.test(data.numberOfAgents))) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please enter a valid number of agents",
+  path: ["numberOfAgents"]
+}).refine((data) => {
+  if (data.teamRole === 'leader' && (!data.leaderTeamName || !data.leaderTeamName.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please enter your team name",
+  path: ["leaderTeamName"]
+}).refine((data) => {
+  if (data.teamRole === 'leader' && (!data.teamSetupDetails || !data.teamSetupDetails.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please share details about your team setup",
+  path: ["teamSetupDetails"]
+});
+
 // Sponsor Form Validation
 export const sponsorSchema = z.object({
   firstName: z.string()
@@ -81,6 +214,43 @@ export const sponsorSchema = z.object({
 }, {
   message: "At least one field (first name, last name, or email) is required",
   path: ["firstName"]
+});
+
+// Payment Info Validation
+export const paymentInfoSchema = z.object({
+  thirdPartyPayment: z.enum(['yes', 'no'], { 
+    required_error: "Please indicate third-party payment" 
+  }),
+  thirdPartyName: z.string().optional(),
+  thirdPartyRelationship: z.string().optional(),
+  paymentMethods: z.array(z.object({
+    type: z.enum(['credit-card', 'bank-account']),
+    last4: z.string()
+  })).optional()
+}).refine((data) => {
+  if (data.thirdPartyPayment === 'yes' && (!data.thirdPartyName || !data.thirdPartyName.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Third party name is required",
+  path: ["thirdPartyName"]
+}).refine((data) => {
+  if (data.thirdPartyPayment === 'yes' && (!data.thirdPartyRelationship || !data.thirdPartyRelationship.trim())) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Relationship to third party is required",
+  path: ["thirdPartyRelationship"]
+}).refine((data) => {
+  if (data.thirdPartyPayment === 'no' && (!data.paymentMethods || data.paymentMethods.length === 0)) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Please add at least one payment method",
+  path: ["paymentMethods"]
 });
 
 // Direct Deposit Validation
@@ -123,7 +293,7 @@ export const directDepositSchema = z.object({
   path: ["firstName"]
 });
 
-// Payment Info Validation
+// Payment Method Validation (for dialog)
 export const paymentMethodSchema = z.object({
   type: z.enum(['credit-card', 'bank-account']),
   cardNumber: z.string().optional(),
@@ -164,3 +334,20 @@ export const paymentMethodSchema = z.object({
   message: "Invalid bank account information",
   path: ["accountNumber"]
 });
+
+// Simple validation helper function
+export function validateField(schema: z.ZodSchema, data: any, field?: string): string | null {
+  try {
+    schema.parse(data);
+    return null;
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      if (field) {
+        const fieldError = error.errors.find(e => e.path.includes(field));
+        return fieldError?.message || null;
+      }
+      return error.errors[0]?.message || "Validation error";
+    }
+    return "Validation error";
+  }
+}
