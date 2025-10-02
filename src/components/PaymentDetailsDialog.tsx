@@ -6,6 +6,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,15 +16,23 @@ interface PaymentDetailsDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onAddPayment: (paymentData: any) => void;
+  existingPayments?: Array<{
+    id: string;
+    type: string;
+    details: any;
+  }>;
 }
 
 export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   open,
   onOpenChange,
   onAddPayment,
+  existingPayments = [],
 }) => {
   const [activeTab, setActiveTab] = useState('credit-card');
   const [showCVV, setShowCVV] = useState(false);
+  const [addedPayments, setAddedPayments] = useState<Array<any>>([]);
+  const [defaultPaymentId, setDefaultPaymentId] = useState<string>('');
 
   // Credit Card Form State
   const [cardholderName, setCardholderName] = useState('');
@@ -40,6 +49,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleAddCard = () => {
     const paymentData = {
+      id: `payment-${Date.now()}`,
       type: 'credit-card',
       details: {
         cardholderName,
@@ -48,7 +58,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         billingZip,
       },
     };
-    onAddPayment(paymentData);
+    setAddedPayments([...addedPayments, paymentData]);
     // Reset credit card form
     setCardholderName('');
     setCardNumber('');
@@ -61,14 +71,33 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleAddBankAccount = () => {
     const paymentData = {
+      id: `payment-${Date.now()}`,
       type: 'bank-account',
       details: {
         routingNumber,
         accountNumber: accountNumber.slice(-4), // Only store last 4 digits
       },
     };
-    onAddPayment(paymentData);
+    setAddedPayments([...addedPayments, paymentData]);
+    // Reset bank account form
+    setRoutingNumber('');
+    setAccountNumber('');
+    // Switch to default method tab
+    setActiveTab('default-method');
+  };
+
+  const handleSaveDefault = () => {
+    // Save all added payments with default preference
+    addedPayments.forEach(payment => {
+      onAddPayment({
+        ...payment,
+        isDefault: payment.id === defaultPaymentId
+      });
+    });
     resetForm();
+    setAddedPayments([]);
+    setDefaultPaymentId('');
+    setActiveTab('credit-card');
     onOpenChange(false);
   };
 
@@ -82,6 +111,24 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     setRoutingNumber('');
     setAccountNumber('');
     setAccountType('');
+  };
+
+  const allPayments = [...existingPayments, ...addedPayments];
+
+  const getPaymentDisplayName = (payment: any) => {
+    if (payment.type === 'credit-card') {
+      return 'Capital Credit Card';
+    } else {
+      return 'Capital Bank- Checking';
+    }
+  };
+
+  const getPaymentMaskedNumber = (payment: any) => {
+    if (payment.type === 'credit-card') {
+      return `**** **** **** ${payment.details.cardNumber}`;
+    } else {
+      return `**** **** **** ${payment.details.accountNumber}`;
+    }
   };
 
   const formatCardNumber = (value: string) => {
@@ -107,13 +154,25 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="credit-card" className="text-xs sm:text-sm">
+            <TabsTrigger 
+              value="credit-card" 
+              className="text-xs sm:text-sm"
+              disabled={addedPayments.length > 0}
+            >
               1. Add Credit Card
             </TabsTrigger>
-            <TabsTrigger value="bank-account" className="text-xs sm:text-sm">
+            <TabsTrigger 
+              value="bank-account" 
+              className="text-xs sm:text-sm"
+              disabled={addedPayments.length === 0 || addedPayments.length > 1}
+            >
               2. Add Bank Account
             </TabsTrigger>
-            <TabsTrigger value="default-method" className="text-xs sm:text-sm" disabled>
+            <TabsTrigger 
+              value="default-method" 
+              className="text-xs sm:text-sm" 
+              disabled={addedPayments.length < 2}
+            >
               3. Set Default Method
             </TabsTrigger>
           </TabsList>
@@ -262,10 +321,40 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             </Button>
           </TabsContent>
 
-          <TabsContent value="default-method">
-            <div className="py-8 text-center text-muted-foreground">
-              <p>Please add at least one payment method first.</p>
+          <TabsContent value="default-method" className="space-y-6">
+            <div>
+              <p className="text-[hsl(var(--brand-blue))] text-sm leading-relaxed">
+                Your default payment method is used for all payment types where you haven't chosen a different payment method.
+              </p>
             </div>
+
+            <RadioGroup value={defaultPaymentId} onValueChange={setDefaultPaymentId} className="space-y-3">
+              {allPayments.map((payment) => (
+                <div
+                  key={payment.id}
+                  className="flex items-center space-x-3 p-4 border border-border rounded-lg hover:bg-muted/30 transition-colors"
+                >
+                  <RadioGroupItem value={payment.id} id={payment.id} className="h-5 w-5" />
+                  <Label htmlFor={payment.id} className="flex-1 cursor-pointer">
+                    <div className="font-semibold text-foreground">
+                      {getPaymentDisplayName(payment)}
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-0.5">
+                      {getPaymentMaskedNumber(payment)}
+                    </div>
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+
+            <Button
+              onClick={handleSaveDefault}
+              disabled={!defaultPaymentId}
+              className="w-full"
+              size="lg"
+            >
+              Save
+            </Button>
           </TabsContent>
         </Tabs>
       </DialogContent>

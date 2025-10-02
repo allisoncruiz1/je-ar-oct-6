@@ -239,6 +239,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         onAddPayment={handleAddPaymentMethod}
+        existingPayments={formData.paymentMethods}
       />
 
       {/* Desktop action bar */}
