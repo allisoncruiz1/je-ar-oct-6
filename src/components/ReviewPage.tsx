@@ -113,24 +113,22 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
     onEdit: () => void;
     children: React.ReactNode;
   }> = ({ icon, title, onEdit, children }) => (
-    <div className="bg-card border-2 border-border rounded-2xl p-6 max-md:p-4 transition-all hover:border-[hsl(var(--brand-blue))]/30 hover:shadow-sm">
-      <div className="flex items-start justify-between mb-6 max-md:mb-4">
-        <div className="flex items-center gap-3">
+    <div className="bg-card border-2 border-border rounded-2xl p-6 max-md:p-4 transition-all hover:border-[hsl(var(--brand-blue))]/30 hover:shadow-sm group">
+      <div className="flex items-center justify-between mb-6 max-md:mb-4">
+        <div className="flex items-center gap-3 flex-1">
           <div className="w-10 h-10 rounded-full bg-[hsl(var(--brand-blue))]/10 flex items-center justify-center text-[hsl(var(--brand-blue))]">
             {icon}
           </div>
           <h3 className="text-lg font-semibold text-foreground max-md:text-base">{title}</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="sm"
+        <button
           onClick={onEdit}
-          className="flex items-center gap-2 text-[hsl(var(--brand-blue))] hover:text-[hsl(var(--brand-blue))]/80 hover:bg-[hsl(var(--brand-blue))]/10 transition-colors"
+          className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-[hsl(var(--brand-blue))] transition-colors px-3 py-1.5 rounded-md hover:bg-[hsl(var(--brand-blue))]/5 border border-transparent hover:border-[hsl(var(--brand-blue))]/20"
           aria-label={`Edit ${title}`}
         >
-          <Pencil className="h-4 w-4" />
-          <span className="max-md:hidden">Edit</span>
-        </Button>
+          <Pencil className="h-3.5 w-3.5" />
+          <span>Edit</span>
+        </button>
       </div>
       <div className="space-y-5 max-md:space-y-4">
         {children}
