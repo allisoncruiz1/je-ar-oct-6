@@ -43,6 +43,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   const [sponsorEmail, setSponsorEmail] = useState('');
   const [searchError, setSearchError] = useState('');
   const [selectedSponsor, setSelectedSponsor] = useState<SelectedSponsor | null>(null);
+  const [pendingSponsor, setPendingSponsor] = useState<SelectedSponsor | null>(null);
   
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [showNoSponsorDialog, setShowNoSponsorDialog] = useState(false);
@@ -65,9 +66,20 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   };
 
   const handleSelectSponsor = (sponsor: SelectedSponsor) => {
-    setSelectedSponsor(sponsor);
+    setPendingSponsor(sponsor);
     setShowSearchResults(false);
-    onFormValidChange?.(true);
+  };
+
+  const handleConfirmSponsor = () => {
+    if (pendingSponsor) {
+      setSelectedSponsor(pendingSponsor);
+      setPendingSponsor(null);
+      onFormValidChange?.(true);
+    }
+  };
+
+  const handleCancelSelection = () => {
+    setPendingSponsor(null);
   };
 
   const handleNoSponsor = () => {
@@ -85,6 +97,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   const handleClearSponsor = () => {
     setSelectedSponsor(null);
+    setPendingSponsor(null);
     setSponsorFirstName('');
     setSponsorLastName('');
     setSponsorEmail('');
@@ -220,7 +233,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Section B: Choose Your Sponsor */}
         {policyAcknowledged && (
           <div className="space-y-6">
-            {!selectedSponsor ? (
+            {!selectedSponsor && !pendingSponsor ? (
               <>
                 {/* Helper Text */}
                 <div>
@@ -295,6 +308,49 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                   </Button>
                 </div>
               </>
+            ) : pendingSponsor ? (
+              /* Pending Sponsor Confirmation */
+              <div className="border-2 border-primary rounded-lg p-6 bg-primary/5">
+                <h3 className="text-lg font-semibold text-foreground mb-4">Confirm Your Selection</h3>
+                
+                <div className="bg-background rounded-lg p-4 mb-4">
+                  <p className="text-sm text-muted-foreground mb-2">You selected:</p>
+                  <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
+                  {pendingSponsor.email && (
+                    <p className="text-sm text-muted-foreground">{pendingSponsor.email}</p>
+                  )}
+                  {(pendingSponsor.city || pendingSponsor.state) && (
+                    <p className="text-sm text-muted-foreground">
+                      {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
+                    </p>
+                  )}
+                </div>
+
+                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-6">
+                  <p className="text-sm text-foreground font-semibold mb-2">⚠️ Important Notice</p>
+                  <p className="text-sm text-foreground">
+                    Sponsor selections are <span className="font-semibold">final and cannot be changed</span> after submission. Please ensure this is the correct person before confirming.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={handleConfirmSponsor}
+                    size="lg"
+                    className="w-full sm:flex-1"
+                  >
+                    Confirm Selection
+                  </Button>
+                  <Button
+                    onClick={handleCancelSelection}
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    Choose Different Sponsor
+                  </Button>
+                </div>
+              </div>
             ) : (
               /* Selected Sponsor Summary */
               <div className="border border-border rounded-lg p-4">
