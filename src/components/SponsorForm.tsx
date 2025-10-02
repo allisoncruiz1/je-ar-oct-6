@@ -479,21 +479,23 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                       <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
                     </div>
                     
-                    {pendingSponsor.email && (
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1">Email</p>
-                        <p className="text-foreground">{pendingSponsor.email}</p>
-                      </div>
-                    )}
-                    
-                    {(pendingSponsor.city || pendingSponsor.state) && (
-                      <div>
-                        <p className="text-sm text-muted-foreground mb-1">Location</p>
-                        <p className="text-foreground">
-                          {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
-                        </p>
-                      </div>
-                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {pendingSponsor.email && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Email</p>
+                          <p className="text-foreground">{pendingSponsor.email}</p>
+                        </div>
+                      )}
+                      
+                      {(pendingSponsor.city || pendingSponsor.state) && (
+                        <div>
+                          <p className="text-sm text-muted-foreground mb-1">Location</p>
+                          <p className="text-foreground">
+                            {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
+                          </p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
