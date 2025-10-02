@@ -41,14 +41,22 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
           </h2>
         </div>
 
-        {/* Video Player Section */}
-        <div className="bg-muted rounded-lg p-12 flex flex-col items-center justify-center min-h-[300px] space-y-4">
-          <p className="text-foreground text-center text-lg">
-            Click to watch 'Understanding your eXp Sponsor'
+        {/* Sponsor Definition */}
+        <div className="mb-6">
+          <p className="text-foreground font-semibold">
+            Your sponsor is the person MOST INFLUENTIAL in your decision to join eXp Realty. They are NOT simply a mentor or team partner, unless that person was also most influential in your decision to join.
+          </p>
+        </div>
+
+        {/* Optional Video Section */}
+        <div className="bg-muted rounded-lg p-6 flex flex-col items-center justify-center space-y-3 mb-6">
+          <p className="text-muted-foreground text-center text-sm">
+            Optional: Watch this video to learn more
           </p>
           <Button
             variant="outline"
             onClick={handleWatchVideo}
+            size="sm"
             className="bg-background hover:bg-background/90"
           >
             <ExternalLink className="mr-2 h-4 w-4" />
@@ -56,12 +64,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
           </Button>
         </div>
 
-        {/* Sponsor Information */}
-        <div className="space-y-4 mt-8">
-          <p className="text-foreground font-semibold">
-            Your sponsor is the person MOST INFLUENTIAL in your decision to join eXp Realty. They are NOT simply a mentor or team partner, unless that person was also most influential in your decision to join.
-          </p>
-
+        {/* Key Points */}
+        <div className="space-y-4">
           <ul className="space-y-3 list-disc pl-5 text-foreground">
             <li>
               Without a sponsor selection, eXp Realty becomes your permanent sponsor
