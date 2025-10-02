@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, AlertTriangle } from 'lucide-react';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { Checkbox } from '@/components/ui/checkbox';
 
 interface SponsorFormProps {
   onContinue?: () => void;
@@ -25,6 +26,16 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   const handleAcknowledge = () => {
     setAcknowledged(true);
     onFormValidChange?.(true);
+  };
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setAcknowledged(checked);
+    onFormValidChange?.(checked);
+  };
+
+  const handleReadPolicy = () => {
+    // Open policy document in new tab - replace with actual policy URL
+    window.open('https://www.exprealty.com/sponsor-policy', '_blank');
   };
 
   const handleWatchVideo = () => {
@@ -80,15 +91,36 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
         </div>
 
-        {/* Acknowledgment Button */}
-        <div className="mt-8 flex justify-center">
+        {/* Acknowledgment Section */}
+        <div className="mt-8 border border-border rounded-lg p-6">
+          <div className="flex items-start gap-3 mb-4">
+            <Checkbox 
+              id="sponsor-policy" 
+              checked={acknowledged}
+              onCheckedChange={handleCheckboxChange}
+            />
+            <label 
+              htmlFor="sponsor-policy" 
+              className="text-foreground cursor-pointer select-none"
+            >
+              I have read and understood the sponsor policy.
+            </label>
+          </div>
+          
+          <button
+            onClick={handleReadPolicy}
+            className="text-foreground underline hover:no-underline mb-4 block"
+          >
+            Read the full policy
+          </button>
+
           <Button
             onClick={handleAcknowledge}
-            disabled={acknowledged}
+            disabled={!acknowledged}
             size="lg"
-            className="px-8"
+            className="w-auto"
           >
-            I understand the sponsor policy.
+            I understand the sponsor policy
           </Button>
         </div>
       </div>
