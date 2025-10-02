@@ -472,47 +472,59 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               </>
             ) : (
               /* Confirmation Section Within Dialog */
-              <div className="space-y-4">
-                <div className="border-2 border-primary rounded-lg p-6 bg-primary/5">
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Confirm Your Selection</h3>
-                  
-                  <div className="bg-background rounded-lg p-4 mb-4">
-                    <p className="text-sm text-muted-foreground mb-2">You selected:</p>
-                    <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground mb-1">Confirm Your Selection</h3>
+                  <p className="text-sm text-muted-foreground">Please verify this is the correct sponsor before confirming.</p>
+                </div>
+
+                <div className="border border-border rounded-lg p-6">
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-sm text-muted-foreground mb-1">Name</p>
+                      <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
+                    </div>
+                    
                     {pendingSponsor.email && (
-                      <p className="text-sm text-muted-foreground">{pendingSponsor.email}</p>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Email</p>
+                        <p className="text-foreground">{pendingSponsor.email}</p>
+                      </div>
                     )}
+                    
                     {(pendingSponsor.city || pendingSponsor.state) && (
-                      <p className="text-sm text-muted-foreground">
-                        {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
-                      </p>
+                      <div>
+                        <p className="text-sm text-muted-foreground mb-1">Location</p>
+                        <p className="text-foreground">
+                          {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
+                        </p>
+                      </div>
                     )}
                   </div>
+                </div>
 
-                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-6">
-                    <p className="text-sm text-foreground font-semibold mb-2">⚠️ Important Notice</p>
-                    <p className="text-sm text-foreground">
-                      Sponsor selections are <span className="font-semibold">final and cannot be changed</span> after submission. Please ensure this is the correct person before confirming.
-                    </p>
-                  </div>
+                <div className="bg-muted/50 border border-border rounded-lg p-4">
+                  <p className="text-sm text-foreground">
+                    <span className="font-semibold">Important:</span> Sponsor selections are final and cannot be changed after submission.
+                  </p>
+                </div>
 
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <Button
-                      onClick={handleConfirmSponsor}
-                      size="lg"
-                      className="w-full sm:flex-1"
-                    >
-                      Confirm This Sponsor
-                    </Button>
-                    <Button
-                      onClick={handleCancelSelection}
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                    >
-                      Back to Results
-                    </Button>
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    onClick={handleConfirmSponsor}
+                    size="lg"
+                    className="w-full sm:flex-1"
+                  >
+                    Confirm This Sponsor
+                  </Button>
+                  <Button
+                    onClick={handleCancelSelection}
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
+                    Back to Results
+                  </Button>
                 </div>
               </div>
             )}
