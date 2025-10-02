@@ -224,23 +224,19 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       </div>
 
       {/* License Type - Only for North Carolina */}
-      {currentState === 'North Carolina' && <div className="space-y-2">
-          <Label htmlFor="licenseType" className="text-sm font-medium text-foreground">
+      {currentState === 'North Carolina' && <div className="space-y-3">
+          <Label className="text-sm font-medium text-foreground">
             License Type <span className="text-destructive">*</span>
           </Label>
-          <Select value={currentData.licenseType || ''} onValueChange={value => {
+          <RadioGroup value={currentData.licenseType || ''} onValueChange={value => {
           updateCurrentStateData('licenseType', value);
           scrollToNextField(1);
-        }}>
-            <SelectTrigger className="w-full text-foreground">
-              <SelectValue placeholder="Select license type" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border border-border shadow-lg z-50">
-              {NC_LICENSE_TYPES.map(type => <SelectItem key={type} value={type} className="cursor-pointer">
-                  {type}
-                </SelectItem>)}
-            </SelectContent>
-          </Select>
+        }} className="flex flex-col gap-3">
+            {NC_LICENSE_TYPES.map(type => <div key={type} className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 md:h-auto md:bg-transparent md:p-0 md:space-x-2">
+                <RadioGroupItem value={type} id={`license-type-${type.replace(/\s+/g, '-').toLowerCase()}`} className="h-5 w-5" />
+                <Label htmlFor={`license-type-${type.replace(/\s+/g, '-').toLowerCase()}`} className="text-base md:text-sm text-foreground cursor-pointer">{type}</Label>
+              </div>)}
+          </RadioGroup>
         </div>}
 
       {/* Sales Transactions */}
