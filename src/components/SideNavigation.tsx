@@ -30,7 +30,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     {
       title: "Your Information",
       description: "Personal and Business Details",
-      isActive: false,
+      isActive: currentStep === 0,
       isCompleted: currentStep >= 1,
       hasSubSteps: true,
       isExpanded: isYourInfoExpanded,
