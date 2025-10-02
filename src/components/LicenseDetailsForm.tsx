@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BinaryChoice } from "@/components/ui/binary-choice";
 import { MobileMultiSelect } from "@/components/ui/mobile-multi-select";
+import { MobileSelect } from "@/components/ui/mobile-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -228,19 +229,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
           <Label htmlFor="licenseType" className="text-sm font-medium text-foreground">
             License Type <span className="text-destructive">*</span>
           </Label>
-          <Select value={currentData.licenseType || ''} onValueChange={value => {
-          updateCurrentStateData('licenseType', value);
-          scrollToNextField(1);
-        }}>
-            <SelectTrigger className="w-full h-12 text-foreground">
-              <SelectValue placeholder="Select license type" />
-            </SelectTrigger>
-            <SelectContent className="bg-background border border-border shadow-lg z-50">
-              {NC_LICENSE_TYPES.map(type => <SelectItem key={type} value={type} className="cursor-pointer h-12 text-base md:text-sm">
-                  {type}
-                </SelectItem>)}
-            </SelectContent>
-          </Select>
+          <MobileSelect
+            options={NC_LICENSE_TYPES}
+            value={currentData.licenseType || ''}
+            onValueChange={value => {
+              updateCurrentStateData('licenseType', value);
+              scrollToNextField(1);
+            }}
+            placeholder="Select license type"
+          />
         </div>}
 
       {/* Sales Transactions */}
