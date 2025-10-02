@@ -77,167 +77,160 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)] w-full overflow-x-hidden">
       <div className="space-y-6 flex-1 pb-24 md:pb-0">
+        {/* Intro + Video always on page */}
+        <div className="mb-6 mt-8 max-md:mt-2">
+          <h2 className="text-xl font-semibold text-foreground mb-2">
+            Understanding Your eXp Sponsor
+          </h2>
+        </div>
+
+        {/* Sponsor Definition */}
+        <div className="mb-6">
+          <p className="text-foreground">
+            Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
+          </p>
+        </div>
+
+        {/* Optional Video Section */}
+        <div className="bg-muted rounded p-4 md:p-6 flex flex-col items-center justify-center space-y-3 mb-6 min-h-[200px] w-full max-w-xl mx-auto">
+          <p className="text-muted-foreground text-center text-sm">
+            Optional: Watch this video to learn more
+          </p>
+          <Button
+            variant="outline"
+            onClick={handleWatchVideo}
+            size="sm"
+            className="bg-background hover:bg-background/90"
+          >
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Watch Video
+          </Button>
+        </div>
+
+        {/* Key Points */}
+        <div className="space-y-4 w-full">
+          <ul className="space-y-3 list-disc pl-6 md:pl-12 text-foreground">
+            <li>
+              Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
+            </li>
+            <li>
+              If you are uncertain about your sponsor, do not proceed until you are 100% sure.
+            </li>
+            <li className="font-semibold italic">
+              Sponsor selections are final and cannot be changed after submission.
+            </li>
+          </ul>
+        </div>
+
+        {/* Acknowledgment Section */}
         {!acknowledgementRecorded ? (
-          <>
-            <div className="mb-6 mt-8 max-md:mt-2">
-              <h2 className="text-xl font-semibold text-foreground mb-2">
-                Understanding Your eXp Sponsor
-              </h2>
-            </div>
-
-            {/* Sponsor Definition */}
-            <div className="mb-6">
-              <p className="text-foreground">
-                Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
-              </p>
-            </div>
-
-            {/* Optional Video Section */}
-            <div className="bg-muted rounded p-4 md:p-6 flex flex-col items-center justify-center space-y-3 mb-6 min-h-[200px] w-full max-w-xl mx-auto">
-              <p className="text-muted-foreground text-center text-sm">
-                Optional: Watch this video to learn more
-              </p>
+          <div className="mt-8 border border-border rounded-lg p-4 md:p-6">
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-0">
+              <div className="flex-1">
+                <div className="flex items-start gap-3 mb-2">
+                  <Checkbox 
+                    id="sponsor-policy" 
+                    checked={acknowledged}
+                    onCheckedChange={handleCheckboxChange}
+                  />
+                  <label 
+                    htmlFor="sponsor-policy" 
+                    className="text-foreground cursor-pointer select-none text-sm"
+                  >
+                    I have read and understood the sponsor policy.
+                  </label>
+                </div>
+                <button
+                  onClick={handleReadPolicy}
+                  className="text-foreground underline hover:no-underline block text-sm italic ml-7"
+                >
+                  Read the full policy
+                </button>
+              </div>
               <Button
-                variant="outline"
-                onClick={handleWatchVideo}
-                size="sm"
-                className="bg-background hover:bg-background/90"
+                onClick={handleAcknowledge}
+                disabled={!acknowledged}
+                size="lg"
+                className="w-full md:w-auto flex-shrink-0"
               >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                Watch Video
+                I understand the sponsor policy
               </Button>
             </div>
-
-            {/* Key Points */}
-            <div className="space-y-4 w-full">
-              <ul className="space-y-3 list-disc pl-6 md:pl-12 text-foreground">
-                <li>
-                  Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.
-                </li>
-                <li>
-                  If you are uncertain about your sponsor, do not proceed until you are 100% sure.
-                </li>
-                <li className="font-semibold italic">
-                  Sponsor selections are final and cannot be changed after submission.
-                </li>
-              </ul>
+          </div>
+        ) : (
+          <div className="mt-8 max-md:mt-2">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+                <Check className="w-4 h-4 text-white" />
+              </div>
+              <h2 className="text-xl font-semibold text-foreground">
+                Acknowledgement Recorded
+              </h2>
             </div>
+            <p className="text-foreground">
+              Your acknowledgement of the sponsor rules and program have been logged on {acknowledgementTimestamp}
+            </p>
+          </div>
+        )}
 
-            {/* Acknowledgment Section */}
-            <div className="mt-8 border border-border rounded-lg p-4 md:p-6">
-              <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-0">
-                <div className="flex-1">
-                  <div className="flex items-start gap-3 mb-2">
-                    <Checkbox 
-                      id="sponsor-policy" 
-                      checked={acknowledged}
-                      onCheckedChange={handleCheckboxChange}
-                    />
-                    <label 
-                      htmlFor="sponsor-policy" 
-                      className="text-foreground cursor-pointer select-none text-sm"
-                    >
-                      I have read and understood the sponsor policy.
-                    </label>
-                  </div>
-                  
-                  <button
-                    onClick={handleReadPolicy}
-                    className="text-foreground underline hover:no-underline block text-sm italic ml-7"
-                  >
-                    Read the full policy
-                  </button>
+        {/* Sponsor Information Form (appears on same page after acknowledgement) */}
+        {acknowledgementRecorded && (
+          <div className="border-t border-border pt-6">
+            {/* Sponsor Information Form */}
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
+                Please provide your Sponsor information — at least one field(s) is required to search our database.
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="space-y-2">
+                  <Label htmlFor="sponsor-first-name">Sponsor First Name</Label>
+                  <Input
+                    id="sponsor-first-name"
+                    placeholder="Enter First Name"
+                    value={sponsorFirstName}
+                    onChange={(e) => setSponsorFirstName(e.target.value)}
+                  />
                 </div>
-                
+                <div className="space-y-2">
+                  <Label htmlFor="sponsor-last-name">Sponsor Last Name</Label>
+                  <Input
+                    id="sponsor-last-name"
+                    placeholder="Enter Last Name"
+                    value={sponsorLastName}
+                    onChange={(e) => setSponsorLastName(e.target.value)}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="sponsor-email">Sponsor eXp Email</Label>
+                  <Input
+                    id="sponsor-email"
+                    type="email"
+                    placeholder="Enter eXp Email"
+                    value={sponsorEmail}
+                    onChange={(e) => setSponsorEmail(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  onClick={handleAcknowledge}
-                  disabled={!acknowledged}
+                  onClick={handleSearchSponsor}
+                  disabled={!isSponsorFormValid}
                   size="lg"
-                  className="w-full md:w-auto flex-shrink-0"
+                  className="w-full sm:w-auto"
                 >
-                  I understand the sponsor policy
+                  Search Sponsor
+                </Button>
+                <Button
+                  onClick={handleNoSponsor}
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
+                  I don't have a Sponsor
                 </Button>
               </div>
             </div>
-          </>
-        ) : (
-          <>
-            {/* Acknowledgement Recorded */}
-            <div className="mt-8 max-md:mt-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-                  <Check className="w-4 h-4 text-white" />
-                </div>
-                <h2 className="text-xl font-semibold text-foreground">
-                  Acknowledgement Recorded
-                </h2>
-              </div>
-              <p className="text-foreground mb-8">
-                Your acknowledgement of the sponsor rules and program have been logged on {acknowledgementTimestamp}
-              </p>
-            </div>
-
-            <div className="border-t border-border pt-6">
-              {/* Sponsor Information Form */}
-              <div className="mb-6">
-                <h3 className="text-lg font-semibold text-foreground mb-4">
-                  Please provide your Sponsor information — at least one field(s) is required to search our database.
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="sponsor-first-name">Sponsor First Name</Label>
-                    <Input
-                      id="sponsor-first-name"
-                      placeholder="Enter First Name"
-                      value={sponsorFirstName}
-                      onChange={(e) => setSponsorFirstName(e.target.value)}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="sponsor-last-name">Sponsor Last Name</Label>
-                    <Input
-                      id="sponsor-last-name"
-                      placeholder="Enter Last Name"
-                      value={sponsorLastName}
-                      onChange={(e) => setSponsorLastName(e.target.value)}
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="sponsor-email">Sponsor eXp Email</Label>
-                    <Input
-                      id="sponsor-email"
-                      type="email"
-                      placeholder="Enter eXp Email"
-                      value={sponsorEmail}
-                      onChange={(e) => setSponsorEmail(e.target.value)}
-                    />
-                  </div>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={handleSearchSponsor}
-                    disabled={!isSponsorFormValid}
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    Search Sponsor
-                  </Button>
-                  <Button
-                    onClick={handleNoSponsor}
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    I don't have a Sponsor
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </>
+          </div>
         )}
       </div>
 
