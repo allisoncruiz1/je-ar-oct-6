@@ -166,7 +166,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         </div>}
 
       {/* Current State Header */}
-      <div className="mb-6 mt-8">
+      <div className="mb-6 mt-8 max-md:mt-2">
         <h2 className="text-xl font-semibold text-foreground mb-1">
           {currentState} License Details
         </h2>

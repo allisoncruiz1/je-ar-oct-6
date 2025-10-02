@@ -102,7 +102,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   return (
     <TooltipProvider>
       <div className="flex flex-col min-h-[calc(100vh-200px)]">
-        <div className="mb-6 mt-8">
+        <div className="mb-6 mt-8 max-md:mt-2">
           <h2 className="text-xl font-semibold text-foreground">License & Business Info</h2>
         </div>
         <form ref={formRef as any} onSubmit={handleSubmit} className="w-full space-y-8 flex-1 pb-24 md:pb-0">
