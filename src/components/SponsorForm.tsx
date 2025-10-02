@@ -326,7 +326,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
         {/* Section B: Choose Your Sponsor */}
         {policyAcknowledged && (
-          <div ref={sponsorSectionRef} className="space-y-6">
+          <div ref={sponsorSectionRef} className="space-y-6 px-4 md:px-0">
             {!selectedSponsor ? (
               <>
                 {/* Helper Text */}
