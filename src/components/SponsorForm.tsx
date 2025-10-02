@@ -76,6 +76,21 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   return (
     <div className="flex flex-col min-h-[calc(100vh-200px)] w-full overflow-x-hidden">
+      {/* Your Information Header */}
+      <div className="flex items-center gap-3 mb-8 max-md:mb-6">
+        <div className="flex items-center justify-center w-14 h-14 rounded-full bg-white border-4 border-[#1B489B]/40">
+          <div className="w-5 h-5 bg-[#1B489B] rounded-full" />
+        </div>
+        <div>
+          <h1 className="text-[#0C0F24] text-2xl font-bold leading-none mb-1">
+            Your Information
+          </h1>
+          <p className="text-[#0C0F24] text-base">
+            Personal and Business Details
+          </p>
+        </div>
+      </div>
+
       <div className="space-y-6 flex-1 pb-24 md:pb-0">
         {!acknowledgementRecorded ? (
           <>
