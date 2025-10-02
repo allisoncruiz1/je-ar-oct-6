@@ -61,9 +61,18 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
     setAcknowledgedAt(new Date());
   };
 
-  // Ensure action buttons are visible after acknowledging policy
+  // Scroll to top on mobile on mount, action bar on desktop after policy acknowledgement
   useEffect(() => {
-    if (policyAcknowledged) {
+    const timer = setTimeout(() => {
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (policyAcknowledged && window.innerWidth >= 768) {
       requestAnimationFrame(() => {
         actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
       });

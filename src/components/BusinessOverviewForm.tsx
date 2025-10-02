@@ -50,13 +50,16 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   const isIOSLike = typeof navigator !== "undefined" && (/iPad|iPhone|iPod/.test(navigator.userAgent) || navigator.platform === "MacIntel" && (navigator as any).maxTouchPoints > 1);
   const actionBarRef = useRef<HTMLDivElement>(null);
   
-  // Auto-scroll to show action bar on component mount
+  // Scroll to top on mobile, action bar on desktop
   useEffect(() => {
-    if (actionBarRef.current) {
-      setTimeout(() => {
+    const timer = setTimeout(() => {
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
         actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 500);
-    }
+      }
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
   const useNativeDate = isTouch || isMobile || isIOSLike;
   const [formData, setFormData] = useState<BusinessOverviewData>({

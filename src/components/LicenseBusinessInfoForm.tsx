@@ -50,13 +50,16 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   const [errors, setErrors] = useState<Record<string, string>>({});
   const actionBarRef = useRef<HTMLDivElement>(null);
   
-  // Auto-scroll to show action bar on component mount
+  // Scroll to top on mobile, action bar on desktop
   useEffect(() => {
-    if (actionBarRef.current) {
-      setTimeout(() => {
+    const timer = setTimeout(() => {
+      if (window.innerWidth < 768) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
         actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
-      }, 500);
-    }
+      }
+    }, 100);
+    return () => clearTimeout(timer);
   }, []);
   const { setFieldRef, scrollToNextField } = useAutoScroll();
   const validateForm = () => {
