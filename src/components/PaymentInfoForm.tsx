@@ -212,69 +212,66 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
 
           {/* Payment Methods List */}
           {formData.paymentMethods.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Credit Card */}
-              {formData.paymentMethods.find(m => m.type === 'credit-card') && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <h4 className="font-semibold text-foreground">Credit Card Details</h4>
-                    {formData.paymentMethods.find(m => m.type === 'credit-card')?.isDefault && (
-                      <Badge variant="secondary" className="text-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/10">
-                        Default
-                      </Badge>
-                    )}
-                    <span className="text-destructive">*</span>
-                  </div>
-                  <div className="p-4 border border-border rounded-lg bg-background">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-[hsl(var(--brand-blue))] flex items-center justify-center text-white font-bold">
-                        VISA
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Credit card</p>
-                        <p className="text-sm text-muted-foreground">
-                          **** **** **** {formData.paymentMethods.find(m => m.type === 'credit-card')?.details.cardNumber}
-                        </p>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Credit Card */}
+                {formData.paymentMethods.find(m => m.type === 'credit-card') && (
+                  <div>
+                    <h4 className="font-semibold text-foreground text-lg mb-3">
+                      Credit Card Details<span className="text-destructive">*</span>
+                    </h4>
+                    <div className="p-6 border-2 border-border rounded-2xl bg-background">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full border-2 border-border flex items-center justify-center bg-white">
+                          <span className="text-[#1434CB] font-bold text-xl" style={{ fontFamily: 'serif' }}>VISA</span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground text-lg mb-1">Credit card</p>
+                          <p className="text-base text-foreground">
+                            **** **** **** {formData.paymentMethods.find(m => m.type === 'credit-card')?.details.cardNumber}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              {/* Bank Account */}
-              {formData.paymentMethods.find(m => m.type === 'bank-account') && (
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <h4 className="font-semibold text-foreground">Bank Account Details</h4>
-                    {formData.paymentMethods.find(m => m.type === 'bank-account')?.isDefault && (
-                      <Badge variant="secondary" className="text-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/10">
-                        Default
-                      </Badge>
-                    )}
-                    <span className="text-destructive">*</span>
-                  </div>
-                  <div className="p-4 border border-border rounded-lg bg-background">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-full bg-foreground flex items-center justify-center text-background font-bold text-xs">
-                        capital
-                      </div>
-                      <div>
-                        <p className="font-semibold text-foreground">Capital Bank - Checking</p>
-                        <p className="text-sm text-muted-foreground">
-                          ****{formData.paymentMethods.find(m => m.type === 'bank-account')?.details.accountNumber}
-                        </p>
+                {/* Bank Account */}
+                {formData.paymentMethods.find(m => m.type === 'bank-account') && (
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <h4 className="font-semibold text-foreground text-lg">
+                        Bank Account Details<span className="text-destructive">*</span>
+                      </h4>
+                      {formData.paymentMethods.find(m => m.type === 'bank-account')?.isDefault && (
+                        <span className="px-3 py-1 rounded-md bg-muted text-muted-foreground text-sm font-normal">
+                          Default
+                        </span>
+                      )}
+                    </div>
+                    <div className="p-6 border-2 border-border rounded-2xl bg-background">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 rounded-full bg-[#2C3E50] flex items-center justify-center">
+                          <span className="text-white font-semibold text-sm">capital</span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-foreground text-lg mb-1">Capital Bank - Checking</p>
+                          <p className="text-base text-foreground">
+                            *****{formData.paymentMethods.find(m => m.type === 'bank-account')?.details.accountNumber}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
+              </div>
+
+              {formData.paymentMethods.length === 2 && (
+                <p className="text-base text-foreground">
+                  Note: You can update your payment details anytime after submitting your application in your My eXp account.
+                </p>
               )}
             </div>
-          )}
-
-          {formData.paymentMethods.length === 2 && (
-            <p className="text-sm text-muted-foreground">
-              Note: You can update your payment details anytime after submitting your application in your My eXp account.
-            </p>
           )}
 
           {/* Add Payment Button - Only show if less than 2 payment methods */}
