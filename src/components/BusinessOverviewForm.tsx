@@ -206,6 +206,31 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         </RadioGroup>
       </div>
 
+      {/* Brick & Mortar Office Information - Conditional on ownsRealEstateOffice === 'yes' */}
+      {formData.ownsRealEstateOffice === 'yes' && (
+        <div className="space-y-4 p-6 bg-muted/30 rounded-lg border border-border">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">
+              Brick & Mortar Office Information Form
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Great, please fill out this form to let your Broker Team know and we will be in touch during the onboarding process.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full h-12 text-base font-medium"
+            onClick={() => {
+              // TODO: Open office information form or navigate to external form
+              window.open('#', '_blank');
+            }}
+          >
+            Fill out office Information Form
+          </Button>
+        </div>
+      )}
+
       {/* Pre-existing Matters Disclosure */}
       <div ref={setFieldRef(3)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
