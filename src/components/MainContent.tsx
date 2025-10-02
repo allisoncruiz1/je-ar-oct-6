@@ -308,6 +308,14 @@ export const MainContent: React.FC<MainContentProps> = ({
             canContinue={directDepositFormComplete}
             initialData={directDepositData || undefined}
             onFormDataChange={setDirectDepositData}
+            previousBankAccount={
+              paymentInfoData?.paymentMethods.find(m => m.type === 'bank-account')
+                ? {
+                    accountNumber: paymentInfoData.paymentMethods.find(m => m.type === 'bank-account')?.details.accountNumber || '',
+                    routingNumber: paymentInfoData.paymentMethods.find(m => m.type === 'bank-account')?.details.routingNumber || ''
+                  }
+                : undefined
+            }
           />
         )}
         {currentSection === 8 && (
