@@ -2,12 +2,10 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
 import { Check, ChevronDown, AlertCircle } from 'lucide-react';
-import { MobileMultiSelect } from '@/components/ui/mobile-multi-select';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
-import { useIsMobile } from '@/hooks/use-mobile';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { cn } from '@/lib/utils';
@@ -288,7 +286,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     code: 'DC',
     name: 'District of Columbia'
   }];
-  const isMobile = useIsMobile();
   const parseNominatimAddress = (addr: any) => {
     // Robust parsing for OpenStreetMap data (US only)
     const house = addr.house_number || '';
@@ -690,25 +687,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             <span className="text-destructive">*</span>
           </label>
           
-          {isMobile ? <MobileMultiSelect 
-            options={US_STATES.map(state => state.name)} 
-            selectedValues={formData.state ? [US_STATES.find(s => s.code === formData.state)?.name || ''] : []} 
-            onSelectionChange={values => {
-              if (values.length > 0) {
-                const selectedState = US_STATES.find(s => s.name === values[0]);
-                if (selectedState) {
-                  handleInputChange('state', selectedState.code);
-                  handleFieldBlur('state');
-                  scrollToNextField(2);
-                }
-              } else {
-                handleInputChange('state', '');
-              }
-            }} 
-            placeholder="Select State" 
-            searchPlaceholder="Search states..." 
-            className="mt-1" 
-          /> : <Select 
+          <Select
             value={formData.state} 
             onValueChange={value => {
               handleInputChange('state', value);
@@ -727,7 +706,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                   {state.name}
                 </SelectItem>)}
             </SelectContent>
-          </Select>}
+          </Select>
           {fieldErrors.state && touchedFields.state && (
             <p className="mt-1 text-sm text-destructive">{fieldErrors.state}</p>
           )}
