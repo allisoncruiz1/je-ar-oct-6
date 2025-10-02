@@ -7,6 +7,7 @@ import { MobileMultiSelect } from '@/components/ui/mobile-multi-select';
 import { HelpCircle, X } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Badge } from '@/components/ui/badge';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 const US_STATES = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming', 'District of Columbia'];
@@ -150,18 +151,44 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                 Real Estate License
               </h3>
               
-              <div className="w-full">
-                <BinaryChoice
+              <div className="w-full space-y-3">
+                <div className="flex items-center gap-2">
+                  <Label className="text-sm font-medium text-foreground">
+                    Are you currently licensed? <span className="text-destructive">*</span>
+                  </Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="mb-1">This includes active licenses in any state or province.</p>
+                      <p>If your license is inactive or expired, select &apos;No&apos;.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                
+                <RadioGroup
                   value={formData.isLicensed}
                   onValueChange={value => {
                     updateFormData({ isLicensed: value });
                     if (value === 'yes') scrollToNextField(0);
                     else scrollToNextField(1);
                   }}
-                  label="Are you currently licensed?"
-                  tooltip="Active licenses only. Select 'No' if inactive or expired."
-                  required
-                />
+                  className="flex gap-6 max-md:gap-3"
+                >
+                  <div className="flex items-center space-x-2 max-md:space-x-3 max-md:p-4 max-md:bg-muted/30 max-md:rounded-lg max-md:h-14 max-md:flex-1">
+                    <RadioGroupItem value="yes" id="licensed-yes" className="h-5 w-5" />
+                    <Label htmlFor="licensed-yes" className="text-sm max-md:text-base text-foreground cursor-pointer">
+                      Yes
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 max-md:space-x-3 max-md:p-4 max-md:bg-muted/30 max-md:rounded-lg max-md:h-14 max-md:flex-1">
+                    <RadioGroupItem value="no" id="licensed-no" className="h-5 w-5" />
+                    <Label htmlFor="licensed-no" className="text-sm max-md:text-base text-foreground cursor-pointer">
+                      No
+                    </Label>
+                  </div>
+                </RadioGroup>
                 
                 {errors.isLicensed && <p className="text-sm text-[#A91616] mt-1">{errors.isLicensed}</p>}
               </div>
