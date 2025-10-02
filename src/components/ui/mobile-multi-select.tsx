@@ -132,6 +132,7 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
               >
                 <Checkbox 
                   checked={selectedValues.includes(option)}
+                  onCheckedChange={() => handleToggleOption(option)}
                   className="h-4 w-4 shrink-0"
                 />
                 <span className={cn(
