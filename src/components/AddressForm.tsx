@@ -722,8 +722,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
             )}>
               <SelectValue placeholder="Select State" />
             </SelectTrigger>
-            <SelectContent className="bg-popover border border-border rounded-lg shadow-lg max-h-60 overflow-auto z-50">
-              {US_STATES.map(state => <SelectItem key={state.code} value={state.code} className="px-3 py-2 hover:bg-accent text-sm text-foreground cursor-pointer">
+            <SelectContent>
+              {US_STATES.map(state => <SelectItem key={state.code} value={state.code}>
                   {state.name}
                 </SelectItem>)}
             </SelectContent>
