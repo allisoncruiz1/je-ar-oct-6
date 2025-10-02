@@ -474,9 +474,17 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     onSubmit?.(formData);
   };
   const handleContinue = () => {
-    // Validate all fields before showing confirmation
+    // Validate all fields first
     try {
       addressSchema.parse(formData);
+      
+      // If address was verified via autocomplete, skip confirmation
+      if (verified) {
+        onContinue?.();
+        return;
+      }
+      
+      // For manually entered addresses, show confirmation dialog
       setShowConfirmDialog(true);
     } catch (error) {
       if (error instanceof z.ZodError) {

@@ -8,7 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, MapPin } from 'lucide-react';
+import { AlertTriangle, MapPin } from 'lucide-react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface AddressConfirmationDialogProps {
   open: boolean;
@@ -39,34 +40,46 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <MapPin className="h-5 w-5 text-primary" />
-            Confirm Your Address
+            Address Validation
           </DialogTitle>
           <DialogDescription>
-            Please review your mailing address carefully before proceeding.
+            Please confirm your manually entered address.
           </DialogDescription>
         </DialogHeader>
         
+        <Alert className="my-4 border-amber-500 bg-amber-50 dark:bg-amber-950/20">
+          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500" />
+          <AlertDescription className="text-amber-800 dark:text-amber-200">
+            We couldn't verify this address. Please review carefully before continuing.
+          </AlertDescription>
+        </Alert>
+        
         <div className="my-4 rounded-lg border border-border bg-muted/50 p-4">
+          <div className="text-sm font-semibold text-muted-foreground mb-2">Current Address:</div>
           <div className="space-y-2">
             <div className="font-medium text-foreground">
+              <span className="text-xs text-muted-foreground mr-2">Address:</span>
               {address.addressLine1}
             </div>
             {address.addressLine2 && (
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-foreground">
+                <span className="text-xs text-muted-foreground mr-2">Address 2:</span>
                 {address.addressLine2}
               </div>
             )}
             <div className="text-sm text-foreground">
-              {address.city}, {address.state} {address.zipCode}
+              <span className="text-xs text-muted-foreground mr-2">City:</span>
+              {address.city}
+            </div>
+            <div className="text-sm text-foreground">
+              <span className="text-xs text-muted-foreground mr-2">State:</span>
+              {address.state}
+            </div>
+            <div className="text-sm text-foreground">
+              <span className="text-xs text-muted-foreground mr-2">Zip code:</span>
+              {address.zipCode}
             </div>
           </div>
-          
-          {isVerified && (
-            <div className="mt-3 flex items-center gap-2 text-sm text-green-600">
-              <CheckCircle2 className="h-4 w-4" />
-              <span>Address verified via autocomplete</span>
-            </div>
-          )}
         </div>
 
         <DialogFooter className="flex-col sm:flex-row gap-2">
@@ -75,13 +88,13 @@ export const AddressConfirmationDialog: React.FC<AddressConfirmationDialogProps>
             onClick={onEdit}
             className="w-full sm:w-auto"
           >
-            Edit Address
+            Re-enter Address
           </Button>
           <Button
             onClick={onConfirm}
             className="w-full sm:w-auto"
           >
-            Confirm & Continue
+            Use Current Address
           </Button>
         </DialogFooter>
       </DialogContent>
