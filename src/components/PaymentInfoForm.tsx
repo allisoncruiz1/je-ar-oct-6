@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Plus } from 'lucide-react';
 export interface PaymentInfoData {
   thirdPartyPayment: string;
+  payerName?: string;
+  payerEmail?: string;
   paymentMethods: Array<{
     id: string;
     type: string;
@@ -36,6 +39,8 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
 }) => {
   const [formData, setFormData] = useState<PaymentInfoData>({
     thirdPartyPayment: initialData?.thirdPartyPayment || '',
+    payerName: initialData?.payerName || '',
+    payerEmail: initialData?.payerEmail || '',
     paymentMethods: initialData?.paymentMethods || []
   });
   const actionBarRef = useRef<HTMLDivElement>(null);
@@ -66,7 +71,13 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     onFormDataChange?.(newData);
   };
   const validateForm = () => {
-    // Form is valid if third party payment is selected and has at least 2 payment methods
+    // If third party payment is yes, check for payer name and email
+    if (formData.thirdPartyPayment === 'yes') {
+      const hasPayerInfo = formData.payerName && formData.payerName.trim() !== '' && 
+                           formData.payerEmail && formData.payerEmail.trim() !== '';
+      return hasPayerInfo && formData.paymentMethods.length >= 2;
+    }
+    // Otherwise just check third party payment selection and payment methods
     const isValid = formData.thirdPartyPayment !== '' && formData.paymentMethods.length >= 2;
     return isValid;
   };
@@ -138,6 +149,41 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               </Label>
             </div>
           </RadioGroup>
+
+          {/* Third Party Payer Details - Only show when "yes" is selected */}
+          {formData.thirdPartyPayment === 'yes' && (
+            <div className="space-y-4 mt-6">
+              <div className="space-y-2">
+                <Label htmlFor="payer-name" className="text-base font-semibold text-foreground">
+                  Who is responsible for paying your fees?
+                  <span className="text-destructive ml-1">*</span>
+                </Label>
+                <Input
+                  id="payer-name"
+                  type="text"
+                  placeholder="Enter the full name of the person who will be handling your payments"
+                  value={formData.payerName || ''}
+                  onChange={(e) => updateFormData('payerName', e.target.value)}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="payer-email" className="text-base font-semibold text-foreground">
+                  Email of the person paying your fees?
+                  <span className="text-destructive ml-1">*</span>
+                </Label>
+                <Input
+                  id="payer-email"
+                  type="email"
+                  placeholder="Provide the email address where we can reach the payer for payment setup and details"
+                  value={formData.payerEmail || ''}
+                  onChange={(e) => updateFormData('payerEmail', e.target.value)}
+                  className="w-full"
+                />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Payment Details Section */}
