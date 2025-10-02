@@ -8,6 +8,7 @@ import { MobileActionBar } from '@/components/MobileActionBar';
 export interface DirectDepositData {
   firstName: string;
   lastName: string;
+  businessName: string;
   bankName: string;
   accountType: string;
   routingNumber: string;
@@ -47,6 +48,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
   const [formData, setFormData] = useState<DirectDepositData>({
     firstName: initialData?.firstName || '',
     lastName: initialData?.lastName || '',
+    businessName: initialData?.businessName || '',
     bankName: initialData?.bankName || '',
     accountType: initialData?.accountType || '',
     routingNumber: initialData?.routingNumber || '',
@@ -85,9 +87,13 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
     
     // If providing different details, validate all fields
     if (usePreviousAccount === 'different') {
+      // Check name fields based on account type
+      const hasValidName = formData.accountType === 'business'
+        ? formData.businessName.trim() !== ''
+        : formData.firstName.trim() !== '' && formData.lastName.trim() !== '';
+      
       const isValid = 
-        formData.firstName.trim() !== '' &&
-        formData.lastName.trim() !== '' &&
+        hasValidName &&
         formData.bankName.trim() !== '' &&
         formData.accountType !== '' &&
         formData.routingNumber.trim() !== '' &&
@@ -159,44 +165,6 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
         {/* Bank Information - Only show if providing different details or no previous account */}
         {(usePreviousAccount === 'different' || !previousBankAccount) && (
           <div className="space-y-4 pt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="first-name">
-                  First Name on Account <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="first-name"
-                  placeholder="Enter first name"
-                  value={formData.firstName}
-                  onChange={(e) => updateFormData('firstName', e.target.value)}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="last-name">
-                  Last Name on Account <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="last-name"
-                  placeholder="Enter last name"
-                  value={formData.lastName}
-                  onChange={(e) => updateFormData('lastName', e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="bank-name">
-                Bank Name <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="bank-name"
-                placeholder="Enter your bank name"
-                value={formData.bankName}
-                onChange={(e) => updateFormData('bankName', e.target.value)}
-              />
-            </div>
-
             <div className="space-y-2">
               <Label htmlFor="account-type">
                 Account Type <span className="text-destructive">*</span>
@@ -208,9 +176,61 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="">Select account type</option>
-                <option value="checking">Checking</option>
-                <option value="savings">Savings</option>
+                <option value="personal">Personal/Individual Account</option>
+                <option value="business">Business Account</option>
               </select>
+            </div>
+
+            {formData.accountType === 'business' ? (
+              <div className="space-y-2">
+                <Label htmlFor="business-name">
+                  Business Name <span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="business-name"
+                  placeholder="Enter business name"
+                  value={formData.businessName}
+                  onChange={(e) => updateFormData('businessName', e.target.value)}
+                />
+              </div>
+            ) : formData.accountType === 'personal' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="first-name">
+                    First Name on Account <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="first-name"
+                    placeholder="Enter first name"
+                    value={formData.firstName}
+                    onChange={(e) => updateFormData('firstName', e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="last-name">
+                    Last Name on Account <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="last-name"
+                    placeholder="Enter last name"
+                    value={formData.lastName}
+                    onChange={(e) => updateFormData('lastName', e.target.value)}
+                  />
+                </div>
+              </div>
+            ) : null}
+
+            <div className="space-y-2">
+              <Label htmlFor="bank-name">
+                Bank Name <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="bank-name"
+                placeholder="Enter your bank name"
+                value={formData.bankName}
+                onChange={(e) => updateFormData('bankName', e.target.value)}
+              />
             </div>
 
             <div className="space-y-2">
