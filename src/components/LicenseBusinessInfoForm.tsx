@@ -131,6 +131,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               placeholder="Enter your preferred name (optional)" 
               className="h-12 md:h-10 text-sm placeholder:text-muted-foreground" 
             />
+            <p className="text-xs text-muted-foreground">
+              We will use this name when contacting you if it's different from your legal first name.
+            </p>
           </div>
 
             {/* Real Estate License Section */}
