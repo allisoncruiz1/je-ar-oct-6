@@ -15,6 +15,7 @@ interface LicenseBusinessData {
   preferredName: string;
   isLicensed: string;
   licensedStates: string[];
+  plannedLicenseStates: string[];
   conductBusinessOutsideUS: string;
   internationalCountries: string[];
 }
@@ -46,6 +47,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     preferredName: initialData?.preferredName || '',
     isLicensed: initialData?.isLicensed || '',
     licensedStates: initialData?.licensedStates || [],
+    plannedLicenseStates: initialData?.plannedLicenseStates || [],
     conductBusinessOutsideUS: initialData?.conductBusinessOutsideUS || '',
     internationalCountries: initialData?.internationalCountries || []
   });
@@ -72,6 +74,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     if (formData.isLicensed === 'yes' && formData.licensedStates.length === 0) {
       newErrors.licensedStates = 'Please select the state where you are licensed';
     }
+    if (formData.isLicensed === 'no' && formData.plannedLicenseStates.length === 0) {
+      newErrors.plannedLicenseStates = 'Please select where you plan to get licensed';
+    }
     if (!formData.conductBusinessOutsideUS || (formData.conductBusinessOutsideUS !== 'yes' && formData.conductBusinessOutsideUS !== 'no')) {
       newErrors.conductBusinessOutsideUS = 'Please select whether you conduct business outside the US';
     }
@@ -87,6 +92,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     let additionalValid = true;
     if (formData.isLicensed === 'yes') {
       additionalValid = additionalValid && formData.licensedStates.length > 0;
+    }
+    if (formData.isLicensed === 'no') {
+      additionalValid = additionalValid && formData.plannedLicenseStates.length > 0;
     }
     if (formData.conductBusinessOutsideUS === 'yes') {
       additionalValid = additionalValid && formData.internationalCountries.length > 0;
@@ -189,6 +197,41 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                   
                   {errors.licensedStates && (
                     <p className="text-sm text-destructive">{errors.licensedStates}</p>
+                  )}
+                </div>
+              )}
+
+              {/* Planned License States Selection - Conditional for "No" */}
+              {formData.isLicensed === 'no' && (
+                <div ref={setFieldRef(1)} className="w-full space-y-3">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium text-foreground leading-none">
+                      Where do you plan to get licensed? <span className="text-destructive">*</span>
+                    </Label>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Select all states where you plan to obtain a real estate license</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+                  
+                  <MobileMultiSelect
+                    options={US_STATES}
+                    selectedValues={formData.plannedLicenseStates}
+                    onSelectionChange={(values) => {
+                      updateFormData({ plannedLicenseStates: values });
+                      if (values.length > 0) scrollToNextField(1);
+                    }}
+                    placeholder="Select state(s)..."
+                    searchPlaceholder="Search states..."
+                  />
+
+                  
+                  {errors.plannedLicenseStates && (
+                    <p className="text-sm text-destructive">{errors.plannedLicenseStates}</p>
                   )}
                 </div>
               )}

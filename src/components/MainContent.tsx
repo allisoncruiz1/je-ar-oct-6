@@ -25,6 +25,7 @@ interface LicenseBusinessData {
   preferredName: string;
   isLicensed: string;
   licensedStates: string[];
+  plannedLicenseStates: string[];
   conductBusinessOutsideUS: string;
   internationalCountries: string[];
 }
