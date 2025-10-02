@@ -407,9 +407,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   // Validate a single field
   const validateField = (field: keyof AddressFormData, value: string) => {
     try {
-      // Validate the specific field
-      const fieldSchema = addressSchema.shape[field];
-      fieldSchema.parse(value);
+      // Validate the entire form object to get accurate field validation
+      addressSchema.parse(formData);
       
       // Clear error for this field
       setFieldErrors(prev => {
@@ -419,10 +418,21 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
-        setFieldErrors(prev => ({
-          ...prev,
-          [field]: error.errors[0]?.message || 'Invalid input'
-        }));
+        // Find errors for this specific field
+        const fieldError = error.errors.find(e => e.path[0] === field);
+        if (fieldError) {
+          setFieldErrors(prev => ({
+            ...prev,
+            [field]: fieldError.message
+          }));
+        } else {
+          // Clear error if no error for this field
+          setFieldErrors(prev => {
+            const newErrors = { ...prev };
+            delete newErrors[field];
+            return newErrors;
+          });
+        }
       }
     }
   };
