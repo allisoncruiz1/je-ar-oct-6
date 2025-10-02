@@ -41,13 +41,6 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
           </h2>
         </div>
 
-        {/* Sponsor Definition */}
-        <div className="mb-6">
-          <p className="text-foreground">
-            Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
-          </p>
-        </div>
-
         {/* Optional Video Section */}
         <div className="bg-muted rounded-lg p-6 flex flex-col items-center justify-center space-y-3 mb-6">
           <p className="text-muted-foreground text-center text-sm">
@@ -62,6 +55,13 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             <ExternalLink className="mr-2 h-4 w-4" />
             Watch Video
           </Button>
+        </div>
+
+        {/* Sponsor Definition */}
+        <div className="mb-6">
+          <p className="text-foreground">
+            Your sponsor is the person <span className="font-semibold">most influential</span> in your decision to join eXp Realty. They are not simply a mentor or team partner, unless that person was also most influential in your decision to join.
+          </p>
         </div>
 
         {/* Key Points */}
