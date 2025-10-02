@@ -159,7 +159,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                     else scrollToNextField(1);
                   }}
                   label="Are you currently licensed?"
-                  tooltip="This includes active licenses in any state or province. If your license is inactive or expired, select 'No'."
+                  tooltip="Active licenses only. Select 'No' if inactive or expired."
                   required
                 />
                 
