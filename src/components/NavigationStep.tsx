@@ -22,7 +22,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
   isExpanded = false,
   onToggleExpanded
 }) => {
-  const textColor = (isActive || isCompleted) ? 'text-[#1B489B]' : 'text-[#858791]';
+  const textColor = isActive ? 'text-[#0C0F24]' : (isCompleted ? 'text-[#1B489B]' : 'text-[#858791]');
   
   return (
     <div 
