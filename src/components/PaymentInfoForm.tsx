@@ -147,15 +147,9 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               Payment Details
             </h3>
             
-            <div className="space-y-3 text-muted-foreground">
+            <div className="text-muted-foreground">
               <p className="text-base leading-relaxed">
-                Please add 2 forms of your personal payment details.
-              </p>
-              <p className="text-base leading-relaxed">
-                Even if a third party is covering your fees, we require a backup account.
-              </p>
-              <p className="text-base leading-relaxed">
-                Don't worry—we won't charge you until your onboarding is complete.
+                Please add 2 forms of your personal payment details. Even if a third party is covering your fees, we require a backup account. Don't worry—we won't charge you until your onboarding is complete.
               </p>
             </div>
           </div>
