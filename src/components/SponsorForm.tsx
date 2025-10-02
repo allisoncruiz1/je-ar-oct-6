@@ -58,7 +58,10 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   };
 
   const handleSearchSponsor = () => {
-    const hasAtLeastOneField = sponsorFirstName.trim() || sponsorLastName.trim() || sponsorEmail.trim();
+    const first = sponsorFirstName.trim();
+    const last = sponsorLastName.trim();
+    const email = sponsorEmail.trim();
+    const hasAtLeastOneField = first || last || email;
     
     if (!hasAtLeastOneField) {
       setSearchError('Enter a first/last name or an eXp email to search.');
@@ -66,6 +69,9 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
     }
     
     setSearchError('');
+    setPendingSponsor(null); // ensure results view, not confirmation
+    setShowManualConfirmation(false);
+    setShowNoSponsorDialog(false);
     setShowSearchResults(true);
   };
 
@@ -159,18 +165,21 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   // Filter results based on search criteria
   const getFilteredResults = () => {
-    return allMockResults.filter(result => {
-      const firstNameMatch = !sponsorFirstName || 
-        result.name.toLowerCase().includes(sponsorFirstName.toLowerCase());
-      const lastNameMatch = !sponsorLastName || 
-        result.name.toLowerCase().includes(sponsorLastName.toLowerCase());
-      const emailMatch = !sponsorEmail || 
-        result.email?.toLowerCase().includes(sponsorEmail.toLowerCase());
-      
+    const first = sponsorFirstName.toLowerCase().trim();
+    const last = sponsorLastName.toLowerCase().trim();
+    const email = sponsorEmail.toLowerCase().trim();
+
+    return allMockResults.filter((result) => {
+      const name = result.name.toLowerCase();
+      const resultEmail = (result.email || '').toLowerCase();
+
+      const firstNameMatch = !first || name.includes(first);
+      const lastNameMatch = !last || name.includes(last);
+      const emailMatch = !email || resultEmail.includes(email);
+
       return firstNameMatch && lastNameMatch && emailMatch;
     });
   };
-
   const mockResults = getFilteredResults();
 
   const handleReadPolicy = () => {
