@@ -23,16 +23,16 @@ const Index = () => {
   ];
 
   const getMainStep = (section: number) => {
-    if (section <= 5) return 0; // Your Information (sections 1.1-1.6) - includes Team Function and Sponsor
-    if (section === 6) return 1; // Business Disclosures  
+    if (section <= 4) return 0; // Your Information (sections 1.1-1.5)
+    if (section === 5) return 1; // Sponsor
     return 2; // Additional steps
   };
 
   const getMainStepInfo = (section: number) => {
     const step = getMainStep(section);
     const mainSteps = [
-      { title: 'Your Information', description: 'Personal & Business Details' },
-      { title: 'Business Disclosures', description: 'Business Compliance' }, 
+      { title: 'Your Information', description: 'Personal and Business Details' },
+      { title: 'Sponsor', description: 'Select Sponsor' }, 
       { title: 'Additional Steps', description: 'Final Configuration' }
     ];
     return { ...mainSteps[step], stepNumber: step + 1 };
