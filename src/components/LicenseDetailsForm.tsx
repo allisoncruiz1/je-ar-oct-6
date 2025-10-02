@@ -258,8 +258,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       })() && <div ref={setFieldRef(2)} className="space-y-3">
         <TooltipProvider>
           <div className="space-y-3">
-            <div className="flex items-start gap-2">
-              <Label className="text-sm font-medium text-foreground flex-1">
+            <div className="flex items-start gap-1">
+              <Label className="text-sm font-medium text-foreground">
                 You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
               </Label>
               <Tooltip>
