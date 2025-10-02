@@ -26,7 +26,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   }, {
     title: "Financial Info",
     description: "Payment and Direct Deposit",
-    subStepCount: 0
+    subStepCount: 2
   }, {
     title: "Review",
     description: "Review Application",
@@ -37,6 +37,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
     subStepCount: 0
   }];
   const yourInfoSubSteps = ['Mailing Address', 'License Business Info', 'License Details', 'Business Overview', 'Team Function'];
+  const financialInfoSubSteps = ['Payment Info', 'Direct Deposit'];
   const currentStepData = mainSteps[currentStep];
 
   // Calculate how many sub-steps are completed for the current main step
@@ -45,10 +46,19 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
       // For "Your Information" (sections 0-4)
       return completedSections.filter(s => s >= 0 && s <= 4).length;
     }
+    if (currentStep === 2) {
+      // For "Financial Info" (sections 6-7)
+      return completedSections.filter(s => s >= 6 && s <= 7).length;
+    }
     return 0;
   };
   const completedSubSteps = getCompletedSubStepsCount();
   const hasSubSteps = currentStepData.subStepCount > 0;
+  
+  // Determine which substeps to show
+  const isFinancialInfo = currentStep === 2;
+  const subStepsToShow = isFinancialInfo ? financialInfoSubSteps : yourInfoSubSteps;
+  const subStepStartIndex = isFinancialInfo ? 6 : 0;
   return <div className="bg-white rounded-lg p-4 shadow-md mb-4 border border-border">
       {/* Horizontal Progress Stepper */}
       <div className="flex items-center justify-between mb-3">
@@ -91,12 +101,17 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
 
       {/* Sub-steps dropdown */}
       {hasSubSteps && isSubStepsExpanded && <div className="mt-3 pt-3 border-t border-[#CECFD3] space-y-2 bg-white">
-          {yourInfoSubSteps.map((subStep, index) => <div key={subStep} className={`flex items-center gap-2 py-1 px-2 rounded ${currentSection === index ? 'bg-[#F5F7FA]' : ''}`}>
-              <div className={`w-1.5 h-1.5 rounded-full ${completedSections.includes(index) ? 'bg-[#1B489B]' : currentSection === index ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'}`} />
-              <span className={`text-sm ${currentSection === index ? 'text-[#0C0F24] font-semibold' : 'text-[#858791]'}`}>
-                {subStep}
-              </span>
-            </div>)}
+          {subStepsToShow.map((subStep, index) => {
+            const sectionIndex = subStepStartIndex + index;
+            return (
+              <div key={subStep} className={`flex items-center gap-2 py-1 px-2 rounded ${currentSection === sectionIndex ? 'bg-[#F5F7FA]' : ''}`}>
+                <div className={`w-1.5 h-1.5 rounded-full ${completedSections.includes(sectionIndex) ? 'bg-[#1B489B]' : currentSection === sectionIndex ? 'bg-[#1B489B]' : 'bg-[#CECFD3]'}`} />
+                <span className={`text-sm ${currentSection === sectionIndex ? 'text-[#0C0F24] font-semibold' : 'text-[#858791]'}`}>
+                  {subStep}
+                </span>
+              </div>
+            );
+          })}
         </div>}
     </div>;
 };

@@ -19,13 +19,16 @@ const Index = () => {
     'Business Overview',
     'Team Function',
     'Sponsor',
+    'Payment Info',
+    'Direct Deposit',
     'Business Disclosures'
   ];
 
   const getMainStep = (section: number) => {
-    if (section <= 4) return 0; // Your Information (sections 1.1-1.5)
+    if (section <= 4) return 0; // Your Information (sections 0-4)
     if (section === 5) return 1; // Sponsor
-    return 2; // Additional steps
+    if (section <= 7) return 2; // Financial Info (sections 6-7)
+    return 3; // Additional steps
   };
 
   const getMainStepInfo = (section: number) => {
@@ -33,6 +36,7 @@ const Index = () => {
     const mainSteps = [
       { title: 'Your Information', description: 'Personal and Business Details' },
       { title: 'Sponsor', description: 'Select Sponsor' }, 
+      { title: 'Financial Info', description: 'Payment and Direct Deposit' },
       { title: 'Additional Steps', description: 'Final Configuration' }
     ];
     return { ...mainSteps[step], stepNumber: step + 1 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavigationStep } from './NavigationStep';
 import { SubNavigationStep } from './SubNavigationStep';
 import { ProgressIndicator } from './ProgressIndicator';
@@ -16,7 +16,23 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
   currentSection = 0,
   completedSections = []
 }) => {
-  const [isYourInfoExpanded, setIsYourInfoExpanded] = useState(true);
+  const [isYourInfoExpanded, setIsYourInfoExpanded] = useState(currentSection <= 4);
+  const [isFinancialInfoExpanded, setIsFinancialInfoExpanded] = useState(currentSection >= 6 && currentSection <= 7);
+
+  // Update expansion state when currentSection changes
+  useEffect(() => {
+    if (currentSection <= 4) {
+      setIsYourInfoExpanded(true);
+      setIsFinancialInfoExpanded(false);
+    } else if (currentSection >= 6 && currentSection <= 7) {
+      setIsYourInfoExpanded(false);
+      setIsFinancialInfoExpanded(true);
+    } else {
+      // For other sections, collapse both
+      setIsYourInfoExpanded(false);
+      setIsFinancialInfoExpanded(false);
+    }
+  }, [currentSection]);
 
   const yourInfoSubSteps = [
     'Mailing Address',
@@ -24,6 +40,11 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     'License Details',
     'Business Overview',
     'Team Function'
+  ];
+
+  const financialInfoSubSteps = [
+    'Payment Info',
+    'Direct Deposit'
   ];
 
   const steps = [
@@ -46,7 +67,10 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       title: "Financial Info",
       description: "Payment and Direct Deposit",
       isActive: currentStep === 2,
-      isCompleted: currentStep > 2
+      isCompleted: currentStep > 2,
+      hasSubSteps: true,
+      isExpanded: isFinancialInfoExpanded,
+      onToggleExpanded: () => setIsFinancialInfoExpanded(!isFinancialInfoExpanded)
     },
     {
       title: "Review",
@@ -81,6 +105,20 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
                     title={subStepTitle}
                     isActive={currentSection === subIndex}
                     isCompleted={completedSections.includes(subIndex)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Show sub-steps for "Financial Info" when expanded */}
+            {step.title === "Financial Info" && isFinancialInfoExpanded && (
+              <div className="ml-3 border-l-2 border-[#1B489B] pl-0 py-2">
+                {financialInfoSubSteps.map((subStepTitle, subIndex) => (
+                  <SubNavigationStep
+                    key={subStepTitle}
+                    title={subStepTitle}
+                    isActive={currentSection === 6 + subIndex}
+                    isCompleted={completedSections.includes(6 + subIndex)}
                   />
                 ))}
               </div>

@@ -5,6 +5,8 @@ import { LicenseDetailsForm, LicenseDetailsData } from './LicenseDetailsForm';
 import { BusinessOverviewForm, BusinessOverviewData } from './BusinessOverviewForm';
 import { TeamFunctionForm, TeamFunctionData } from './TeamFunctionForm';
 import { SponsorForm } from './SponsorForm';
+import { PaymentInfoForm, PaymentInfoData } from './PaymentInfoForm';
+import { DirectDepositForm, DirectDepositData } from './DirectDepositForm';
 import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
@@ -50,11 +52,15 @@ export const MainContent: React.FC<MainContentProps> = ({
   const [licenseDetailsData, setLicenseDetailsData] = useState<LicenseDetailsData>({});
   const [businessOverviewData, setBusinessOverviewData] = useState<BusinessOverviewData | null>(null);
   const [teamFunctionData, setTeamFunctionData] = useState<TeamFunctionData | null>(null);
+  const [paymentInfoData, setPaymentInfoData] = useState<PaymentInfoData | null>(null);
+  const [directDepositData, setDirectDepositData] = useState<DirectDepositData | null>(null);
   const [licenseBusinessFormComplete, setLicenseBusinessFormComplete] = useState(false);
   const [licenseDetailsFormComplete, setLicenseDetailsFormComplete] = useState(false);
   const [businessOverviewFormComplete, setBusinessOverviewFormComplete] = useState(false);
   const [teamFunctionFormComplete, setTeamFunctionFormComplete] = useState(false);
   const [sponsorFormComplete, setSponsorFormComplete] = useState(false);
+  const [paymentInfoFormComplete, setPaymentInfoFormComplete] = useState(false);
+  const [directDepositFormComplete, setDirectDepositFormComplete] = useState(false);
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
@@ -92,6 +98,8 @@ export const MainContent: React.FC<MainContentProps> = ({
       businessOverviewFormComplete,
       teamFunctionFormComplete,
       sponsorFormComplete,
+      paymentInfoFormComplete,
+      directDepositFormComplete,
     });
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -135,6 +143,20 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Guard: do not advance from step 7 unless the payment info form is complete
+    if (currentSection === 6 && !paymentInfoFormComplete) {
+      console.info('🚫 Continue blocked: Payment Info incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
+    // Guard: do not advance from step 8 unless the direct deposit form is complete
+    if (currentSection === 7 && !directDepositFormComplete) {
+      console.info('🚫 Continue blocked: Direct Deposit incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
     console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
@@ -149,7 +171,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete, paymentInfoFormComplete, directDepositFormComplete]);
 
   const handleBack = () => {
     console.log('Back clicked');
@@ -263,6 +285,32 @@ export const MainContent: React.FC<MainContentProps> = ({
           />
         )}
         {currentSection === 6 && (
+          <PaymentInfoForm
+            onSubmit={handleFormSubmit}
+            onContinue={triggerUserContinue}
+            onFormValidChange={setPaymentInfoFormComplete}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
+            canContinue={paymentInfoFormComplete}
+            initialData={paymentInfoData || undefined}
+            onFormDataChange={setPaymentInfoData}
+          />
+        )}
+        {currentSection === 7 && (
+          <DirectDepositForm
+            onSubmit={handleFormSubmit}
+            onContinue={triggerUserContinue}
+            onFormValidChange={setDirectDepositFormComplete}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
+            canContinue={directDepositFormComplete}
+            initialData={directDepositData || undefined}
+            onFormDataChange={setDirectDepositData}
+          />
+        )}
+        {currentSection === 8 && (
           <div className="relative">
             <div className="text-center py-8 text-[#858791] pb-24 max-md:py-6 max-md:pb-20">
               Business Disclosure form will be implemented here.

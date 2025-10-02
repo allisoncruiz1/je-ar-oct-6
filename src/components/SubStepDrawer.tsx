@@ -23,13 +23,23 @@ export const SubStepDrawer: React.FC<SubStepDrawerProps> = ({
   completedSections,
   onSubStepSelect
 }) => {
-  const subSteps = [
+  const yourInfoSubSteps = [
     { title: 'Mailing Address', section: 0 },
     { title: 'License Business Info', section: 1 },
     { title: 'License Details', section: 2 },
     { title: 'Business Overview', section: 3 },
     { title: 'Team Function', section: 4 }
   ];
+
+  const financialInfoSubSteps = [
+    { title: 'Payment Info', section: 6 },
+    { title: 'Direct Deposit', section: 7 }
+  ];
+
+  // Determine which set of substeps to show based on current section
+  const isFinancialInfoSection = currentSection >= 6 && currentSection <= 7;
+  const subSteps = isFinancialInfoSection ? financialInfoSubSteps : yourInfoSubSteps;
+  const drawerTitle = isFinancialInfoSection ? 'Financial Info Steps' : 'Your Information Steps';
 
   const handleStepClick = (section: number) => {
     onSubStepSelect(section);
@@ -40,7 +50,7 @@ export const SubStepDrawer: React.FC<SubStepDrawerProps> = ({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent side="bottom" className="h-auto max-h-[80vh]">
         <SheetHeader>
-          <SheetTitle>Your Information Steps</SheetTitle>
+          <SheetTitle>{drawerTitle}</SheetTitle>
           <SheetDescription>
             Complete all steps to proceed
           </SheetDescription>
