@@ -48,6 +48,16 @@ export const AddressForm: React.FC<AddressFormProps> = ({
     zipCode: ''
   });
   const addressInputRef = useRef<HTMLInputElement>(null);
+  const actionBarRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to show action bar on component mount
+  useEffect(() => {
+    if (actionBarRef.current) {
+      setTimeout(() => {
+        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 500);
+    }
+  }, []);
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -530,7 +540,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       </div>
 
       {/* Desktop action bar */}
-      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+      <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
         <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later

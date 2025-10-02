@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -158,6 +158,16 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
     setFieldRef,
     scrollToNextField
   } = useAutoScroll();
+  const actionBarRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to show action bar on component mount
+  useEffect(() => {
+    if (actionBarRef.current) {
+      setTimeout(() => {
+        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 500);
+    }
+  }, []);
   const updateFormData = (field: keyof TeamFunctionData, value: string) => {
     const newData = {
       ...formData,
@@ -421,7 +431,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
       </form>
 
       {/* Desktop action bar */}
-      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+      <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
         <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later

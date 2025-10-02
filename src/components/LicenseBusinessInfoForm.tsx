@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -48,6 +48,16 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
     internationalCountries: initialData?.internationalCountries || []
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const actionBarRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to show action bar on component mount
+  useEffect(() => {
+    if (actionBarRef.current) {
+      setTimeout(() => {
+        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 500);
+    }
+  }, []);
   const { setFieldRef, scrollToNextField } = useAutoScroll();
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -234,7 +244,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         {/* Action Bar at bottom */}
         <div className="mt-auto bg-background py-2 px-4 max-md:p-2">
       {/* Desktop action bar */}
-      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+      <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
         <div className="flex items-center justify-between">
           <Button
             variant="outline"

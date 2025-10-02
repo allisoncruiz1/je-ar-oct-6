@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -48,6 +48,16 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   const isTouch = useIsTouchDevice();
   const isMobile = useIsMobile();
   const isIOSLike = typeof navigator !== "undefined" && (/iPad|iPhone|iPod/.test(navigator.userAgent) || navigator.platform === "MacIntel" && (navigator as any).maxTouchPoints > 1);
+  const actionBarRef = useRef<HTMLDivElement>(null);
+  
+  // Auto-scroll to show action bar on component mount
+  useEffect(() => {
+    if (actionBarRef.current) {
+      setTimeout(() => {
+        actionBarRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      }, 500);
+    }
+  }, []);
   const useNativeDate = isTouch || isMobile || isIOSLike;
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || '',
@@ -326,7 +336,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </form>
       <div className="mt-auto bg-background py-2 px-4 max-md:p-2">
       {/* Desktop action bar */}
-      <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+      <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
         <div className="flex items-center justify-between">
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
