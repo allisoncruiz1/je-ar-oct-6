@@ -10,6 +10,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { useViewportSticky } from '@/hooks/useViewportSticky';
 export interface LicenseDetailsData {
   [state: string]: {
     licenseNumber: string;
@@ -54,6 +55,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     setFieldRef,
     scrollToNextField
   } = useAutoScroll();
+  const { isSticky, formRef, actionBarRef } = useViewportSticky();
   console.log('🏠 LicenseDetailsForm state debug:', {
     licensedStates,
     currentStateIndex,
@@ -157,7 +159,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   };
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
-  return <div className="space-y-6">
+  return <div ref={formRef as any} className="space-y-6 pb-24 md:pb-0">
       {/* State Navigation Header */}
       {licensedStates.length > 1 && <div className="flex items-center justify-between mb-6">
           
@@ -304,8 +306,14 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       </div>
 
       {/* Desktop action bar */}
-      <div className="sticky bottom-0 bg-white border-t border-border py-2 px-4 mt-10 max-md:hidden">
-        <div className="flex items-center justify-between">
+      <div 
+        ref={actionBarRef}
+        className={cn(
+          "bg-background border-t border-border p-4 mt-10 max-md:hidden transition-all",
+          isSticky ? "fixed bottom-0 left-0 right-0 shadow-lg z-40" : "relative"
+        )}
+      >
+        <div className={cn("flex items-center justify-between", isSticky && "max-w-[calc(100%-280px)] ml-auto")}>
           <Button variant="outline" size="sm" onClick={onSaveResume} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>

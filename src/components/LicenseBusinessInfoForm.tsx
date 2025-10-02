@@ -9,6 +9,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Badge } from '@/components/ui/badge';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
+import { useViewportSticky } from '@/hooks/useViewportSticky';
+import { cn } from '@/lib/utils';
 const US_STATES = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming', 'District of Columbia'];
 const COUNTRIES = ['Afghanistan', 'Albania', 'Algeria', 'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Bulgaria', 'Canada', 'Chile', 'China', 'Colombia', 'Croatia', 'Czech Republic', 'Denmark', 'Egypt', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary', 'Iceland', 'India', 'Indonesia', 'Iran', 'Iraq', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan', 'Kazakhstan', 'Kenya', 'South Korea', 'Latvia', 'Lebanon', 'Lithuania', 'Luxembourg', 'Malaysia', 'Mexico', 'Netherlands', 'New Zealand', 'Nigeria', 'Norway', 'Pakistan', 'Philippines', 'Poland', 'Portugal', 'Romania', 'Russia', 'Saudi Arabia', 'Singapore', 'Slovakia', 'Slovenia', 'South Africa', 'Spain', 'Sweden', 'Switzerland', 'Thailand', 'Turkey', 'Ukraine', 'United Arab Emirates', 'United Kingdom', 'Vietnam', 'Other'];
 interface LicenseBusinessData {
@@ -49,6 +51,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const { setFieldRef, scrollToNextField } = useAutoScroll();
+  const { isSticky, formRef, actionBarRef } = useViewportSticky();
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
     if (!formData.isLicensed || (formData.isLicensed !== 'yes' && formData.isLicensed !== 'no')) {
@@ -102,7 +105,7 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         <div className="mb-6 mt-8">
           <h2 className="text-xl font-semibold text-foreground">License & Business Info</h2>
         </div>
-        <form onSubmit={handleSubmit} className="w-full space-y-8 flex-1">
+        <form ref={formRef as any} onSubmit={handleSubmit} className="w-full space-y-8 flex-1 pb-24 md:pb-0">
           {/* Preferred Name Field */}
           <div className="w-full space-y-2">
             <Label htmlFor="preferredName" className="text-sm font-medium text-foreground leading-none">
@@ -232,10 +235,16 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
         </form>
 
         {/* Action Bar at bottom */}
-        <div className="mt-auto bg-white py-2 px-4 max-md:p-2">
+        <div className="mt-auto bg-background py-2 px-4 max-md:p-2">
       {/* Desktop action bar */}
-      <div className="sticky bottom-0 bg-background py-2 px-0 mt-12 max-md:hidden">
-        <div className="flex items-center justify-between">
+      <div 
+        ref={actionBarRef}
+        className={cn(
+          "bg-background border-t border-border p-4 mt-6 max-md:hidden transition-all",
+          isSticky ? "fixed bottom-0 left-0 right-0 shadow-lg z-40" : "relative"
+        )}
+      >
+        <div className={cn("flex items-center justify-between", isSticky && "max-w-[calc(100%-280px)] ml-auto")}>
           <Button
             variant="outline"
             size="sm"
