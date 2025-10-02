@@ -92,9 +92,9 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         </div>
 
         {/* Acknowledgment Section */}
-        <div className="mt-8 border border-border rounded-lg p-6">
-          <div className="flex items-start justify-between gap-4 mb-0">
-            <div>
+        <div className="mt-8 border border-border rounded-lg p-4 md:p-6">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-0">
+            <div className="flex-1">
               <div className="flex items-start gap-3 mb-2">
                 <Checkbox 
                   id="sponsor-policy" 
@@ -111,7 +111,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               
               <button
                 onClick={handleReadPolicy}
-                className="text-foreground underline hover:no-underline block text-sm italic"
+                className="text-foreground underline hover:no-underline block text-sm italic ml-7"
               >
                 Read the full policy
               </button>
@@ -121,7 +121,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               onClick={handleAcknowledge}
               disabled={!acknowledged}
               size="lg"
-              className="w-auto flex-shrink-0"
+              className="w-full md:w-auto flex-shrink-0"
             >
               I understand the sponsor policy
             </Button>
