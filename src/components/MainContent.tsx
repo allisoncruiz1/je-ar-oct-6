@@ -48,6 +48,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   onSaveResume 
 }) => {
   const [formComplete, setFormComplete] = useState(false);
+  const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
   const [licenseBusinessData, setLicenseBusinessData] = useState<LicenseBusinessData | null>(null);
   const [licenseDetailsData, setLicenseDetailsData] = useState<LicenseDetailsData>({});
@@ -158,6 +159,18 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Check if returning from edit mode
+    if (isEditingFromReview) {
+      console.log('✅ Returning to Review page after edit');
+      setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
+      setIsEditingFromReview(false);
+      setCurrentSection(8);
+      setTimeout(() => {
+        advancingRef.current = false;
+      }, 600);
+      return;
+    }
+
     console.log('✅ Proceeding to next section');
     // Mark current section as completed using latest value
     setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
@@ -176,7 +189,12 @@ export const MainContent: React.FC<MainContentProps> = ({
 
   const handleBack = () => {
     console.log('Back clicked');
-    setCurrentSection((prev) => Math.max(prev - 1, 0));
+    if (isEditingFromReview) {
+      setIsEditingFromReview(false);
+      setCurrentSection(8);
+    } else {
+      setCurrentSection((prev) => Math.max(prev - 1, 0));
+    }
   };
 
 
@@ -328,7 +346,10 @@ export const MainContent: React.FC<MainContentProps> = ({
             teamFunctionData={teamFunctionData}
             paymentInfoData={paymentInfoData}
             directDepositData={directDepositData}
-            onEdit={(section) => setCurrentSection(section)}
+            onEdit={(section) => {
+              setIsEditingFromReview(true);
+              setCurrentSection(section);
+            }}
             onBack={handleBack}
             onContinue={triggerUserContinue}
             onSaveResume={onSaveResume}
