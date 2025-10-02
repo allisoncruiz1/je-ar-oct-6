@@ -78,14 +78,6 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             </li>
           </ul>
 
-          <div className="mt-6 bg-destructive/10 border border-destructive/30 rounded-lg p-4">
-            <div className="flex items-start gap-3">
-              <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
-              <p className="text-destructive">
-                <span className="font-semibold">Irrevocable decision.</span> Choose carefully; if no sponsor is selected, eXp Realty will be assigned.
-              </p>
-            </div>
-          </div>
         </div>
 
         {/* Acknowledgment Button */}
