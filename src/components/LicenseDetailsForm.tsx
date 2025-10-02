@@ -78,6 +78,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         [field]: value
       }
     };
+    console.log('🧩 LicenseDetailsForm update', { field, value, currentState, newState: newData[currentState] });
     onDataChange(newData);
 
     // Check if current state is valid (allow continuing with partial data)
@@ -107,6 +108,8 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       licenseNumber: currentStateData?.licenseNumber,
       salesTransactions: currentStateData?.salesTransactions,
       pendingTransactions: currentStateData?.pendingTransactions,
+      associationsLength: currentStateData?.associations?.length,
+      primaryAssociation: currentStateData?.primaryAssociation,
       mlsLength: currentStateData?.mls?.length,
       certifiedMentor: currentStateData?.certifiedMentor
     });
