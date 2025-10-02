@@ -7,7 +7,8 @@ import { BinaryChoice } from "@/components/ui/binary-choice";
 import { MobileMultiSelect } from "@/components/ui/mobile-multi-select";
 import { MobileSelect } from "@/components/ui/mobile-select";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { HelpCircle } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
@@ -255,10 +256,47 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         const salesCount = parseInt(currentData.salesTransactions || '0');
         return salesCount > 0 && salesCount <= 3;
       })() && <div ref={setFieldRef(2)} className="space-y-3">
-        <BinaryChoice value={currentData.certifiedMentor} onValueChange={value => {
-        updateCurrentStateData('certifiedMentor', value);
-        if (value === 'yes') scrollToNextField(2);else scrollToNextField(3);
-      }} label="You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?" required />
+        <TooltipProvider>
+          <div className="space-y-3">
+            <div className="flex items-start gap-2">
+              <Label className="text-sm font-medium text-foreground flex-1">
+                You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
+              </Label>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button
+                    type="button"
+                    className="text-muted-foreground hover:text-foreground transition-colors mt-0.5"
+                    aria-label="More information about Certified Mentor Program"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs">
+                  <p>Our mentor program pairs new or less experienced agents with seasoned professionals to help accelerate your success at eXp.</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <RadioGroup 
+              value={currentData.certifiedMentor} 
+              onValueChange={value => {
+                updateCurrentStateData('certifiedMentor', value);
+                if (value === 'yes') scrollToNextField(2);
+                else scrollToNextField(3);
+              }}
+              className="flex flex-col gap-3 md:flex-row md:gap-6"
+            >
+              <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+                <RadioGroupItem value="yes" id="certified-mentor-yes" className="h-5 w-5" />
+                <Label htmlFor="certified-mentor-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
+              </div>
+              <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+                <RadioGroupItem value="no" id="certified-mentor-no" className="h-5 w-5" />
+                <Label htmlFor="certified-mentor-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
+              </div>
+            </RadioGroup>
+          </div>
+        </TooltipProvider>
 
         {/* Conditional field for selecting a specific mentor */}
         {currentData.certifiedMentor === 'yes' && <div className="space-y-2 mt-4">
