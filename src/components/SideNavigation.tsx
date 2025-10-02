@@ -74,7 +74,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
             
             {/* Show sub-steps for "Your Information" when expanded */}
             {step.title === "Your Information" && isYourInfoExpanded && (
-              <div className="ml-3 border-l border-[#CECFD3] pl-0 py-2">
+              <div className="ml-3 border-l-2 border-[#1B489B] pl-0 py-2">
                 {yourInfoSubSteps.map((subStepTitle, subIndex) => (
                   <SubNavigationStep
                     key={subStepTitle}
