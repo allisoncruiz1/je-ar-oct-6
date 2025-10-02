@@ -357,9 +357,6 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
         <DialogContent className="sm:max-w-[900px]">
-          <DialogHeader>
-            <DialogTitle>Search Results</DialogTitle>
-          </DialogHeader>
           <div className="space-y-6">
             {!pendingSponsor ? (
               <>
