@@ -204,8 +204,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
                       <TooltipTrigger asChild>
                         <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
                       </TooltipTrigger>
-                      <TooltipContent side="right">
-                        <p>Select the state where you currently hold an active real estate license.</p>
+                      <TooltipContent side="right" className="max-w-xs">
+                        <p className="mb-1">Select the state where you currently hold</p>
+                        <p>an active real estate license.</p>
                       </TooltipContent>
                     </Tooltip>
                   </div>
