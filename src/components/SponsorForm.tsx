@@ -53,10 +53,19 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   const [manualSponsorDetails, setManualSponsorDetails] = useState('');
 
   const resultsRef = useRef<HTMLDivElement>(null);
+  const sponsorSectionRef = useRef<HTMLDivElement>(null);
 
   const handleAcknowledge = () => {
     setPolicyAcknowledged(true);
     setAcknowledgedAt(new Date());
+    
+    // Scroll to sponsor selection section after acknowledgment
+    setTimeout(() => {
+      sponsorSectionRef.current?.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center'
+      });
+    }, 300);
   };
 
   const handleSearchSponsor = () => {
@@ -306,7 +315,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
         {/* Section B: Choose Your Sponsor */}
         {policyAcknowledged && (
-          <div className="space-y-6">
+          <div ref={sponsorSectionRef} className="space-y-6">
             {!selectedSponsor ? (
               <>
                 {/* Helper Text */}
