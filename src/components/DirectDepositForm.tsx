@@ -80,18 +80,20 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
   };
 
   const validateForm = () => {
-    // If using previous account, form is valid once selection is made
+    // Check name fields based on account type
+    const hasValidName = formData.accountType === 'business'
+      ? formData.businessName.trim() !== ''
+      : formData.accountType === 'personal' 
+        ? formData.firstName.trim() !== '' && formData.lastName.trim() !== ''
+        : false;
+    
+    // If using previous account, validate name fields, bank name, and account type
     if (usePreviousAccount === 'previous' && previousBankAccount) {
-      return true;
+      return hasValidName && formData.bankName.trim() !== '' && formData.accountType !== '';
     }
     
     // If providing different details, validate all fields
     if (usePreviousAccount === 'different') {
-      // Check name fields based on account type
-      const hasValidName = formData.accountType === 'business'
-        ? formData.businessName.trim() !== ''
-        : formData.firstName.trim() !== '' && formData.lastName.trim() !== '';
-      
       const isValid = 
         hasValidName &&
         formData.bankName.trim() !== '' &&
@@ -162,8 +164,8 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
           </div>
         )}
 
-        {/* Bank Information - Only show if providing different details or no previous account */}
-        {(usePreviousAccount === 'different' || !previousBankAccount) && (
+        {/* Bank Information - Show for both previous (partial) and different (full) */}
+        {(usePreviousAccount === 'previous' || usePreviousAccount === 'different' || !previousBankAccount) && (
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label htmlFor="account-type">
@@ -233,48 +235,53 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="routing-number">
-                Routing Number <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="routing-number"
-                placeholder="9-digit routing number"
-                value={formData.routingNumber}
-                onChange={(e) => updateFormData('routingNumber', e.target.value)}
-                maxLength={9}
-              />
-            </div>
+            {/* Only show routing and account number fields if providing different details or no previous account */}
+            {(usePreviousAccount === 'different' || !previousBankAccount) && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="routing-number">
+                    Routing Number <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="routing-number"
+                    placeholder="9-digit routing number"
+                    value={formData.routingNumber}
+                    onChange={(e) => updateFormData('routingNumber', e.target.value)}
+                    maxLength={9}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="account-number">
-                Account Number <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="account-number"
-                type="password"
-                placeholder="Enter your account number"
-                value={formData.accountNumber}
-                onChange={(e) => updateFormData('accountNumber', e.target.value)}
-              />
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="account-number">
+                    Account Number <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="account-number"
+                    type="password"
+                    placeholder="Enter your account number"
+                    value={formData.accountNumber}
+                    onChange={(e) => updateFormData('accountNumber', e.target.value)}
+                  />
+                </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="confirm-account-number">
-                Confirm Account Number <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="confirm-account-number"
-                type="password"
-                placeholder="Re-enter your account number"
-                value={formData.confirmAccountNumber}
-                onChange={(e) => updateFormData('confirmAccountNumber', e.target.value)}
-              />
-              {formData.confirmAccountNumber && 
-               formData.accountNumber !== formData.confirmAccountNumber && (
-                <p className="text-sm text-destructive">Account numbers do not match</p>
-              )}
-            </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-account-number">
+                    Confirm Account Number <span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="confirm-account-number"
+                    type="password"
+                    placeholder="Re-enter your account number"
+                    value={formData.confirmAccountNumber}
+                    onChange={(e) => updateFormData('confirmAccountNumber', e.target.value)}
+                  />
+                  {formData.confirmAccountNumber && 
+                   formData.accountNumber !== formData.confirmAccountNumber && (
+                    <p className="text-sm text-destructive">Account numbers do not match</p>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         )}
       </div>
