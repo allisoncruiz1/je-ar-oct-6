@@ -67,13 +67,13 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   const handleSelectSponsor = (sponsor: SelectedSponsor) => {
     setPendingSponsor(sponsor);
-    setShowSearchResults(false);
   };
 
   const handleConfirmSponsor = () => {
     if (pendingSponsor) {
       setSelectedSponsor(pendingSponsor);
       setPendingSponsor(null);
+      setShowSearchResults(false);
       onFormValidChange?.(true);
     }
   };
@@ -233,7 +233,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         {/* Section B: Choose Your Sponsor */}
         {policyAcknowledged && (
           <div className="space-y-6">
-            {!selectedSponsor && !pendingSponsor ? (
+            {!selectedSponsor ? (
               <>
                 {/* Helper Text */}
                 <div>
@@ -308,49 +308,6 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                   </Button>
                 </div>
               </>
-            ) : pendingSponsor ? (
-              /* Pending Sponsor Confirmation */
-              <div className="border-2 border-primary rounded-lg p-6 bg-primary/5">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Confirm Your Selection</h3>
-                
-                <div className="bg-background rounded-lg p-4 mb-4">
-                  <p className="text-sm text-muted-foreground mb-2">You selected:</p>
-                  <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
-                  {pendingSponsor.email && (
-                    <p className="text-sm text-muted-foreground">{pendingSponsor.email}</p>
-                  )}
-                  {(pendingSponsor.city || pendingSponsor.state) && (
-                    <p className="text-sm text-muted-foreground">
-                      {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
-                    </p>
-                  )}
-                </div>
-
-                <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-6">
-                  <p className="text-sm text-foreground font-semibold mb-2">⚠️ Important Notice</p>
-                  <p className="text-sm text-foreground">
-                    Sponsor selections are <span className="font-semibold">final and cannot be changed</span> after submission. Please ensure this is the correct person before confirming.
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    onClick={handleConfirmSponsor}
-                    size="lg"
-                    className="w-full sm:flex-1"
-                  >
-                    Confirm Selection
-                  </Button>
-                  <Button
-                    onClick={handleCancelSelection}
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    Choose Different Sponsor
-                  </Button>
-                </div>
-              </div>
             ) : (
               /* Selected Sponsor Summary */
               <div className="border border-border rounded-lg p-4">
@@ -407,45 +364,94 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Name</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Email</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">City</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">State</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Country</th>
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {mockResults.map((result) => (
-                    <tr key={result.id} className="border-b border-border hover:bg-muted/50">
-                      <td className="py-3 px-4 text-sm text-foreground">{result.name}</td>
-                      <td className="py-3 px-4 text-sm text-foreground">{result.email}</td>
-                      <td className="py-3 px-4 text-sm text-foreground">{result.city}</td>
-                      <td className="py-3 px-4 text-sm text-foreground">{result.state}</td>
-                      <td className="py-3 px-4 text-sm text-foreground">{result.country}</td>
-                      <td className="py-3 px-4">
-                        <Button
-                          size="sm"
-                          onClick={() => handleSelectSponsor(result)}
-                        >
-                          Select
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <button
-              onClick={handleNoSponsor}
-              className="text-foreground underline hover:no-underline font-semibold text-sm"
-            >
-              My Sponsor isn't listed.
-            </button>
+            {!pendingSponsor ? (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="w-full border-collapse">
+                    <thead>
+                      <tr className="border-b border-border">
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Name</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Email</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">City</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">State</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Country</th>
+                        <th className="text-left py-3 px-4 text-sm font-semibold text-foreground">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {mockResults.map((result) => (
+                        <tr key={result.id} className="border-b border-border hover:bg-muted/50">
+                          <td className="py-3 px-4 text-sm text-foreground">{result.name}</td>
+                          <td className="py-3 px-4 text-sm text-foreground">{result.email}</td>
+                          <td className="py-3 px-4 text-sm text-foreground">{result.city}</td>
+                          <td className="py-3 px-4 text-sm text-foreground">{result.state}</td>
+                          <td className="py-3 px-4 text-sm text-foreground">{result.country}</td>
+                          <td className="py-3 px-4">
+                            <Button
+                              size="sm"
+                              onClick={() => handleSelectSponsor(result)}
+                            >
+                              Select
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <button
+                  onClick={handleNoSponsor}
+                  className="text-foreground underline hover:no-underline font-semibold text-sm"
+                >
+                  My Sponsor isn't listed.
+                </button>
+              </>
+            ) : (
+              /* Confirmation Section Within Dialog */
+              <div className="space-y-4">
+                <div className="border-2 border-primary rounded-lg p-6 bg-primary/5">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Confirm Your Selection</h3>
+                  
+                  <div className="bg-background rounded-lg p-4 mb-4">
+                    <p className="text-sm text-muted-foreground mb-2">You selected:</p>
+                    <p className="font-semibold text-foreground text-lg">{pendingSponsor.name}</p>
+                    {pendingSponsor.email && (
+                      <p className="text-sm text-muted-foreground">{pendingSponsor.email}</p>
+                    )}
+                    {(pendingSponsor.city || pendingSponsor.state) && (
+                      <p className="text-sm text-muted-foreground">
+                        {pendingSponsor.city}{pendingSponsor.city && pendingSponsor.state && ', '}{pendingSponsor.state}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-4 mb-6">
+                    <p className="text-sm text-foreground font-semibold mb-2">⚠️ Important Notice</p>
+                    <p className="text-sm text-foreground">
+                      Sponsor selections are <span className="font-semibold">final and cannot be changed</span> after submission. Please ensure this is the correct person before confirming.
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={handleConfirmSponsor}
+                      size="lg"
+                      className="w-full sm:flex-1"
+                    >
+                      Confirm This Sponsor
+                    </Button>
+                    <Button
+                      onClick={handleCancelSelection}
+                      variant="outline"
+                      size="lg"
+                      className="w-full sm:w-auto"
+                    >
+                      Back to Results
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
