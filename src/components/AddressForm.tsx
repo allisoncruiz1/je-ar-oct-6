@@ -467,7 +467,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({
         if (!formData.city || !formData.state || formData.zipCode.slice(0, 5) !== value.slice(0, 5)) {
           newData.city = cityState.city;
           newData.state = cityState.state;
-          toast.success(`Auto-filled: ${cityState.city}, ${cityState.state}`);
         }
       }
     }
@@ -693,8 +692,10 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
           )}
         />
-        {fieldErrors.city && touchedFields.city && (
+        {fieldErrors.city && touchedFields.city ? (
           <p className="mt-1 text-sm text-destructive">{fieldErrors.city}</p>
+        ) : (
+          <p className="mt-1 text-xs text-muted-foreground">Auto-filled from ZIP code if available</p>
         )}
       </div>
 
