@@ -417,6 +417,9 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
       {/* Search Results Dialog */}
       <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
         <DialogContent className="sm:max-w-[900px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Sponsor Search</DialogTitle>
+          </DialogHeader>
           <div className="space-y-6">
             {!pendingSponsor ? (
               <>
