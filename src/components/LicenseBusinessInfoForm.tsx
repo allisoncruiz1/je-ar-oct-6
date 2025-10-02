@@ -293,25 +293,9 @@ export const LicenseBusinessInfoForm: React.FC<LicenseBusinessInfoFormProps> = (
               {/* International Countries Selection - Conditional */}
               {formData.conductBusinessOutsideUS === 'yes' && (
                 <div ref={setFieldRef(3)} className="w-full space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Label className="text-sm font-medium text-foreground leading-none">
-                      Where? <span className="text-destructive">*</span>
-                    </Label>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          type="button"
-                          aria-label="Help: Countries you conduct business in"
-                          className="ml-1 inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
-                        >
-                          <HelpCircle className="h-4 w-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Select all countries where you conduct business activities</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
+                  <Label className="text-sm font-medium text-foreground leading-none">
+                    Where? <span className="text-destructive">*</span>
+                  </Label>
                   
                   <MobileMultiSelect
                     options={COUNTRIES}
