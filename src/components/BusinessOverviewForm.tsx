@@ -18,6 +18,7 @@ import { useViewportSticky } from '@/hooks/useViewportSticky';
 export interface BusinessOverviewData {
   ownsBrokerage: string;
   spouseAtDifferentBrokerage: string;
+  formingDomesticPartnership?: string;
   ownsRealEstateOffice: string;
   preExistingMatters: string[];
   licenseTransferDate: Date | undefined;
@@ -52,6 +53,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   const [formData, setFormData] = useState<BusinessOverviewData>({
     ownsBrokerage: initialData?.ownsBrokerage || '',
     spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || '',
+    formingDomesticPartnership: initialData?.formingDomesticPartnership || '',
     ownsRealEstateOffice: initialData?.ownsRealEstateOffice || '',
     preExistingMatters: initialData?.preExistingMatters || [],
     licenseTransferDate: initialData?.licenseTransferDate || undefined
@@ -80,8 +82,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
   const validateForm = () => {
     const isValid = formData.ownsBrokerage.trim() !== '' && 
       formData.spouseAtDifferentBrokerage.trim() !== '' && 
-      // Only require ownsRealEstateOffice if spouse is at different brokerage
-      (formData.spouseAtDifferentBrokerage !== 'yes' || formData.ownsRealEstateOffice.trim() !== '') &&
+      // Only require formingDomesticPartnership if spouse is at different brokerage
+      (formData.spouseAtDifferentBrokerage !== 'yes' || formData.formingDomesticPartnership?.trim() !== '') &&
+      formData.ownsRealEstateOffice.trim() !== '' &&
       formData.preExistingMatters.length > 0 && 
       formData.licenseTransferDate !== undefined;
     return isValid;
@@ -155,39 +158,52 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       <div ref={setFieldRef(1)} className="space-y-3">
         <BinaryChoice value={formData.spouseAtDifferentBrokerage} onValueChange={value => {
           updateFormData('spouseAtDifferentBrokerage', value);
-          // Clear ownsRealEstateOffice if changing away from 'yes'
+          // Clear formingDomesticPartnership if changing away from 'yes'
           if (value !== 'yes') {
-            updateFormData('ownsRealEstateOffice', '');
+            updateFormData('formingDomesticPartnership', '');
           }
           scrollToNextField(1);
         }} label="Do you have a spouse or domestic partner that is affiliated with a different brokerage?" required />
       </div>
 
-      {/* Owns Real Estate Office - Conditional on spouse at different brokerage */}
+      {/* Forming Domestic Partnership - Conditional on spouse at different brokerage */}
       {formData.spouseAtDifferentBrokerage === 'yes' && (
         <div ref={setFieldRef(2)} className="space-y-3">
-          <Label className="text-sm font-medium text-foreground">
-            Do you currently own lease, or manage a real estate office in any capacity? <span className="text-destructive">*</span>
-          </Label>
-          <RadioGroup value={formData.ownsRealEstateOffice} onValueChange={value => {
-            updateFormData('ownsRealEstateOffice', value);
-            scrollToNextField(2);
-          }} className="flex flex-col gap-3 md:flex-row md:gap-6">
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
-              <RadioGroupItem value="yes" id="owns-office-yes" className="h-5 w-5" />
-              <Label htmlFor="owns-office-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
-            </div>
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
-              <RadioGroupItem value="no" id="owns-office-no" className="h-5 w-5" />
-              <Label htmlFor="owns-office-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
-            </div>
-            <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
-              <RadioGroupItem value="not-sure" id="owns-office-not-sure" className="h-5 w-5" />
-              <Label htmlFor="owns-office-not-sure" className="text-base md:text-sm text-foreground cursor-pointer">Not Sure/Maybe</Label>
-            </div>
-          </RadioGroup>
+          <BinaryChoice 
+            value={formData.formingDomesticPartnership || ''} 
+            onValueChange={value => {
+              updateFormData('formingDomesticPartnership', value);
+              scrollToNextField(2);
+            }} 
+            label="Do you intend on forming a Domestic Partnership?" 
+            required 
+          />
         </div>
       )}
+
+      {/* Owns Real Estate Office - Always visible */}
+      <div ref={setFieldRef(3)} className="space-y-3">
+        <Label className="text-sm font-medium text-foreground">
+          Do you currently own lease, or manage a real estate office in any capacity? <span className="text-destructive">*</span>
+        </Label>
+        <RadioGroup value={formData.ownsRealEstateOffice} onValueChange={value => {
+          updateFormData('ownsRealEstateOffice', value);
+          scrollToNextField(3);
+        }} className="flex flex-col gap-3 md:flex-row md:gap-6">
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+            <RadioGroupItem value="yes" id="owns-office-yes" className="h-5 w-5" />
+            <Label htmlFor="owns-office-yes" className="text-base md:text-sm text-foreground cursor-pointer">Yes</Label>
+          </div>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+            <RadioGroupItem value="no" id="owns-office-no" className="h-5 w-5" />
+            <Label htmlFor="owns-office-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
+          </div>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+            <RadioGroupItem value="not-sure" id="owns-office-not-sure" className="h-5 w-5" />
+            <Label htmlFor="owns-office-not-sure" className="text-base md:text-sm text-foreground cursor-pointer">Not Sure/Maybe</Label>
+          </div>
+        </RadioGroup>
+      </div>
 
       {/* Brick & Mortar Office Information - Conditional on ownsRealEstateOffice === 'yes' */}
       {formData.ownsRealEstateOffice === 'yes' && <div className="space-y-3 p-4 bg-muted/30 rounded-lg border border-border">
@@ -208,7 +224,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         </div>}
 
       {/* Pre-existing Matters Disclosure */}
-      <div ref={setFieldRef(3)} className="space-y-3">
+      <div ref={setFieldRef(4)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
           Pre-existing Matters Disclosure (Choose all that apply) <span className="text-destructive">*</span>
         </Label>
@@ -226,7 +242,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* License Transfer Date */}
-      <div ref={setFieldRef(4)} className="space-y-2">
+      <div ref={setFieldRef(5)} className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
