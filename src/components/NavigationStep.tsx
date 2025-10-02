@@ -61,7 +61,7 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
           {isExpanded ? (
             <ChevronDown className="w-4 h-4 text-[#858791]" />
           ) : (
-            <ChevronRight className="w-4 h-4 text-[#858791]" />
+            <ChevronDown className="w-4 h-4 text-[#858791]" />
           )}
         </div>
       )}
