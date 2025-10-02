@@ -258,15 +258,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       })() && <div ref={setFieldRef(2)} className="space-y-3">
         <TooltipProvider>
           <div className="space-y-3">
-            <div className="flex items-start gap-1">
-              <Label className="text-sm font-medium text-foreground">
+            <Label className="text-sm font-medium text-foreground flex items-start gap-1">
+              <span>
                 You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
-              </Label>
+              </span>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
                     type="button"
-                    className="text-muted-foreground hover:text-foreground transition-colors mt-0.5"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
                     aria-label="More information about Certified Mentor Program"
                   >
                     <HelpCircle className="h-4 w-4" />
@@ -276,7 +276,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
                   <p>Our mentor program pairs new or less experienced agents with seasoned professionals to help accelerate your success at eXp.</p>
                 </TooltipContent>
               </Tooltip>
-            </div>
+            </Label>
             <RadioGroup 
               value={currentData.certifiedMentor} 
               onValueChange={value => {
