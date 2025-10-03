@@ -273,29 +273,9 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
 
         {/* Team Role Question - Conditional */}
         {formData.agentType === 'team' && <div ref={setFieldRef(1)} className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Label className="text-sm font-medium text-foreground">
-                What's your role within the team? <span className="text-destructive">*</span>
-              </Label>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      aria-label="Help: Team role"
-                      className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
-                    >
-                      <Info className="h-4 w-4" />
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top" className="max-w-xs">
-                    <p className="text-xs">
-                      Team Members work under a Team Leader who manages the team's operations and growth.
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+            <Label className="text-sm font-medium text-foreground">
+              What's your role within the team? <span className="text-destructive">*</span>
+            </Label>
             <RadioGroup value={formData.teamRole} onValueChange={value => {
           updateFormData('teamRole', value);
           scrollToNextField(1);
