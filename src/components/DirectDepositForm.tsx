@@ -7,6 +7,7 @@ import { MobileActionBar } from '@/components/MobileActionBar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Info } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { SaveResumeDialog } from '@/components/SaveResumeDialog';
 export interface DirectDepositData {
   firstName: string;
   lastName: string;
@@ -48,6 +49,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
   continueButtonText = "Continue"
 }) => {
   const [usePreviousAccount, setUsePreviousAccount] = useState<string>('');
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
   const [formData, setFormData] = useState<DirectDepositData>({
     firstName: initialData?.firstName || '',
     lastName: initialData?.lastName || '',
@@ -115,6 +117,13 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
     const isValid = validateForm();
     onFormValidChange(isValid);
   }, [formData, usePreviousAccount]);
+
+  const handleSaveResume = (email: string) => {
+    console.log('Saving progress for email:', email);
+    // TODO: Implement actual save logic
+    onSaveResume?.();
+  };
+
   return <div className="space-y-8 md:pb-0 pt-6 md:pt-8">
       <div className="space-y-6">
         <div>
@@ -264,7 +273,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
       {/* Desktop action bar */}
       <div ref={actionBarRef} className="hidden md:block sticky bottom-0 bg-background border-t border-border p-4 -mx-4 -mb-0 mt-8">
         <div className="flex items-center justify-between">
-          <Button variant="outline" onClick={onSaveResume} aria-label="Save and resume application later">
+          <Button variant="outline" onClick={() => setSaveDialogOpen(true)} aria-label="Save and resume application later">
             Save & Resume Later
           </Button>
           <div className="flex gap-3">
@@ -279,6 +288,13 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
       </div>
 
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
+      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={() => setSaveDialogOpen(true)} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
+
+      {/* Save and Resume Dialog */}
+      <SaveResumeDialog 
+        open={saveDialogOpen} 
+        onOpenChange={setSaveDialogOpen}
+        onSave={handleSaveResume}
+      />
     </div>;
 };
