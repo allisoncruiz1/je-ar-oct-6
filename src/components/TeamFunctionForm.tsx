@@ -229,7 +229,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
                 </TooltipTrigger>
                 <TooltipContent side="top" className="max-w-xs">
                   <p className="text-xs">
-                    Individual agents work independently, while team members collaborate with other agents under a team structure.
+                    Choose 'Individual Agent' if you plan to work independently, or 'Part of a Team' if you're joining or leading a team structure at eXp.
                   </p>
                 </TooltipContent>
               </Tooltip>
