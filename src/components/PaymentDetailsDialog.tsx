@@ -326,26 +326,9 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
                     Please double-check your entry. You can:
                   </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-4">
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
                     Card number does not match with other details (Attempt {cardValidationAttempts}/3)
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-2.5 pt-2 border-t border-amber-200 dark:border-amber-800/50">
-                    <Button
-                      size="sm"
-                      onClick={handleUpdateCardDetails}
-                      className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm"
-                    >
-                      Update Card Details
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleConfirmCardAndContinue}
-                      className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40"
-                    >
-                      Confirm and Continue
-                    </Button>
-                  </div>
                 </AlertDescription>
               </div>
             </div>
@@ -505,14 +488,34 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </div>
         </div>
 
-        <Button
-          onClick={handleAddCard}
-          disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-          className="w-full min-h-[48px]"
-          size="lg"
-        >
-          Add Card
-        </Button>
+        {cardValidationError && !showCardConfirmation ? (
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <Button
+              size="lg"
+              onClick={handleUpdateCardDetails}
+              className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
+            >
+              Update Card Details
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleConfirmCardAndContinue}
+              className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
+            >
+              Confirm and Continue
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={handleAddCard}
+            disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+            className="w-full min-h-[48px]"
+            size="lg"
+          >
+            Add Card
+          </Button>
+        )}
           </>
         )}
       </TabsContent>
@@ -526,34 +529,23 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {bankValidationError && !showBankConfirmation && (
-          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-amber-900 dark:text-amber-200">
-              <p className="font-medium mb-2">
-                We weren't able to validate these details. Please double-check your entry. You can:
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleUpdateBankDetails}
-                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
-                >
-                  Update Bank Details
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleConfirmBankAndContinue}
-                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
-                >
-                  Confirm and Continue
-                </Button>
+          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+            <div className="flex gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <AlertDescription className="text-amber-900 dark:text-amber-100">
+                  <p className="font-semibold text-base mb-1">
+                    We weren't able to validate these details
+                  </p>
+                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                    Please double-check your entry. You can:
+                  </p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
+                    Account number does not match with routing number (Attempt {bankValidationAttempts}/3)
+                  </p>
+                </AlertDescription>
               </div>
-              <p className="text-xs mt-2 text-amber-800 dark:text-amber-300">
-                Account number does not match with routing number (Attempt {bankValidationAttempts}/3)
-              </p>
-            </AlertDescription>
+            </div>
           </Alert>
         )}
 
@@ -621,14 +613,34 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </div>
         </div>
 
-        <Button
-          onClick={handleAddBankAccount}
-          disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
-          className="w-full min-h-[48px]"
-          size="lg"
-        >
-          Add Bank Account
-        </Button>
+        {bankValidationError && !showBankConfirmation ? (
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <Button
+              size="lg"
+              onClick={handleUpdateBankDetails}
+              className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
+            >
+              Update Bank Details
+            </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleConfirmBankAndContinue}
+              className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
+            >
+              Confirm and Continue
+            </Button>
+          </div>
+        ) : (
+          <Button
+            onClick={handleAddBankAccount}
+            disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
+            className="w-full min-h-[48px]"
+            size="lg"
+          >
+            Add Bank Account
+          </Button>
+        )}
           </>
         )}
       </TabsContent>
