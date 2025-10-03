@@ -17,7 +17,8 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Eye, EyeOff } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Eye, EyeOff, AlertTriangle } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PaymentDetailsDialogProps {
@@ -57,45 +58,168 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   const [accountNumber, setAccountNumber] = useState('');
   const [accountType, setAccountType] = useState('');
 
+  // Validation State
+  const [cardValidationAttempts, setCardValidationAttempts] = useState(0);
+  const [bankValidationAttempts, setBankValidationAttempts] = useState(0);
+  const [cardValidationError, setCardValidationError] = useState(false);
+  const [bankValidationError, setBankValidationError] = useState(false);
+  const [showCardConfirmation, setShowCardConfirmation] = useState(false);
+  const [showBankConfirmation, setShowBankConfirmation] = useState(false);
+  const [savedCardData, setSavedCardData] = useState<any>(null);
+  const [savedBankData, setSavedBankData] = useState<any>(null);
+
+  // Mock validation function - simulates payment processor validation
+  const validatePaymentDetails = (type: 'credit-card' | 'bank-account'): boolean => {
+    // For demo purposes, we'll randomly fail validation to show the flow
+    // In production, this would call a real payment processor API
+    const shouldFail = Math.random() > 0.5;
+    return !shouldFail;
+  };
+
   const handleAddCard = () => {
+    const isValid = validatePaymentDetails('credit-card');
+    
+    if (!isValid) {
+      setCardValidationAttempts(prev => prev + 1);
+      setCardValidationError(true);
+      
+      // Save the card data for potential confirmation
+      setSavedCardData({
+        billingName,
+        cardholderName,
+        cardNumber,
+        expiryDate,
+        cvv,
+        billingZip,
+      });
+
+      // After 3 attempts, show confirmation screen
+      if (cardValidationAttempts + 1 >= 3) {
+        setShowCardConfirmation(true);
+      }
+      return;
+    }
+
+    // Validation successful
     const paymentData = {
       id: `payment-${Date.now()}`,
       type: 'credit-card',
       details: {
         billingName,
         cardholderName,
-        cardNumber: cardNumber.slice(-4), // Only store last 4 digits
+        cardNumber: cardNumber.slice(-4),
         expiryDate,
         billingZip,
       },
+      validated: true,
+      attemptCount: cardValidationAttempts,
+      bypassedValidation: false,
     };
     setAddedPayments([...addedPayments, paymentData]);
-    // Reset credit card form
+    resetCardForm();
+    setActiveTab('bank-account');
+  };
+
+  const handleConfirmCardAndContinue = () => {
+    const paymentData = {
+      id: `payment-${Date.now()}`,
+      type: 'credit-card',
+      details: {
+        billingName: savedCardData.billingName,
+        cardholderName: savedCardData.cardholderName,
+        cardNumber: savedCardData.cardNumber.slice(-4),
+        expiryDate: savedCardData.expiryDate,
+        billingZip: savedCardData.billingZip,
+      },
+      validated: false,
+      attemptCount: cardValidationAttempts,
+      bypassedValidation: true,
+    };
+    setAddedPayments([...addedPayments, paymentData]);
+    resetCardForm();
+    setActiveTab('bank-account');
+  };
+
+  const handleUpdateCardDetails = () => {
+    setCardValidationError(false);
+  };
+
+  const resetCardForm = () => {
     setBillingName('');
     setCardholderName('');
     setCardNumber('');
     setExpiryDate('');
     setCvv('');
     setBillingZip('');
-    // Switch to bank account tab
-    setActiveTab('bank-account');
+    setCardValidationAttempts(0);
+    setCardValidationError(false);
+    setShowCardConfirmation(false);
+    setSavedCardData(null);
   };
 
   const handleAddBankAccount = () => {
+    const isValid = validatePaymentDetails('bank-account');
+    
+    if (!isValid) {
+      setBankValidationAttempts(prev => prev + 1);
+      setBankValidationError(true);
+      
+      setSavedBankData({
+        routingNumber,
+        accountNumber,
+      });
+
+      if (bankValidationAttempts + 1 >= 3) {
+        setShowBankConfirmation(true);
+      }
+      return;
+    }
+
+    // Validation successful
     const paymentData = {
       id: `payment-${Date.now()}`,
       type: 'bank-account',
       details: {
         routingNumber,
-        accountNumber: accountNumber.slice(-4), // Only store last 4 digits
+        accountNumber: accountNumber.slice(-4),
       },
+      validated: true,
+      attemptCount: bankValidationAttempts,
+      bypassedValidation: false,
     };
     setAddedPayments([...addedPayments, paymentData]);
-    // Reset bank account form
+    resetBankForm();
+    setActiveTab('default-method');
+  };
+
+  const handleConfirmBankAndContinue = () => {
+    const paymentData = {
+      id: `payment-${Date.now()}`,
+      type: 'bank-account',
+      details: {
+        routingNumber: savedBankData.routingNumber,
+        accountNumber: savedBankData.accountNumber.slice(-4),
+      },
+      validated: false,
+      attemptCount: bankValidationAttempts,
+      bypassedValidation: true,
+    };
+    setAddedPayments([...addedPayments, paymentData]);
+    resetBankForm();
+    setActiveTab('default-method');
+  };
+
+  const handleUpdateBankDetails = () => {
+    setBankValidationError(false);
+  };
+
+  const resetBankForm = () => {
     setRoutingNumber('');
     setAccountNumber('');
-    // Switch to default method tab
-    setActiveTab('default-method');
+    setBankValidationAttempts(0);
+    setBankValidationError(false);
+    setShowBankConfirmation(false);
+    setSavedBankData(null);
   };
 
   const handleSaveDefault = () => {
@@ -117,15 +241,9 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   };
 
   const resetForm = () => {
-    setBillingName('');
-    setCardholderName('');
-    setCardNumber('');
-    setExpiryDate('');
-    setCvv('');
-    setBillingZip('');
+    resetCardForm();
+    resetBankForm();
     setAccountHolderName('');
-    setRoutingNumber('');
-    setAccountNumber('');
     setAccountType('');
   };
 
@@ -196,8 +314,89 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </p>
         </div>
 
-        <div className="space-y-3">
-          <div className="space-y-1">
+        {cardValidationError && !showCardConfirmation && (
+          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-900 dark:text-amber-200">
+              <p className="font-medium mb-2">
+                We weren't able to validate these details. Please double-check your entry. You can:
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleUpdateCardDetails}
+                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                >
+                  Update Card Details
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleConfirmCardAndContinue}
+                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                >
+                  Confirm and Continue
+                </Button>
+              </div>
+              <p className="text-xs mt-2 text-amber-800 dark:text-amber-300">
+                Card number does not match with other details (Attempt {cardValidationAttempts}/3)
+              </p>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {showCardConfirmation && (
+          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-900 dark:text-amber-200">
+              <p className="font-medium mb-3">
+                We weren't able to validate these details after 3 attempts. We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
+              </p>
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800 space-y-2">
+                <h4 className="font-semibold text-sm mb-2">Entered Details</h4>
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Billing Name:</span>
+                    <span className="font-medium">{savedCardData?.billingName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Cardholder Name:</span>
+                    <span className="font-medium">{savedCardData?.cardholderName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Card Number:</span>
+                    <span className="font-medium">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Expiry Date:</span>
+                    <span className="font-medium">{savedCardData?.expiryDate}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">CVV:</span>
+                    <span className="font-medium">***</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Billing ZIP:</span>
+                    <span className="font-medium">{savedCardData?.billingZip}</span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={handleConfirmCardAndContinue}
+                className="w-full mt-4"
+                size="sm"
+              >
+                Next
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {!showCardConfirmation && (
+          <>
+          <div className="space-y-3">
+            <div className="space-y-1">
             <Label htmlFor="billing-name">
               Billing Name<span className="text-destructive">*</span>
             </Label>
@@ -300,6 +499,8 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         >
           Add Card
         </Button>
+          </>
+        )}
       </TabsContent>
 
       <TabsContent value="bank-account" className="space-y-3">
@@ -310,8 +511,73 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </p>
         </div>
 
-        <div className="space-y-3">
-          <div className="space-y-1">
+        {bankValidationError && !showBankConfirmation && (
+          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-900 dark:text-amber-200">
+              <p className="font-medium mb-2">
+                We weren't able to validate these details. Please double-check your entry. You can:
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleUpdateBankDetails}
+                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                >
+                  Update Bank Details
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleConfirmBankAndContinue}
+                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
+                >
+                  Confirm and Continue
+                </Button>
+              </div>
+              <p className="text-xs mt-2 text-amber-800 dark:text-amber-300">
+                Account number does not match with routing number (Attempt {bankValidationAttempts}/3)
+              </p>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {showBankConfirmation && (
+          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
+            <AlertTriangle className="h-4 w-4 text-amber-600" />
+            <AlertDescription className="text-amber-900 dark:text-amber-200">
+              <p className="font-medium mb-3">
+                We weren't able to validate these details after 3 attempts. We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
+              </p>
+              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800 space-y-2">
+                <h4 className="font-semibold text-sm mb-2">Entered Details</h4>
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Routing Number:</span>
+                    <span className="font-medium">{savedBankData?.routingNumber}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Account Number:</span>
+                    <span className="font-medium">**** **** **** {savedBankData?.accountNumber.slice(-4)}</span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                onClick={handleConfirmBankAndContinue}
+                className="w-full mt-4"
+                size="sm"
+              >
+                Next
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
+
+        {!showBankConfirmation && (
+          <>
+          <div className="space-y-3">
+            <div className="space-y-1">
             <Label htmlFor="routing-number">
               Routing Number<span className="text-destructive">*</span>
             </Label>
@@ -349,6 +615,8 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         >
           Add Bank Account
         </Button>
+          </>
+        )}
       </TabsContent>
 
       <TabsContent value="default-method" className="space-y-3">
