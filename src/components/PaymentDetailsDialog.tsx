@@ -693,11 +693,11 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="max-h-[85vh]">
-          <DrawerHeader className="text-left">
+        <DrawerContent className="max-h-[85vh] flex flex-col">
+          <DrawerHeader className="text-left flex-shrink-0">
             <DrawerTitle className="text-xl font-semibold">Add Payment Details</DrawerTitle>
           </DrawerHeader>
-          <ScrollArea className="flex-1 px-4 pb-24">
+          <ScrollArea className="flex-1 overflow-auto px-4 pb-24">
             {formContent}
           </ScrollArea>
 
