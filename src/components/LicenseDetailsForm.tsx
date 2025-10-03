@@ -182,15 +182,41 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   return <div className="space-y-6 pb-24 md:pb-0">
       {/* State Navigation Header */}
       {licensedStates.length > 1 && <div className="mb-6">
-          <div className="flex items-center gap-2 flex-wrap">
+          {/* Mobile: Dropdown Select */}
+          <div className="md:hidden">
+            <Label className="text-sm font-medium text-foreground mb-2 block">
+              Select State
+            </Label>
+            <Select 
+              value={currentState} 
+              onValueChange={(value) => {
+                const index = licensedStates.indexOf(value);
+                if (index !== -1) setCurrentStateIndex(index);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="bg-background border border-border shadow-lg z-50">
+                {licensedStates.map((state) => (
+                  <SelectItem key={state} value={state} className="cursor-pointer">
+                    {state} {data[state]?.licenseNumber && '✓'}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Desktop: Tab Buttons */}
+          <div className="hidden md:flex items-center gap-2">
             {licensedStates.map((state, index) => (
               <button
                 key={state}
                 onClick={() => setCurrentStateIndex(index)}
                 className={cn(
-                  "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                  "px-6 py-2.5 rounded-lg text-sm font-medium transition-all",
                   index === currentStateIndex
-                    ? "bg-primary text-primary-foreground"
+                    ? "bg-primary text-primary-foreground shadow-sm"
                     : "bg-muted text-muted-foreground hover:bg-muted/80"
                 )}
               >
