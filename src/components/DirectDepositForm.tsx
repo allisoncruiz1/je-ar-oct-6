@@ -4,6 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Info } from 'lucide-react';
 export interface DirectDepositData {
   firstName: string;
   lastName: string;
@@ -155,8 +157,18 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
         {/* Bank Information - Show for both previous (partial) and different (full) */}
         {(usePreviousAccount === 'previous' || usePreviousAccount === 'different' || !previousBankAccount) && <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label className="font-semibold text-base">
+              <Label className="font-semibold text-base flex items-center gap-2">
                 What type of bank account should we use to deposit your commissions? <span className="text-destructive">*</span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger type="button" className="inline-flex">
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Please make sure the bank account you enter here matches the information on your W-9. eXp uses this same account for your commission payments and for IRS reporting, so consistency helps avoid delays or tax issues.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </Label>
               <RadioGroup value={formData.accountType} onValueChange={value => updateFormData('accountType', value)} className="space-y-3">
                 <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg md:bg-transparent md:p-0">
