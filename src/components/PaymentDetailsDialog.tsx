@@ -38,7 +38,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   existingPayments = [],
 }) => {
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState('credit-card');
+  const [activeTab, setActiveTab] = useState('bank-account');
   const [showCVV, setShowCVV] = useState(false);
   const [addedPayments, setAddedPayments] = useState<Array<any>>([]);
   const [defaultPaymentId, setDefaultPaymentId] = useState<string>('');
@@ -55,6 +55,23 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   const [routingNumber, setRoutingNumber] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [accountType, setAccountType] = useState('');
+
+  const handleAddBankAccount = () => {
+    const paymentData = {
+      id: `payment-${Date.now()}`,
+      type: 'bank-account',
+      details: {
+        routingNumber,
+        accountNumber: accountNumber.slice(-4), // Only store last 4 digits
+      },
+    };
+    setAddedPayments([...addedPayments, paymentData]);
+    // Reset bank account form
+    setRoutingNumber('');
+    setAccountNumber('');
+    // Switch to credit card tab
+    setActiveTab('credit-card');
+  };
 
   const handleAddCard = () => {
     const paymentData = {
@@ -74,23 +91,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     setExpiryDate('');
     setCvv('');
     setBillingZip('');
-    // Switch to bank account tab
-    setActiveTab('bank-account');
-  };
-
-  const handleAddBankAccount = () => {
-    const paymentData = {
-      id: `payment-${Date.now()}`,
-      type: 'bank-account',
-      details: {
-        routingNumber,
-        accountNumber: accountNumber.slice(-4), // Only store last 4 digits
-      },
-    };
-    setAddedPayments([...addedPayments, paymentData]);
-    // Reset bank account form
-    setRoutingNumber('');
-    setAccountNumber('');
     // Switch to default method tab
     setActiveTab('default-method');
   };
@@ -109,7 +109,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     
     setAddedPayments([]);
     setDefaultPaymentId('');
-    setActiveTab('credit-card');
+    setActiveTab('bank-account');
     onOpenChange(false);
   };
 
@@ -162,18 +162,18 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
       <TabsList className="w-full mb-4 gap-1">
         <TabsTrigger 
-          value="credit-card" 
+          value="bank-account" 
           className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length > 0}
         >
-          {isMobile ? '1. Card' : '1. Add Credit Card'}
+          {isMobile ? '1. Bank' : '1. Add Bank Account'}
         </TabsTrigger>
         <TabsTrigger 
-          value="bank-account" 
+          value="credit-card" 
           className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length === 0 || addedPayments.length > 1}
         >
-          {isMobile ? '2. Bank' : '2. Add Bank Account'}
+          {isMobile ? '2. Card' : '2. Add Credit Card'}
         </TabsTrigger>
         <TabsTrigger 
           value="default-method" 
@@ -282,55 +282,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           size="lg"
         >
           Add Card
-        </Button>
-      </TabsContent>
-
-      <TabsContent value="bank-account" className="space-y-4 sm:space-y-6">
-        <div>
-          <h3 className="text-base sm:text-lg font-semibold mb-2">Add Bank Account</h3>
-          <p className="text-[hsl(var(--brand-blue))] text-sm">
-            Add your bank account information for secure ACH transfers.
-          </p>
-        </div>
-
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="routing-number">
-              Routing Number<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="routing-number"
-              placeholder="9-digit routing number"
-              value={routingNumber}
-              onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
-              maxLength={9}
-              className="min-h-[44px]"
-            />
-            <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="account-number">
-              Account Number<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="account-number"
-              placeholder="5657 8858 3733 3383"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
-              className="min-h-[44px]"
-            />
-            <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
-          </div>
-        </div>
-
-        <Button
-          onClick={handleAddBankAccount}
-          disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
-          className="w-full min-h-[48px]"
-          size="lg"
-        >
-          Add Bank Account
         </Button>
       </TabsContent>
 
