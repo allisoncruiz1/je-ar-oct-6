@@ -196,7 +196,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-4 sm:space-y-6 pb-24">
           <div className="space-y-2">
             <Label htmlFor="billing-name">
               Billing Name<span className="text-destructive">*</span>
@@ -292,14 +292,16 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </div>
         </div>
 
-        <Button
-          onClick={handleAddCard}
-          disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-          className="w-full min-h-[48px]"
-          size="lg"
-        >
-          Add Card
-        </Button>
+        <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border px-0 py-3">
+          <Button
+            onClick={handleAddCard}
+            disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+            className="w-full min-h-[48px]"
+            size="lg"
+          >
+            Add Card
+          </Button>
+        </div>
       </TabsContent>
 
       <TabsContent value="bank-account" className="space-y-4 sm:space-y-6">
