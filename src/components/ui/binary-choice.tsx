@@ -76,27 +76,33 @@ export const BinaryChoice = React.forwardRef<
         >
           <div className="flex gap-3">
             <div
-              role="button"
+              role="radio"
+              aria-checked={value === 'yes'}
               tabIndex={0}
-              aria-pressed={value === 'yes'}
-              onClick={() => onValueChange('yes')}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('yes'); } }}
-              className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer select-none"
+              onClick={() => { console.debug('BinaryChoice click', { id, choice: 'yes' }); onValueChange('yes'); }}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); console.debug('BinaryChoice key', { id, choice: 'yes' }); onValueChange('yes'); } }}
+              className={cn(
+                "flex items-center space-x-3 p-4 rounded-lg h-14 flex-1 cursor-pointer select-none border",
+                value === 'yes' ? "bg-primary/10 border-primary" : "bg-muted/30 border-transparent"
+              )}
             >
-              <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+              <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5 pointer-events-none" />
               <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer">
                 {yesLabel}
               </Label>
             </div>
             <div
-              role="button"
+              role="radio"
+              aria-checked={value === 'no'}
               tabIndex={0}
-              aria-pressed={value === 'no'}
-              onClick={() => onValueChange('no')}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('no'); } }}
-              className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer select-none"
+              onClick={() => { console.debug('BinaryChoice click', { id, choice: 'no' }); onValueChange('no'); }}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); console.debug('BinaryChoice key', { id, choice: 'no' }); onValueChange('no'); } }}
+              className={cn(
+                "flex items-center space-x-3 p-4 rounded-lg h-14 flex-1 cursor-pointer select-none border",
+                value === 'no' ? "bg-primary/10 border-primary" : "bg-muted/30 border-transparent"
+              )}
             >
-              <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+              <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5 pointer-events-none" />
               <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer">
                 {noLabel}
               </Label>

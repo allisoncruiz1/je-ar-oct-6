@@ -91,6 +91,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       ...formData,
       [field]: value
     };
+    if (import.meta.env.DEV) {
+      console.debug('BusinessOverviewForm update', { field, value });
+    }
     setFormData(newData);
     onFormDataChange?.(newData);
   };
