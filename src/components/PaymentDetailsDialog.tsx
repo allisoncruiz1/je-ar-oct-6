@@ -391,132 +391,132 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         )}
 
         {!showCardConfirmation && (
-          <div className="space-y-3">
-            <div className="space-y-1">
-            <Label htmlFor="billing-name">
-              Billing Name<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="billing-name"
-              placeholder="Full billing name"
-              value={billingName}
-              onChange={(e) => setBillingName(e.target.value)}
-              className="min-h-[44px]"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label htmlFor="cardholder-name">
-              Cardholder Name<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="cardholder-name"
-              placeholder="Full name on card"
-              value={cardholderName}
-              onChange={(e) => setCardholderName(e.target.value)}
-              className="min-h-[44px]"
-            />
-          </div>
-
-          <div className="space-y-1">
-            <Label htmlFor="card-number">
-              Card Number<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="card-number"
-              placeholder="1234 5647 2627 8901"
-              value={cardNumber}
-              onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
-              maxLength={19}
-              className="min-h-[44px]"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <Label htmlFor="expiry-date">
-                Expiry Date<span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="expiry-date"
-                placeholder="MM/YYYY"
-                value={expiryDate}
-                onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
-                maxLength={7}
-                className="min-h-[44px]"
-              />
-            </div>
-
-            <div className="space-y-1">
-              <Label htmlFor="cvv">
-                CVV<span className="text-destructive">*</span>
-              </Label>
-              <div className="relative">
+          <>
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <Label htmlFor="billing-name">
+                  Billing Name<span className="text-destructive">*</span>
+                </Label>
                 <Input
-                  id="cvv"
-                  type={showCVV ? 'text' : 'password'}
-                  placeholder="123"
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                  maxLength={4}
-                  className="pr-10 min-h-[44px]"
+                  id="billing-name"
+                  placeholder="Full billing name"
+                  value={billingName}
+                  onChange={(e) => setBillingName(e.target.value)}
+                  className="min-h-[44px]"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowCVV(!showCVV)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-2 -m-2"
-                >
-                  {showCVV ? <EyeOff size={20} /> : <Eye size={20} />}
-                </button>
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="cardholder-name">
+                  Cardholder Name<span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="cardholder-name"
+                  placeholder="Full name on card"
+                  value={cardholderName}
+                  onChange={(e) => setCardholderName(e.target.value)}
+                  className="min-h-[44px]"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="card-number">
+                  Card Number<span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="card-number"
+                  placeholder="1234 5647 2627 8901"
+                  value={cardNumber}
+                  onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
+                  maxLength={19}
+                  className="min-h-[44px]"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label htmlFor="expiry-date">
+                    Expiry Date<span className="text-destructive">*</span>
+                  </Label>
+                  <Input
+                    id="expiry-date"
+                    placeholder="MM/YYYY"
+                    value={expiryDate}
+                    onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
+                    maxLength={7}
+                    className="min-h-[44px]"
+                  />
+                </div>
+
+                <div className="space-y-1">
+                  <Label htmlFor="cvv">
+                    CVV<span className="text-destructive">*</span>
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="cvv"
+                      type={showCVV ? 'text' : 'password'}
+                      placeholder="123"
+                      value={cvv}
+                      onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                      maxLength={4}
+                      className="pr-10 min-h-[44px]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowCVV(!showCVV)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-2 -m-2"
+                    >
+                      {showCVV ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <Label htmlFor="billing-zip">
+                  Billing ZIP Code<span className="text-destructive">*</span>
+                </Label>
+                <Input
+                  id="billing-zip"
+                  placeholder="12345"
+                  value={billingZip}
+                  onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                  maxLength={5}
+                  className="min-h-[44px]"
+                />
               </div>
             </div>
-          </div>
 
-          <div className="space-y-1">
-            <Label htmlFor="billing-zip">
-              Billing ZIP Code<span className="text-destructive">*</span>
-            </Label>
-            <Input
-              id="billing-zip"
-              placeholder="12345"
-              value={billingZip}
-              onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
-              maxLength={5}
-              className="min-h-[44px]"
-            />
-          </div>
-        </div>
-        )}
-
-        {!showCardConfirmation && (
-          cardValidationError ? (
-            <div className="flex flex-col sm:flex-row gap-2.5">
+            {cardValidationError ? (
+              <div className="flex flex-col sm:flex-row gap-2.5">
+                <Button
+                  size="lg"
+                  onClick={handleUpdateCardDetails}
+                  className="flex-1 min-h-[48px]"
+                >
+                  Update Card Details
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleConfirmCardAndContinue}
+                  className="flex-1 min-h-[48px]"
+                >
+                  Confirm and Continue
+                </Button>
+              </div>
+            ) : (
               <Button
+                onClick={handleAddCard}
+                disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+                className="w-full min-h-[48px]"
                 size="lg"
-                onClick={handleUpdateCardDetails}
-                className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
               >
-                Update Card Details
+                Add Card
               </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={handleConfirmCardAndContinue}
-                className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
-              >
-                Confirm and Continue
-              </Button>
-            </div>
-          ) : (
-            <Button
-              onClick={handleAddCard}
-              disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-              className="w-full min-h-[48px]"
-              size="lg"
-            >
-              Add Card
-            </Button>
-          )
+            )}
+          </>
         )}
       </TabsContent>
 
