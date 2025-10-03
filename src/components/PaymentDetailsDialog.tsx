@@ -71,6 +71,10 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   // Field visibility state (for Option B)
   const [showCardFields, setShowCardFields] = useState(true);
   const [showBankFields, setShowBankFields] = useState(true);
+  
+  // Field-level validation errors
+  const [routingNumberError, setRoutingNumberError] = useState('');
+  const [accountNumberError, setAccountNumberError] = useState('');
 
   // Mock validation function - simulates payment processor validation
   // Triggers failure when name is "Allison Smith"
@@ -230,6 +234,8 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     setShowBankConfirmation(false);
     setSavedBankData(null);
     setShowBankFields(true); // Reset field visibility
+    setRoutingNumberError('');
+    setAccountNumberError('');
   };
 
   const handleSaveDefault = () => {
@@ -590,11 +596,23 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               id="routing-number"
               placeholder="9-digit routing number"
               value={routingNumber}
-              onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '').slice(0, 9);
+                setRoutingNumber(value);
+                if (value.length > 0 && value.length < 8) {
+                  setRoutingNumberError('Routing number must be at least 8 digits');
+                } else {
+                  setRoutingNumberError('');
+                }
+              }}
               maxLength={9}
-               className="h-9"
+              className={`h-9 ${routingNumberError ? 'border-destructive' : ''}`}
             />
-            <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
+            {routingNumberError ? (
+              <p className="text-xs text-destructive">{routingNumberError}</p>
+            ) : (
+              <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
+            )}
           </div>
 
           <div className="space-y-1">
@@ -605,10 +623,22 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               id="account-number"
               placeholder="5657 8858 3733 3383"
               value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
-              className="h-9"
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '');
+                setAccountNumber(value);
+                if (value.length > 0 && value.length < 6) {
+                  setAccountNumberError('Account number must be at least 6 digits');
+                } else {
+                  setAccountNumberError('');
+                }
+              }}
+              className={`h-9 ${accountNumberError ? 'border-destructive' : ''}`}
             />
-            <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
+            {accountNumberError ? (
+              <p className="text-xs text-destructive">{accountNumberError}</p>
+            ) : (
+              <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
+            )}
           </div>
         </div>
 
