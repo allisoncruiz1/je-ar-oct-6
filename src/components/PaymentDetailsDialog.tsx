@@ -67,6 +67,10 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   const [showBankConfirmation, setShowBankConfirmation] = useState(false);
   const [savedCardData, setSavedCardData] = useState<any>(null);
   const [savedBankData, setSavedBankData] = useState<any>(null);
+  
+  // Field visibility state (for Option B)
+  const [showCardFields, setShowCardFields] = useState(true);
+  const [showBankFields, setShowBankFields] = useState(true);
 
   // Mock validation function - simulates payment processor validation
   // Triggers failure when name is "Allison Smith"
@@ -82,6 +86,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     if (!isValid) {
       setCardValidationAttempts(prev => prev + 1);
       setCardValidationError(true);
+      setShowCardFields(false); // Hide fields on validation error
       
       // Save the card data for potential confirmation
       setSavedCardData({
@@ -142,6 +147,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleUpdateCardDetails = () => {
     setCardValidationError(false);
+    setShowCardFields(true); // Show fields when user wants to update
   };
 
   const resetCardForm = () => {
@@ -155,6 +161,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     setCardValidationError(false);
     setShowCardConfirmation(false);
     setSavedCardData(null);
+    setShowCardFields(true); // Reset field visibility
   };
 
   const handleAddBankAccount = () => {
@@ -163,6 +170,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     if (!isValid) {
       setBankValidationAttempts(prev => prev + 1);
       setBankValidationError(true);
+      setShowBankFields(false); // Hide fields on validation error
       
       setSavedBankData({
         routingNumber,
@@ -211,6 +219,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleUpdateBankDetails = () => {
     setBankValidationError(false);
+    setShowBankFields(true); // Show fields when user wants to update
   };
 
   const resetBankForm = () => {
@@ -220,6 +229,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     setBankValidationError(false);
     setShowBankConfirmation(false);
     setSavedBankData(null);
+    setShowBankFields(true); // Reset field visibility
   };
 
   const handleSaveDefault = () => {
@@ -387,7 +397,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </Alert>
         )}
 
-        {!showCardConfirmation && (
+        {!showCardConfirmation && showCardFields && (
           <>
             <div className="space-y-2.5">
               <div className="space-y-1">
@@ -577,7 +587,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </Alert>
         )}
 
-        {!showBankConfirmation && (
+        {!showBankConfirmation && showBankFields && (
           <>
           <div className="space-y-2.5">
             <div className="space-y-1">
