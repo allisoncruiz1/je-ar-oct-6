@@ -44,6 +44,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   const [defaultPaymentId, setDefaultPaymentId] = useState<string>('');
 
   // Credit Card Form State
+  const [billingName, setBillingName] = useState('');
   const [cardholderName, setCardholderName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
@@ -61,6 +62,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
       id: `payment-${Date.now()}`,
       type: 'credit-card',
       details: {
+        billingName,
         cardholderName,
         cardNumber: cardNumber.slice(-4), // Only store last 4 digits
         expiryDate,
@@ -69,6 +71,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     };
     setAddedPayments([...addedPayments, paymentData]);
     // Reset credit card form
+    setBillingName('');
     setCardholderName('');
     setCardNumber('');
     setExpiryDate('');
@@ -114,6 +117,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   };
 
   const resetForm = () => {
+    setBillingName('');
     setCardholderName('');
     setCardNumber('');
     setExpiryDate('');
@@ -193,6 +197,19 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="billing-name">
+              Billing Name<span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="billing-name"
+              placeholder="Full billing name"
+              value={billingName}
+              onChange={(e) => setBillingName(e.target.value)}
+              className="min-h-[44px]"
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="cardholder-name">
               Cardholder Name<span className="text-destructive">*</span>
@@ -277,7 +294,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
         <Button
           onClick={handleAddCard}
-          disabled={!cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+          disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
           className="w-full min-h-[48px]"
           size="lg"
         >
