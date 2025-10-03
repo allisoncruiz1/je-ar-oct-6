@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { BinaryChoice } from "@/components/ui/binary-choice";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -21,6 +22,7 @@ export interface BusinessOverviewData {
   spouseJoiningEXP?: string;
   ownsRealEstateOffice: string;
   preExistingMatters: string[];
+  preExistingMattersDetails?: string;
   licenseTransferDate: Date | undefined;
 }
 interface BusinessOverviewFormProps {
@@ -72,6 +74,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     spouseJoiningEXP: initialData?.spouseJoiningEXP || '',
     ownsRealEstateOffice: initialData?.ownsRealEstateOffice || '',
     preExistingMatters: initialData?.preExistingMatters || [],
+    preExistingMattersDetails: initialData?.preExistingMattersDetails || '',
     licenseTransferDate: initialData?.licenseTransferDate || undefined
   });
   const [isDateDrawerOpen, setIsDateDrawerOpen] = useState(false);
@@ -98,6 +101,11 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     onFormDataChange?.(newData);
   };
   const validateForm = () => {
+    // Check if any pre-existing matter is selected that requires details
+    const hasPreExistingIssues = formData.preExistingMatters.some(
+      matter => matter !== "None of the above apply to me"
+    );
+    
     const isValid = formData.ownsBrokerage.trim() !== '' && 
       formData.spouseAtDifferentBrokerage.trim() !== '' && 
       // Only require formingDomesticPartnership if spouse is at different brokerage
@@ -105,7 +113,9 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       // Only require spouseJoiningEXP if spouse is at different brokerage
       (formData.spouseAtDifferentBrokerage !== 'yes' || formData.spouseJoiningEXP?.trim() !== '') &&
       formData.ownsRealEstateOffice.trim() !== '' &&
-      formData.preExistingMatters.length > 0 && 
+      formData.preExistingMatters.length > 0 &&
+      // Require details if any pre-existing matter is selected (except "None")
+      (!hasPreExistingIssues || formData.preExistingMattersDetails?.trim() !== '') &&
       formData.licenseTransferDate !== undefined;
     return isValid;
   };
@@ -119,6 +129,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       // If "None of the above" is selected, clear all others and set only this one
       if (checked) {
         newMatters = [value];
+        // Clear details when "None" is selected
+        updateFormData('preExistingMattersDetails', '');
       } else {
         newMatters = [];
       }
@@ -129,6 +141,10 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         newMatters.push(value);
       } else {
         newMatters = newMatters.filter(matter => matter !== value);
+        // Clear details if no issues are selected anymore
+        if (newMatters.length === 0) {
+          updateFormData('preExistingMattersDetails', '');
+        }
       }
     }
     updateFormData('preExistingMatters', newMatters);
@@ -276,6 +292,22 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
             </div>)}
         </div>
       </div>
+
+      {/* Additional Details - Conditional on pre-existing matters selected */}
+      {formData.preExistingMatters.some(matter => matter !== "None of the above apply to me") && (
+        <div className="space-y-2">
+          <Label htmlFor="preExistingMattersDetails" className="text-sm font-medium text-foreground">
+            Please provide additional details <span className="text-destructive">*</span>
+          </Label>
+          <Textarea
+            id="preExistingMattersDetails"
+            value={formData.preExistingMattersDetails || ''}
+            onChange={(e) => updateFormData('preExistingMattersDetails', e.target.value)}
+            placeholder="Provide details about the matters you selected above..."
+            className="w-full min-h-[100px]"
+          />
+        </div>
+      )}
 
       {/* License Transfer Date */}
       <div ref={setFieldRef(6)} className="space-y-2">
