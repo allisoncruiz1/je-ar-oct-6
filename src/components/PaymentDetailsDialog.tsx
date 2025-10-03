@@ -606,7 +606,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                 }
               }}
               maxLength={9}
-              className={`h-9 ${routingNumberError ? 'border-destructive' : ''}`}
+              className={`h-9 ${routingNumberError ? 'border-destructive focus-visible:ring-destructive' : ''}`}
             />
             {routingNumberError ? (
               <p className="text-xs text-destructive">{routingNumberError}</p>
@@ -632,7 +632,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   setAccountNumberError('');
                 }
               }}
-              className={`h-9 ${accountNumberError ? 'border-destructive' : ''}`}
+              className={`h-9 ${accountNumberError ? 'border-destructive focus-visible:ring-destructive' : ''}`}
             />
             {accountNumberError ? (
               <p className="text-xs text-destructive">{accountNumberError}</p>
