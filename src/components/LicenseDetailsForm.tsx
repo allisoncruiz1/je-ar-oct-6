@@ -108,7 +108,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     const isNorthCarolina = currentState === 'North Carolina';
 
     // Base validation - mentor field only required if sales <= 2, license type required for NC
-    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' || currentStateData?.certifiedMentor === 'maybe' : true));
 
     // If pending transactions is "yes", also require existing transactions count
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
@@ -155,7 +155,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
     const showMentorProgram = salesCount > 0 && salesCount <= 3;
     const isNorthCarolina = currentState === 'North Carolina';
 
-    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' : true));
+    const baseValid = !!(currentStateData?.licenseNumber?.trim() && (isNorthCarolina ? currentStateData?.licenseType?.trim() : true) && currentStateData?.salesTransactions?.trim() && currentStateData?.pendingTransactions?.trim() && currentStateData?.mls?.length > 0 && (showMentorProgram ? currentStateData?.certifiedMentor === 'yes' || currentStateData?.certifiedMentor === 'no' || currentStateData?.certifiedMentor === 'maybe' : true));
     const pendingValid = currentStateData?.pendingTransactions !== 'yes' || !!currentStateData?.existingTransactionsCount?.trim();
     const mentorValid = !showMentorProgram || currentStateData?.certifiedMentor !== 'yes' || !!currentStateData?.selectedMentor?.trim();
     const primaryAssociationValid = currentStateData?.associations?.length <= 1 || !!currentStateData?.primaryAssociation?.trim();
@@ -291,6 +291,10 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
               <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
                 <RadioGroupItem value="no" id="certified-mentor-no" className="h-5 w-5" />
                 <Label htmlFor="certified-mentor-no" className="text-base md:text-sm text-foreground cursor-pointer">No</Label>
+              </div>
+              <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+                <RadioGroupItem value="maybe" id="certified-mentor-maybe" className="h-5 w-5" />
+                <Label htmlFor="certified-mentor-maybe" className="text-base md:text-sm text-foreground cursor-pointer">Maybe/More Information</Label>
               </div>
             </RadioGroup>
           </div>
