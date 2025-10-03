@@ -486,7 +486,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             </div>
 
             {cardValidationError ? (
-              <div className="flex flex-col sm:flex-row gap-2.5">
+            <div className="hidden md:flex flex-col sm:flex-row gap-2.5">
                 <Button
                   size="lg"
                   onClick={handleUpdateCardDetails}
@@ -507,7 +507,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               <Button
                 onClick={handleAddCard}
                 disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-                className="w-full min-h-[48px]"
+                className="w-full min-h-[48px] hidden md:block"
                 size="lg"
               >
                 Add Card
@@ -611,7 +611,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {bankValidationError && !showBankConfirmation ? (
-          <div className="flex flex-col sm:flex-row gap-2.5">
+          <div className="hidden md:flex flex-col sm:flex-row gap-2.5">
             <Button
               size="lg"
               onClick={handleUpdateBankDetails}
@@ -632,7 +632,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           <Button
             onClick={handleAddBankAccount}
             disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
-            className="w-full min-h-[48px]"
+            className="w-full min-h-[48px] hidden md:block"
             size="lg"
           >
             Add Bank Account
@@ -687,9 +687,67 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           <DrawerHeader className="text-left">
             <DrawerTitle className="text-xl font-semibold">Add Payment Details</DrawerTitle>
           </DrawerHeader>
-          <ScrollArea className="flex-1 px-4 pb-4">
+          <ScrollArea className="flex-1 px-4 pb-24">
             {formContent}
           </ScrollArea>
+
+          {/* Mobile sticky action bar */}
+          <div className="md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50">
+            {activeTab === 'credit-card' && !showCardConfirmation && (
+              cardValidationError ? (
+                <div className="flex gap-2">
+                  <Button size="lg" className="flex-1" onClick={handleUpdateCardDetails}>
+                    Update Card Details
+                  </Button>
+                  <Button size="lg" variant="outline" className="flex-1" onClick={handleConfirmCardAndContinue}>
+                    Confirm and Continue
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  size="lg"
+                  className="w-full"
+                  onClick={handleAddCard}
+                  disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+                >
+                  Add Card
+                </Button>
+              )
+            )}
+
+            {activeTab === 'bank-account' && !showBankConfirmation && (
+              bankValidationError ? (
+                <div className="flex gap-2">
+                  <Button size="lg" className="flex-1" onClick={handleUpdateBankDetails}>
+                    Update Bank Details
+                  </Button>
+                  <Button size="lg" variant="outline" className="flex-1" onClick={handleConfirmBankAndContinue}>
+                    Confirm and Continue
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  size="lg"
+                  className="w-full"
+                  onClick={handleAddBankAccount}
+                  disabled={!routingNumber || routingNumber.length < 8 || !accountNumber || accountNumber.length < 6}
+                >
+                  Add Bank Account
+                </Button>
+              )
+            )}
+
+            {activeTab === 'credit-card' && showCardConfirmation && (
+              <Button size="lg" className="w-full" onClick={handleConfirmCardAndContinue}>
+                Next
+              </Button>
+            )}
+            {activeTab === 'bank-account' && showBankConfirmation && (
+              <Button size="lg" className="w-full" onClick={handleConfirmBankAndContinue}>
+                Next
+              </Button>
+            )}
+          </div>
         </DrawerContent>
       </Drawer>
     );
