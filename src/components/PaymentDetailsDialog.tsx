@@ -406,11 +406,11 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
-        <DialogHeader>
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col p-0">
+        <DialogHeader className="px-6 pt-6">
           <DialogTitle className="text-xl font-semibold">Add Payment Details</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="flex-1 pr-4">
+        <ScrollArea className="flex-1 px-6 pb-6">
           {formContent}
         </ScrollArea>
       </DialogContent>
