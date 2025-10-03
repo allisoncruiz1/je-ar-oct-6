@@ -383,14 +383,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                       </div>
                     </div>
                   </div>
-                  <div className="pt-2 border-t border-amber-200 dark:border-amber-800/50">
-                    <Button
-                      onClick={handleConfirmCardAndContinue}
-                      className="w-full min-h-[44px]"
-                    >
-                      Next
-                    </Button>
-                  </div>
                 </AlertDescription>
               </div>
             </div>
