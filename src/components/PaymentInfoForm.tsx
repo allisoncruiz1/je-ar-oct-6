@@ -4,6 +4,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { PaymentDetailsDialog } from '@/components/PaymentDetailsDialog';
 import { Plus } from 'lucide-react';
@@ -18,6 +19,7 @@ export interface PaymentInfoData {
     details: any;
     isDefault?: boolean;
   }>;
+  agreementAcknowledged?: boolean;
 }
 interface PaymentInfoFormProps {
   onSubmit?: (data: PaymentInfoData) => void;
@@ -47,7 +49,8 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     thirdPartyPayment: initialData?.thirdPartyPayment || '',
     payerName: initialData?.payerName || '',
     payerEmail: initialData?.payerEmail || '',
-    paymentMethods: initialData?.paymentMethods || []
+    paymentMethods: initialData?.paymentMethods || [],
+    agreementAcknowledged: initialData?.agreementAcknowledged || false
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const actionBarRef = useRef<HTMLDivElement>(null);
@@ -83,10 +86,10 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     if (formData.thirdPartyPayment === 'yes') {
       const hasPayerInfo = formData.payerName && formData.payerName.trim() !== '' && 
                            formData.payerEmail && formData.payerEmail.trim() !== '';
-      return hasPayerInfo && formData.paymentMethods.length >= 2;
+      return hasPayerInfo && formData.paymentMethods.length >= 2 && formData.agreementAcknowledged === true;
     }
     // Otherwise just check third party payment selection and payment methods
-    const isValid = formData.thirdPartyPayment !== '' && formData.paymentMethods.length >= 2;
+    const isValid = formData.thirdPartyPayment !== '' && formData.paymentMethods.length >= 2 && formData.agreementAcknowledged === true;
     return isValid;
   };
   useEffect(() => {
@@ -308,6 +311,25 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               Add Payment Details
             </Button>
           )}
+        </div>
+
+        {/* Payment Agreement Disclaimer */}
+        <div className="pt-6 border-t border-border">
+          <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
+            <Checkbox
+              id="agreement-acknowledged"
+              checked={formData.agreementAcknowledged || false}
+              onCheckedChange={(checked) => updateFormData('agreementAcknowledged', checked)}
+              className="mt-1"
+            />
+            <Label
+              htmlFor="agreement-acknowledged"
+              className="text-base text-foreground leading-relaxed cursor-pointer"
+            >
+              As stated in the independent contractor agreement you will be signing at the end of this application, a valid payment method is required to be on file. Failure to adhere to this policy can result in termination.
+              <span className="text-destructive ml-1">*</span>
+            </Label>
+          </div>
         </div>
       </div>
 
