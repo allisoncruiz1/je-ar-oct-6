@@ -706,10 +706,10 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             {activeTab === 'credit-card' && !showCardConfirmation && (
               cardValidationError ? (
                 <div className="flex gap-2">
-                  <Button size="lg" className="flex-1 text-xs" onClick={handleUpdateCardDetails}>
+                  <Button size="lg" className="flex-1 text-xs px-4 py-3" onClick={handleUpdateCardDetails}>
                     Update Card Details
                   </Button>
-                  <Button size="lg" variant="outline" className="flex-1 text-xs" onClick={handleConfirmCardAndContinue}>
+                  <Button size="lg" variant="outline" className="flex-1 text-xs px-4 py-3" onClick={handleConfirmCardAndContinue}>
                     Confirm and Continue
                   </Button>
                 </div>
@@ -728,10 +728,10 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             {activeTab === 'bank-account' && !showBankConfirmation && (
               bankValidationError ? (
                 <div className="flex gap-2">
-                  <Button size="lg" className="flex-1 text-xs" onClick={handleUpdateBankDetails}>
+                  <Button size="lg" className="flex-1 text-xs px-4 py-3" onClick={handleUpdateBankDetails}>
                     Update Bank Details
                   </Button>
-                  <Button size="lg" variant="outline" className="flex-1 text-xs" onClick={handleConfirmBankAndContinue}>
+                  <Button size="lg" variant="outline" className="flex-1 text-xs px-4 py-3" onClick={handleConfirmBankAndContinue}>
                     Confirm and Continue
                   </Button>
                 </div>
