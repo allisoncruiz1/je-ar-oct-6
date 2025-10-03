@@ -5,12 +5,14 @@ import { SideNavigation } from '@/components/SideNavigation';
 import { MainContent } from '@/components/MainContent';
 import { MobileProgressBar } from '@/components/MobileProgressBar';
 import { SubStepDrawer } from '@/components/SubStepDrawer';
+import { SaveResumeDialog } from '@/components/SaveResumeDialog';
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [isSubStepDrawerOpen, setIsSubStepDrawerOpen] = useState(false);
+  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
 
   const sections = [
     'Mailing Address',
@@ -51,7 +53,12 @@ const Index = () => {
 
   const handleSaveResume = () => {
     console.log('Save & Resume Later clicked');
-    // Implement save functionality
+    setSaveDialogOpen(true);
+  };
+
+  const handleSaveResumeSubmit = (email: string) => {
+    console.log('Saving progress for email:', email);
+    // TODO: Implement actual save logic to database
   };
 
   const handleHelpClick = () => {
@@ -117,6 +124,13 @@ const Index = () => {
         </div>
         
       </div>
+
+      {/* Save and Resume Dialog */}
+      <SaveResumeDialog 
+        open={saveDialogOpen} 
+        onOpenChange={setSaveDialogOpen}
+        onSave={handleSaveResumeSubmit}
+      />
       
     </div>
   );
