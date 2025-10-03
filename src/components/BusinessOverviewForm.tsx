@@ -24,6 +24,7 @@ export interface BusinessOverviewData {
   preExistingMatters: string[];
   preExistingMattersDetails?: string;
   licenseTransferDate: Date | undefined;
+  hasSponsors?: string;
 }
 interface BusinessOverviewFormProps {
   onSubmit?: (data: BusinessOverviewData) => void;
@@ -75,7 +76,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     ownsRealEstateOffice: initialData?.ownsRealEstateOffice || '',
     preExistingMatters: initialData?.preExistingMatters || [],
     preExistingMattersDetails: initialData?.preExistingMattersDetails || '',
-    licenseTransferDate: initialData?.licenseTransferDate || undefined
+    licenseTransferDate: initialData?.licenseTransferDate || undefined,
+    hasSponsors: initialData?.hasSponsors || ''
   });
   const [isDateDrawerOpen, setIsDateDrawerOpen] = useState(false);
   const isMobileLike = isMobile || isTouch;
@@ -116,7 +118,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       formData.preExistingMatters.length > 0 &&
       // Require details if any pre-existing matter is selected (except "None")
       (!hasPreExistingIssues || formData.preExistingMattersDetails?.trim() !== '') &&
-      formData.licenseTransferDate !== undefined;
+      formData.licenseTransferDate !== undefined &&
+      formData.hasSponsors?.trim() !== '';
     return isValid;
   };
   useEffect(() => {
@@ -390,6 +393,19 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
             }} />
             </PopoverContent>
           </Popover>}
+      </div>
+
+      {/* Has Sponsors */}
+      <div ref={setFieldRef(7)} className="space-y-3">
+        <BinaryChoice
+          value={formData.hasSponsors || ''}
+          onValueChange={value => {
+            updateFormData('hasSponsors', value);
+            scrollToNextField(7);
+          }}
+          label="Do you have sponsors?"
+          required
+        />
       </div>
 
       {/* Action Bar at bottom */}
