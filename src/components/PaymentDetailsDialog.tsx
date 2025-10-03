@@ -188,16 +188,16 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="credit-card" className="space-y-4 sm:space-y-6">
+      <TabsContent value="credit-card" className="space-y-3">
         <div>
-          <h3 className="text-base sm:text-lg font-semibold mb-2">Add Credit Card</h3>
+          <h3 className="text-base sm:text-lg font-semibold mb-1">Add Credit Card</h3>
           <p className="text-[hsl(var(--brand-blue))] text-sm">
             Add your credit card information for secure payment processing.
           </p>
         </div>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
+        <div className="space-y-3">
+          <div className="space-y-1">
             <Label htmlFor="billing-name">
               Billing Name<span className="text-destructive">*</span>
             </Label>
@@ -210,7 +210,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="cardholder-name">
               Cardholder Name<span className="text-destructive">*</span>
             </Label>
@@ -223,7 +223,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="card-number">
               Card Number<span className="text-destructive">*</span>
             </Label>
@@ -237,8 +237,8 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1">
               <Label htmlFor="expiry-date">
                 Expiry Date<span className="text-destructive">*</span>
               </Label>
@@ -252,7 +252,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               />
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-1">
               <Label htmlFor="cvv">
                 CVV<span className="text-destructive">*</span>
               </Label>
@@ -277,7 +277,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="billing-zip">
               Billing ZIP Code<span className="text-destructive">*</span>
             </Label>
@@ -302,16 +302,16 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </Button>
       </TabsContent>
 
-      <TabsContent value="bank-account" className="space-y-4 sm:space-y-6">
+      <TabsContent value="bank-account" className="space-y-3">
         <div>
-          <h3 className="text-base sm:text-lg font-semibold mb-2">Add Bank Account</h3>
+          <h3 className="text-base sm:text-lg font-semibold mb-1">Add Bank Account</h3>
           <p className="text-[hsl(var(--brand-blue))] text-sm">
             Add your bank account information for secure ACH transfers.
           </p>
         </div>
 
-        <div className="space-y-4">
-          <div className="space-y-2">
+        <div className="space-y-3">
+          <div className="space-y-1">
             <Label htmlFor="routing-number">
               Routing Number<span className="text-destructive">*</span>
             </Label>
@@ -326,7 +326,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1">
             <Label htmlFor="account-number">
               Account Number<span className="text-destructive">*</span>
             </Label>
@@ -351,7 +351,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </Button>
       </TabsContent>
 
-      <TabsContent value="default-method" className="space-y-4 sm:space-y-6">
+      <TabsContent value="default-method" className="space-y-3">
         <div>
           <p className="text-[hsl(var(--brand-blue))] text-sm leading-relaxed">
             Your default payment method is used for all payment types where you haven't chosen a different payment method.
