@@ -119,7 +119,12 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
 
   const handleNoSponsor = () => {
     setShowSearchResults(false);
-    setShowNoSponsorDialog(true);
+    setSelectedSponsor({
+      id: 'exp-default',
+      name: 'eXp Realty',
+      email: undefined
+    });
+    onFormValidChange?.(true);
     toast({
       title: "eXp Realty will be your sponsor",
       description: "Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.",
