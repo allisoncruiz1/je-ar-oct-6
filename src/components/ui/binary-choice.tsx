@@ -68,40 +68,25 @@ export const BinaryChoice = React.forwardRef<
           )}
         </div>
         
-        <div
-          role="radiogroup"
-          aria-label={label}
+        <RadioGroup
+          value={value}
+          onValueChange={onValueChange}
+          disabled={disabled}
           className="flex gap-3"
         >
-          <div
-            role="radio"
-            aria-checked={value === 'yes'}
-            tabIndex={0}
-            onClick={() => onValueChange('yes')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('yes'); } }}
-            className={cn(
-              "flex items-center space-x-3 p-4 rounded-lg h-14 flex-1 cursor-pointer select-none border",
-              value === 'yes' ? "bg-primary/10 border-primary" : "bg-muted/30 border-transparent"
-            )}
-          >
-            <div className={cn("h-5 w-5 rounded-full border", value === 'yes' ? 'border-primary bg-primary/60' : 'border-primary/40 bg-transparent')} />
-            <span className="text-base text-foreground">{yesLabel}</span>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1">
+            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+            <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer">
+              {yesLabel}
+            </Label>
           </div>
-          <div
-            role="radio"
-            aria-checked={value === 'no'}
-            tabIndex={0}
-            onClick={() => onValueChange('no')}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('no'); } }}
-            className={cn(
-              "flex items-center space-x-3 p-4 rounded-lg h-14 flex-1 cursor-pointer select-none border",
-              value === 'no' ? "bg-primary/10 border-primary" : "bg-muted/30 border-transparent"
-            )}
-          >
-            <div className={cn("h-5 w-5 rounded-full border", value === 'no' ? 'border-primary bg-primary/60' : 'border-primary/40 bg-transparent')} />
-            <span className="text-base text-foreground">{noLabel}</span>
+          <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1">
+            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+            <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer">
+              {noLabel}
+            </Label>
           </div>
-        </div>
+        </RadioGroup>
       </div>
     );
   }
@@ -135,30 +120,25 @@ export const BinaryChoice = React.forwardRef<
         )}
       </div>
       
-      <div role="radiogroup" aria-label={label} className="flex gap-6">
-        <div
-          role="radio"
-          aria-checked={value === 'yes'}
-          tabIndex={0}
-          onClick={() => onValueChange('yes')}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('yes'); } }}
-          className="flex items-center space-x-2 cursor-pointer select-none"
-        >
-          <div className={cn("h-4 w-4 rounded-full border", value === 'yes' ? 'border-primary bg-primary/60' : 'border-primary/40 bg-transparent')} />
-          <span className="text-sm text-foreground">{yesLabel}</span>
+      <RadioGroup
+        value={value}
+        onValueChange={onValueChange}
+        disabled={disabled}
+        className="flex gap-6"
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+          <Label htmlFor={`${id}-yes`} className="text-sm text-foreground cursor-pointer">
+            {yesLabel}
+          </Label>
         </div>
-        <div
-          role="radio"
-          aria-checked={value === 'no'}
-          tabIndex={0}
-          onClick={() => onValueChange('no')}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('no'); } }}
-          className="flex items-center space-x-2 cursor-pointer select-none"
-        >
-          <div className={cn("h-4 w-4 rounded-full border", value === 'no' ? 'border-primary bg-primary/60' : 'border-primary/40 bg-transparent')} />
-          <span className="text-sm text-foreground">{noLabel}</span>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+          <Label htmlFor={`${id}-no`} className="text-sm text-foreground cursor-pointer">
+            {noLabel}
+          </Label>
         </div>
-      </div>
+      </RadioGroup>
     </div>
   );
 });
