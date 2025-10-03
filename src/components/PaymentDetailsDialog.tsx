@@ -315,15 +315,15 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {cardValidationError && !showCardConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
-            <div className="flex gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm py-2.5">
+            <div className="flex gap-2">
+              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
                 <AlertDescription className="text-amber-900 dark:text-amber-100">
-                  <p className="font-semibold text-base mb-1">
+                  <p className="font-semibold text-sm mb-0.5">
                     We weren't able to validate these details
                   </p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                  <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
                     Please double-check your entry. You can:
                   </p>
                   <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
@@ -392,7 +392,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
         {!showCardConfirmation && (
           <>
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               <div className="space-y-1">
                 <Label htmlFor="billing-name">
                   Billing Name<span className="text-destructive">*</span>
@@ -529,15 +529,15 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {bankValidationError && !showBankConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
-            <div className="flex gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm py-2.5">
+            <div className="flex gap-2">
+              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
                 <AlertDescription className="text-amber-900 dark:text-amber-100">
-                  <p className="font-semibold text-base mb-1">
+                  <p className="font-semibold text-sm mb-0.5">
                     We weren't able to validate these details
                   </p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                  <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
                     Please double-check your entry. You can:
                   </p>
                   <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
@@ -582,7 +582,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
         {!showBankConfirmation && (
           <>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             <div className="space-y-1">
             <Label htmlFor="routing-number">
               Routing Number<span className="text-destructive">*</span>
