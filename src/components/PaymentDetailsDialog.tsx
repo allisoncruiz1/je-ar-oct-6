@@ -282,34 +282,34 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   // Shared form content
   const formContent = (
     <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="w-full mb-4 gap-1">
+      <TabsList className="w-full mb-3 gap-1">
         <TabsTrigger 
           value="credit-card" 
-          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[40px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length > 0}
         >
           {isMobile ? '1. Card' : '1. Add Credit Card'}
         </TabsTrigger>
         <TabsTrigger 
           value="bank-account" 
-          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none"
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[40px] rounded-md data-[state=active]:shadow-none"
           disabled={addedPayments.length === 0 || addedPayments.length > 1}
         >
           {isMobile ? '2. Bank' : '2. Add Bank Account'}
         </TabsTrigger>
         <TabsTrigger 
           value="default-method" 
-          className="flex-1 text-xs sm:text-sm px-2 min-h-[44px] rounded-md data-[state=active]:shadow-none" 
+          className="flex-1 text-xs sm:text-sm px-2 min-h-[40px] rounded-md data-[state=active]:shadow-none" 
           disabled={addedPayments.length < 2}
         >
           {isMobile ? '3. Default' : '3. Set Default Method'}
         </TabsTrigger>
       </TabsList>
 
-      <TabsContent value="credit-card" className="space-y-3">
+      <TabsContent value="credit-card" className="space-y-2.5">
         <div>
-          <h3 className="text-base sm:text-lg font-semibold mb-1">Add Credit Card</h3>
-          <p className="text-[hsl(var(--brand-blue))] text-sm">
+          <h3 className="text-sm sm:text-base font-semibold mb-0.5">Add Credit Card</h3>
+          <p className="text-[hsl(var(--brand-blue))] text-xs">
             Add your credit card information for secure payment processing.
           </p>
         </div>
@@ -402,7 +402,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   placeholder="Full billing name"
                   value={billingName}
                   onChange={(e) => setBillingName(e.target.value)}
-                  className="min-h-[44px]"
+                  className="h-9"
                 />
               </div>
 
@@ -415,7 +415,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   placeholder="Full name on card"
                   value={cardholderName}
                   onChange={(e) => setCardholderName(e.target.value)}
-                  className="min-h-[44px]"
+                  className="h-9"
                 />
               </div>
 
@@ -429,11 +429,11 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   value={cardNumber}
                   onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
                   maxLength={19}
-                  className="min-h-[44px]"
+                  className="h-9"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1">
                   <Label htmlFor="expiry-date">
                     Expiry Date<span className="text-destructive">*</span>
@@ -444,7 +444,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                     value={expiryDate}
                     onChange={(e) => setExpiryDate(formatExpiryDate(e.target.value))}
                     maxLength={7}
-                    className="min-h-[44px]"
+                    className="h-9"
                   />
                 </div>
 
@@ -460,7 +460,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                       value={cvv}
                       onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 4))}
                       maxLength={4}
-                      className="pr-10 min-h-[44px]"
+                      className="pr-9 h-9"
                     />
                     <button
                       type="button"
@@ -483,7 +483,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   value={billingZip}
                   onChange={(e) => setBillingZip(e.target.value.replace(/\D/g, '').slice(0, 5))}
                   maxLength={5}
-                  className="min-h-[44px]"
+                  className="h-9"
                 />
               </div>
             </div>
@@ -522,8 +522,8 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
       <TabsContent value="bank-account" className="space-y-3">
         <div>
-          <h3 className="text-base sm:text-lg font-semibold mb-1">Add Bank Account</h3>
-          <p className="text-[hsl(var(--brand-blue))] text-sm">
+          <h3 className="text-sm sm:text-base font-semibold mb-0.5">Add Bank Account</h3>
+          <p className="text-[hsl(var(--brand-blue))] text-xs">
             Add your bank account information for secure ACH transfers.
           </p>
         </div>
@@ -593,7 +593,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               value={routingNumber}
               onChange={(e) => setRoutingNumber(e.target.value.replace(/\D/g, '').slice(0, 9))}
               maxLength={9}
-              className="min-h-[44px]"
+               className="h-9"
             />
             <p className="text-xs text-muted-foreground">Must be a minimum of 8 digits</p>
           </div>
@@ -607,7 +607,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               placeholder="5657 8858 3733 3383"
               value={accountNumber}
               onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ''))}
-              className="min-h-[44px]"
+              className="h-9"
             />
             <p className="text-xs text-muted-foreground">Must be at least 6 digits</p>
           </div>
