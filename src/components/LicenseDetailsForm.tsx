@@ -189,6 +189,17 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   };
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
+  const isLastState = currentStateIndex === licensedStates.length - 1;
+
+  const handleContinue = () => {
+    if (!isLastState) {
+      // Move to next state
+      setCurrentStateIndex(currentStateIndex + 1);
+    } else {
+      // On last state, continue to next section
+      onContinue?.();
+    }
+  };
   return <div className="space-y-6 pb-24 md:pb-0">
       {/* Current State Header */}
       <div className="mb-6 mt-8 max-md:mt-2">
@@ -403,14 +414,14 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
             {showBack && <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back to previous step">
               Back
             </Button>}
-            <Button type="button" size="sm" onClick={onContinue} disabled={!canContinue} aria-label="Continue to next step">
-              {continueButtonText}
+            <Button type="button" size="sm" onClick={handleContinue} disabled={!canContinue} aria-label="Continue to next step">
+              {isLastState ? continueButtonText : 'Continue to Next State'}
             </Button>
           </div>
         </div>
       </div>
       
       {/* Mobile action bar */}
-      <MobileActionBar onBack={onBack} onContinue={onContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={continueButtonText} />
+      <MobileActionBar onBack={onBack} onContinue={handleContinue} onSaveResume={onSaveResume} canContinue={canContinue} showBack={showBack} continueButtonText={isLastState ? continueButtonText : 'Continue to Next State'} />
     </div>;
 };
