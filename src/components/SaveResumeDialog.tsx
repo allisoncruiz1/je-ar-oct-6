@@ -40,6 +40,7 @@ export const SaveResumeDialog: React.FC<SaveResumeDialogProps> = ({
     if (isEmailValid && onSave) {
       onSave(email);
       onOpenChange(false);
+      setEmail(''); // Clear email after successful save
     }
   };
 
@@ -59,7 +60,8 @@ export const SaveResumeDialog: React.FC<SaveResumeDialogProps> = ({
         </DialogHeader>
 
         <div className="space-y-4 pt-4">
-          <div className="space-y-2">
+          <form noValidate onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
+            <div className="space-y-2">
             <Label htmlFor="email" className="text-base font-medium">
               Email Address
             </Label>
@@ -72,6 +74,7 @@ export const SaveResumeDialog: React.FC<SaveResumeDialogProps> = ({
                 value={email}
                 onChange={handleEmailChange}
                 className="pl-10"
+                autoComplete="email"
               />
             </div>
             {email && !isEmailValid && (
@@ -80,6 +83,7 @@ export const SaveResumeDialog: React.FC<SaveResumeDialogProps> = ({
               </p>
             )}
           </div>
+          </form>
 
           <div className="bg-muted/50 rounded-lg p-4 border border-border">
             <h4 className="font-medium text-sm mb-2">What happens next?</h4>
@@ -116,6 +120,7 @@ export const SaveResumeDialog: React.FC<SaveResumeDialogProps> = ({
             onClick={handleSave}
             disabled={!isEmailValid}
             className="flex-1"
+            type="button"
           >
             Save & Send Link
           </Button>
