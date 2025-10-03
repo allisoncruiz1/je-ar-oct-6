@@ -618,7 +618,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             <Button
               size="lg"
               onClick={handleUpdateBankDetails}
-              className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
+              className="flex-1 min-h-[48px]"
             >
               Update Bank Details
             </Button>
@@ -626,7 +626,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               variant="outline"
               size="lg"
               onClick={handleConfirmBankAndContinue}
-              className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
+              className="flex-1 min-h-[48px]"
             >
               Confirm and Continue
             </Button>
