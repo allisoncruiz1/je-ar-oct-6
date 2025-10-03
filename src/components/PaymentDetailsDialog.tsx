@@ -196,7 +196,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </p>
         </div>
 
-        <div className="space-y-4 sm:space-y-6 pb-24">
+        <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="billing-name">
               Billing Name<span className="text-destructive">*</span>
@@ -292,16 +292,14 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </div>
         </div>
 
-        <div className="sticky bottom-0 left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t border-border px-0 py-3">
-          <Button
-            onClick={handleAddCard}
-            disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-            className="w-full min-h-[48px]"
-            size="lg"
-          >
-            Add Card
-          </Button>
-        </div>
+        <Button
+          onClick={handleAddCard}
+          disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+          className="w-full min-h-[48px]"
+          size="lg"
+        >
+          Add Card
+        </Button>
       </TabsContent>
 
       <TabsContent value="bank-account" className="space-y-4 sm:space-y-6">
@@ -394,15 +392,13 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   if (isMobile) {
     return (
       <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader className="text-left pb-4">
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader className="text-left">
             <DrawerTitle className="text-xl font-semibold">Add Payment Details</DrawerTitle>
           </DrawerHeader>
-          <div className="flex-1 overflow-hidden">
-            <ScrollArea className="h-full max-h-[calc(90vh-8rem)] px-4 pb-4">
-              {formContent}
-            </ScrollArea>
-          </div>
+          <ScrollArea className="flex-1 px-4 pb-4">
+            {formContent}
+          </ScrollArea>
         </DrawerContent>
       </Drawer>
     );
@@ -410,17 +406,13 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[600px] max-h-[85vh] flex flex-col gap-0">
-        <DialogHeader className="pb-4">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col">
+        <DialogHeader>
           <DialogTitle className="text-xl font-semibold">Add Payment Details</DialogTitle>
         </DialogHeader>
-        <div className="flex-1 overflow-hidden">
-          <ScrollArea className="h-full max-h-[calc(85vh-8rem)]">
-            <div className="pr-4">
-              {formContent}
-            </div>
-          </ScrollArea>
-        </div>
+        <ScrollArea className="flex-1 pr-4">
+          {formContent}
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
