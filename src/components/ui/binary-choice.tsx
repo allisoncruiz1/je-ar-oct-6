@@ -142,13 +142,27 @@ export const BinaryChoice = React.forwardRef<
         disabled={disabled}
         className="flex gap-6"
       >
-        <div className="flex items-center space-x-2">
+        <div
+          role="button"
+          tabIndex={0}
+          aria-pressed={value === 'yes'}
+          onClick={() => onValueChange('yes')}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('yes'); } }}
+          className="flex items-center space-x-2 cursor-pointer select-none"
+        >
           <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
           <Label htmlFor={`${id}-yes`} className="text-sm text-foreground cursor-pointer">
             {yesLabel}
           </Label>
         </div>
-        <div className="flex items-center space-x-2">
+        <div
+          role="button"
+          tabIndex={0}
+          aria-pressed={value === 'no'}
+          onClick={() => onValueChange('no')}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('no'); } }}
+          className="flex items-center space-x-2 cursor-pointer select-none"
+        >
           <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
           <Label htmlFor={`${id}-no`} className="text-sm text-foreground cursor-pointer">
             {noLabel}
