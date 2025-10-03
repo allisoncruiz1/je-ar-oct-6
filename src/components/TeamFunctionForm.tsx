@@ -361,29 +361,9 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
         {/* Leader - Team Information */}
         {formData.agentType === 'team' && formData.teamRole === 'leader' && <>
             <div ref={setFieldRef(2)} className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Label htmlFor="numberOfAgents" className="text-sm font-medium text-foreground">
-                  How many agents are currently on your team? <span className="text-destructive">*</span>
-                </Label>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        type="button"
-                        aria-label="Help: Number of agents"
-                        className="inline-flex items-center justify-center h-6 w-6 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
-                      >
-                        <Info className="h-4 w-4" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="max-w-xs">
-                      <p className="text-xs">
-                        Enter the current number of active agents working under your team leadership.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+            <Label htmlFor="numberOfAgents" className="text-sm font-medium text-foreground">
+              How many agents are currently on your team? <span className="text-destructive">*</span>
+            </Label>
               <Input id="numberOfAgents" type="number" placeholder="Enter number of Agents" value={formData.numberOfAgents} onChange={e => updateFormData('numberOfAgents', e.target.value)} className="h-12 md:h-10" min="0" />
             </div>
 
