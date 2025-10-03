@@ -391,7 +391,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         )}
 
         {!showCardConfirmation && (
-          <>
           <div className="space-y-3">
             <div className="space-y-1">
             <Label htmlFor="billing-name">
@@ -487,36 +486,37 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             />
           </div>
         </div>
-
-        {cardValidationError && !showCardConfirmation ? (
-          <div className="flex flex-col sm:flex-row gap-2.5">
-            <Button
-              size="lg"
-              onClick={handleUpdateCardDetails}
-              className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
-            >
-              Update Card Details
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={handleConfirmCardAndContinue}
-              className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
-            >
-              Confirm and Continue
-            </Button>
-          </div>
-        ) : (
-          <Button
-            onClick={handleAddCard}
-            disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
-            className="w-full min-h-[48px]"
-            size="lg"
-          >
-            Add Card
-          </Button>
         )}
-          </>
+
+        {!showCardConfirmation && (
+          cardValidationError ? (
+            <div className="flex flex-col sm:flex-row gap-2.5">
+              <Button
+                size="lg"
+                onClick={handleUpdateCardDetails}
+                className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm min-h-[48px]"
+              >
+                Update Card Details
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={handleConfirmCardAndContinue}
+                className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40 min-h-[48px]"
+              >
+                Confirm and Continue
+              </Button>
+            </div>
+          ) : (
+            <Button
+              onClick={handleAddCard}
+              disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+              className="w-full min-h-[48px]"
+              size="lg"
+            >
+              Add Card
+            </Button>
+          )
         )}
       </TabsContent>
 
