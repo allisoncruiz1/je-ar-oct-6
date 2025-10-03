@@ -69,15 +69,15 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   const [savedBankData, setSavedBankData] = useState<any>(null);
 
   // Mock validation function - simulates payment processor validation
-  const validatePaymentDetails = (type: 'credit-card' | 'bank-account'): boolean => {
-    // For demo purposes, we'll randomly fail validation to show the flow
+  // Triggers failure when name is "Allison Smith"
+  const validatePaymentDetails = (name: string): boolean => {
+    // For demo purposes, "Allison Smith" will trigger validation failures
     // In production, this would call a real payment processor API
-    const shouldFail = Math.random() > 0.5;
-    return !shouldFail;
+    return name.toLowerCase().trim() !== "allison smith";
   };
 
   const handleAddCard = () => {
-    const isValid = validatePaymentDetails('credit-card');
+    const isValid = validatePaymentDetails(cardholderName);
     
     if (!isValid) {
       setCardValidationAttempts(prev => prev + 1);
@@ -158,7 +158,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
   };
 
   const handleAddBankAccount = () => {
-    const isValid = validatePaymentDetails('bank-account');
+    const isValid = validatePaymentDetails(accountHolderName);
     
     if (!isValid) {
       setBankValidationAttempts(prev => prev + 1);
