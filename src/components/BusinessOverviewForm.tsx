@@ -18,6 +18,7 @@ export interface BusinessOverviewData {
   ownsBrokerage: string;
   spouseAtDifferentBrokerage: string;
   formingDomesticPartnership?: string;
+  spouseJoiningEXP?: string;
   ownsRealEstateOffice: string;
   preExistingMatters: string[];
   licenseTransferDate: Date | undefined;
@@ -68,6 +69,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
     ownsBrokerage: initialData?.ownsBrokerage || '',
     spouseAtDifferentBrokerage: initialData?.spouseAtDifferentBrokerage || '',
     formingDomesticPartnership: initialData?.formingDomesticPartnership || '',
+    spouseJoiningEXP: initialData?.spouseJoiningEXP || '',
     ownsRealEstateOffice: initialData?.ownsRealEstateOffice || '',
     preExistingMatters: initialData?.preExistingMatters || [],
     licenseTransferDate: initialData?.licenseTransferDate || undefined
@@ -97,6 +99,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       formData.spouseAtDifferentBrokerage.trim() !== '' && 
       // Only require formingDomesticPartnership if spouse is at different brokerage
       (formData.spouseAtDifferentBrokerage !== 'yes' || formData.formingDomesticPartnership?.trim() !== '') &&
+      // Only require spouseJoiningEXP if both spouse and domestic partnership are 'yes'
+      (formData.spouseAtDifferentBrokerage !== 'yes' || formData.formingDomesticPartnership !== 'yes' || formData.spouseJoiningEXP?.trim() !== '') &&
       formData.ownsRealEstateOffice.trim() !== '' &&
       formData.preExistingMatters.length > 0 && 
       formData.licenseTransferDate !== undefined;
@@ -171,9 +175,10 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       <div ref={setFieldRef(1)} className="space-y-3">
         <BinaryChoice value={formData.spouseAtDifferentBrokerage} onValueChange={value => {
           updateFormData('spouseAtDifferentBrokerage', value);
-          // Clear formingDomesticPartnership if changing away from 'yes'
+          // Clear dependent fields if changing away from 'yes'
           if (value !== 'yes') {
             updateFormData('formingDomesticPartnership', '');
+            updateFormData('spouseJoiningEXP', '');
           }
           scrollToNextField(1);
         }} label="Do you have a spouse or domestic partner that is affiliated with a different brokerage?" required />
@@ -186,6 +191,10 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
             value={formData.formingDomesticPartnership || ''} 
             onValueChange={value => {
               updateFormData('formingDomesticPartnership', value);
+              // Clear spouse joining eXp if not forming partnership
+              if (value !== 'yes') {
+                updateFormData('spouseJoiningEXP', '');
+              }
               scrollToNextField(2);
             }} 
             label="Do you intend on forming a Domestic Partnership?" 
@@ -194,14 +203,29 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         </div>
       )}
 
+      {/* Spouse Joining eXp - Conditional on both spouse at different brokerage AND forming domestic partnership */}
+      {formData.spouseAtDifferentBrokerage === 'yes' && formData.formingDomesticPartnership === 'yes' && (
+        <div ref={setFieldRef(3)} className="space-y-3">
+          <BinaryChoice 
+            value={formData.spouseJoiningEXP || ''} 
+            onValueChange={value => {
+              updateFormData('spouseJoiningEXP', value);
+              scrollToNextField(3);
+            }} 
+            label="Will your spouse or domestic partner be joining eXp or are they already an eXp agent?" 
+            required 
+          />
+        </div>
+      )}
+
       {/* Owns Real Estate Office - Always visible */}
-      <div ref={setFieldRef(3)} className="space-y-3">
+      <div ref={setFieldRef(4)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
           Do you currently own lease, or manage a real estate office in any capacity? <span className="text-destructive">*</span>
         </Label>
         <RadioGroup value={formData.ownsRealEstateOffice} onValueChange={value => {
           updateFormData('ownsRealEstateOffice', value);
-          scrollToNextField(3);
+          scrollToNextField(4);
         }} className="flex flex-col gap-3 md:flex-row md:gap-6">
           <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
             <RadioGroupItem value="yes" id="owns-office-yes" className="h-5 w-5" />
@@ -237,7 +261,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         </div>}
 
       {/* Pre-existing Matters Disclosure */}
-      <div ref={setFieldRef(4)} className="space-y-3">
+      <div ref={setFieldRef(5)} className="space-y-3">
         <Label className="text-sm font-medium text-foreground">
           Pre-existing Matters Disclosure (Choose all that apply) <span className="text-destructive">*</span>
         </Label>
@@ -245,7 +269,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
           {PRE_EXISTING_MATTERS_OPTIONS.map(option => <div key={option} className="flex items-start space-x-2">
               <Checkbox id={`pre-existing-${option}`} checked={formData.preExistingMatters.includes(option)} onCheckedChange={checked => {
               handlePreExistingMatterChange(option, checked as boolean);
-              if (checked) scrollToNextField(3);
+              if (checked) scrollToNextField(5);
             }} className="mt-0.5" />
               <Label htmlFor={`pre-existing-${option}`} className="text-sm leading-relaxed">
                 {option}
@@ -255,7 +279,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       </div>
 
       {/* License Transfer Date */}
-      <div ref={setFieldRef(5)} className="space-y-2">
+      <div ref={setFieldRef(6)} className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
           When do you plan to transfer your license to eXp Realty? <span className="text-destructive">*</span>
         </Label>
