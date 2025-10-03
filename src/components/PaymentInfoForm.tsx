@@ -141,7 +141,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
           
           <div className="space-y-4 text-muted-foreground">
             <p className="text-base leading-relaxed">
-              Every joining agent is required to have 2 forms of payment on file. Initial fee is charged after onboarding has been completed.
+              Every joining agent is required to have 2 forms of personal payment on file, even if a third party is covering your fees. Your initial fee will be charged after onboarding is completed.
             </p>
             
             <div className="space-y-1 p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5">
@@ -223,7 +223,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             
             <div className="text-muted-foreground">
               <p className="text-base leading-relaxed">
-                Please add 2 forms of your personal payment details. Even if a third party is covering your fees, we require a backup account. Don't worry—we won't charge you until your onboarding is complete.
+                Please add your 2 payment methods below.
               </p>
             </div>
           </div>
