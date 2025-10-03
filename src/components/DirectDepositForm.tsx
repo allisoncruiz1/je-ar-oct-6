@@ -179,19 +179,28 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
         {(usePreviousAccount === 'previous' || usePreviousAccount === 'different' || !previousBankAccount) && (
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="account-type">
+              <Label>
                 What type of bank account should we use to deposit your commissions? <span className="text-destructive">*</span>
               </Label>
-              <select
-                id="account-type"
-                value={formData.accountType}
-                onChange={(e) => updateFormData('accountType', e.target.value)}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              <RadioGroup 
+                value={formData.accountType} 
+                onValueChange={(value) => updateFormData('accountType', value)}
+                className="space-y-3"
               >
-                <option value="">Select account type</option>
-                <option value="personal">Personal/Individual Account</option>
-                <option value="business">Business Account</option>
-              </select>
+                <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg md:bg-transparent md:p-0">
+                  <RadioGroupItem value="personal" id="account-personal" className="h-5 w-5" />
+                  <Label htmlFor="account-personal" className="text-base text-foreground cursor-pointer">
+                    Personal/Individual Account
+                  </Label>
+                </div>
+
+                <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg md:bg-transparent md:p-0">
+                  <RadioGroupItem value="business" id="account-business" className="h-5 w-5" />
+                  <Label htmlFor="account-business" className="text-base text-foreground cursor-pointer">
+                    Business Account
+                  </Label>
+                </div>
+              </RadioGroup>
             </div>
 
             {formData.accountType === 'business' ? (
