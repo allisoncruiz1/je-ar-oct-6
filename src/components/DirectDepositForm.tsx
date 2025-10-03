@@ -180,7 +180,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
           <div className="space-y-4 pt-4">
             <div className="space-y-2">
               <Label htmlFor="account-type">
-                Account Type <span className="text-destructive">*</span>
+                What type of bank account should we use to deposit your commissions? <span className="text-destructive">*</span>
               </Label>
               <select
                 id="account-type"
