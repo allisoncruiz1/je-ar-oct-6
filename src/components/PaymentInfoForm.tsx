@@ -324,7 +324,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
             />
             <Label
               htmlFor="agreement-acknowledged"
-              className="text-base text-foreground leading-relaxed cursor-pointer"
+              className="text-sm text-foreground leading-relaxed cursor-pointer"
             >
               As stated in the independent contractor agreement you will be signing at the end of this application, a valid payment method is required to be on file. Failure to adhere to this policy can result in termination.
               <span className="text-destructive ml-1">*</span>
