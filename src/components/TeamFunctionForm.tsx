@@ -14,6 +14,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 export interface TeamFunctionData {
   agentType: string;
+  interestedInTeam?: string;
   teamRole?: string;
   teamName?: string;
   teamLeaderName?: string;
@@ -63,6 +64,7 @@ const teamFunctionSchema = z.object({
   agentType: z.string().trim().nonempty({
     message: "Please select how you'll work at eXp"
   }),
+  interestedInTeam: z.string().optional(),
   teamRole: z.string().optional(),
   teamName: z.string().optional(),
   teamLeaderName: z.string().optional(),
@@ -74,6 +76,14 @@ const teamFunctionSchema = z.object({
   corporateStaffMember: z.string().trim().nonempty({
     message: "Please indicate if you're a corporate staff member"
   })
+}).refine(data => {
+  if (data.agentType === 'individual') {
+    return data.interestedInTeam && data.interestedInTeam.trim() !== '';
+  }
+  return true;
+}, {
+  message: "Please indicate if you're interested in joining a team",
+  path: ["interestedInTeam"]
 }).refine(data => {
   if (data.agentType === 'team') {
     return data.teamRole && data.teamRole.trim() !== '';
@@ -145,6 +155,7 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
 }) => {
   const [formData, setFormData] = useState<TeamFunctionData>({
     agentType: initialData?.agentType || '',
+    interestedInTeam: initialData?.interestedInTeam || '',
     teamRole: initialData?.teamRole || '',
     teamName: initialData?.teamName || '',
     teamLeaderName: initialData?.teamLeaderName || '',
@@ -250,7 +261,10 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
               numberOfAgents: '',
               leaderTeamName: '',
               teamSetupDetails: ''
-            } : {})
+            } : {
+              // Clear interestedInTeam if team is selected
+              interestedInTeam: ''
+            })
           };
           setFormData(newData);
           onFormDataChange?.(newData);
@@ -270,6 +284,31 @@ export const TeamFunctionForm: React.FC<TeamFunctionFormProps> = ({
             </div>
           </RadioGroup>
         </div>
+
+        {/* Interested in Team - Conditional on Individual Agent */}
+        {formData.agentType === 'individual' && <div ref={setFieldRef(1)} className="space-y-3">
+            <Label className="text-sm font-medium text-foreground">
+              Are you interested in joining a team later? <span className="text-destructive">*</span>
+            </Label>
+            <RadioGroup value={formData.interestedInTeam} onValueChange={value => {
+          updateFormData('interestedInTeam', value);
+          scrollToNextField(1);
+        }} className="flex gap-3 mt-3 md:gap-6">
+              <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+                <RadioGroupItem value="yes" id="interested-yes" className="h-5 w-5" />
+                <Label htmlFor="interested-yes" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
+                  Yes
+                </Label>
+              </div>
+              <div className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 md:h-auto md:bg-transparent md:p-0 md:space-x-2 md:flex-none">
+                <RadioGroupItem value="no" id="interested-no" className="h-5 w-5" />
+                <Label htmlFor="interested-no" className="text-base md:text-sm text-foreground cursor-pointer md:font-normal">
+                  No
+                </Label>
+              </div>
+            </RadioGroup>
+          </div>}
+
 
         {/* Team Role Question - Conditional */}
         {formData.agentType === 'team' && <div ref={setFieldRef(1)} className="space-y-3">
