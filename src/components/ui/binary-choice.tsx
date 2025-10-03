@@ -74,18 +74,34 @@ export const BinaryChoice = React.forwardRef<
           disabled={disabled}
           className="flex gap-3"
         >
-          <label htmlFor={`${id}-yes`} className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer">
-            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
-            <span className="text-base text-foreground">
-              {yesLabel}
-            </span>
-          </label>
-          <label htmlFor={`${id}-no`} className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer">
-            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
-            <span className="text-base text-foreground">
-              {noLabel}
-            </span>
-          </label>
+          <div className="flex gap-3">
+            <div
+              role="button"
+              tabIndex={0}
+              aria-pressed={value === 'yes'}
+              onClick={() => onValueChange('yes')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('yes'); } }}
+              className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer select-none"
+            >
+              <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+              <Label htmlFor={`${id}-yes`} className="text-base text-foreground cursor-pointer">
+                {yesLabel}
+              </Label>
+            </div>
+            <div
+              role="button"
+              tabIndex={0}
+              aria-pressed={value === 'no'}
+              onClick={() => onValueChange('no')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onValueChange('no'); } }}
+              className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer select-none"
+            >
+              <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+              <Label htmlFor={`${id}-no`} className="text-base text-foreground cursor-pointer">
+                {noLabel}
+              </Label>
+            </div>
+          </div>
         </RadioGroup>
       </div>
     );
