@@ -6,6 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Info } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
 export interface DirectDepositData {
   firstName: string;
   lastName: string;
@@ -15,6 +16,7 @@ export interface DirectDepositData {
   routingNumber: string;
   accountNumber: string;
   confirmAccountNumber: string;
+  consentGiven: boolean;
 }
 interface DirectDepositFormProps {
   onSubmit?: (data: DirectDepositData) => void;
@@ -54,7 +56,8 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
     accountType: initialData?.accountType || '',
     routingNumber: initialData?.routingNumber || '',
     accountNumber: initialData?.accountNumber || '',
-    confirmAccountNumber: initialData?.confirmAccountNumber || ''
+    confirmAccountNumber: initialData?.confirmAccountNumber || '',
+    consentGiven: initialData?.consentGiven || false
   });
   const actionBarRef = useRef<HTMLDivElement>(null);
 
@@ -84,7 +87,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
       updateFormData('confirmAccountNumber', previousBankAccount.accountNumber);
     }
   }, [usePreviousAccount, previousBankAccount]);
-  const updateFormData = (field: keyof DirectDepositData, value: string) => {
+  const updateFormData = (field: keyof DirectDepositData, value: string | boolean) => {
     const newData = {
       ...formData,
       [field]: value
@@ -96,14 +99,14 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
     // Check name fields based on account type
     const hasValidName = formData.accountType === 'business' ? formData.businessName.trim() !== '' : formData.accountType === 'personal' ? formData.firstName.trim() !== '' && formData.lastName.trim() !== '' : false;
 
-    // If using previous account, validate name fields, bank name, and account type
+    // If using previous account, validate name fields, bank name, account type, and consent
     if (usePreviousAccount === 'previous' && previousBankAccount) {
-      return hasValidName && formData.bankName.trim() !== '' && formData.accountType !== '';
+      return hasValidName && formData.bankName.trim() !== '' && formData.accountType !== '' && formData.consentGiven;
     }
 
-    // If providing different details, validate all fields
+    // If providing different details, validate all fields including consent
     if (usePreviousAccount === 'different') {
-      const isValid = hasValidName && formData.bankName.trim() !== '' && formData.accountType !== '' && formData.routingNumber.trim() !== '' && formData.accountNumber.trim() !== '' && formData.confirmAccountNumber.trim() !== '' && formData.accountNumber === formData.confirmAccountNumber;
+      const isValid = hasValidName && formData.bankName.trim() !== '' && formData.accountType !== '' && formData.routingNumber.trim() !== '' && formData.accountNumber.trim() !== '' && formData.confirmAccountNumber.trim() !== '' && formData.accountNumber === formData.confirmAccountNumber && formData.consentGiven;
       return isValid;
     }
     return false;
@@ -237,6 +240,25 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
                 {formData.confirmAccountNumber && formData.accountNumber !== formData.confirmAccountNumber && <p className="text-sm text-destructive">Account numbers do not match</p>}
               </div>}
           </div>}
+
+        {/* Consent Checkbox */}
+        {(usePreviousAccount === 'previous' || usePreviousAccount === 'different' || !previousBankAccount) && (
+          <div className="flex items-start space-x-3 p-4 bg-muted/30 rounded-lg border border-border">
+            <Checkbox 
+              id="consent" 
+              checked={formData.consentGiven}
+              onCheckedChange={(checked) => updateFormData('consentGiven', checked as boolean)}
+              className="mt-1"
+            />
+            <Label htmlFor="consent" className="text-sm leading-relaxed cursor-pointer flex-1">
+              By clicking the "checkbox", you instruct the eXp World Holdings, Inc. family of companies (collectively, "eXp") to deliver any and all payments that you are entitled to receive from eXp (such as, for example only, real estate commissions, revenue share payments, and applicable reimbursements) to that depository account that you initially designate, immediately below, and that you subsequently update from time to time within the MY EXP® platform (whether accessed through the MY EXP® app. or on the web at{' '}
+              <a href="https://my.exprealty.com/login" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+                https://my.exprealty.com/login
+              </a>)
+              <span className="text-destructive ml-1">*</span>
+            </Label>
+          </div>
+        )}
       </div>
 
       {/* Desktop action bar */}
