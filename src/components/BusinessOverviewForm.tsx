@@ -99,8 +99,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       formData.spouseAtDifferentBrokerage.trim() !== '' && 
       // Only require formingDomesticPartnership if spouse is at different brokerage
       (formData.spouseAtDifferentBrokerage !== 'yes' || formData.formingDomesticPartnership?.trim() !== '') &&
-      // Only require spouseJoiningEXP if both spouse and domestic partnership are 'yes'
-      (formData.spouseAtDifferentBrokerage !== 'yes' || formData.formingDomesticPartnership !== 'yes' || formData.spouseJoiningEXP?.trim() !== '') &&
+      // Only require spouseJoiningEXP if spouse is at different brokerage
+      (formData.spouseAtDifferentBrokerage !== 'yes' || formData.spouseJoiningEXP?.trim() !== '') &&
       formData.ownsRealEstateOffice.trim() !== '' &&
       formData.preExistingMatters.length > 0 && 
       formData.licenseTransferDate !== undefined;
@@ -191,10 +191,6 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
             value={formData.formingDomesticPartnership || ''} 
             onValueChange={value => {
               updateFormData('formingDomesticPartnership', value);
-              // Clear spouse joining eXp if not forming partnership
-              if (value !== 'yes') {
-                updateFormData('spouseJoiningEXP', '');
-              }
               scrollToNextField(2);
             }} 
             label="Do you intend on forming a Domestic Partnership?" 
@@ -203,8 +199,8 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
         </div>
       )}
 
-      {/* Spouse Joining eXp - Conditional on both spouse at different brokerage AND forming domestic partnership */}
-      {formData.spouseAtDifferentBrokerage === 'yes' && formData.formingDomesticPartnership === 'yes' && (
+      {/* Spouse Joining eXp - Conditional on spouse at different brokerage */}
+      {formData.spouseAtDifferentBrokerage === 'yes' && (
         <div ref={setFieldRef(3)} className="space-y-3">
           <BinaryChoice 
             value={formData.spouseJoiningEXP || ''} 
