@@ -315,22 +315,22 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {cardValidationError && !showCardConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+          <Alert className="border-l-4 border-l-blue-500 bg-blue-50/80 dark:bg-blue-950/20 shadow-sm">
             <div className="flex gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-500 mt-0.5 flex-shrink-0" />
               <div className="flex-1 space-y-3">
-                <AlertDescription className="text-amber-900 dark:text-amber-100">
+                <AlertDescription className="text-blue-900 dark:text-blue-100">
                   <p className="font-semibold text-base mb-1">
                     We weren't able to validate these details
                   </p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                  <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
                     Please double-check your entry. You can:
                   </p>
                   <div className="flex flex-col sm:flex-row gap-2.5">
                     <Button
                       size="sm"
                       onClick={handleUpdateCardDetails}
-                      className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm"
+                      className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                     >
                       Update Card Details
                     </Button>
@@ -338,12 +338,12 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                       variant="outline"
                       size="sm"
                       onClick={handleConfirmCardAndContinue}
-                      className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40"
+                      className="border-blue-600 text-blue-900 hover:bg-blue-100 dark:border-blue-500 dark:text-blue-100 dark:hover:bg-blue-950/40"
                     >
                       Confirm and Continue
                     </Button>
                   </div>
-                  <p className="text-xs mt-3 text-amber-700 dark:text-amber-400 font-medium">
+                  <p className="text-xs mt-3 text-blue-700 dark:text-blue-400 font-medium">
                     Card number does not match with other details (Attempt {cardValidationAttempts}/3)
                   </p>
                 </AlertDescription>
@@ -353,18 +353,18 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         )}
 
         {showCardConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+          <Alert className="border-l-4 border-l-blue-500 bg-blue-50/80 dark:bg-blue-950/20 shadow-sm">
             <div className="flex gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="h-5 w-5 text-blue-600 dark:text-blue-500 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
-                <AlertDescription className="text-amber-900 dark:text-amber-100">
+                <AlertDescription className="text-blue-900 dark:text-blue-100">
                   <p className="font-semibold text-base mb-2">
                     We weren't able to validate these details after 3 attempts
                   </p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                  <p className="text-sm text-blue-800 dark:text-blue-200 mb-4">
                     We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
                   </p>
-                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-blue-200 dark:border-blue-800/50 shadow-sm">
                     <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
                     <div className="space-y-2.5 text-sm">
                       <div className="flex justify-between items-center py-1">
