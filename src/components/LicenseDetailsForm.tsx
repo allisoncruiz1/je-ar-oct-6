@@ -358,7 +358,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
       {/* Associations */}
       <div ref={setFieldRef(4)} className="space-y-2">
         <Label className="text-sm font-medium text-foreground">
-          Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}:
+          Please select your association(s) you plan to be affiliated with as a real estate agent in {currentState}: <span className="text-destructive">*</span>
         </Label>
         <MobileMultiSelect
           options={ASSOCIATIONS}
