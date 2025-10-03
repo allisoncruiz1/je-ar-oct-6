@@ -8,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
+import { toast } from '@/hooks/use-toast';
 
 interface SponsorFormProps {
   onContinue?: () => void;
@@ -119,6 +120,10 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
   const handleNoSponsor = () => {
     setShowSearchResults(false);
     setShowNoSponsorDialog(true);
+    toast({
+      title: "eXp Realty will be your sponsor",
+      description: "Without a sponsor selection, eXp Realty will be assigned as your permanent sponsor.",
+    });
   };
 
   const confirmManualSponsor = () => {
