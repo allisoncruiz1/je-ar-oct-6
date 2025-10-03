@@ -55,6 +55,7 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   continueButtonText = "Continue"
  }) => {
   const actionBarRef = useRef<HTMLDivElement>(null);
+  const chipRefs = useRef<(HTMLButtonElement | null)[]>([]);
   
   // Scroll to top on mobile, action bar on desktop
   useEffect(() => {
@@ -69,6 +70,15 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   }, []);
   const [currentStateIndex, setCurrentStateIndex] = useState(0);
   const currentState = licensedStates[currentStateIndex];
+
+  // Auto-scroll active chip into view
+  useEffect(() => {
+    chipRefs.current[currentStateIndex]?.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'center',
+      block: 'nearest',
+    });
+  }, [currentStateIndex]);
   const {
     setFieldRef,
     scrollToNextField
@@ -181,49 +191,30 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   const canGoPrevious = () => currentStateIndex > 0;
   return <div className="space-y-6 pb-24 md:pb-0">
       {/* State Navigation Header */}
-      {licensedStates.length > 1 && <div className="mb-6">
-          {/* Mobile: Dropdown Select */}
-          <div className="md:hidden">
-            <Label className="text-sm font-medium text-foreground mb-2 block">
-              Select State
-            </Label>
-            <Select 
-              value={currentState} 
-              onValueChange={(value) => {
-                const index = licensedStates.indexOf(value);
-                if (index !== -1) setCurrentStateIndex(index);
-              }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-background border border-border shadow-lg z-50">
-                {licensedStates.map((state) => (
-                  <SelectItem key={state} value={state} className="cursor-pointer">
-                    {state} {data[state]?.licenseNumber && '✓'}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Desktop: Tab Buttons */}
-          <div className="hidden md:flex items-center gap-2">
+      {licensedStates.length > 1 && <div className="mb-6 -mx-4 md:mx-0">
+          <div
+            className="flex gap-2 overflow-x-auto px-4 md:px-0 scroll-px-4 scrollbar-hide"
+            role="tablist"
+            aria-label="Select state"
+          >
             {licensedStates.map((state, index) => (
               <button
                 key={state}
+                ref={(el) => (chipRefs.current[index] = el)}
                 onClick={() => setCurrentStateIndex(index)}
+                role="tab"
+                aria-selected={index === currentStateIndex}
                 className={cn(
-                  "px-6 py-2.5 rounded-lg text-sm font-medium transition-all",
+                  "shrink-0 snap-start rounded-full px-4 py-2 text-sm font-medium border transition-colors",
                   index === currentStateIndex
-                    ? "bg-primary text-primary-foreground shadow-sm"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80"
+                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                    : "bg-muted text-muted-foreground hover:bg-muted/80 border-transparent"
                 )}
               >
-                {state}
-                {data[state]?.licenseNumber && (
-                  <span className="ml-2 text-xs">✓</span>
-                )}
+                <span className="flex items-center gap-2">
+                  {state}
+                  {data[state]?.licenseNumber && <span className="text-xs leading-none">✓</span>}
+                </span>
               </button>
             ))}
           </div>
@@ -285,21 +276,24 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
         <TooltipProvider>
           <div className="space-y-3">
             <Label className="text-sm font-medium text-foreground">
-              You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions? <span className="text-destructive">*</span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    type="button"
-                    className="inline-flex items-center justify-center h-6 w-6 ml-1 align-middle rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-0"
-                    aria-label="More information about Certified Mentor Program"
-                  >
-                    <HelpCircle className="h-4 w-4" />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs">
-                  <p>Our mentor program pairs new or less experienced agents with seasoned professionals to help accelerate your success at eXp.</p>
-                </TooltipContent>
-              </Tooltip>
+              <span>You may qualify for eXp's Certified Mentor Program. Would you like to request a specific certified mentor to guide you through your first few transactions?</span>
+              <span className="whitespace-nowrap inline-flex items-center align-middle ml-1">
+                <span className="text-destructive">*</span>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label="More information about Certified Mentor Program"
+                      className="inline-flex items-center justify-center ml-1 h-6 w-6 p-1 -m-1 rounded-full text-muted-foreground hover:text-foreground focus-visible:outline-none"
+                    >
+                      <HelpCircle className="h-4 w-4" />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="max-w-xs">
+                    <p>Our mentor program pairs new or less experienced agents with seasoned professionals to help accelerate your success at eXp.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </span>
             </Label>
             <RadioGroup 
               value={currentData.certifiedMentor} 
