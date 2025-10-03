@@ -14,7 +14,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   onOpenDrawer,
   onSaveResume
 }) => {
-  const [isSubStepsExpanded, setIsSubStepsExpanded] = useState(true);
+  const [isSubStepsExpanded, setIsSubStepsExpanded] = useState(false);
   const mainSteps = [{
     title: "Your Information",
     description: "Personal and Business Details",
