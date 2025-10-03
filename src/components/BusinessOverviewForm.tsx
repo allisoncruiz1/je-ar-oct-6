@@ -395,18 +395,20 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
           </Popover>}
       </div>
 
-      {/* Has Sponsors */}
-      <div ref={setFieldRef(7)} className="space-y-3">
-        <BinaryChoice
-          value={formData.hasSponsors || ''}
-          onValueChange={value => {
-            updateFormData('hasSponsors', value);
-            scrollToNextField(7);
-          }}
-          label="Do you have sponsors?"
-          required
-        />
-      </div>
+      {/* Has Sponsors - Conditional on license transfer date being selected */}
+      {formData.licenseTransferDate && (
+        <div ref={setFieldRef(7)} className="space-y-3">
+          <BinaryChoice
+            value={formData.hasSponsors || ''}
+            onValueChange={value => {
+              updateFormData('hasSponsors', value);
+              scrollToNextField(7);
+            }}
+            label="Do you have sponsors?"
+            required
+          />
+        </div>
+      )}
 
       {/* Action Bar at bottom */}
       </form>
