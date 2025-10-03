@@ -320,9 +320,32 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
               <div className="flex-1">
                 <AlertDescription className="text-amber-900 dark:text-amber-100">
-                  <p className="text-sm">
-                    We weren't able to validate these details. Please double-check your entry. You can: Update card details or choose to continue with the existing details.
+                  <p className="font-semibold text-base mb-1">
+                    We weren't able to validate these details
                   </p>
+                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-3">
+                    Please double-check your entry. You can:
+                  </p>
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-4">
+                    Card number does not match with other details (Attempt {cardValidationAttempts}/3)
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2.5 pt-2 border-t border-amber-200 dark:border-amber-800/50">
+                    <Button
+                      size="sm"
+                      onClick={handleUpdateCardDetails}
+                      className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm"
+                    >
+                      Update Card Details
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleConfirmCardAndContinue}
+                      className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40"
+                    >
+                      Confirm and Continue
+                    </Button>
+                  </div>
                 </AlertDescription>
               </div>
             </div>
@@ -482,34 +505,14 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
           </div>
         </div>
 
-        {cardValidationError && !showCardConfirmation ? (
-          <div className="flex flex-col sm:flex-row gap-3">
-            <Button
-              onClick={handleUpdateCardDetails}
-              className="flex-1 min-h-[48px]"
-              size="lg"
-            >
-              Update Card Details
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleConfirmCardAndContinue}
-              className="flex-1 min-h-[48px]"
-              size="lg"
-            >
-              Confirm and Continue
-            </Button>
-          </div>
-        ) : (
-          <Button
-            onClick={handleAddCard}
-            disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip || showCardConfirmation}
-            className="w-full min-h-[48px]"
-            size="lg"
-          >
-            Add Card
-          </Button>
-        )}
+        <Button
+          onClick={handleAddCard}
+          disabled={!billingName || !cardholderName || !cardNumber || !expiryDate || !cvv || !billingZip}
+          className="w-full min-h-[48px]"
+          size="lg"
+        >
+          Add Card
+        </Button>
           </>
         )}
       </TabsContent>
