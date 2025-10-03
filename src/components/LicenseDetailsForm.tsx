@@ -190,36 +190,6 @@ export const LicenseDetailsForm: React.FC<LicenseDetailsFormProps> = ({
   const canGoNext = () => currentStateIndex < licensedStates.length - 1;
   const canGoPrevious = () => currentStateIndex > 0;
   return <div className="space-y-6 pb-24 md:pb-0">
-      {/* State Navigation Header */}
-      {licensedStates.length > 1 && <div className="mb-6 -mx-4 md:mx-0">
-          <div
-            className="flex gap-2 overflow-x-auto px-4 md:px-0 scroll-px-4 scrollbar-hide"
-            role="tablist"
-            aria-label="Select state"
-          >
-            {licensedStates.map((state, index) => (
-              <button
-                key={state}
-                ref={(el) => (chipRefs.current[index] = el)}
-                onClick={() => setCurrentStateIndex(index)}
-                role="tab"
-                aria-selected={index === currentStateIndex}
-                className={cn(
-                  "shrink-0 snap-start rounded-full px-4 py-2 text-sm font-medium border transition-colors",
-                  index === currentStateIndex
-                    ? "bg-primary text-primary-foreground border-primary shadow-sm"
-                    : "bg-muted text-muted-foreground hover:bg-muted/80 border-transparent"
-                )}
-              >
-                <span className="flex items-center gap-2">
-                  {state}
-                  {data[state]?.licenseNumber && <span className="text-xs leading-none">✓</span>}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>}
-
       {/* Current State Header */}
       <div className="mb-6 mt-8 max-md:mt-2">
         <h2 className="text-xl font-semibold text-foreground mb-1">
