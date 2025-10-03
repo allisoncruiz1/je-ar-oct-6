@@ -315,81 +315,93 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {cardValidationError && !showCardConfirmation && (
-          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-amber-900 dark:text-amber-200">
-              <p className="font-medium mb-2">
-                We weren't able to validate these details. Please double-check your entry. You can:
-              </p>
-              <div className="flex flex-col sm:flex-row gap-2 mt-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleUpdateCardDetails}
-                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
-                >
-                  Update Card Details
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleConfirmCardAndContinue}
-                  className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:text-amber-200"
-                >
-                  Confirm and Continue
-                </Button>
+          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+            <div className="flex gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+              <div className="flex-1 space-y-3">
+                <AlertDescription className="text-amber-900 dark:text-amber-100">
+                  <p className="font-semibold text-base mb-1">
+                    We weren't able to validate these details
+                  </p>
+                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                    Please double-check your entry. You can:
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-2.5">
+                    <Button
+                      size="sm"
+                      onClick={handleUpdateCardDetails}
+                      className="bg-amber-600 hover:bg-amber-700 text-white shadow-sm"
+                    >
+                      Update Card Details
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleConfirmCardAndContinue}
+                      className="border-amber-600 text-amber-900 hover:bg-amber-100 dark:border-amber-500 dark:text-amber-100 dark:hover:bg-amber-950/40"
+                    >
+                      Confirm and Continue
+                    </Button>
+                  </div>
+                  <p className="text-xs mt-3 text-amber-700 dark:text-amber-400 font-medium">
+                    Card number does not match with other details (Attempt {cardValidationAttempts}/3)
+                  </p>
+                </AlertDescription>
               </div>
-              <p className="text-xs mt-2 text-amber-800 dark:text-amber-300">
-                Card number does not match with other details (Attempt {cardValidationAttempts}/3)
-              </p>
-            </AlertDescription>
+            </div>
           </Alert>
         )}
 
         {showCardConfirmation && (
-          <Alert className="border-amber-600 bg-amber-50 dark:bg-amber-950/30">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-amber-900 dark:text-amber-200">
-              <p className="font-medium mb-3">
-                We weren't able to validate these details after 3 attempts. We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
-              </p>
-              <div className="bg-white dark:bg-gray-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800 space-y-2">
-                <h4 className="font-semibold text-sm mb-2">Entered Details</h4>
-                <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Billing Name:</span>
-                    <span className="font-medium">{savedCardData?.billingName}</span>
+          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+            <div className="flex gap-3">
+              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <AlertDescription className="text-amber-900 dark:text-amber-100">
+                  <p className="font-semibold text-base mb-2">
+                    We weren't able to validate these details after 3 attempts
+                  </p>
+                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                    We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
+                  </p>
+                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+                    <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
+                    <div className="space-y-2.5 text-sm">
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">Billing Name:</span>
+                        <span className="font-medium text-foreground">{savedCardData?.billingName}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">Cardholder Name:</span>
+                        <span className="font-medium text-foreground">{savedCardData?.cardholderName}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">Card Number:</span>
+                        <span className="font-medium font-mono text-foreground">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">Expiry Date:</span>
+                        <span className="font-medium text-foreground">{savedCardData?.expiryDate}</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">CVV:</span>
+                        <span className="font-medium font-mono text-foreground">***</span>
+                      </div>
+                      <div className="flex justify-between items-center py-1">
+                        <span className="text-muted-foreground">Billing ZIP:</span>
+                        <span className="font-medium text-foreground">{savedCardData?.billingZip}</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Cardholder Name:</span>
-                    <span className="font-medium">{savedCardData?.cardholderName}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Card Number:</span>
-                    <span className="font-medium">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Expiry Date:</span>
-                    <span className="font-medium">{savedCardData?.expiryDate}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">CVV:</span>
-                    <span className="font-medium">***</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Billing ZIP:</span>
-                    <span className="font-medium">{savedCardData?.billingZip}</span>
-                  </div>
-                </div>
+                  <Button
+                    onClick={handleConfirmCardAndContinue}
+                    className="w-full mt-4 min-h-[44px]"
+                  >
+                    Next
+                  </Button>
+                </AlertDescription>
               </div>
-              <Button
-                onClick={handleConfirmCardAndContinue}
-                className="w-full mt-4"
-                size="sm"
-              >
-                Next
-              </Button>
-            </AlertDescription>
+            </div>
           </Alert>
         )}
 
