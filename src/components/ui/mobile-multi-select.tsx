@@ -158,16 +158,15 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       </DrawerTrigger>
       <DrawerContent className="max-h-[85vh] bg-card border-t border-border shadow-xl z-50">
         <DrawerHeader className="text-left border-b border-border bg-card px-6 py-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between">
+            <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</DrawerTitle>
             <button
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+              className="p-1 hover:bg-accent rounded-sm transition-colors"
             >
-              <ArrowLeft className="h-4 w-4" />
-              Back
+              <X className="h-5 w-5 text-foreground" />
             </button>
           </div>
-          <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground mt-2">{placeholder}</DrawerTitle>
         </DrawerHeader>
         {SelectionContent}
       </DrawerContent>
