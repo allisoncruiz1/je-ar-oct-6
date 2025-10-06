@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AddressForm } from './AddressForm';
 import { LicenseBusinessInfoForm } from './LicenseBusinessInfoForm';
 import { LicenseDetailsForm, LicenseDetailsData } from './LicenseDetailsForm';
@@ -209,8 +210,10 @@ export const MainContent: React.FC<MainContentProps> = ({
       console.log('📤 Submitting final application:', finalData);
       onFormSubmit?.(finalData);
       
-      // TODO: Redirect to my eXp dashboard
-      alert('Application submitted successfully! Redirecting to my eXp...');
+      // Redirect to dashboard
+      setTimeout(() => {
+        window.location.href = '/dashboard';
+      }, 1000);
       
       advancingRef.current = false;
       return;
