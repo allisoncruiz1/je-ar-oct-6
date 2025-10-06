@@ -23,10 +23,29 @@ const w9Schema = z.object({
   companyCity: z.string().optional(),
   companyState: z.string().optional(),
   companyZipCode: z.string().optional(),
-  stateRecognition: z.string().optional(),
+  companyEmail: z.string().optional(),
+  companyPhone: z.string().optional(),
+  stateRecognition: z.enum(['yes', 'no'], {
+    required_error: 'Please indicate state recognition status',
+  }).optional(),
+  alternativeBillingAddress: z.enum(['yes', 'no'], {
+    required_error: 'Please indicate if you want an alternative billing address',
+  }),
+  taxFilingMethod: z.string().min(1, 'Please select your tax filing method'),
+  agentFullName: z.string().min(1, 'Full name is required'),
+  exemptFromWithholding: z.enum(['yes', 'no'], {
+    required_error: 'Please indicate exemption status',
+  }),
+  exemptPayeeCode: z.string().optional(),
+  addressLine1: z.string().min(1, 'Address is required'),
+  addressCity: z.string().min(1, 'City is required'),
+  addressState: z.string().min(1, 'State is required'),
+  addressZipCode: z.string().min(1, 'ZIP code is required'),
+  accountNumbers: z.string().optional(),
+  requesterInfo: z.string().optional(),
 }).refine((data) => {
   if (data.isPaidByCompany === 'yes') {
-    return !!(data.companyEIN && data.companyName && data.companyAddressLine1 && data.companyCity && data.companyState && data.companyZipCode);
+    return !!(data.companyEIN && data.companyName && data.companyAddressLine1 && data.companyCity && data.companyState && data.companyZipCode && data.companyEmail && data.companyPhone);
   }
   return true;
 }, {
@@ -74,7 +93,20 @@ export const W9Form: React.FC<W9FormProps> = ({
       companyCity: '',
       companyState: '',
       companyZipCode: '',
-      stateRecognition: '',
+      companyEmail: '',
+      companyPhone: '',
+      stateRecognition: undefined,
+      alternativeBillingAddress: undefined,
+      taxFilingMethod: '',
+      agentFullName: '',
+      exemptFromWithholding: undefined,
+      exemptPayeeCode: '',
+      addressLine1: '',
+      addressCity: '',
+      addressState: '',
+      addressZipCode: '',
+      accountNumbers: '',
+      requesterInfo: '',
     },
   });
 
@@ -301,21 +333,251 @@ export const W9Form: React.FC<W9FormProps> = ({
 
             <FormField
               control={form.control}
-              name="stateRecognition"
+              name="companyEmail"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-base font-semibold text-foreground">
-                    State Recognition
+                    Company Email <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter state recognition (optional)" />
+                    <Input {...field} placeholder="Enter company email" type="email" />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="companyPhone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-base font-semibold text-foreground">
+                    Company Phone <span className="text-destructive">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter company phone number" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="stateRecognition"
+              render={({ field }) => (
+                <FormItem>
+                  <BinaryChoice
+                    label="Is your company recognized and approved by your state's real estate commission to be paid commissions?"
+                    required
+                    value={field.value}
+                    onValueChange={field.onChange}
+                  />
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
         )}
+
+        {/* Alternative Billing Address */}
+        <FormField
+          control={form.control}
+          name="alternativeBillingAddress"
+          render={({ field }) => (
+            <FormItem>
+              <BinaryChoice
+                label="Would you like to provide an alternative billing address?"
+                required
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Tax Filing Method */}
+        <FormField
+          control={form.control}
+          name="taxFilingMethod"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold text-foreground">
+                How do you file your federal taxes? <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Please select your method for filing federal taxes" />
+              </FormControl>
+              <p className="text-sm text-muted-foreground mt-1">
+                See the instructions if you aren&apos;t sure: <a href="https://www.irs.gov/FormW9" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.irs.gov/FormW9</a>
+              </p>
+              <p className="text-xs text-muted-foreground italic mt-1">
+                Note: By selecting the &quot;LLC&quot; option, you will be prompted to enter the appropriate tax classification of the LLC unless it&apos;s a disregarded entity. A disregarded entity should instead check the appropriate box for the tax classification of its owner.
+              </p>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Agent Full Name */}
+        <FormField
+          control={form.control}
+          name="agentFullName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold text-foreground">
+                Enter agent full name, owner of disregarded entity, or company name <span className="text-destructive">*</span>
+              </FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Test Payload" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Exempt from Withholding */}
+        <FormField
+          control={form.control}
+          name="exemptFromWithholding"
+          render={({ field }) => (
+            <FormItem>
+              <BinaryChoice
+                label="Are you exempt from backup withholding and/or FATCA reporting?"
+                required
+                value={field.value}
+                onValueChange={field.onChange}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Exempt Payee Code */}
+        <FormField
+          control={form.control}
+          name="exemptPayeeCode"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="text-base font-semibold text-foreground">
+                Enter exempt payee code(s) (if any)
+              </FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Exempt payee code (if any)" />
+              </FormControl>
+              <p className="text-sm text-muted-foreground mt-1">
+                See the instructions if you aren&apos;t sure: <a href="https://www.irs.gov/FormW9" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.irs.gov/FormW9</a>
+              </p>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Address Information Section */}
+        <div className="space-y-6 mt-8 pt-6 border-t border-border">
+          <div>
+            <h3 className="text-lg font-semibold text-[hsl(var(--brand-blue))] mb-1">Address Information</h3>
+            <p className="text-sm text-muted-foreground italic">This is the address eXp will populate on your 1099</p>
+          </div>
+
+          <FormField
+            control={form.control}
+            name="addressLine1"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  Enter address (number, street and apt. or suite no.) <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="123 Center" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="addressCity"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  City <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="denver" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="addressState"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  State <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Colorado" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="addressZipCode"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  Zip code <span className="text-destructive">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="80526" maxLength={10} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="accountNumbers"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  List account number(s) here
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="List account number(s) here (optional)" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="requesterInfo"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-base font-semibold text-foreground">
+                  Requester&apos;s name and address
+                </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Requester's name and address (optional)" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         {/* Desktop Buttons */}
         {!isMobile && (
