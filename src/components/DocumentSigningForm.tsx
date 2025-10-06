@@ -75,16 +75,21 @@ export const DocumentSigningForm: React.FC<DocumentSigningFormProps> = ({
   return (
     <div className="space-y-6 pb-24 md:pb-0 relative">
       <div className="space-y-6 md:max-h-[calc(100vh-200px)] md:overflow-y-auto md:pb-20">
-        {/* Information Banner */}
-        <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            <span className="font-semibold text-[hsl(var(--brand-blue))]">Important:</span> You will receive an email from JoinApp and DDC to complete your document packet. Please review and sign all required documents.
-          </p>
+        {/* Page Header */}
+        <div className="mb-4 md:mb-6 mt-4 md:mt-8">
+          <h1 className="text-lg md:text-xl font-semibold text-foreground mb-3 md:mb-4">Document Signing</h1>
+          
+          {/* Information Banner */}
+          <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              <span className="font-semibold text-[hsl(var(--brand-blue))]">Important:</span> You will receive an email from JoinApp and DDC to complete your document packet. Please review and sign all required documents.
+            </p>
+          </div>
         </div>
 
         {/* Document List */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-foreground">Required Documents</h3>
+          <h2 className="text-base md:text-lg font-semibold text-[hsl(var(--brand-blue))]">Required Documents</h2>
           
           {documents.map((doc) => (
             <div
