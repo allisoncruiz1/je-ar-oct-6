@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { PaymentDetailsDialog } from '@/components/PaymentDetailsDialog';
-import { Plus } from 'lucide-react';
+import { Plus, Pencil } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 export interface PaymentInfoData {
   thirdPartyPayment: string;
@@ -260,37 +260,48 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                           </span>
                         )}
                       </div>
-                      <button
-                        onClick={() => handleSetDefaultPayment(creditCard.id)}
-                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
-                        aria-label={creditCard.isDefault ? "Default credit card payment" : "Click to set as default payment"}
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleSetDefaultPayment(creditCard.id);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 rounded-full border-2 border-border flex items-center justify-center bg-white">
-                              <span className="text-[#1434CB] font-bold text-xl" style={{ fontFamily: 'serif' }}>VISA</span>
+                      <div className="relative">
+                        <button
+                          onClick={() => handleSetDefaultPayment(creditCard.id)}
+                          className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
+                          aria-label={creditCard.isDefault ? "Default credit card payment" : "Click to set as default payment"}
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              handleSetDefaultPayment(creditCard.id);
+                            }
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-full border-2 border-border flex items-center justify-center bg-white">
+                                <span className="text-[#1434CB] font-bold text-xl" style={{ fontFamily: 'serif' }}>VISA</span>
+                              </div>
+                              <div>
+                                <p className="font-medium text-foreground text-lg mb-1">Credit card</p>
+                                <p className="text-base text-foreground">
+                                  **** **** **** {creditCard.details.cardNumber}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-medium text-foreground text-lg mb-1">Credit card</p>
-                              <p className="text-base text-foreground">
-                                **** **** **** {creditCard.details.cardNumber}
-                              </p>
-                            </div>
+                            {!creditCard.isDefault && (
+                              <span className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                                Click to set as default
+                              </span>
+                            )}
                           </div>
-                          {!creditCard.isDefault && (
-                            <span className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                              Click to set as default
-                            </span>
-                          )}
-                        </div>
-                      </button>
+                        </button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setIsDialogOpen(true)}
+                          className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-foreground"
+                          aria-label="Edit credit card details"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   );
                 })()}
@@ -310,37 +321,48 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                           </span>
                         )}
                       </div>
-                      <button
-                        onClick={() => handleSetDefaultPayment(bankAccount.id)}
-                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
-                        aria-label={bankAccount.isDefault ? "Default bank account payment" : "Click to set as default payment"}
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' || e.key === ' ') {
-                            e.preventDefault();
-                            handleSetDefaultPayment(bankAccount.id);
-                          }
-                        }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-4">
-                            <div className="w-16 h-16 rounded-full bg-[#2C3E50] flex items-center justify-center">
-                              <span className="text-white font-semibold text-sm">capital</span>
+                      <div className="relative">
+                        <button
+                          onClick={() => handleSetDefaultPayment(bankAccount.id)}
+                          className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
+                          aria-label={bankAccount.isDefault ? "Default bank account payment" : "Click to set as default payment"}
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              handleSetDefaultPayment(bankAccount.id);
+                            }
+                          }}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="w-16 h-16 rounded-full bg-[#2C3E50] flex items-center justify-center">
+                                <span className="text-white font-semibold text-sm">capital</span>
+                              </div>
+                              <div>
+                                <p className="font-medium text-foreground text-lg mb-1">Capital Bank - Checking</p>
+                                <p className="text-base text-foreground">
+                                  *****{bankAccount.details.accountNumber}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-medium text-foreground text-lg mb-1">Capital Bank - Checking</p>
-                              <p className="text-base text-foreground">
-                                *****{bankAccount.details.accountNumber}
-                              </p>
-                            </div>
+                            {!bankAccount.isDefault && (
+                              <span className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                                Click to set as default
+                              </span>
+                            )}
                           </div>
-                          {!bankAccount.isDefault && (
-                            <span className="text-sm text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
-                              Click to set as default
-                            </span>
-                          )}
-                        </div>
-                      </button>
+                        </button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => setIsDialogOpen(true)}
+                          className="absolute top-2 right-2 h-8 w-8 text-muted-foreground hover:text-foreground"
+                          aria-label="Edit bank account details"
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
                   );
                 })()}
