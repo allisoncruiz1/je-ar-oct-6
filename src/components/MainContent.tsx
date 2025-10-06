@@ -274,7 +274,11 @@ export const MainContent: React.FC<MainContentProps> = ({
         )}
         {currentSection === 2 && (
           <LicenseDetailsForm
-            licensedStates={licenseBusinessData?.licensedStates || []}
+            licensedStates={
+              licenseBusinessData?.isLicensed === 'yes' 
+                ? licenseBusinessData?.licensedStates || []
+                : licenseBusinessData?.plannedLicenseStates || []
+            }
             data={licenseDetailsData}
             onDataChange={setLicenseDetailsData}
             onFormValidChange={setLicenseDetailsFormComplete}
