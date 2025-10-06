@@ -6,7 +6,7 @@ import { ExternalLink, Check } from 'lucide-react';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Checkbox } from '@/components/ui/checkbox';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast';
 
@@ -463,12 +463,12 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
         )}
       </div>
 
-      {/* Search Results Dialog */}
-      <Dialog open={showSearchResults} onOpenChange={setShowSearchResults}>
-        <DialogContent className="sm:max-w-[900px]">
-          <DialogHeader>
-            <DialogTitle>Sponsor Search</DialogTitle>
-          </DialogHeader>
+      {/* Search Results Drawer */}
+      <Drawer open={showSearchResults} onOpenChange={setShowSearchResults}>
+        <DrawerContent className="max-h-[85vh]">
+          <DrawerHeader>
+            <DrawerTitle>Sponsor Search</DrawerTitle>
+          </DrawerHeader>
           <div className="space-y-6">
             {!pendingSponsor ? (
               <>
@@ -599,12 +599,12 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               </div>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
-      {/* Manual Sponsor Entry Dialog */}
-      <Dialog open={showNoSponsorDialog} onOpenChange={setShowNoSponsorDialog}>
-        <DialogContent className="sm:max-w-[600px]">
+      {/* Manual Sponsor Entry Drawer */}
+      <Drawer open={showNoSponsorDialog} onOpenChange={setShowNoSponsorDialog}>
+        <DrawerContent className="max-h-[85vh]">
           <div className="space-y-6">
             {!showManualConfirmation ? (
               <>
@@ -706,8 +706,8 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
               </div>
             )}
           </div>
-        </DialogContent>
-      </Dialog>
+        </DrawerContent>
+      </Drawer>
 
       {/* Desktop action bar */}
       <div ref={actionBarRef} className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
