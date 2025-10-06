@@ -579,37 +579,42 @@ export const W9Form: React.FC<W9FormProps> = ({
           />
         </div>
 
-        {/* Desktop Buttons */}
-        {!isMobile && (
-          <div className="flex gap-3 pt-4">
-            {showBack && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onBack}
-                className="flex-1"
-              >
-                Back
-              </Button>
-            )}
+        {/* Desktop Action Bar */}
+        <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
+          <div className="flex items-center justify-between">
             <Button
               type="button"
               variant="outline"
               onClick={onSaveResume}
-              className="flex-1"
+              size="sm"
+              aria-label="Save and resume application later"
             >
               Save & Resume Later
             </Button>
-            <Button
-              type="button"
-              onClick={onContinue}
-              disabled={!canContinue}
-              className="flex-1"
-            >
-              {continueButtonText}
-            </Button>
+            <div className="flex gap-2">
+              {showBack && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  onClick={onBack}
+                  size="sm"
+                  aria-label="Go back to previous step"
+                >
+                  Back
+                </Button>
+              )}
+              <Button
+                type="button"
+                onClick={onContinue}
+                disabled={!canContinue}
+                size="sm"
+                aria-label="Continue to next step"
+              >
+                {continueButtonText}
+              </Button>
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Mobile Action Bar */}
