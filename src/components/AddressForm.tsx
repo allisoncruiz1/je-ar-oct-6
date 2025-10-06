@@ -356,14 +356,9 @@ export const AddressForm: React.FC<AddressFormProps> = ({
       return;
     }
     try {
-      const startsWithNumber = /^\d+\s+/.test(q);
-      let url: string;
-      if (startsWithNumber) {
-        // Structured search biases to street-level, improves residential hits - restricted to Florida
-        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&state=Florida&dedupe=1&street=${encodeURIComponent(q)}`;
-      } else {
-        url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&state=Florida&dedupe=1&q=${encodeURIComponent(q)}`;
-      }
+      // Use simple query search for all cases, restricted to Florida
+      const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=10&countrycodes=us&dedupe=1&q=${encodeURIComponent(q + ' Florida')}`;
+
       const res = await fetch(url, {
         headers: {
           'Accept': 'application/json'
