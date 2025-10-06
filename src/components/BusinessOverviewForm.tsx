@@ -419,7 +419,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
               updateFormData('hasSponsors', value);
               scrollToNextField(7);
             }}
-            label="Do you have sponsors?"
+            label="Will any agents name you as a sponsor before you join?"
             required
           />
         </div>
