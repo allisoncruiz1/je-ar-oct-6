@@ -160,13 +160,6 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
             Please review all your information below. You can edit any section by clicking the "Edit" button. Once you confirm everything is correct, proceed to the documents step.
           </p>
         </div>
-        
-        {/* Info banner */}
-        <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5 max-md:p-3">
-          <p className="text-sm text-muted-foreground leading-relaxed max-md:text-xs">
-            <span className="font-semibold text-[hsl(var(--brand-blue))]">Note:</span> You can update your payment details anytime after submitting your application in your My eXp account.
-          </p>
-        </div>
       </div>
 
 
@@ -324,6 +317,13 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
               </div>
             </AccordionTrigger>
             <AccordionContent className="space-y-4 pt-2 pb-4">
+              {/* Info banner */}
+              <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5 max-md:p-3">
+                <p className="text-sm text-muted-foreground leading-relaxed max-md:text-xs">
+                  <span className="font-semibold text-[hsl(var(--brand-blue))]">Note:</span> You can update your payment details anytime after submitting your application in your My eXp account.
+                </p>
+              </div>
+
               {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information">
                   {paymentInfoData.paymentMethods.map((method, index) => <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
                       <p className="font-semibold text-foreground capitalize text-base">
@@ -359,6 +359,13 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
           <div className="flex items-center gap-2 mb-2">
             <div className="h-1 w-1 rounded-full bg-[hsl(var(--brand-blue))]" />
             <h2 className="text-xl font-semibold text-foreground">Financial Info</h2>
+          </div>
+
+          {/* Info banner */}
+          <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5 max-md:p-3 mb-5">
+            <p className="text-sm text-muted-foreground leading-relaxed max-md:text-xs">
+              <span className="font-semibold text-[hsl(var(--brand-blue))]">Note:</span> You can update your payment details anytime after submitting your application in your My eXp account.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
