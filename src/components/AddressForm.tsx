@@ -771,7 +771,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                       type="button"
                       onClick={() => {
                         handleInputChange('state', state.code);
-                        handleFieldBlur('state');
                         scrollToNextField(2);
                         setStateDrawerOpen(false);
                       }}
@@ -791,7 +790,6 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               value={formData.state} 
               onValueChange={value => {
                 handleInputChange('state', value);
-                handleFieldBlur('state');
                 scrollToNextField(2);
               }}
             >
