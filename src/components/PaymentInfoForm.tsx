@@ -84,6 +84,11 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
     onFormDataChange?.(newData);
   };
   const validateForm = () => {
+    // Check if agreement is acknowledged
+    if (!formData.agreementAcknowledged) {
+      return false;
+    }
+    
     // If third party payment is yes, check for payer name and email
     if (formData.thirdPartyPayment === 'yes') {
       const hasPayerInfo = formData.payerName && formData.payerName.trim() !== '' && formData.payerEmail && formData.payerEmail.trim() !== '';
@@ -164,6 +169,25 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
               <p className="text-base">
                 <span className="font-semibold text-foreground">Ongoing Monthly Fee:</span> $85
               </p>
+            </div>
+          </div>
+          
+          {/* Payment Method Acknowledgment */}
+          <div className="space-y-3 pt-4">
+            <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/30">
+              <Checkbox 
+                id="agreement-acknowledgment" 
+                checked={formData.agreementAcknowledged}
+                onCheckedChange={(checked) => updateFormData('agreementAcknowledged', checked as boolean)}
+                className="mt-0.5"
+              />
+              <label 
+                htmlFor="agreement-acknowledgment" 
+                className="text-sm text-foreground cursor-pointer select-none leading-relaxed"
+              >
+                As stated in the independent contractor agreement you will be signing at the end of this application, a valid payment method is required to be on file. Failure to adhere to this policy can result in termination.
+                <span className="text-destructive ml-1">*</span>
+              </label>
             </div>
           </div>
         </div>
