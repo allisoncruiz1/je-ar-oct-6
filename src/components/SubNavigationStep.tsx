@@ -5,17 +5,24 @@ interface SubNavigationStepProps {
   title: string;
   isActive: boolean;
   isCompleted: boolean;
+  onClick?: () => void;
 }
 
 export const SubNavigationStep: React.FC<SubNavigationStepProps> = ({
   title,
   isActive,
-  isCompleted
+  isCompleted,
+  onClick
 }) => {
+  const isClickable = isCompleted && !isActive;
+  
   return (
-    <div className={`flex w-full items-center gap-3 pl-8 py-1.5 ${
-      isActive ? 'text-[#0C0F24]' : 'text-[#858791]'
-    }`}>
+    <div 
+      className={`flex w-full items-center gap-3 pl-8 py-1.5 ${
+        isActive ? 'text-[#0C0F24]' : 'text-[#858791]'
+      } ${isClickable ? 'cursor-pointer hover:text-[#1B489B]' : ''}`}
+      onClick={isClickable && onClick ? onClick : undefined}
+    >
       <div className="flex items-center justify-center w-4 h-4">
         {isCompleted ? (
           <div className="flex items-center justify-center w-4 h-4 rounded-full bg-[#1B489B]">

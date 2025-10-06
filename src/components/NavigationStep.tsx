@@ -10,6 +10,7 @@ interface NavigationStepProps {
   hasSubSteps?: boolean;
   isExpanded?: boolean;
   onToggleExpanded?: () => void;
+  onClick?: () => void;
 }
 
 export const NavigationStep: React.FC<NavigationStepProps> = ({
@@ -20,16 +21,26 @@ export const NavigationStep: React.FC<NavigationStepProps> = ({
   icon,
   hasSubSteps = false,
   isExpanded = false,
-  onToggleExpanded
+  onToggleExpanded,
+  onClick
 }) => {
   const textColor = isActive ? 'text-[#0C0F24]' : (isCompleted ? 'text-[#1B489B]' : 'text-[#858791]');
+  const isClickable = isCompleted && !isActive;
+  
+  const handleClick = (e: React.MouseEvent) => {
+    if (hasSubSteps) {
+      onToggleExpanded?.();
+    } else if (isClickable && onClick) {
+      onClick();
+    }
+  };
   
   return (
     <div 
       className={`flex w-full items-center gap-3 ${textColor} ${
-        hasSubSteps ? 'cursor-pointer' : ''
+        hasSubSteps || isClickable ? 'cursor-pointer' : ''
       }`}
-      onClick={hasSubSteps ? onToggleExpanded : undefined}
+      onClick={handleClick}
     >
       <div className="self-stretch w-6 my-auto">
         {isActive ? (

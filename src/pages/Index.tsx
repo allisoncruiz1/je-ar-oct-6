@@ -112,6 +112,7 @@ const Index = () => {
                 progress={getOverallProgress(currentSection)}
                 currentSection={currentSection}
                 completedSections={completedSections}
+                onNavigate={setCurrentSection}
               />
             </div>
             <MainContent 

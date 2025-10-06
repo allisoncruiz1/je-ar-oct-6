@@ -8,13 +8,15 @@ interface SideNavigationProps {
   progress?: number;
   currentSection?: number;
   completedSections?: number[];
+  onNavigate?: (section: number) => void;
 }
 
 export const SideNavigation: React.FC<SideNavigationProps> = ({ 
   currentStep = 0, 
   progress = 0,
   currentSection = 0,
-  completedSections = []
+  completedSections = [],
+  onNavigate
 }) => {
   const [isYourInfoExpanded, setIsYourInfoExpanded] = useState(currentSection <= 4);
   const [isFinancialInfoExpanded, setIsFinancialInfoExpanded] = useState(currentSection >= 6 && currentSection <= 7);
@@ -60,6 +62,24 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
     'Document Signing'
   ];
 
+  const handleMainStepClick = (stepNumber: number) => {
+    if (!onNavigate) return;
+    
+    // Map step numbers to their first section
+    const stepToSection: { [key: number]: number } = {
+      0: 0,  // Your Information -> Mailing Address
+      1: 5,  // Sponsor
+      2: 6,  // Financial Info -> Payment Info
+      3: 8,  // Review
+      4: 9   // Documents -> W9
+    };
+    
+    const targetSection = stepToSection[stepNumber];
+    if (targetSection !== undefined) {
+      onNavigate(targetSection);
+    }
+  };
+
   const steps = [
     {
       title: "Your Information",
@@ -68,13 +88,17 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       isCompleted: currentStep >= 1,
       hasSubSteps: true,
       isExpanded: isYourInfoExpanded,
-      onToggleExpanded: () => setIsYourInfoExpanded(!isYourInfoExpanded)
+      onToggleExpanded: () => setIsYourInfoExpanded(!isYourInfoExpanded),
+      onClick: () => handleMainStepClick(0),
+      stepNumber: 0
     },
     {
       title: "Sponsor",
       description: "Select Sponsor",
       isActive: currentStep === 1,
-      isCompleted: currentStep > 1
+      isCompleted: currentStep > 1,
+      onClick: () => handleMainStepClick(1),
+      stepNumber: 1
     },
     {
       title: "Financial Info",
@@ -83,13 +107,17 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       isCompleted: currentStep > 2,
       hasSubSteps: true,
       isExpanded: isFinancialInfoExpanded,
-      onToggleExpanded: () => setIsFinancialInfoExpanded(!isFinancialInfoExpanded)
+      onToggleExpanded: () => setIsFinancialInfoExpanded(!isFinancialInfoExpanded),
+      onClick: () => handleMainStepClick(2),
+      stepNumber: 2
     },
     {
       title: "Review",
       description: "Review Application",
       isActive: currentStep === 3,
-      isCompleted: currentStep > 3
+      isCompleted: currentStep > 3,
+      onClick: () => handleMainStepClick(3),
+      stepNumber: 3
     },
     {
       title: "Documents",
@@ -98,7 +126,9 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
       isCompleted: currentStep > 4,
       hasSubSteps: true,
       isExpanded: isDocumentsExpanded,
-      onToggleExpanded: () => setIsDocumentsExpanded(!isDocumentsExpanded)
+      onToggleExpanded: () => setIsDocumentsExpanded(!isDocumentsExpanded),
+      onClick: () => handleMainStepClick(4),
+      stepNumber: 4
     }
   ];
 
@@ -121,6 +151,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
                     title={subStepTitle}
                     isActive={currentSection === subIndex}
                     isCompleted={completedSections.includes(subIndex)}
+                    onClick={() => onNavigate?.(subIndex)}
                   />
                 ))}
               </div>
@@ -135,6 +166,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
                     title={subStepTitle}
                     isActive={currentSection === 6 + subIndex}
                     isCompleted={completedSections.includes(6 + subIndex)}
+                    onClick={() => onNavigate?.(6 + subIndex)}
                   />
                 ))}
               </div>
@@ -149,6 +181,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
                     title={subStepTitle}
                     isActive={currentSection === 9 + subIndex}
                     isCompleted={completedSections.includes(9 + subIndex)}
+                    onClick={() => onNavigate?.(9 + subIndex)}
                   />
                 ))}
               </div>
