@@ -141,8 +141,9 @@ export const W9Form: React.FC<W9FormProps> = ({
 
   return (
     <Form {...form}>
-      <div className="space-y-6 pb-24 md:pb-6">
-        {/* Page Header */}
+      <div className="space-y-6 pb-24 md:pb-0 relative">
+        <div className="space-y-6 md:max-h-[calc(100vh-200px)] md:overflow-y-auto md:pb-20">
+          {/* Page Header */}
         <div className="mb-6 mt-8 max-md:mt-2">
           <h1 className="text-xl font-semibold text-foreground mb-4">W9</h1>
           
@@ -577,14 +578,12 @@ export const W9Form: React.FC<W9FormProps> = ({
               </FormItem>
             )}
           />
+          </div>
         </div>
 
-        {/* Spacer for desktop fixed bar */}
-        <div className="max-md:hidden h-[72px]" aria-hidden="true" />
-
-        {/* Desktop Action Bar - Fixed */}
-        <div className="max-md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50">
-          <div className="max-w-4xl mx-auto flex items-center justify-between">
+        {/* Desktop Action Bar - Sticky within container */}
+        <div className="max-md:hidden sticky bottom-0 bg-background border-t border-border p-4 mt-4 z-10">
+          <div className="flex items-center justify-between">
             <Button
               type="button"
               variant="outline"
