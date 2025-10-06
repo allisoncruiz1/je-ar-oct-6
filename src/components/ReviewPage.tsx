@@ -116,9 +116,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
           </div>
           <h3 className="text-lg font-semibold text-foreground max-md:text-base">{title}</h3>
         </div>
-        <button onClick={onEdit} className="text-sm font-medium text-[hsl(var(--brand-blue))] hover:text-[hsl(var(--brand-blue))]/80 transition-colors underline underline-offset-4 decoration-[hsl(var(--brand-blue))]/30 hover:decoration-[hsl(var(--brand-blue))]/60" aria-label={`Edit ${title}`}>
-          Edit
-        </button>
+        
       </div>
       <div className="space-y-5 max-md:space-y-4">
         {children}
