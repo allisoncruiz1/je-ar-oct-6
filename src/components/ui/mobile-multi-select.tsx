@@ -5,7 +5,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
-import { ChevronsUpDown, X, Search } from 'lucide-react';
+import { ChevronsUpDown, X, Search, ArrowLeft } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 
@@ -158,7 +158,16 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       </DrawerTrigger>
       <DrawerContent className="max-h-[85vh] bg-card border-t border-border shadow-xl z-50">
         <DrawerHeader className="text-left border-b border-border bg-card px-6 py-4">
-          <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</DrawerTitle>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+          </div>
+          <DrawerTitle className="text-lg font-semibold tracking-wide text-foreground mt-2">{placeholder}</DrawerTitle>
         </DrawerHeader>
         {SelectionContent}
       </DrawerContent>
@@ -170,7 +179,16 @@ export const MobileMultiSelect: React.FC<MobileMultiSelectProps> = ({
       </SheetTrigger>
       <SheetContent side="right" className="w-full sm:max-w-md bg-card border-l border-border shadow-xl z-50">
         <SheetHeader className="border-b border-border -mx-6 px-6 pb-4 bg-card">
-          <SheetTitle className="text-lg font-semibold tracking-wide text-foreground">{placeholder}</SheetTitle>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </button>
+          </div>
+          <SheetTitle className="text-lg font-semibold tracking-wide text-foreground mt-2">{placeholder}</SheetTitle>
         </SheetHeader>
         <div className="mt-6">
           {SelectionContent}
