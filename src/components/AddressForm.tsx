@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
-import { Check, ChevronDown, AlertCircle, X } from 'lucide-react';
+import { Check, ChevronDown, AlertCircle, X, Search } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { useAutoScroll } from '@/hooks/useAutoScroll';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -82,6 +86,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
   } = useAutoScroll();
   const isMobile = useIsMobile();
   const [stateDrawerOpen, setStateDrawerOpen] = React.useState(false);
+  const [statePopoverOpen, setStatePopoverOpen] = React.useState(false);
+  const [stateSearch, setStateSearch] = React.useState('');
   const US_STATE_ABBR: Record<string, string> = {
     Alabama: 'AL',
     Alaska: 'AK',
@@ -788,27 +794,71 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               </DrawerContent>
             </Drawer>
           ) : (
-            <Select
-              value={formData.state} 
-              onValueChange={value => {
-                handleInputChange('state', value);
-                scrollToNextField(2);
-              }}
-            >
-              <SelectTrigger className={cn(
-                "justify-start items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none text-sm",
-                fieldErrors.state && touchedFields.state 
-                  ? "border-destructive focus:ring-2 focus:ring-destructive"
-                  : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
-              )}>
-                <SelectValue placeholder="Select State" />
-              </SelectTrigger>
-              <SelectContent>
-                {US_STATES.map(state => <SelectItem key={state.code} value={state.code}>
-                    {state.name}
-                  </SelectItem>)}
-              </SelectContent>
-            </Select>
+            <Popover open={statePopoverOpen} onOpenChange={setStatePopoverOpen}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "justify-start items-center border flex w-full gap-2 font-normal bg-background mt-1 p-3 rounded-lg border-solid focus:outline-none text-sm",
+                    formData.state ? "text-foreground" : "text-muted-foreground",
+                    fieldErrors.state && touchedFields.state 
+                      ? "border-destructive focus:ring-2 focus:ring-destructive"
+                      : "border-border focus:ring-2 focus:ring-ring focus:border-transparent"
+                  )}
+                >
+                  <span className="flex-1 text-left">
+                    {formData.state ? US_STATES.find(s => s.code === formData.state)?.name : 'Select State'}
+                  </span>
+                  <ChevronDown className="h-4 w-4 opacity-50" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[420px] p-0" align="start">
+                <div className="flex items-center justify-between border-b px-4 py-3">
+                  <h3 className="font-semibold text-sm">Select State</h3>
+                  <button
+                    onClick={() => setStatePopoverOpen(false)}
+                    className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    aria-label="Close"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="p-4 border-b">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                    <Input
+                      placeholder="Search states..."
+                      value={stateSearch}
+                      onChange={(e) => setStateSearch(e.target.value)}
+                      className="pl-9"
+                    />
+                  </div>
+                </div>
+                <div className="max-h-[300px] overflow-y-auto">
+                  <RadioGroup 
+                    value={formData.state} 
+                    onValueChange={(value) => {
+                      handleInputChange('state', value);
+                      scrollToNextField(2);
+                      setStatePopoverOpen(false);
+                      setStateSearch('');
+                    }}
+                  >
+                    {US_STATES.filter(state => 
+                      state.name.toLowerCase().includes(stateSearch.toLowerCase()) ||
+                      state.code.toLowerCase().includes(stateSearch.toLowerCase())
+                    ).map(state => (
+                      <div key={state.code} className="flex items-center space-x-3 px-4 py-2.5 hover:bg-accent cursor-pointer">
+                        <RadioGroupItem value={state.code} id={`state-desktop-${state.code}`} />
+                        <Label htmlFor={`state-desktop-${state.code}`} className="flex-1 cursor-pointer">
+                          {state.name}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+              </PopoverContent>
+            </Popover>
           )}
           {fieldErrors.state && touchedFields.state && (
             <p className="mt-1 text-sm text-destructive">{fieldErrors.state}</p>
