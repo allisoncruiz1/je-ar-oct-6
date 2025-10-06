@@ -188,6 +188,34 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Handle final submission (Document Signing complete)
+    if (currentSection === 10 && documentSigningComplete) {
+      console.log('🎉 Application complete! All documents signed.');
+      setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
+      
+      // Submit all collected data
+      const finalData = {
+        addressData,
+        licenseBusinessData,
+        licenseDetailsData,
+        businessOverviewData,
+        teamFunctionData,
+        paymentInfoData,
+        directDepositData,
+        w9Data,
+        documentSigningData,
+      };
+      
+      console.log('📤 Submitting final application:', finalData);
+      onFormSubmit?.(finalData);
+      
+      // TODO: Redirect to my eXp dashboard
+      alert('Application submitted successfully! Redirecting to my eXp...');
+      
+      advancingRef.current = false;
+      return;
+    }
+
     // Guard: do not advance from step 10 unless document signing is complete
     if (currentSection === 10 && !documentSigningComplete) {
       console.info('🚫 Continue blocked: Document Signing incomplete');
