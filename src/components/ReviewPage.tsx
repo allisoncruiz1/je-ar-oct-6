@@ -28,6 +28,8 @@ interface LicenseDetailsData {
     pendingTransactions?: string;
     associations?: string[];
     mlsAffiliations?: string[];
+    certifiedMentor?: string;
+    selectedMentor?: string;
   };
 }
 interface BusinessOverviewData {
@@ -204,6 +206,8 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                         {details.pendingTransactions && <DataField label="Pending Transactions" value={details.pendingTransactions} />}
                         {details.associations && details.associations.length > 0 && <DataField label="Associations" value={details.associations} />}
                         {details.mlsAffiliations && details.mlsAffiliations.length > 0 && <DataField label="MLS Affiliations" value={details.mlsAffiliations} />}
+                        {details.certifiedMentor && <DataField label="Certified Mentor" value={details.certifiedMentor} />}
+                        {details.selectedMentor && <DataField label="Selected Mentor" value={details.selectedMentor} />}
                       </div>
                     </div>)}
                 </ReviewSection>}
@@ -258,6 +262,8 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                     {details.pendingTransactions && <DataField label="Pending Transactions" value={details.pendingTransactions} />}
                     {details.associations && details.associations.length > 0 && <DataField label="Associations" value={details.associations} />}
                     {details.mlsAffiliations && details.mlsAffiliations.length > 0 && <DataField label="MLS Affiliations" value={details.mlsAffiliations} />}
+                    {details.certifiedMentor && <DataField label="Certified Mentor" value={details.certifiedMentor} />}
+                    {details.selectedMentor && <DataField label="Selected Mentor" value={details.selectedMentor} />}
                   </div>
                 </div>)}
             </ReviewSection>}
