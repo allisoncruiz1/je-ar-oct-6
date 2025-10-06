@@ -74,24 +74,24 @@ export const BinaryChoice = React.forwardRef<
           disabled={disabled}
           className="flex gap-3"
         >
-          <div 
+          <label 
+            htmlFor={`${id}-yes`}
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
-            onClick={() => !disabled && onValueChange('yes')}
           >
-            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5 pointer-events-none" />
-            <span className="text-base text-foreground pointer-events-none">
+            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+            <span className="text-base text-foreground">
               {yesLabel}
             </span>
-          </div>
-          <div 
+          </label>
+          <label 
+            htmlFor={`${id}-no`}
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
-            onClick={() => !disabled && onValueChange('no')}
           >
-            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5 pointer-events-none" />
-            <span className="text-base text-foreground pointer-events-none">
+            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+            <span className="text-base text-foreground">
               {noLabel}
             </span>
-          </div>
+          </label>
         </RadioGroup>
       </div>
     );
@@ -132,21 +132,15 @@ export const BinaryChoice = React.forwardRef<
         disabled={disabled}
         className="flex gap-6"
       >
-        <div
-          className="flex items-center space-x-2 cursor-pointer select-none"
-          onClick={() => !disabled && onValueChange('yes')}
-        >
-          <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5 pointer-events-none" />
-          <Label htmlFor={`${id}-yes`} className="text-sm text-foreground pointer-events-none">
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
+          <Label htmlFor={`${id}-yes`} className="text-sm text-foreground cursor-pointer">
             {yesLabel}
           </Label>
         </div>
-        <div
-          className="flex items-center space-x-2 cursor-pointer select-none"
-          onClick={() => !disabled && onValueChange('no')}
-        >
-          <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5 pointer-events-none" />
-          <Label htmlFor={`${id}-no`} className="text-sm text-foreground pointer-events-none">
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
+          <Label htmlFor={`${id}-no`} className="text-sm text-foreground cursor-pointer">
             {noLabel}
           </Label>
         </div>
