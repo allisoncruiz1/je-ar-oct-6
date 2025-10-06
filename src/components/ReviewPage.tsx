@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, FileText, Award, Building2, Users, UserCheck, CreditCard, Landmark, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, FileText, Award, Building2, Users, UserCheck, CreditCard, Landmark, CheckCircle2, ChevronDown, ChevronUp, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
@@ -108,7 +108,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
     title,
     onEdit,
     children
-  }) => <div className="bg-card border-2 border-border rounded-2xl p-6 max-md:p-4 transition-all hover:border-[hsl(var(--brand-blue))]/30 hover:shadow-sm group">
+  }) => <div className="bg-card border-2 border-border rounded-2xl p-6 max-md:p-4 transition-all hover:border-[hsl(var(--brand-blue))]/30 hover:shadow-sm group relative">
       <div className="flex items-center justify-between mb-6 max-md:mb-4">
         <div className="flex items-center gap-3 flex-1">
           <div className="w-10 h-10 rounded-full bg-[hsl(var(--brand-blue))]/10 flex items-center justify-center text-[hsl(var(--brand-blue))]">
@@ -116,7 +116,15 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
           </div>
           <h3 className="text-lg font-semibold text-foreground max-md:text-base">{title}</h3>
         </div>
-        
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={onEdit}
+          className="h-8 w-8 text-muted-foreground hover:text-foreground"
+          aria-label={`Edit ${title}`}
+        >
+          <Pencil className="h-4 w-4" />
+        </Button>
       </div>
       <div className="space-y-5 max-md:space-y-4">
         {children}
