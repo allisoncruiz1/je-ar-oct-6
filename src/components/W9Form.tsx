@@ -111,7 +111,7 @@ export const W9Form: React.FC<W9FormProps> = ({
     <Form {...form}>
       <div className="space-y-6 pb-24 md:pb-6">
         {/* Page Header */}
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground">W9</h1>
+        <h1 className="text-xl font-semibold text-foreground">W9</h1>
 
         {/* Dark Banner Section */}
         <div className="bg-[hsl(var(--accent))] text-accent-foreground p-6 rounded-lg space-y-2">
