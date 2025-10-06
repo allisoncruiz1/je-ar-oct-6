@@ -82,7 +82,7 @@ export const DocumentSigningForm: React.FC<DocumentSigningFormProps> = ({
           {/* Information Banner */}
           <div className="p-4 rounded-lg border-l-4 border-[hsl(var(--brand-blue))] bg-[hsl(var(--brand-blue))]/5">
             <p className="text-sm text-muted-foreground leading-relaxed">
-              <span className="font-semibold text-[hsl(var(--brand-blue))]">Important:</span> You will receive an email from JoinApp and DDC to complete your document packet. Please review and sign all required documents.
+              <span className="font-semibold text-[hsl(var(--brand-blue))]">Important:</span> Review and sign the required documents to complete through Joinapp and DDC.
             </p>
           </div>
         </div>
