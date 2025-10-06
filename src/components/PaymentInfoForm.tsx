@@ -262,7 +262,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                       </div>
                       <button
                         onClick={() => handleSetDefaultPayment(creditCard.id)}
-                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand-blue))] focus:ring-offset-2 cursor-pointer group"
+                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
                         aria-label={creditCard.isDefault ? "Default credit card payment" : "Click to set as default payment"}
                         tabIndex={0}
                         onKeyDown={(e) => {
@@ -312,7 +312,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                       </div>
                       <button
                         onClick={() => handleSetDefaultPayment(bankAccount.id)}
-                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[hsl(var(--brand-blue))] focus:ring-offset-2 cursor-pointer group"
+                        className="w-full p-6 border-2 rounded-2xl bg-background text-left transition-all hover:border-[hsl(var(--brand-blue))] hover:shadow-md focus:outline-none cursor-pointer group"
                         aria-label={bankAccount.isDefault ? "Default bank account payment" : "Click to set as default payment"}
                         tabIndex={0}
                         onKeyDown={(e) => {
