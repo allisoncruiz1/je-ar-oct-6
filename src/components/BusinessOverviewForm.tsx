@@ -196,6 +196,7 @@ export const BusinessOverviewForm: React.FC<BusinessOverviewFormProps> = ({
       {/* Spouse at Different Brokerage */}
       <div ref={setFieldRef(1)} className="space-y-3">
         <BinaryChoice value={formData.spouseAtDifferentBrokerage} onValueChange={value => {
+          if (import.meta.env.DEV) console.debug('spouseAtDifferentBrokerage change ->', value);
           updateFormData('spouseAtDifferentBrokerage', value);
           // Clear dependent fields if changing away from 'yes'
           if (value !== 'yes') {
