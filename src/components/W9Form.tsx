@@ -579,9 +579,12 @@ export const W9Form: React.FC<W9FormProps> = ({
           />
         </div>
 
-        {/* Desktop Action Bar */}
-        <div className="bg-background border-t border-border p-4 mt-6 max-md:hidden">
-          <div className="flex items-center justify-between">
+        {/* Spacer for desktop fixed bar */}
+        <div className="max-md:hidden h-[72px]" aria-hidden="true" />
+
+        {/* Desktop Action Bar - Fixed */}
+        <div className="max-md:hidden fixed bottom-0 left-0 right-0 bg-background border-t border-border p-4 z-50">
+          <div className="max-w-4xl mx-auto flex items-center justify-between">
             <Button
               type="button"
               variant="outline"
