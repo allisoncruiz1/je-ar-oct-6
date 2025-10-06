@@ -12,7 +12,6 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => {
   return (
     <div className="mb-8">
-      <h1 className="text-3xl font-bold text-foreground">{sectionTitle}</h1>
       <Separator className="mt-4" />
     </div>
   );
