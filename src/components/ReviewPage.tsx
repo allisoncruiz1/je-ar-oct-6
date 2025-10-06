@@ -179,7 +179,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                   <DataField label="Zip code*" value={addressData.zipCode} />
                 </ReviewSection>}
 
-              {licenseBusinessData && <ReviewSection icon={<FileText className="h-5 w-5" />} title="License Business Information" onEdit={() => onEdit(1)}>
+              {licenseBusinessData && <ReviewSection icon={<FileText className="h-5 w-5" />} title="License & Business Information" onEdit={() => onEdit(1)}>
                   <DataField label="Preferred Name" value={licenseBusinessData.preferredName} />
                   <DataField label="Licensed in Real Estate" value={licenseBusinessData.isLicensed} />
                   {licenseBusinessData.isLicensed === 'yes' && licenseBusinessData.licensedStates.length > 0 && <DataField label="Licensed States" value={licenseBusinessData.licensedStates} />}
@@ -232,7 +232,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                 <DataField label="Zip code*" value={addressData.zipCode} />
               </ReviewSection>}
 
-            {licenseBusinessData && <ReviewSection icon={<FileText className="h-5 w-5" />} title="License Business Information" onEdit={() => onEdit(1)}>
+            {licenseBusinessData && <ReviewSection icon={<FileText className="h-5 w-5" />} title="License & Business Information" onEdit={() => onEdit(1)}>
                 <DataField label="Preferred Name" value={licenseBusinessData.preferredName} />
                 <DataField label="Licensed in Real Estate" value={licenseBusinessData.isLicensed} />
                 {licenseBusinessData.isLicensed === 'yes' && licenseBusinessData.licensedStates.length > 0 && <DataField label="Licensed States" value={licenseBusinessData.licensedStates} />}

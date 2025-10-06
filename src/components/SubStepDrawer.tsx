@@ -25,7 +25,7 @@ export const SubStepDrawer: React.FC<SubStepDrawerProps> = ({
 }) => {
   const yourInfoSubSteps = [
     { title: 'Mailing Address', section: 0 },
-    { title: 'License Business Info', section: 1 },
+    { title: 'License & Business Info', section: 1 },
     { title: 'License Details', section: 2 },
     { title: 'Business Overview', section: 3 },
     { title: 'Team Function', section: 4 }

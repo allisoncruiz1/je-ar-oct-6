@@ -22,7 +22,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
 
   const subSteps = [
     'Mailing Address',
-    'License Business Info', 
+    'License & Business Info', 
     'License Details',
     'Business Overview',
     'Team Function'

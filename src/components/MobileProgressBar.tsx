@@ -36,7 +36,7 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
     description: "W9 and Document Signing",
     subStepCount: 0
   }];
-  const yourInfoSubSteps = ['Mailing Address', 'License Business Info', 'License Details', 'Business Overview', 'Team Function'];
+  const yourInfoSubSteps = ['Mailing Address', 'License & Business Info', 'License Details', 'Business Overview', 'Team Function'];
   const financialInfoSubSteps = ['Payment Info', 'Direct Deposit'];
   const currentStepData = mainSteps[currentStep];
 

@@ -16,7 +16,7 @@ const Index = () => {
 
   const sections = [
     'Mailing Address',
-    'License Business Info', 
+    'License & Business Info', 
     'License Details',
     'Business Overview',
     'Team Function',
