@@ -258,7 +258,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete, paymentInfoFormComplete, directDepositFormComplete, w9FormComplete, documentSigningComplete, isEditingFromReview, licenseBusinessData?.isLicensed, sections.length]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete, paymentInfoFormComplete, directDepositFormComplete, w9FormComplete, documentSigningComplete, isEditingFromReview, licenseBusinessData?.isLicensed, sections.length, addressData, licenseBusinessData, licenseDetailsData, businessOverviewData, teamFunctionData, paymentInfoData, directDepositData, w9Data, documentSigningData, onFormSubmit]);
 
   const handleBack = () => {
     console.log('Back clicked');
