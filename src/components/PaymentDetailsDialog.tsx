@@ -339,9 +339,32 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
                     Please double-check your entry. You can:
                   </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
+                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-3">
                     Card number does not match with other details (Attempt {cardValidationAttempts}/3)
                   </p>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      onClick={() => {
+                        setCardValidationError(false);
+                        setShowCardFields(true);
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="bg-white dark:bg-slate-900 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/40"
+                    >
+                      Update Card Details
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setShowCardConfirmation(true);
+                        setCardValidationError(false);
+                      }}
+                      size="sm"
+                      className="bg-amber-600 hover:bg-amber-700 text-white"
+                    >
+                      Confirm and Continue
+                    </Button>
+                  </div>
                 </AlertDescription>
               </div>
             </div>
