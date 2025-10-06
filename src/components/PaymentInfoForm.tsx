@@ -240,7 +240,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                         Credit Card Details<span className="text-destructive">*</span>
                       </h4>
                       {formData.paymentMethods.find(m => m.type === 'credit-card')?.isDefault && (
-                        <span className="px-3 py-1 rounded-md bg-muted text-muted-foreground text-sm font-semibold">
+                        <span className="px-3 py-1 rounded-md bg-[hsl(var(--brand-blue))]/10 text-[hsl(var(--brand-blue))] text-sm font-semibold">
                           Default
                         </span>
                       )}
@@ -269,7 +269,7 @@ export const PaymentInfoForm: React.FC<PaymentInfoFormProps> = ({
                         Bank Account Details<span className="text-destructive">*</span>
                       </h4>
                       {formData.paymentMethods.find(m => m.type === 'bank-account')?.isDefault && (
-                        <span className="px-3 py-1 rounded-md bg-muted text-muted-foreground text-sm font-semibold">
+                        <span className="px-3 py-1 rounded-md bg-[hsl(var(--brand-blue))]/10 text-[hsl(var(--brand-blue))] text-sm font-semibold">
                           Default
                         </span>
                       )}
