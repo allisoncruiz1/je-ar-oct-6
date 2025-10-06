@@ -36,7 +36,7 @@ export const SideNavigation: React.FC<SideNavigationProps> = ({
 
   const yourInfoSubSteps = [
     'Mailing Address',
-    'License Business Info', 
+    'License & Business Info', 
     'License Details',
     'Business Overview',
     'Team Function'
