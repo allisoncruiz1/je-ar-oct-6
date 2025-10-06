@@ -70,37 +70,28 @@ export const BinaryChoice = React.forwardRef<
         
         <RadioGroup
           value={value}
-          onValueChange={(newValue) => {
-            console.log('BinaryChoice mobile onValueChange:', { oldValue: value, newValue });
-            onValueChange(newValue);
-          }}
+          onValueChange={onValueChange}
           disabled={disabled}
           className="flex gap-3"
         >
-          <label 
-            htmlFor={`${id}-yes`} 
+          <div 
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
-            onClick={(e) => {
-              console.log('Yes label clicked', { currentValue: value });
-            }}
+            onClick={() => !disabled && onValueChange('yes')}
           >
-            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
-            <span className="text-base text-foreground">
+            <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5 pointer-events-none" />
+            <span className="text-base text-foreground pointer-events-none">
               {yesLabel}
             </span>
-          </label>
-          <label 
-            htmlFor={`${id}-no`} 
+          </div>
+          <div 
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
-            onClick={(e) => {
-              console.log('No label clicked', { currentValue: value });
-            }}
+            onClick={() => !disabled && onValueChange('no')}
           >
-            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
-            <span className="text-base text-foreground">
+            <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5 pointer-events-none" />
+            <span className="text-base text-foreground pointer-events-none">
               {noLabel}
             </span>
-          </label>
+          </div>
         </RadioGroup>
       </div>
     );
