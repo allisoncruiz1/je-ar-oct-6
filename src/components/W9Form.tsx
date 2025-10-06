@@ -111,22 +111,24 @@ export const W9Form: React.FC<W9FormProps> = ({
     <Form {...form}>
       <div className="space-y-6 pb-24 md:pb-6">
         {/* Page Header */}
-        <h1 className="text-xl font-semibold text-foreground">W9</h1>
+        <div className="mb-6 mt-8 max-md:mt-2">
+          <h1 className="text-xl font-semibold text-foreground mb-4">W9</h1>
+          
+          {/* Dark Banner Section */}
+          <div className="bg-[hsl(var(--accent))] text-accent-foreground p-6 rounded-lg space-y-2">
+            <p className="text-sm md:text-base">
+              Lastly, let's collect some of your financial information – we only need a portion at this time. Please be assured that this information is safe and secure.
+            </p>
+            <h2 className="text-lg md:text-xl font-bold">Financial Information (Step 5 of 6)</h2>
+          </div>
 
-        {/* Dark Banner Section */}
-        <div className="bg-[hsl(var(--accent))] text-accent-foreground p-6 rounded-lg space-y-2">
-          <p className="text-sm md:text-base">
-            Lastly, let's collect some of your financial information – we only need a portion at this time. Please be assured that this information is safe and secure.
-          </p>
-          <h2 className="text-lg md:text-xl font-bold">Financial Information (Step 5 of 6)</h2>
-        </div>
-
-        {/* Information Section */}
-        <div className="bg-muted/30 p-6 rounded-lg space-y-3">
-          <h3 className="text-lg font-semibold text-[hsl(var(--brand-blue))]">W9 Information</h3>
-          <p className="text-sm text-muted-foreground">
-            Before issuing a payment, eXp must collect Form W-9 to obtain the necessary information for accurate reporting of earned revenue to the IRS via Form 1099-NEC or a similar form. Please answer the questions below and provide all applicable information to populate Form W-9 correctly.
-          </p>
+          {/* Information Section */}
+          <div className="bg-muted/30 p-6 rounded-lg space-y-3 mt-6">
+            <h3 className="text-lg font-semibold text-[hsl(var(--brand-blue))]">W9 Information</h3>
+            <p className="text-sm text-muted-foreground">
+              Before issuing a payment, eXp must collect Form W-9 to obtain the necessary information for accurate reporting of earned revenue to the IRS via Form 1099-NEC or a similar form. Please answer the questions below and provide all applicable information to populate Form W-9 correctly.
+            </p>
+          </div>
         </div>
 
         {/* SSN Field */}
