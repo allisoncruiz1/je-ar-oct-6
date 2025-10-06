@@ -115,7 +115,7 @@ export const W9Form: React.FC<W9FormProps> = ({
           <h1 className="text-xl font-semibold text-foreground mb-4">W9</h1>
           
           {/* Dark Banner Section */}
-          <div className="bg-[hsl(var(--accent))] text-accent-foreground p-6 rounded-lg space-y-2">
+          <div className="bg-[hsl(var(--accent))] text-accent-foreground p-4 rounded-lg space-y-2">
             <p className="text-xs md:text-sm">
               Lastly, let's collect some of your financial information – we only need a portion at this time. Please be assured that this information is safe and secure.
             </p>
