@@ -120,6 +120,17 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Skip License Details if user is not currently licensed
+    if (currentSection === 1 && licenseBusinessFormComplete && licenseBusinessData?.isLicensed === 'no') {
+      console.log('⏭️ Skipping License Details - user not currently licensed');
+      setCompletedSections((prev) => (prev.includes(currentSection) ? prev : [...prev, currentSection]));
+      setCurrentSection(3); // Jump to Business Overview
+      setTimeout(() => {
+        advancingRef.current = false;
+      }, 600);
+      return;
+    }
+
     // Guard: do not advance from step 3 unless the license details form is complete
     if (currentSection === 2 && !licenseDetailsFormComplete) {
       console.info('🚫 Continue blocked: License Details incomplete');
