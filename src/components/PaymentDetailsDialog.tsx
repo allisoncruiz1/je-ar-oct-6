@@ -378,7 +378,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               <div className="flex-1">
                 <AlertDescription className="text-amber-900 dark:text-amber-100">
                   <p className="font-semibold text-base mb-2">
-                    We weren't able to validate these details after 3 attempts
+                    We weren't able to confirm these details after 3 attempts
                   </p>
                   <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
                     We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
@@ -412,6 +412,12 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                       </div>
                     </div>
                   </div>
+                  <Button
+                    onClick={handleConfirmCardAndContinue}
+                    className="w-full bg-amber-600 hover:bg-amber-700 text-white"
+                  >
+                    Next
+                  </Button>
                 </AlertDescription>
               </div>
             </div>
