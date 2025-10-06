@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useAddressAutocomplete } from '@/hooks/useAddressAutocomplete';
 import { getCityStateFromZip } from '@/utils/zipCodeData';
-import { Check, ChevronDown, AlertCircle } from 'lucide-react';
+import { Check, ChevronDown, AlertCircle, X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -756,9 +756,16 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 </button>
               </DrawerTrigger>
               <DrawerContent className="max-h-[60vh]">
-                <DrawerHeader>
-                  <DrawerTitle>Select State</DrawerTitle>
-                </DrawerHeader>
+              <DrawerHeader className="relative">
+                <DrawerTitle>Select State</DrawerTitle>
+                <button
+                  onClick={() => setStateDrawerOpen(false)}
+                  className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+                  aria-label="Close"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </DrawerHeader>
                 <div className="overflow-y-auto px-4 pb-4">
                   {US_STATES.map(state => (
                     <button
