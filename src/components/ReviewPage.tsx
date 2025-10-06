@@ -103,7 +103,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
   const ReviewSection: React.FC<{
     icon: React.ReactNode;
     title: string;
-    onEdit: () => void;
+    onEdit?: () => void;
     children: React.ReactNode;
   }> = ({
     icon,
@@ -118,15 +118,17 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
           </div>
           <h3 className="text-lg font-semibold text-foreground max-md:text-base">{title}</h3>
         </div>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onEdit}
-          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-          aria-label={`Edit ${title}`}
-        >
-          <Pencil className="h-4 w-4" />
-        </Button>
+        {onEdit && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onEdit}
+            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            aria-label={`Edit ${title}`}
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        )}
       </div>
       <div className="space-y-5 max-md:space-y-4">
         {children}
@@ -322,7 +324,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
               </div>
             </AccordionTrigger>
             <AccordionContent className="space-y-4 pt-2 pb-4">
-              {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information" onEdit={() => onEdit(6)}>
+              {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information">
                   {paymentInfoData.paymentMethods.map((method, index) => <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
                       <p className="font-semibold text-foreground capitalize text-base">
                         {method.type.replace('-', ' ')}
@@ -342,7 +344,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                     </div>)}
                 </ReviewSection>}
 
-              {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information" onEdit={() => onEdit(7)}>
+              {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information">
                   <DataField label="First Name" value={directDepositData.firstName} />
                   <DataField label="Last Name" value={directDepositData.lastName} />
                   {directDepositData.businessName && <DataField label="Business Name" value={directDepositData.businessName} />}
@@ -360,7 +362,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information" onEdit={() => onEdit(6)}>
+            {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information">
                 {paymentInfoData.paymentMethods.map((method, index) => <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
                     <p className="font-semibold text-foreground capitalize text-base">
                       {method.type.replace('-', ' ')}
@@ -380,7 +382,7 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
                   </div>)}
               </ReviewSection>}
 
-            {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information" onEdit={() => onEdit(7)}>
+            {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information">
                 <DataField label="First Name" value={directDepositData.firstName} />
                 <DataField label="Last Name" value={directDepositData.lastName} />
                 {directDepositData.businessName && <DataField label="Business Name" value={directDepositData.businessName} />}
