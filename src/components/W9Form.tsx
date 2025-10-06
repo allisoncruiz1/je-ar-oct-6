@@ -141,24 +141,24 @@ export const W9Form: React.FC<W9FormProps> = ({
 
   return (
     <Form {...form}>
-      <div className="space-y-6 pb-24 md:pb-0 relative">
-        <div className="space-y-6 md:max-h-[calc(100vh-200px)] md:overflow-y-auto md:pb-20">
+      <div className="space-y-4 md:space-y-6 pb-24 md:pb-0 relative px-4 md:px-0">
+        <div className="space-y-4 md:space-y-6 md:max-h-[calc(100vh-200px)] md:overflow-y-auto md:pb-20">
           {/* Page Header */}
-        <div className="mb-6 mt-8 max-md:mt-2">
-          <h1 className="text-xl font-semibold text-foreground mb-4">W9</h1>
+        <div className="mb-4 md:mb-6 mt-4 md:mt-8">
+          <h1 className="text-lg md:text-xl font-semibold text-foreground mb-3 md:mb-4">W9</h1>
           
           {/* Dark Banner Section */}
-          <div className="bg-[hsl(var(--accent))] text-accent-foreground p-4 rounded-lg space-y-2">
-            <p className="text-xs md:text-sm">
+          <div className="bg-[hsl(var(--accent))] text-accent-foreground p-3 md:p-4 rounded-lg space-y-1.5 md:space-y-2">
+            <p className="text-xs md:text-sm leading-relaxed">
               Lastly, let's collect some of your financial information – we only need a portion at this time. Please be assured that this information is safe and secure.
             </p>
-            <h2 className="text-lg md:text-xl font-bold">Financial Information (Step 5 of 6)</h2>
+            <h2 className="text-base md:text-lg lg:text-xl font-bold">Financial Information (Step 5 of 6)</h2>
           </div>
 
           {/* Information Section */}
-          <div className="bg-muted/30 p-6 rounded-lg space-y-3 mt-6">
-            <h3 className="text-lg font-semibold text-[hsl(var(--brand-blue))]">W9 Information</h3>
-            <p className="text-sm text-muted-foreground">
+          <div className="bg-muted/30 p-4 md:p-6 rounded-lg space-y-2 md:space-y-3 mt-4 md:mt-6">
+            <h3 className="text-base md:text-lg font-semibold text-[hsl(var(--brand-blue))]">W9 Information</h3>
+            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
               Before issuing a payment, eXp must collect Form W-9 to obtain the necessary information for accurate reporting of earned revenue to the IRS via Form 1099-NEC or a similar form. Please answer the questions below and provide all applicable information to populate Form W-9 correctly.
             </p>
           </div>
@@ -170,7 +170,7 @@ export const W9Form: React.FC<W9FormProps> = ({
           name="ssn"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-semibold text-foreground">
+              <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                 Social Security Number (SSN) <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
@@ -208,13 +208,13 @@ export const W9Form: React.FC<W9FormProps> = ({
 
         {/* Company Fields - Conditionally Rendered */}
         {isPaidByCompany === 'yes' && (
-          <div className="space-y-6 pl-4 border-l-2 border-border">
+          <div className="space-y-4 md:space-y-6 pl-3 md:pl-4 border-l-2 border-border">
             <FormField
               control={form.control}
               name="companyEIN"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company EIN <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -238,13 +238,13 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company Name <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input {...field} placeholder="Enter company name" />
                   </FormControl>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-xs md:text-sm text-muted-foreground mt-1">
                     <span className="font-semibold text-[hsl(var(--brand-blue))]">Note:</span> The EIN must match the company name
                   </p>
                   <FormMessage />
@@ -257,7 +257,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyAddressLine1"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company Address Line 1 <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -273,7 +273,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyAddressLine2"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company Address Line 2
                   </FormLabel>
                   <FormControl>
@@ -289,7 +289,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyCity"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company City <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -305,7 +305,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyState"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company State <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -321,7 +321,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyZipCode"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company ZIP Code <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -337,7 +337,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company Email <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -353,7 +353,7 @@ export const W9Form: React.FC<W9FormProps> = ({
               name="companyPhone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-base font-semibold text-foreground">
+                  <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                     Company Phone <span className="text-destructive">*</span>
                   </FormLabel>
                   <FormControl>
@@ -405,7 +405,7 @@ export const W9Form: React.FC<W9FormProps> = ({
           name="taxFilingMethod"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-semibold text-foreground">
+              <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                 How do you file your federal taxes? <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
@@ -428,7 +428,7 @@ export const W9Form: React.FC<W9FormProps> = ({
           name="agentFullName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-semibold text-foreground">
+              <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                 Enter agent full name, owner of disregarded entity, or company name <span className="text-destructive">*</span>
               </FormLabel>
               <FormControl>
@@ -462,14 +462,14 @@ export const W9Form: React.FC<W9FormProps> = ({
           name="exemptPayeeCode"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-base font-semibold text-foreground">
+              <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                 Enter exempt payee code(s) (if any)
               </FormLabel>
               <FormControl>
                 <Input {...field} placeholder="Exempt payee code (if any)" />
               </FormControl>
-              <p className="text-sm text-muted-foreground mt-1">
-                See the instructions if you aren&apos;t sure: <a href="https://www.irs.gov/FormW9" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">https://www.irs.gov/FormW9</a>
+              <p className="text-xs md:text-sm text-muted-foreground mt-1">
+                See the instructions if you aren&apos;t sure: <a href="https://www.irs.gov/FormW9" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline break-all">https://www.irs.gov/FormW9</a>
               </p>
               <FormMessage />
             </FormItem>
@@ -477,10 +477,10 @@ export const W9Form: React.FC<W9FormProps> = ({
         />
 
         {/* Address Information Section */}
-        <div className="space-y-6 mt-8 pt-6 border-t border-border">
+        <div className="space-y-4 md:space-y-6 mt-6 md:mt-8 pt-4 md:pt-6 border-t border-border">
           <div>
-            <h3 className="text-lg font-semibold text-[hsl(var(--brand-blue))] mb-1">Address Information</h3>
-            <p className="text-sm text-muted-foreground italic">This is the address eXp will populate on your 1099</p>
+            <h3 className="text-base md:text-lg font-semibold text-[hsl(var(--brand-blue))] mb-1">Address Information</h3>
+            <p className="text-xs md:text-sm text-muted-foreground italic">This is the address eXp will populate on your 1099</p>
           </div>
 
           <FormField
@@ -488,7 +488,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="addressLine1"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   Enter address (number, street and apt. or suite no.) <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormControl>
@@ -504,7 +504,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="addressCity"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   City <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormControl>
@@ -520,7 +520,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="addressState"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   State <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormControl>
@@ -536,7 +536,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="addressZipCode"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   Zip code <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormControl>
@@ -552,7 +552,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="accountNumbers"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   List account number(s) here
                 </FormLabel>
                 <FormControl>
@@ -568,7 +568,7 @@ export const W9Form: React.FC<W9FormProps> = ({
             name="requesterInfo"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-base font-semibold text-foreground">
+                <FormLabel className="text-sm md:text-base font-semibold text-foreground">
                   Requester&apos;s name and address
                 </FormLabel>
                 <FormControl>
@@ -582,7 +582,7 @@ export const W9Form: React.FC<W9FormProps> = ({
         </div>
 
         {/* Desktop Action Bar - Sticky within container */}
-        <div className="max-md:hidden sticky bottom-0 bg-background border-t border-border p-4 mt-4 z-10">
+        <div className="max-md:hidden sticky bottom-0 bg-background border-t border-border p-3 md:p-4 mt-4 z-10">
           <div className="flex items-center justify-between">
             <Button
               type="button"
