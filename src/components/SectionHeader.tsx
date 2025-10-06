@@ -10,8 +10,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   totalSections,
   sectionTitle
 }) => {
-  // Calculate progress within "Your Information" (sections 0-4) - 20% per section
-  const isInYourInformation = currentSection <= 4;
-  const progress = isInYourInformation ? (currentSection + 1) * 20 : (currentSection + 1) / totalSections * 100;
-  return null;
+  return (
+    <div className="mb-8">
+      <h1 className="text-3xl font-bold text-foreground">{sectionTitle}</h1>
+      <Separator className="mt-4" />
+    </div>
+  );
 };
