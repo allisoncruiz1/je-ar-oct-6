@@ -265,7 +265,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     : "Continue";
 
   return (
-    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm">
+    <main className="items-stretch shadow-[2px_4px_6px_0_rgba(12,15,36,0.08)] flex min-w-60 flex-col flex-1 bg-white rounded-lg max-md:mx-0 max-md:rounded-lg max-md:shadow-sm overflow-auto">
       {/* Header section */}
       <div>
         <div className="px-2 pt-0 pb-0 max-md:px-2 max-md:pt-0 max-md:pb-0">
@@ -278,7 +278,7 @@ export const MainContent: React.FC<MainContentProps> = ({
       </div>
 
       {/* Form content with padding */}
-      <section className="p-4 pt-0">
+      <section className="p-4 pt-0 overflow-y-auto flex-1">
         {currentSection === 0 && (
           <AddressForm
             onSubmit={handleFormSubmit}
