@@ -34,10 +34,11 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   }, {
     title: "Documents",
     description: "W9 and Document Signing",
-    subStepCount: 0
+    subStepCount: 2
   }];
   const yourInfoSubSteps = ['Mailing Address', 'License & Business Info', 'License Details', 'Business Overview', 'Team Function'];
   const financialInfoSubSteps = ['Payment Info', 'Direct Deposit'];
+  const documentsSubSteps = ['W9', 'Document Signing'];
   const currentStepData = mainSteps[currentStep];
 
   // Calculate how many sub-steps are completed for the current main step
@@ -50,6 +51,10 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
       // For "Financial Info" (sections 6-7)
       return completedSections.filter(s => s >= 6 && s <= 7).length;
     }
+    if (currentStep === 4) {
+      // For "Documents" (sections 9-10)
+      return completedSections.filter(s => s >= 9 && s <= 10).length;
+    }
     return 0;
   };
   const completedSubSteps = getCompletedSubStepsCount();
@@ -57,8 +62,9 @@ export const MobileProgressBar: React.FC<MobileProgressBarProps> = ({
   
   // Determine which substeps to show
   const isFinancialInfo = currentStep === 2;
-  const subStepsToShow = isFinancialInfo ? financialInfoSubSteps : yourInfoSubSteps;
-  const subStepStartIndex = isFinancialInfo ? 6 : 0;
+  const isDocuments = currentStep === 4;
+  const subStepsToShow = isDocuments ? documentsSubSteps : isFinancialInfo ? financialInfoSubSteps : yourInfoSubSteps;
+  const subStepStartIndex = isDocuments ? 9 : isFinancialInfo ? 6 : 0;
   return <div className="bg-white rounded-lg p-4 shadow-md mb-4 border border-border">
       {/* Horizontal Progress Stepper */}
       <div className="flex items-center justify-between mb-3">

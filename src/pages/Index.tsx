@@ -23,14 +23,17 @@ const Index = () => {
     'Sponsor',
     'Payment Info',
     'Direct Deposit',
-    'Review Application'
+    'Review Application',
+    'W9',
+    'Document Signing'
   ];
 
   const getMainStep = (section: number) => {
     if (section <= 4) return 0; // Your Information (sections 0-4)
     if (section === 5) return 1; // Sponsor
     if (section <= 7) return 2; // Financial Info (sections 6-7)
-    return 3; // Additional steps
+    if (section === 8) return 3; // Review
+    return 4; // Documents (sections 9-10)
   };
 
   const getMainStepInfo = (section: number) => {
@@ -39,7 +42,8 @@ const Index = () => {
       { title: 'Your Information', description: 'Personal and Business Details' },
       { title: 'Sponsor', description: 'Select Sponsor' }, 
       { title: 'Financial Info', description: 'Payment and Direct Deposit' },
-      { title: 'Additional Steps', description: 'Final Configuration' }
+      { title: 'Review', description: 'Review Application' },
+      { title: 'Documents', description: 'W9 and Document Signing' }
     ];
     return { ...mainSteps[step], stepNumber: step + 1 };
   };

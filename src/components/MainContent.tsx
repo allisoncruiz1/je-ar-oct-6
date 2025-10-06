@@ -11,6 +11,8 @@ import { SectionHeader } from './SectionHeader';
 import { Button } from '@/components/ui/button';
 import { MobileActionBar } from '@/components/MobileActionBar';
 import { ReviewPage } from './ReviewPage';
+import { W9Form, W9Data } from './W9Form';
+import { DocumentSigningForm, DocumentSigningData } from './DocumentSigningForm';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface AddressData {
@@ -66,6 +68,10 @@ export const MainContent: React.FC<MainContentProps> = ({
   const [sponsorFormComplete, setSponsorFormComplete] = useState(false);
   const [paymentInfoFormComplete, setPaymentInfoFormComplete] = useState(false);
   const [directDepositFormComplete, setDirectDepositFormComplete] = useState(false);
+  const [w9Data, setW9Data] = useState<W9Data | null>(null);
+  const [w9FormComplete, setW9FormComplete] = useState(false);
+  const [documentSigningData, setDocumentSigningData] = useState<DocumentSigningData | null>(null);
+  const [documentSigningComplete, setDocumentSigningComplete] = useState(false);
 
   const advancingRef = useRef(false);
   const lastContinueRef = useRef(0);
@@ -105,6 +111,8 @@ export const MainContent: React.FC<MainContentProps> = ({
       sponsorFormComplete,
       paymentInfoFormComplete,
       directDepositFormComplete,
+      w9FormComplete,
+      documentSigningComplete,
     });
     // Guard: do not advance from step 1 unless the form is complete
     if (currentSection === 0 && !formComplete) {
@@ -173,6 +181,20 @@ export const MainContent: React.FC<MainContentProps> = ({
       return;
     }
 
+    // Guard: do not advance from step 9 unless the W9 form is complete
+    if (currentSection === 9 && !w9FormComplete) {
+      console.info('🚫 Continue blocked: W9 incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
+    // Guard: do not advance from step 10 unless document signing is complete
+    if (currentSection === 10 && !documentSigningComplete) {
+      console.info('🚫 Continue blocked: Document Signing incomplete');
+      advancingRef.current = false;
+      return;
+    }
+
     // Check if returning from edit mode
     if (isEditingFromReview) {
       console.log('✅ Returning to Review page after edit');
@@ -208,7 +230,7 @@ export const MainContent: React.FC<MainContentProps> = ({
     setTimeout(() => {
       advancingRef.current = false;
     }, 600);
-  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete, paymentInfoFormComplete, directDepositFormComplete]);
+  }, [currentSection, formComplete, licenseBusinessFormComplete, licenseDetailsFormComplete, businessOverviewFormComplete, teamFunctionFormComplete, sponsorFormComplete, paymentInfoFormComplete, directDepositFormComplete, w9FormComplete, documentSigningComplete, isEditingFromReview, licenseBusinessData?.isLicensed, sections.length]);
 
   const handleBack = () => {
     console.log('Back clicked');
@@ -238,6 +260,8 @@ export const MainContent: React.FC<MainContentProps> = ({
   // Conditional button text based on edit mode
   const continueButtonText = isEditingFromReview 
     ? (isMobile ? "Save & Return" : "Save & Return to Review")
+    : currentSection === 10
+    ? "Complete Application"
     : "Continue";
 
   return (
@@ -401,6 +425,32 @@ export const MainContent: React.FC<MainContentProps> = ({
             onBack={handleBack}
             onContinue={triggerUserContinue}
             onSaveResume={onSaveResume}
+          />
+        )}
+        {currentSection === 9 && (
+          <W9Form
+            onContinue={triggerUserContinue}
+            onFormValidChange={setW9FormComplete}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
+            canContinue={w9FormComplete}
+            initialData={w9Data || undefined}
+            onFormDataChange={setW9Data}
+            continueButtonText={continueButtonText}
+          />
+        )}
+        {currentSection === 10 && (
+          <DocumentSigningForm
+            onContinue={triggerUserContinue}
+            onFormValidChange={setDocumentSigningComplete}
+            onSaveResume={onSaveResume}
+            onBack={handleBack}
+            showBack={currentSection > 0}
+            canContinue={documentSigningComplete}
+            initialData={documentSigningData || undefined}
+            onFormDataChange={setDocumentSigningData}
+            continueButtonText={continueButtonText}
           />
         )}
       </section>

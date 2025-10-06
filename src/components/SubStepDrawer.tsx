@@ -36,10 +36,17 @@ export const SubStepDrawer: React.FC<SubStepDrawerProps> = ({
     { title: 'Direct Deposit', section: 7 }
   ];
 
+  const documentsSubSteps = [
+    { title: 'W9', section: 9 },
+    { title: 'Document Signing', section: 10 }
+  ];
+
   // Determine which set of substeps to show based on current section
   const isFinancialInfoSection = currentSection >= 6 && currentSection <= 7;
-  const subSteps = isFinancialInfoSection ? financialInfoSubSteps : yourInfoSubSteps;
-  const drawerTitle = isFinancialInfoSection ? 'Financial Info Steps' : 'Your Information Steps';
+  const isDocumentsSection = currentSection >= 9 && currentSection <= 10;
+  
+  const subSteps = isDocumentsSection ? documentsSubSteps : isFinancialInfoSection ? financialInfoSubSteps : yourInfoSubSteps;
+  const drawerTitle = isDocumentsSection ? 'Documents Steps' : isFinancialInfoSection ? 'Financial Info Steps' : 'Your Information Steps';
 
   const handleStepClick = (section: number) => {
     onSubStepSelect(section);
