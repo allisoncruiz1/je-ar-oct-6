@@ -334,7 +334,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
               <div className="flex-1">
                 <AlertDescription className="text-amber-900 dark:text-amber-100">
                   <p className="font-semibold text-sm mb-0.5">
-                    We weren't able to validate these details
+                    We weren't able to confirm these details
                   </p>
                   <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
                     Please double-check your entry. You can:
