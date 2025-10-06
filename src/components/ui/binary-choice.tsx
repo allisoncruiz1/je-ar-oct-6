@@ -70,13 +70,19 @@ export const BinaryChoice = React.forwardRef<
         
         <RadioGroup
           value={value}
-          onValueChange={onValueChange}
+          onValueChange={(newValue) => {
+            console.log('BinaryChoice mobile onValueChange:', { oldValue: value, newValue });
+            onValueChange(newValue);
+          }}
           disabled={disabled}
           className="flex gap-3"
         >
           <label 
             htmlFor={`${id}-yes`} 
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
+            onClick={(e) => {
+              console.log('Yes label clicked', { currentValue: value });
+            }}
           >
             <RadioGroupItem value="yes" id={`${id}-yes`} className="h-5 w-5" />
             <span className="text-base text-foreground">
@@ -86,6 +92,9 @@ export const BinaryChoice = React.forwardRef<
           <label 
             htmlFor={`${id}-no`} 
             className="flex items-center space-x-3 p-4 bg-muted/30 rounded-lg h-14 flex-1 cursor-pointer hover:bg-muted/50 transition-colors"
+            onClick={(e) => {
+              console.log('No label clicked', { currentValue: value });
+            }}
           >
             <RadioGroupItem value="no" id={`${id}-no`} className="h-5 w-5" />
             <span className="text-base text-foreground">
