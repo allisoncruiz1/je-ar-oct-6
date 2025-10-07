@@ -126,7 +126,6 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
             className="text-muted-foreground hover:text-foreground"
             aria-label={`Edit ${title}`}
           >
-            <Pencil className="h-4 w-4 mr-1.5" />
             Edit
           </Button>
         )}
