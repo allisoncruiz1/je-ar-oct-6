@@ -231,14 +231,30 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
               <Label htmlFor="routing-number">
                 Routing Number <span className="text-destructive">*</span>
               </Label>
-              <Input id="routing-number" placeholder="9-digit routing number" value={formData.routingNumber} onChange={e => updateFormData('routingNumber', e.target.value)} maxLength={9} disabled={usePreviousAccount === 'previous'} className={usePreviousAccount === 'previous' ? 'bg-muted cursor-not-allowed' : ''} />
+              <Input 
+                id="routing-number" 
+                placeholder="9-digit routing number" 
+                value={usePreviousAccount === 'previous' ? `**** **** ${formData.routingNumber}` : formData.routingNumber}
+                onChange={e => updateFormData('routingNumber', e.target.value)} 
+                maxLength={9} 
+                disabled={usePreviousAccount === 'previous'} 
+                className={usePreviousAccount === 'previous' ? 'bg-muted cursor-not-allowed text-muted-foreground' : ''} 
+              />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="account-number">
                 Account Number <span className="text-destructive">*</span>
               </Label>
-              <Input id="account-number" type="password" placeholder="Enter your account number" value={formData.accountNumber} onChange={e => updateFormData('accountNumber', e.target.value)} disabled={usePreviousAccount === 'previous'} className={usePreviousAccount === 'previous' ? 'bg-muted cursor-not-allowed' : ''} />
+              <Input 
+                id="account-number" 
+                type={usePreviousAccount === 'previous' ? 'text' : 'password'}
+                placeholder="Enter your account number" 
+                value={usePreviousAccount === 'previous' ? `**** **** **** ${formData.accountNumber.slice(-4)}` : formData.accountNumber}
+                onChange={e => updateFormData('accountNumber', e.target.value)} 
+                disabled={usePreviousAccount === 'previous'} 
+                className={usePreviousAccount === 'previous' ? 'bg-muted cursor-not-allowed text-muted-foreground' : ''} 
+              />
             </div>
 
             {usePreviousAccount !== 'previous' && <div className="space-y-2">
