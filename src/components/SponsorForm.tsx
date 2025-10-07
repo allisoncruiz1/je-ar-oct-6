@@ -330,7 +330,7 @@ export const SponsorForm: React.FC<SponsorFormProps> = ({
                 <Check className="w-3 h-3 text-white" />
               </div>
               <p className="text-sm text-foreground">
-                <span className="font-semibold">Acknowledgement recorded</span> — Logged on {acknowledgedAt && formatTimestamp(acknowledgedAt)}
+                Your acknowledgement of the sponsor rules and program have been logged on {acknowledgedAt && formatTimestamp(acknowledgedAt)}
               </p>
             </div>
           )}
