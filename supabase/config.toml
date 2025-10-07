@@ -1,4 +1,1 @@
 project_id = "pbbpmepdafwixgdknnam"
-
-[functions.usps-validate]
-verify_jwt = false

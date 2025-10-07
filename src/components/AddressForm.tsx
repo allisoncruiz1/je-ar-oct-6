@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import { addressSchema } from '@/schemas/formValidation';
 import { AddressConfirmationDialog } from '@/components/AddressConfirmationDialog';
 import { z } from 'zod';
-import { supabase } from "@/integrations/supabase/client";
+
 interface AddressFormData {
   addressLine1: string;
   addressLine2: string;
@@ -494,71 +494,24 @@ export const AddressForm: React.FC<AddressFormProps> = ({
         return;
       }
 
-      // Manually entered address: validate via USPS
+      // Manually entered address: validate via OpenStreetMap
       setValidating(true);
       setSuggestedAddress(null);
       try {
-        const { data, error } = await supabase.functions.invoke('usps-validate', {
-          body: {
-            addressLine1: formData.addressLine1,
-            addressLine2: formData.addressLine2,
-            city: formData.city,
-            state: formData.state,
-            zipCode: formData.zipCode,
-          },
-        });
-
-        if (error) {
-          console.error('usps-validate error:', error);
-        }
-        
-        let anySuggestion: any = null;
-        if (data?.suggestedAddress) {
-          anySuggestion = data.suggestedAddress;
-        } else {
-          // Fallback to OpenStreetMap suggestion when USPS can't provide one
-          try {
-            const q = `${formData.addressLine1}, ${formData.city}, ${formData.state} ${formData.zipCode}`;
-            const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
-            const res = await fetch(url, { headers: { Accept: 'application/json' } });
-            const arr = await res.json();
-            const first = Array.isArray(arr) ? arr[0] : null;
-            if (first?.address) {
-              const parsed = parseNominatimAddress(first.address);
-              if (parsed.addressLine1 && parsed.city && parsed.state && parsed.zipCode) {
-                anySuggestion = parsed;
-              }
-            }
-          } catch (nf) {
-            console.error('Fallback suggestion failed', nf);
+        const q = `${formData.addressLine1}, ${formData.city}, ${formData.state} ${formData.zipCode}`;
+        const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
+        const res = await fetch(url, { headers: { Accept: 'application/json' } });
+        const arr = await res.json();
+        const first = Array.isArray(arr) ? arr[0] : null;
+        if (first?.address) {
+          const parsed = parseNominatimAddress(first.address);
+          if (parsed.addressLine1 && parsed.city && parsed.state && parsed.zipCode) {
+            setSuggestedAddress(parsed);
           }
-        }
-
-        if (anySuggestion) {
-          setSuggestedAddress(anySuggestion);
-        } else if (data && data.deliverable === false) {
-          // USPS could not validate and no fallback suggestion
-          toast.info('Address could not be automatically verified. Please confirm it is correct.');
         }
       } catch (e) {
-        console.error('Error calling usps-validate:', e);
-        // Attempt fallback suggestion even if USPS call failed
-        try {
-          const q = `${formData.addressLine1}, ${formData.city}, ${formData.state} ${formData.zipCode}`;
-          const url = `https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&countrycodes=us&q=${encodeURIComponent(q)}`;
-          const res = await fetch(url, { headers: { Accept: 'application/json' } });
-          const arr = await res.json();
-          const first = Array.isArray(arr) ? arr[0] : null;
-          if (first?.address) {
-            const parsed = parseNominatimAddress(first.address);
-            if (parsed.addressLine1 && parsed.city && parsed.state && parsed.zipCode) {
-              setSuggestedAddress(parsed);
-            }
-          }
-        } catch (nf) {
-          console.error('Fallback suggestion failed after USPS error', nf);
-          toast.error('Address validation service unavailable. Please verify your address manually.');
-        }
+        console.error('Address validation failed:', e);
+        toast.error('Address validation service unavailable. Please verify your address manually.');
       } finally {
         setValidating(false);
         setShowConfirmDialog(true);
