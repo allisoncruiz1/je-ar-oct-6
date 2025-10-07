@@ -35,7 +35,7 @@ const Dashboard = () => {
         <nav className="flex-1 px-3">
           <button 
             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white mb-2"
-            onClick={() => navigate('/application')}
+            onClick={() => navigate('/application', { state: { showReview: true } })}
           >
             <Home className="w-5 h-5" />
             <span>Guest Home</span>

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 // Force rebuild
 import { Header } from '@/components/Header';
 import { SideNavigation } from '@/components/SideNavigation';
@@ -6,13 +6,23 @@ import { MainContent } from '@/components/MainContent';
 import { MobileProgressBar } from '@/components/MobileProgressBar';
 import { SubStepDrawer } from '@/components/SubStepDrawer';
 import { SaveResumeDialog } from '@/components/SaveResumeDialog';
+import { useLocation } from 'react-router-dom';
 
 const Index = () => {
+  const location = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<number[]>([]);
   const [isSubStepDrawerOpen, setIsSubStepDrawerOpen] = useState(false);
   const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+
+  // Check if we should show review page from navigation state
+  useEffect(() => {
+    if (location.state?.showReview) {
+      setCurrentSection(8); // Review Application section
+      setCompletedSections([0, 1, 2, 3, 4, 5, 6, 7]); // Mark all previous sections as complete
+    }
+  }, [location.state]);
 
   const sections = [
     'Mailing Address',
