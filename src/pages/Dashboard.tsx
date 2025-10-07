@@ -3,8 +3,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Bell, Phone, Mail, HelpCircle, FileText, Home, ChevronDown } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [showAllSteps, setShowAllSteps] = useState(false);
 
   const applicationSteps = [
@@ -31,7 +33,10 @@ const Dashboard = () => {
         </div>
         
         <nav className="flex-1 px-3">
-          <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white mb-2">
+          <button 
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-white/10 text-white mb-2"
+            onClick={() => navigate('/application')}
+          >
             <Home className="w-5 h-5" />
             <span>Guest Home</span>
           </button>
