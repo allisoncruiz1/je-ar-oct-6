@@ -234,7 +234,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
               <Input 
                 id="routing-number" 
                 placeholder="9-digit routing number" 
-                value={usePreviousAccount === 'previous' ? `**** **** ${formData.routingNumber}` : formData.routingNumber}
+                value={usePreviousAccount === 'previous' && previousBankAccount ? `**** **** ${previousBankAccount.routingNumber.slice(-4)}` : formData.routingNumber}
                 onChange={e => updateFormData('routingNumber', e.target.value)} 
                 maxLength={9} 
                 disabled={usePreviousAccount === 'previous'} 
@@ -250,7 +250,7 @@ export const DirectDepositForm: React.FC<DirectDepositFormProps> = ({
                 id="account-number" 
                 type={usePreviousAccount === 'previous' ? 'text' : 'password'}
                 placeholder="Enter your account number" 
-                value={usePreviousAccount === 'previous' ? `**** **** **** ${formData.accountNumber.slice(-4)}` : formData.accountNumber}
+                value={usePreviousAccount === 'previous' && previousBankAccount ? `**** **** **** ${previousBankAccount.accountNumber}` : formData.accountNumber}
                 onChange={e => updateFormData('accountNumber', e.target.value)} 
                 disabled={usePreviousAccount === 'previous'} 
                 className={usePreviousAccount === 'previous' ? 'bg-muted cursor-not-allowed text-muted-foreground' : ''} 
