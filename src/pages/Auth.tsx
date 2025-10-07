@@ -40,17 +40,17 @@ export default function Auth() {
   // Sign in form state
   const [signInEmail, setSignInEmail] = useState('');
 
-  // Check if user is already authenticated - redirect to start of application
+  // Check if user is already authenticated
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        navigate('/application', { replace: true });
+        navigate('/application');
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate('/application', { replace: true });
+        navigate('/application');
       }
     });
 
@@ -123,8 +123,8 @@ export default function Auth() {
         description: "Welcome to eXp Realty. Starting your application...",
       });
 
-      // Navigate to start of application (Mailing Address)
-      navigate('/application', { replace: true });
+      // Navigate to application
+      navigate('/application');
     } catch (error: any) {
       toast({
         variant: "destructive",

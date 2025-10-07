@@ -22,7 +22,6 @@ const Index = () => {
       setCurrentSection(8); // Review Application section
       setCompletedSections([0, 1, 2, 3, 4, 5, 6, 7]); // Mark all previous sections as complete
     }
-    // Otherwise, start at the beginning (section 0 - Mailing Address)
   }, [location.state]);
 
   const sections = [
