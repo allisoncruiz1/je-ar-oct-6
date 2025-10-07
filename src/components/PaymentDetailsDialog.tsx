@@ -334,42 +334,44 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                     <p className="font-semibold text-base mb-2">
                       We weren't able to confirm these details after 3 attempts
                     </p>
-                    <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                    <p className="text-sm text-amber-800 dark:text-amber-200">
                       We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
                     </p>
-                    <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm">
-                      <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
-                      <div className="space-y-2.5 text-sm">
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">Billing Name:</span>
-                          <span className="font-medium text-foreground">{savedCardData?.billingName}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">Cardholder Name:</span>
-                          <span className="font-medium text-foreground">{savedCardData?.cardholderName}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">Card Number:</span>
-                          <span className="font-medium font-mono text-foreground">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">Expiry Date:</span>
-                          <span className="font-medium text-foreground">{savedCardData?.expiryDate}</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">CVV:</span>
-                          <span className="font-medium font-mono text-foreground">***</span>
-                        </div>
-                        <div className="flex justify-between items-center py-1">
-                          <span className="text-muted-foreground">Billing ZIP:</span>
-                          <span className="font-medium text-foreground">{savedCardData?.billingZip}</span>
-                        </div>
-                      </div>
-                    </div>
                   </AlertDescription>
                 </div>
               </div>
             </Alert>
+            
+            <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+              <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
+              <div className="space-y-2.5 text-sm">
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">Billing Name:</span>
+                  <span className="font-medium text-foreground">{savedCardData?.billingName}</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">Cardholder Name:</span>
+                  <span className="font-medium text-foreground">{savedCardData?.cardholderName}</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">Card Number:</span>
+                  <span className="font-medium font-mono text-foreground">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">Expiry Date:</span>
+                  <span className="font-medium text-foreground">{savedCardData?.expiryDate}</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">CVV:</span>
+                  <span className="font-medium font-mono text-foreground">***</span>
+                </div>
+                <div className="flex justify-between items-center py-1">
+                  <span className="text-muted-foreground">Billing ZIP:</span>
+                  <span className="font-medium text-foreground">{savedCardData?.billingZip}</span>
+                </div>
+              </div>
+            </div>
+
             <div className="mt-4">
               <Button
                 onClick={handleConfirmCardAndContinue}
