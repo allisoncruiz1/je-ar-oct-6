@@ -148,31 +148,8 @@ export default function Auth() {
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: signInEmail,
-        options: {
-          emailRedirectTo: `${window.location.origin}/application`,
-        }
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Check Your Email",
-        description: "We've sent you a sign-in link. Please check your inbox.",
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Sign In Failed",
-        description: error.message || "Unable to sign in. Please try again.",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Navigate directly to application
+    navigate('/application', { replace: true });
   };
 
   return (
