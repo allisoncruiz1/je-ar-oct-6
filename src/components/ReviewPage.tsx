@@ -121,12 +121,13 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
         {onEdit && (
           <Button
             variant="ghost"
-            size="icon"
+            size="sm"
             onClick={onEdit}
-            className="h-8 w-8 text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground"
             aria-label={`Edit ${title}`}
           >
-            <Pencil className="h-4 w-4" />
+            <Pencil className="h-4 w-4 mr-1.5" />
+            Edit
           </Button>
         )}
       </div>
