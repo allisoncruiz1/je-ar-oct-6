@@ -44,13 +44,13 @@ export default function Auth() {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session?.user) {
-        navigate('/application');
+        navigate('/application', { replace: true });
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate('/application');
+        navigate('/application', { replace: true });
       }
     });
 
@@ -123,8 +123,8 @@ export default function Auth() {
         description: "Welcome to eXp Realty. Starting your application...",
       });
 
-      // Navigate to application
-      navigate('/application');
+      // Navigate to application (starts at mailing address)
+      navigate('/application', { replace: true });
     } catch (error: any) {
       toast({
         variant: "destructive",
