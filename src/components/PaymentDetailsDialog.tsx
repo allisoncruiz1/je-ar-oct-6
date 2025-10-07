@@ -335,13 +335,10 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                 <div className="flex-1">
                   <AlertDescription className="text-amber-900 dark:text-amber-100">
                     <p className="font-semibold text-sm mb-0.5">
-                      We weren't able to confirm these details
+                      We weren't able to validate these details
                     </p>
-                    <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
-                      Please double-check your entry. You can:
-                    </p>
-                    <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
-                      Card number does not match with other details (Attempt {cardValidationAttempts}/3)
+                    <p className="text-xs text-amber-800 dark:text-amber-200">
+                      Please double-check your entry. You can: Update card details or choose to continue with the existing details.
                     </p>
                   </AlertDescription>
                 </div>
