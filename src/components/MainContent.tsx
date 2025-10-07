@@ -15,6 +15,7 @@ import { ReviewPage } from './ReviewPage';
 import { W9Form, W9Data } from './W9Form';
 import { DocumentSigningForm, DocumentSigningData } from './DocumentSigningForm';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useToast } from '@/hooks/use-toast';
 
 interface AddressData {
   addressLine1: string;
@@ -53,6 +54,7 @@ export const MainContent: React.FC<MainContentProps> = ({
   onSaveResume 
 }) => {
   const isMobile = useIsMobile();
+  const { toast } = useToast();
   const [formComplete, setFormComplete] = useState(false);
   const [isEditingFromReview, setIsEditingFromReview] = useState(false);
   const [addressData, setAddressData] = useState<AddressData | null>(null);
@@ -210,10 +212,17 @@ export const MainContent: React.FC<MainContentProps> = ({
       console.log('📤 Submitting final application:', finalData);
       onFormSubmit?.(finalData);
       
+      // Show success message
+      toast({
+        title: "Application Complete!",
+        description: "Redirecting you to MY eXp to complete your setup...",
+        duration: 3000,
+      });
+      
       // Redirect to dashboard
       setTimeout(() => {
         window.location.href = '/dashboard';
-      }, 1000);
+      }, 3000);
       
       advancingRef.current = false;
       return;
