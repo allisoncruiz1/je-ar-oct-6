@@ -325,33 +325,17 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
               </div>
 
               {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information">
-                  {paymentInfoData.paymentMethods.map((method, index) => <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
-                      <p className="font-semibold text-foreground capitalize text-base">
-                        {method.type.replace('-', ' ')}
-                      </p>
-                      <div className="space-y-4 pl-4">
-                        {method.type === 'credit-card' && <>
-                            <DataField label="Card Number" value={`**** **** **** ${method.details.cardNumber?.slice(-4) || ''}`} />
-                            <DataField label="Cardholder Name" value={method.details.cardholderName} />
-                            <DataField label="Expiry Date" value={method.details.expiryDate} />
-                          </>}
-                        {method.type === 'bank-account' && <>
-                            <DataField label="Account Number" value={`****${method.details.accountNumber?.slice(-4) || ''}`} />
-                            <DataField label="Routing Number" value={method.details.routingNumber} />
-                            <DataField label="Account Type" value={method.details.accountType} />
-                          </>}
-                      </div>
-                    </div>)}
+                  <div className="flex items-center gap-2 text-foreground">
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <p className="text-base font-medium">Payment information has been confirmed.</p>
+                  </div>
                 </ReviewSection>}
 
               {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information">
-                  <DataField label="First Name" value={directDepositData.firstName} />
-                  <DataField label="Last Name" value={directDepositData.lastName} />
-                  {directDepositData.businessName && <DataField label="Business Name" value={directDepositData.businessName} />}
-                  <DataField label="Bank Name" value={directDepositData.bankName} />
-                  <DataField label="Account Type" value={directDepositData.accountType} />
-                  <DataField label="Account Number" value={`****${directDepositData.accountNumber?.slice(-4) || ''}`} />
-                  <DataField label="Routing Number" value={directDepositData.routingNumber} />
+                  <div className="flex items-center gap-2 text-foreground">
+                    <CheckCircle2 className="h-5 w-5 text-green-600" />
+                    <p className="text-base font-medium">Direct Deposit Information is confirmed.</p>
+                  </div>
                 </ReviewSection>}
             </AccordionContent>
           </AccordionItem>
@@ -370,33 +354,17 @@ export const ReviewPage: React.FC<ReviewPageProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {paymentInfoData && <ReviewSection icon={<CreditCard className="h-5 w-5" />} title="Payment Information">
-                {paymentInfoData.paymentMethods.map((method, index) => <div key={index} className="space-y-4 pb-5 border-b border-border last:border-0 last:pb-0">
-                    <p className="font-semibold text-foreground capitalize text-base">
-                      {method.type.replace('-', ' ')}
-                    </p>
-                    <div className="space-y-4 pl-4">
-                      {method.type === 'credit-card' && <>
-                          <DataField label="Card Number" value={`**** **** **** ${method.details.cardNumber?.slice(-4) || ''}`} />
-                          <DataField label="Cardholder Name" value={method.details.cardholderName} />
-                          <DataField label="Expiry Date" value={method.details.expiryDate} />
-                        </>}
-                      {method.type === 'bank-account' && <>
-                          <DataField label="Account Number" value={`****${method.details.accountNumber?.slice(-4) || ''}`} />
-                          <DataField label="Routing Number" value={method.details.routingNumber} />
-                          <DataField label="Account Type" value={method.details.accountType} />
-                        </>}
-                    </div>
-                  </div>)}
+                <div className="flex items-center gap-2 text-foreground">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <p className="text-base font-medium">Payment information has been confirmed.</p>
+                </div>
               </ReviewSection>}
 
             {directDepositData && <ReviewSection icon={<Landmark className="h-5 w-5" />} title="Direct Deposit Information">
-                <DataField label="First Name" value={directDepositData.firstName} />
-                <DataField label="Last Name" value={directDepositData.lastName} />
-                {directDepositData.businessName && <DataField label="Business Name" value={directDepositData.businessName} />}
-                <DataField label="Bank Name" value={directDepositData.bankName} />
-                <DataField label="Account Type" value={directDepositData.accountType} />
-                <DataField label="Account Number" value={`****${directDepositData.accountNumber?.slice(-4) || ''}`} />
-                <DataField label="Routing Number" value={directDepositData.routingNumber} />
+                <div className="flex items-center gap-2 text-foreground">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <p className="text-base font-medium">Direct Deposit Information is confirmed.</p>
+                </div>
               </ReviewSection>}
           </div>
         </div>}
