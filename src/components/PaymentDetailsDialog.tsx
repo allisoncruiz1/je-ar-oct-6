@@ -90,7 +90,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     if (!isValid) {
       setCardValidationAttempts(prev => prev + 1);
       setCardValidationError(true);
-      setShowCardFields(false); // Hide fields on validation error
       
       // Save the card data for potential confirmation
       setSavedCardData({
@@ -151,7 +150,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleUpdateCardDetails = () => {
     setCardValidationError(false);
-    setShowCardFields(true); // Show fields when user wants to update
   };
 
   const resetCardForm = () => {
@@ -174,7 +172,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
     if (!isValid) {
       setBankValidationAttempts(prev => prev + 1);
       setBankValidationError(true);
-      setShowBankFields(false); // Hide fields on validation error
       
       setSavedBankData({
         routingNumber,
@@ -223,7 +220,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
 
   const handleUpdateBankDetails = () => {
     setBankValidationError(false);
-    setShowBankFields(true); // Show fields when user wants to update
   };
 
   const resetBankForm = () => {
@@ -346,10 +342,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
             </Alert>
             <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <Button
-                onClick={() => {
-                  setCardValidationError(false);
-                  setShowCardFields(true);
-                }}
+                onClick={handleUpdateCardDetails}
                 size="lg"
                 className="flex-1"
               >
