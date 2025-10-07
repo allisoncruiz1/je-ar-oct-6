@@ -59,10 +59,12 @@ const Index = () => {
   };
 
   const getOverallProgress = (section: number) => {
-    // Progress starts at 0% and increases based on completed sections
-    // Each of the 5 main steps represents 20% of total progress
-    const step = getMainStep(section);
-    return step * 20;
+    // Calculate progress based on completed sections plus current section
+    // Total sections = 11 (0-10), so each section is worth ~9.09%
+    const totalSections = sections.length;
+    const completedCount = completedSections.length;
+    const currentProgress = ((completedCount + 1) / totalSections) * 100;
+    return Math.min(Math.round(currentProgress), 100);
   };
 
   const handleSaveResume = () => {
