@@ -717,6 +717,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           }} 
           placeholder="City" 
           required 
+          autoComplete="off"
           className={cn(
             "justify-center items-center border flex w-full gap-2 text-muted-foreground font-normal bg-background mt-1 p-3 rounded-lg border-solid max-md:max-w-full focus:outline-none text-sm",
             fieldErrors.city && touchedFields.city 
