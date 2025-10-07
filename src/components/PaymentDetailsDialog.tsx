@@ -505,7 +505,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   size="lg"
                   className="flex-1"
                 >
-                  Try Again
+                  Update Card Details
                 </Button>
                 <Button
                   onClick={() => {
