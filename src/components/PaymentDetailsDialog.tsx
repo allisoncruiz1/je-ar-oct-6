@@ -353,7 +353,6 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   setCardValidationError(false);
                   setShowCardFields(true);
                 }}
-                variant="outline"
                 size="lg"
                 className="flex-1"
               >
@@ -364,6 +363,7 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
                   setShowCardConfirmation(true);
                   setCardValidationError(false);
                 }}
+                variant="outline"
                 size="lg"
                 className="flex-1"
               >
