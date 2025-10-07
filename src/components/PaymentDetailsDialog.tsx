@@ -328,100 +328,107 @@ export const PaymentDetailsDialog: React.FC<PaymentDetailsDialogProps> = ({
         </div>
 
         {cardValidationError && !showCardConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm py-2.5">
-            <div className="flex gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <AlertDescription className="text-amber-900 dark:text-amber-100">
-                  <p className="font-semibold text-sm mb-0.5">
-                    We weren't able to confirm these details
-                  </p>
-                  <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
-                    Please double-check your entry. You can:
-                  </p>
-                  <p className="text-xs text-amber-700 dark:text-amber-400 font-medium mb-3">
-                    Card number does not match with other details (Attempt {cardValidationAttempts}/3)
-                  </p>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button
-                      onClick={() => {
-                        setCardValidationError(false);
-                        setShowCardFields(true);
-                      }}
-                      variant="outline"
-                      size="sm"
-                      className="bg-white dark:bg-slate-900 border-amber-300 dark:border-amber-700 hover:bg-amber-50 dark:hover:bg-amber-950/40"
-                    >
-                      Update Card Details
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        setShowCardConfirmation(true);
-                        setCardValidationError(false);
-                      }}
-                      size="sm"
-                      className="bg-amber-600 hover:bg-amber-700 text-white"
-                    >
-                      Confirm and Continue
-                    </Button>
-                  </div>
-                </AlertDescription>
+          <>
+            <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm py-2.5">
+              <div className="flex gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <AlertDescription className="text-amber-900 dark:text-amber-100">
+                    <p className="font-semibold text-sm mb-0.5">
+                      We weren't able to confirm these details
+                    </p>
+                    <p className="text-xs text-amber-800 dark:text-amber-200 mb-1.5">
+                      Please double-check your entry. You can:
+                    </p>
+                    <p className="text-xs text-amber-700 dark:text-amber-400 font-medium">
+                      Card number does not match with other details (Attempt {cardValidationAttempts}/3)
+                    </p>
+                  </AlertDescription>
+                </div>
               </div>
+            </Alert>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <Button
+                onClick={() => {
+                  setCardValidationError(false);
+                  setShowCardFields(true);
+                }}
+                variant="outline"
+                size="lg"
+                className="flex-1"
+              >
+                Update Card Details
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowCardConfirmation(true);
+                  setCardValidationError(false);
+                }}
+                size="lg"
+                className="flex-1"
+              >
+                Confirm and Continue
+              </Button>
             </div>
-          </Alert>
+          </>
         )}
 
         {showCardConfirmation && (
-          <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
-            <div className="flex gap-3">
-              <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
-              <div className="flex-1">
-                <AlertDescription className="text-amber-900 dark:text-amber-100">
-                  <p className="font-semibold text-base mb-2">
-                    We weren't able to confirm these details after 3 attempts
-                  </p>
-                  <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
-                    We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
-                  </p>
-                  <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm mb-4">
-                    <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
-                    <div className="space-y-2.5 text-sm">
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">Billing Name:</span>
-                        <span className="font-medium text-foreground">{savedCardData?.billingName}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">Cardholder Name:</span>
-                        <span className="font-medium text-foreground">{savedCardData?.cardholderName}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">Card Number:</span>
-                        <span className="font-medium font-mono text-foreground">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">Expiry Date:</span>
-                        <span className="font-medium text-foreground">{savedCardData?.expiryDate}</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">CVV:</span>
-                        <span className="font-medium font-mono text-foreground">***</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        <span className="text-muted-foreground">Billing ZIP:</span>
-                        <span className="font-medium text-foreground">{savedCardData?.billingZip}</span>
+          <>
+            <Alert className="border-l-4 border-l-amber-500 bg-amber-50/80 dark:bg-amber-950/20 shadow-sm">
+              <div className="flex gap-3">
+                <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-500 mt-0.5 flex-shrink-0" />
+                <div className="flex-1">
+                  <AlertDescription className="text-amber-900 dark:text-amber-100">
+                    <p className="font-semibold text-base mb-2">
+                      We weren't able to confirm these details after 3 attempts
+                    </p>
+                    <p className="text-sm text-amber-800 dark:text-amber-200 mb-4">
+                      We'll go ahead and move you forward with the information you provided, and our staff will follow up if needed.
+                    </p>
+                    <div className="bg-white dark:bg-slate-900 rounded-lg p-4 border border-amber-200 dark:border-amber-800/50 shadow-sm">
+                      <h4 className="font-semibold text-sm mb-3 text-foreground">Entered Details</h4>
+                      <div className="space-y-2.5 text-sm">
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">Billing Name:</span>
+                          <span className="font-medium text-foreground">{savedCardData?.billingName}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">Cardholder Name:</span>
+                          <span className="font-medium text-foreground">{savedCardData?.cardholderName}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">Card Number:</span>
+                          <span className="font-medium font-mono text-foreground">**** **** **** {savedCardData?.cardNumber.slice(-4)}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">Expiry Date:</span>
+                          <span className="font-medium text-foreground">{savedCardData?.expiryDate}</span>
+                        </div>
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">CVV:</span>
+                          <span className="font-medium font-mono text-foreground">***</span>
+                        </div>
+                        <div className="flex justify-between items-center py-1">
+                          <span className="text-muted-foreground">Billing ZIP:</span>
+                          <span className="font-medium text-foreground">{savedCardData?.billingZip}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <Button
-                    onClick={handleConfirmCardAndContinue}
-                    className="w-full bg-amber-600 hover:bg-amber-700 text-white"
-                  >
-                    Next
-                  </Button>
-                </AlertDescription>
+                  </AlertDescription>
+                </div>
               </div>
+            </Alert>
+            <div className="mt-4">
+              <Button
+                onClick={handleConfirmCardAndContinue}
+                size="lg"
+                className="w-full"
+              >
+                Next
+              </Button>
             </div>
-          </Alert>
+          </>
         )}
 
         {!showCardConfirmation && showCardFields && (
